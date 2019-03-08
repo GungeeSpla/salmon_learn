@@ -58,6 +58,7 @@ f.target = "Define_Porarisu_Tsujo_Kanketsu";
 [image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
 [foreach name=f.item array=f.kanketsusen]
 [image layer=0 x=&f.item.x-60 y=&f.item.y-130 storage=kanketsu_sen.png zindex=1]
+[ptext layer=0 x=&f.item.x-25 y=&f.item.y+15 edge=0x000000 text=&f.item.label size=24 color=0x2AD600 bold=bold align=center width=50]
 [nextfor]
 [button fix=true graphic=suimyaku.png x=40 y=20 target=Suimyaku name=fixbutton]
 [mask_off time=300]
