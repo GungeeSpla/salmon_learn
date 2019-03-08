@@ -50,6 +50,9 @@ f.target = "Define_Porarisu_Tsujo_Kanketsu";
 ;=======================================
 [mask time=300]
 [cm]
+[clearfix]
+[freelayer layer=0]
+[freelayer layer=1]
 [call target=&f.target]
 [bg storage=&f.bg x=0 y=0 time=0]
 [image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
