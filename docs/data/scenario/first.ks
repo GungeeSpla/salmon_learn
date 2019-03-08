@@ -27,6 +27,7 @@ window.isBrother = function (A, B) {
     }
     return ret;
 };
+f.target = "Define_Porarisu_Tsujo_Kanketsu";
 [endscript]
 [plugin name=for]
 
@@ -51,10 +52,21 @@ window.isBrother = function (A, B) {
 [cm]
 [call target=&f.target]
 [bg storage=&f.bg x=0 y=0 time=0]
+[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
 [foreach name=f.item array=f.kanketsusen]
-[image layer=0 x=&f.item.x-60 y=&f.item.y-130 storage=kanketsu_sen.png]
+[image layer=0 x=&f.item.x-60 y=&f.item.y-130 storage=kanketsu_sen.png zindex=1]
 [nextfor]
+[button fix=true graphic=suimyaku.png x=40 y=20 target=Suimyaku name=fixbutton]
 [mask_off time=300]
+[jump target=Start]
+
+;=======================================
+*Suimyaku
+;=======================================
+[iscript]
+$(".suimyaku").fadeToggle(300);
+[endscript]
+[return]
 
 ;=======================================
 *Start
@@ -105,6 +117,9 @@ f.item = Q;
 *Atari
 ;=======================================
 [cm]
+[iscript]
+$(".fixbutton").hide();
+[endscript]
 [image layer=1 storage=atari.png x=0 y=0]
 [button graphic=modoru.png x=40 y=730 target=*Retitle]
 [button graphic=mouikkai.png   x=340 y=730 target=*Restart]
@@ -114,6 +129,9 @@ f.item = Q;
 *Restart
 ;=======================================
 [cm]
+[iscript]
+$(".fixbutton").show();
+[endscript]
 [freelayer layer=1]
 [jump target=Start]
 
@@ -121,6 +139,7 @@ f.item = Q;
 *Retitle
 ;=======================================
 [cm]
+[clearfix]
 [mask time=300]
 [bg time=0 storage=black.png]
 [freelayer layer=0]
@@ -132,13 +151,14 @@ f.item = Q;
 *Define_Porarisu_Tsujo_Kanketsu
 ;=======================================
 [iscript]
+f.suimyaku = "pora_suimyaku.png";
 f.bg = "../fgimage/pora_kanketsu.png";
 f.kanketsusen = [
     new Kanketsusen("A", 385, 535, ["B", "C", "D", "E", "G"]),
     new Kanketsusen("B", 236, 618, ["A", "C", "D", "E"]),
     new Kanketsusen("C", 154, 535, ["A", "B", "D", "E", "F"]),
     new Kanketsusen("D", 154, 387, ["A", "B", "C", "E", "F"]),
-    new Kanketsusen("E", 468, 428, ["A", "B", "C", "D", "F", "G"]),
+    new Kanketsusen("E", 454, 428, ["A", "B", "C", "D", "F", "G"]),
     new Kanketsusen("F", 236, 225, ["C", "D", "E", "G"]),
     new Kanketsusen("G", 535, 360, ["A", "E", "F"])
 ];
@@ -149,12 +169,13 @@ f.kanketsusen = [
 *Define_Porarisu_Mancho_Kanketsu
 ;=======================================
 [iscript]
+f.suimyaku = "pora_suimyaku_m.png";
 f.bg = "../fgimage/pora_kanketsu.png";
 f.kanketsusen = [
     new Kanketsusen("A", 385, 535, ["B", "E"]),
     new Kanketsusen("B", 236, 618, ["A"]),
     new Kanketsusen("D", 154, 387, []),
-    new Kanketsusen("E", 468, 428, ["A"]),
+    new Kanketsusen("E", 454, 428, ["A"]),
 ];
 [endscript]
 [return]
