@@ -38,6 +38,7 @@ window.isBrother = function (A, B) {
 [layopt layer=1 visible=true]
 [layopt layer=message0 visible=false]
 
+[bg time=0 storage=black.png]
 [ptext layer=0 text=-間欠泉当て- size=40 x=200 y=20]
 [glink text=ポラリス通常水位 x=60 y=100 width=300 target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮             x=440 y=100          target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
