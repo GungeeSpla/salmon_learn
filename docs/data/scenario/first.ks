@@ -19,8 +19,109 @@
 [glink text=満潮                 x=440 y=340           target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
 [glink text=ポラリス通常水位     x=60  y=420 width=300 target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮                 x=440 y=420           target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
-[ptext layer=0 text=ブラコ、トバ、トキの定石は整備中 size=20 x=150 y=600]
+[ptext layer=0 text=ブラコ、トバ、トキの定石は整備中 size=20 x=150 y=500]
+[ptext layer=0 text=-コウモリMAP- size=40 x=180 y=550]
+[glink text=シェケナダム通常水位 x=60  y=620 width=440 target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
 [s]
+
+;=======================================
+*InitKomori
+;=======================================
+[mask time=300]
+[cm]
+[clearfix]
+[freelayer layer=0]
+[freelayer layer=1]
+[call target=&f.target]
+[bg storage=&f.bg x=0 y=0 time=0]
+;[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
+[ptext layer=0 color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。赤の矢印はコウモリがいったん止まることを、青の矢印はコウモリが止まらずに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
+[foreach name=f.item array=f.kanketsusen]
+[image layer=0 x=&f.item.x-f.radius y=&f.item.y-f.radius width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
+[image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2]
+[ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 color=0x22DDCC bold=bold align=center width=50]
+[nextfor]
+[iscript]
+f.kPos = getKomoriPos(f.komoriLabel);
+[endscript]
+[image layer=1 zindex=200 x=250 y=400 storage=ika.png width=40 name=ika]
+[image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=50 name=komori]
+[button fix=true graphic=modoru2.png x=400 y=760 target=*KomoriTitle  name=fixbutton]
+[button fix=true graphic=tobasu.png  x=400 y=660 target=*KomoriTobasu name=fixbutton]
+[mask_off time=300]
+;[call target=Set_Kotae]
+;[jump target=Start]
+[iscript]
+var timer;
+$(".ika").appendTo("#tyrano_base").draggable({
+    drag: function (e) {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            updateKomoriArrow();
+        }, 32);
+    }
+});
+$(".komori").appendTo("#tyrano_base").draggable({
+    stop: function (e) {
+        var offset = $(this).offset();
+        var minDis = 9999;
+        var nextLabel;
+        for (var i = 0; i < f.kanketsusen.length; i++) {
+            var k = f.kanketsusen[i];
+            var dis = calcDistance(offset.left, offset.top, k.x, k.y);
+            if (dis < minDis) {
+                minDis = dis;
+                nextLabel = k.label;
+            }
+        }
+        var nextPos = getKomoriPos(nextLabel);
+        $(this).css({
+            left: (nextPos.x - f.komoriDx) + "px",
+            top: (nextPos.y - f.komoriDy) + "px",
+        });
+        f.komoriLabel = nextLabel;
+        updateKomoriArrow();
+        $(".komori_circle").hide();
+        $(".komori_circle." + f.komoriLabel).show();
+    }
+});
+$(".komori_circle." + f.komoriLabel).fadeIn(300);
+window.updateKomoriArrow = function () {
+    var dis = getDisIkaKomori(f.komoriLabel);
+    var next = getKomoriNextLabel(f.komoriLabel);
+    ctx.clearRect(0, 0, 640, 960);
+    ctx.fillStyle = (dis < f.radius) ? "Red" : "Blue";
+    ctx.fillArrowKomori(f.komoriLabel, next);
+};
+updateKomoriArrow();
+[endscript]
+[s]
+
+*KomoriTobasu
+[iscript]
+var nextLabel = getKomoriNextLabel(f.komoriLabel);
+var nextPos = getKomoriPos(nextLabel);
+f.komoriLabel = nextLabel;
+$(".komori").animate({
+    left: (nextPos.x - f.komoriDx) + "px",
+    top : (nextPos.y - f.komoriDy) + "px",
+}, 600, "easeInOutQuad", function () {
+    updateKomoriArrow();
+    $(".komori_circle").hide();
+    $(".komori_circle." + f.komoriLabel).show();
+});
+
+[endscript]
+[return]
+
+*KomoriTitle
+[clearstack]
+[iscript]
+$(".ika").remove();
+$(".komori").remove();
+ctx.clearRect(0, 0, 640, 960);
+[endscript]
+[jump target=*Retitle]
 
 ;=======================================
 *Init
@@ -410,6 +511,116 @@ $(".fixbutton").show();
 ;=======================================
 *Define
 ;=======================================
+
+[iscript]
+f.ikaDx = 20;
+f.ikaDy = 20;
+f.komoriDx = 25;
+f.komoriDy = 30;
+[endscript]
+[iscript]
+(function(target) {
+  if (!target || !target.prototype)
+    return;
+  target.prototype.arrow = function(startX, startY, endX, endY, controlPoints) {
+    var dx = endX - startX;
+    var dy = endY - startY;
+    var len = Math.sqrt(dx * dx + dy * dy);
+    var sin = dy / len;
+    var cos = dx / len;
+    var a = [];
+    a.push(0, 0);
+    for (var i = 0; i < controlPoints.length; i += 2) {
+      var x = controlPoints[i];
+      var y = controlPoints[i + 1];
+      a.push(x < 0 ? len + x : x, y);
+    }
+    a.push(len, 0);
+    for (var i = controlPoints.length; i > 0; i -= 2) {
+      var x = controlPoints[i - 2];
+      var y = controlPoints[i - 1];
+      a.push(x < 0 ? len + x : x, -y);
+    }
+    a.push(0, 0);
+    for (var i = 0; i < a.length; i += 2) {
+      var x = a[i] * cos - a[i + 1] * sin + startX;
+      var y = a[i] * sin + a[i + 1] * cos + startY;
+      if (i === 0) this.moveTo(x, y);
+      else this.lineTo(x, y);
+    }
+  };
+})(CanvasRenderingContext2D);
+var $canvas = $("<canvas width='640' height='960' style='position: absolute; z-index: 10;'></canvas>");
+var $root = $("#root_layer_game");
+$root.append($canvas);
+window.canvas = $canvas[0];
+window.ctx = canvas.getContext("2d");
+ctx.fillArrow = function (x1, y1, x2, y2) {
+    if (typeof x1 !== "number") {
+        y2 = y1.y;
+        x2 = y1.x;
+        y1 = x1.y;
+        x1 = x1.x;
+    }
+    ctx.beginPath();
+    ctx.arrow(x1, y1, x2, y2, [0, 3, -20, 3, -20, 11]);
+    ctx.fill();
+};
+ctx.fillArrowKomori = function (a, b) {
+    var aData = getKanketsusen(a);
+    var bData = getKanketsusen(b);
+    ctx.fillArrow(aData, bData);
+};
+window.calcDistance = function (x1, y1, x2, y2) {
+    if (typeof x1 !== "number") {
+        y2 = y1.y;
+        x2 = y1.x;
+        y1 = x1.y;
+        x1 = x1.x;
+    }
+    var w = x2 - x1;
+    var h = y2 - y1;
+    var r = Math.sqrt(w*w + h*h);
+    return r;
+};
+window.getIkaPos = function () {
+    var $ika = $(".ika");
+    var x = $ika.offset().left + f.ikaDx;
+    var y = $ika.offset().top + f.ikaDy;
+    return {
+        x: x,
+        y: y
+    };
+};
+window.getKomoriPos = function (label) {
+    var data = getKanketsusen(label);
+    return {
+        x: data.x,
+        y: data.y
+    };
+};
+window.getDisIkaKomori = function (label) {
+    var iPos = getIkaPos();
+    var kPos = getKomoriPos(label);
+    return calcDistance(iPos, kPos);
+};
+window.getKomoriNextLabel = function (label) {
+    var iPos = getIkaPos();
+    var data = getKanketsusen(label);
+    var minDis = 9999;
+    var nextLabel;
+    for (var i = 0; i < data.brothers.length; i++) {
+        var k = data.brothers[i];
+        var kPos = getKomoriPos(k);
+        var dis = calcDistance(iPos, kPos);
+        if (dis < minDis) {
+            minDis = dis;
+            nextLabel = k;
+        }
+    }
+    return nextLabel;
+}
+[endscript]
 [iscript]
 window.Kanketsusen = function (label, x, y, brothers) {
     this.label = label;
@@ -529,6 +740,30 @@ f.y = a.y - 70;
 
 [plugin name=for]
 [plugin name=glink_show]
+[return]
+
+;=======================================
+*Define_Damu_Tsujo_Komori
+;=======================================
+[iscript]
+f.radius = 207;
+f.komoriLabel = "C";
+f.bg = "../fgimage/damu_kanketsu.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 279, 425, ["B", "D", "F", "I", "K"]),
+    new Kanketsusen("B", 380, 248, ["A", "C", "D"]),
+    new Kanketsusen("C", 533, 257, ["B", "D", "E"]),
+    new Kanketsusen("D", 436, 458, ["A", "B", "C", "E", "F"]),
+    new Kanketsusen("E", 564, 513, ["C", "D", "F"]),
+    new Kanketsusen("F", 284, 605, ["A", "D", "E", "G", "I"]),
+    new Kanketsusen("G", 212, 692, ["F", "H", "I"]),
+    new Kanketsusen("H", 105, 670, ["G", "I"]),
+    new Kanketsusen("I",  67, 479, ["A", "F", "G", "H", "J", "K"]),
+    new Kanketsusen("J",  23, 392, ["I", "K", "L"]),
+    new Kanketsusen("K", 133, 358, ["A", "I", "J", "L"]),
+    new Kanketsusen("L",  41, 265, ["J", "K"])
+];
+[endscript]
 [return]
 
 ;=======================================
