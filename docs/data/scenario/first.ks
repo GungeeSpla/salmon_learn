@@ -19,6 +19,7 @@
 [glink text=満潮                 x=440 y=340           target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
 [glink text=ポラリス通常水位     x=60  y=420 width=300 target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮                 x=440 y=420           target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
+[ptext layer=0 text=ブラコ、トバ、トキの定石は整備中 size=20 x=150 y=600]
 [s]
 
 ;=======================================
