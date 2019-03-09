@@ -10,9 +10,15 @@
 [bg time=0 storage=black.png]
 [ptext layer=0 text=-間欠泉当て- size=40 x=200 y=20]
 [glink text=シェケナダム通常水位 x=60  y=100 width=300 target=Init exp="f.target='Define_Damu_Tsujo_Kanketsu'"]
-[glink text=満潮             x=440 y=100           target=Init exp="f.target='Define_Damu_Mancho_Kanketsu'"]
-[glink text=ポラリス通常水位 x=60  y=180 width=300 target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
-[glink text=満潮             x=440 y=180           target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
+[glink text=満潮                 x=440 y=100           target=Init exp="f.target='Define_Damu_Mancho_Kanketsu'"]
+[glink text=ドンブラコ通常水位   x=60  y=180 width=300 target=Init exp="f.target='Define_Burako_Tsujo_Kanketsu'"]
+[glink text=満潮                 x=440 y=180           target=Init exp="f.target='Define_Burako_Mancho_Kanketsu'"]
+[glink text=シャケト場通常水位   x=60  y=260 width=300 target=Init exp="f.target='Define_Toba_Tsujo_Kanketsu'"]
+[glink text=満潮                 x=440 y=260           target=Init exp="f.target='Define_Toba_Mancho_Kanketsu'"]
+[glink text=トキシラズ通常水位   x=60  y=340 width=300 target=Init exp="f.target='Define_Toki_Tsujo_Kanketsu'"]
+[glink text=満潮                 x=440 y=340           target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
+[glink text=ポラリス通常水位     x=60  y=420 width=300 target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
+[glink text=満潮                 x=440 y=420           target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
 [s]
 
 ;=======================================
@@ -522,6 +528,122 @@ f.y = a.y - 70;
 
 [plugin name=for]
 [plugin name=glink_show]
+[return]
+
+;=======================================
+*Define_Toki_Tsujo_Kanketsu
+;=======================================
+[iscript]
+f.josekidata = [
+];
+f.suimyaku = "toki_suimyaku.png";
+f.bg = "../fgimage/toki_kanketsu.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 208, 666, ["B", "C", "D"]),
+    new Kanketsusen("B", 194, 532, ["A", "C", "D", "F"]),
+    new Kanketsusen("C", 447, 585, ["A", "B", "E", "G"]),
+    new Kanketsusen("D",  75, 412, ["A", "B", "F"]),
+    new Kanketsusen("E", 554, 532, ["C", "G"]),
+    new Kanketsusen("F", 261, 212, ["B", "D", "G"]),
+    new Kanketsusen("G", 488, 318, ["C", "E", "F"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Toki_Mancho_Kanketsu
+;=======================================
+[iscript]
+f.josekidata = [
+];
+f.suimyaku = "toki_suimyaku_m.png";
+f.bg = "../fgimage/toki_kanketsu.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 208, 666, ["B", "C", "D"]),
+    new Kanketsusen("B", 194, 532, ["A", "C", "D", "F"]),
+    new Kanketsusen("C", 447, 585, ["A", "B", "E", "G"]),
+    new Kanketsusen("F", 261, 212, ["B", "D", "G"]),
+    new Kanketsusen("G", 488, 318, ["C", "E", "F"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Burako_Tsujo_Kanketsu
+;=======================================
+[iscript]
+f.josekidata = [
+];
+f.suimyaku = "burako_suimyaku.png";
+f.bg = "../fgimage/burako_kanketsu.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 312, 728, ["B", "C", "D"]),
+    new Kanketsusen("B", 143, 595, ["A", "C", "D", "E"]),
+    new Kanketsusen("C", 433, 595, ["A", "B", "D", "F"]),
+    new Kanketsusen("D", 313, 547, ["A", "B", "C", "E", "F", "H"]),
+    new Kanketsusen("E", 143, 342, ["B", "D", "F", "G", "H"]),
+    new Kanketsusen("F", 313, 342, ["C", "D", "E", "G", "H"]),
+    new Kanketsusen("G", 276, 209, ["E", "F", "H"]),
+    new Kanketsusen("H", 445, 294, ["D", "E", "F", "G"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Burako_Mancho_Kanketsu
+;=======================================
+[iscript]
+f.josekidata = [
+];
+f.suimyaku = "burako_suimyaku_m.png";
+f.bg = "../fgimage/burako_kanketsu.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 312, 728, ["B", "C", "D"]),
+    new Kanketsusen("D", 313, 547, ["A", "B", "C", "E", "F", "H"]),
+    new Kanketsusen("F", 313, 342, ["C", "D", "E", "G", "H"]),
+    new Kanketsusen("H", 445, 294, ["D", "E", "F", "G"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Toba_Tsujo_Kanketsu
+;=======================================
+[iscript]
+f.josekidata = [
+];
+f.suimyaku = "toba_suimyaku.png";
+f.bg = "../fgimage/toba_kanketsu.png";
+f.kanketsusen = [
+    new Kanketsusen("A",  41, 586, ["B", "C"]),
+    new Kanketsusen("B", 223, 569, ["A", "C", "E"]),
+    new Kanketsusen("C", 170, 499, ["A", "B", "E"]),
+    new Kanketsusen("D", 334, 232, ["E", "F"]),
+    new Kanketsusen("E", 334, 413, ["B", "C", "D", "F", "H", "I"]),
+    new Kanketsusen("F", 386, 309, ["D", "E", "H"]),
+    new Kanketsusen("G", 577, 559, ["H", "I"]),
+    new Kanketsusen("H", 525, 447, ["E", "F", "G", "I"]),
+    new Kanketsusen("I", 473, 560, ["E", "G", "H"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Toba_Mancho_Kanketsu
+;=======================================
+[iscript]
+f.josekidata = [
+];
+f.suimyaku = "toba_suimyaku_m.png";
+f.bg = "../fgimage/toba_kanketsu.png";
+f.kanketsusen = [
+    new Kanketsusen("B", 223, 569, ["A", "C", "E"]),
+    new Kanketsusen("C", 170, 499, ["A", "B", "E"]),
+    new Kanketsusen("E", 334, 413, ["B", "C", "D", "F", "H", "I"]),
+    new Kanketsusen("H", 525, 447, ["E", "F", "G", "I"]),
+    new Kanketsusen("I", 473, 560, ["E", "G", "H"])
+];
+[endscript]
 [return]
 
 ;=======================================
