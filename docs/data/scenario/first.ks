@@ -20,8 +20,8 @@
 [glink text=ポラリス通常水位     x=60  y=420 width=300 target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮                 x=440 y=420           target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
 [ptext layer=0 text=ブラコ、トバ、トキの定石は整備中 size=20 x=150 y=500]
-;[ptext layer=0 text=-コウモリMAP- size=40 x=180 y=550]
-;[glink text=シェケナダム通常水位 x=60  y=620 width=440 target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
+[ptext layer=0 text=-コウモリMAP- size=40 x=180 y=550]
+[glink text=シェケナダム通常水位 x=60  y=620 width=440 target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
 [s]
 
 ;=======================================
@@ -62,8 +62,8 @@ $(".ika").appendTo("#tyrano_base").draggable({
     }
 });
 $(".komori").appendTo("#tyrano_base").draggable({
-    stop: function (e) {
-        var offset = $(this).offset();
+    stop: function (e, ui) {
+        var offset = ui.position;
         var minDis = 9999;
         var nextLabel;
         for (var i = 0; i < f.kanketsusen.length; i++) {
@@ -585,8 +585,8 @@ window.calcDistance = function (x1, y1, x2, y2) {
 };
 window.getIkaPos = function () {
     var $ika = $(".ika");
-    var x = $ika.offset().left + f.ikaDx;
-    var y = $ika.offset().top + f.ikaDy;
+    var x = parseInt($ika.css("left")) + f.ikaDx;
+    var y = parseInt($ika.css("top")) + f.ikaDy;
     return {
         x: x,
         y: y
