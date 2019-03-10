@@ -25,10 +25,10 @@
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
-[if exp=f.bool]
+;[if exp=f.bool]
 [ptext layer=0 text=-コウモリMAP- size=40 x=180 y=550]
 [glink text=シェケナダム通常水位 x=60  y=620 width=440 target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
-[endif]
+;[endif]
 [s]
 
 ;=======================================
@@ -520,10 +520,10 @@ $(".fixbutton").show();
 ;=======================================
 
 [iscript]
-f.ikaDx = 20;
-f.ikaDy = 20;
-f.komoriDx = 25;
-f.komoriDy = 30;
+f.ikaDx = 30;
+f.ikaDy = 30;
+f.komoriDx = 30;
+f.komoriDy = 35;
 [endscript]
 [iscript]
 (function(target) {
