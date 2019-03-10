@@ -27,8 +27,8 @@
 [glink text=満潮 x=390 y=310 size=25 color=mancho target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
 [glink text=通常 x=270 y=380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮 x=390 y=380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
-[ptext layer=0 text=定石未実装 size=20 x=510 y=185 align=center width=640]
-[ptext layer=0 text=定石未実装 size=20 x=510 y=325 align=center width=640]
+[ptext layer=0 text=※定石未実装 size=20 x=510 y=185]
+[ptext layer=0 text=※定石未実装 size=20 x=510 y=325]
 
 [iscript]
 var s = location.search;
