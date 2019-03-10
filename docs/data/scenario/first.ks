@@ -8,26 +8,38 @@
 [layopt layer=message0 visible=false]
 
 [bg time=0 storage=black.png]
-[ptext layer=0 text=-間欠泉当て- size=40 x=200 y=20]
-[glink text=シェケナダム通常水位 x=60  y=100 width=300 target=Init exp="f.target='Define_Damu_Tsujo_Kanketsu'"]
-[glink text=満潮                 x=440 y=100           target=Init exp="f.target='Define_Damu_Mancho_Kanketsu'"]
-[glink text=ドンブラコ通常水位   x=60  y=180 width=300 target=Init exp="f.target='Define_Burako_Tsujo_Kanketsu'"]
-[glink text=満潮                 x=440 y=180           target=Init exp="f.target='Define_Burako_Mancho_Kanketsu'"]
-[glink text=シャケト場通常水位   x=60  y=260 width=300 target=Init exp="f.target='Define_Toba_Tsujo_Kanketsu'"]
-[glink text=満潮                 x=440 y=260           target=Init exp="f.target='Define_Toba_Mancho_Kanketsu'"]
-[glink text=トキシラズ通常水位   x=60  y=340 width=300 target=Init exp="f.target='Define_Toki_Tsujo_Kanketsu'"]
-[glink text=満潮                 x=440 y=340           target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
-[glink text=ポラリス通常水位     x=60  y=420 width=300 target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
-[glink text=満潮                 x=440 y=420           target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
-[ptext layer=0 text=ブラコ、トバ、トキの定石は整備中 size=20 x=150 y=500]
+
+[image layer=0 x=50 y=20 storage=goldie.png width=60]
+[image layer=0 x=40 y=480 storage=komori.png width=90]
+[ptext layer=0 text=間欠泉 size=40 x=120 y=25 bold=bold]
+[ptext layer=0 text=シェケナダム size=30 x=60 y=105]
+[ptext layer=0 text=ドン･ブラコ  size=30 x=60 y=175]
+[ptext layer=0 text=シャケト場   size=30 x=60 y=245]
+[ptext layer=0 text=トキシラズ   size=30 x=60 y=315]
+[ptext layer=0 text=ポラリス     size=30 x=60 y=385]
+[glink text=通常 x=270 y=100 size=25 color=tsujo  target=Init exp="f.target='Define_Damu_Tsujo_Kanketsu'"]
+[glink text=満潮 x=390 y=100 size=25 color=mancho target=Init exp="f.target='Define_Damu_Mancho_Kanketsu'"]
+[glink text=通常 x=270 y=170 size=25 color=tsujo  target=Init exp="f.target='Define_Burako_Tsujo_Kanketsu'"]
+[glink text=満潮 x=390 y=170 size=25 color=mancho target=Init exp="f.target='Define_Burako_Mancho_Kanketsu'"]
+[glink text=通常 x=270 y=240 size=25 color=tsujo  target=Init exp="f.target='Define_Toba_Tsujo_Kanketsu'"]
+[glink text=満潮 x=390 y=240 size=25 color=mancho target=Init exp="f.target='Define_Toba_Mancho_Kanketsu'"]
+[glink text=通常 x=270 y=310 size=25 color=tsujo  target=Init exp="f.target='Define_Toki_Tsujo_Kanketsu'"]
+[glink text=満潮 x=390 y=310 size=25 color=mancho target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
+[glink text=通常 x=270 y=380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
+[glink text=満潮 x=390 y=380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
+[ptext layer=0 text=定石未実装 size=20 x=510 y=185 align=center width=640]
+[ptext layer=0 text=定石未実装 size=20 x=510 y=325 align=center width=640]
 
 [iscript]
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
 ;[if exp=f.bool]
-[ptext layer=0 text=-コウモリMAP- size=40 x=180 y=550]
-[glink text=シェケナダム通常水位 x=60  y=620 width=440 target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
+[ptext layer=0 text=コウモリマップ size=40 x=120 y=500 bold=bold]
+[ptext layer=0 text=シェケナダム size=30 x=60 y=585]
+[ptext layer=0 text=シャケト場   size=30 x=60 y=655]
+[glink text=通常 x=270 y=580 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
+[glink text=通常 x=270 y=650 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toba_Tsujo_Komori'"]
 ;[endif]
 [s]
 
@@ -42,7 +54,7 @@ f.bool = (s.indexOf("test") > -1);
 [call target=&f.target]
 [bg storage=&f.bg x=0 y=0 time=0]
 ;[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
-[ptext layer=0 color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。赤の矢印はコウモリがいったん止まることを、青の矢印はコウモリが止まらずに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
+[ptext layer=0 color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。赤の矢印はコウモリがいったん攻撃態勢に入り雨弾を2回射出してからその方向へ飛ぶことを、青の矢印はコウモリが攻撃態勢に入らず速やかに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
 [foreach name=f.item array=f.kanketsusen]
 [image layer=0 x=&f.item.x-f.radius y=&f.item.y-f.radius width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
 [image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2]
@@ -51,10 +63,12 @@ f.bool = (s.indexOf("test") > -1);
 [iscript]
 f.kPos = getKomoriPos(f.komoriLabel);
 [endscript]
+[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
 [image layer=1 zindex=200 x=250 y=400 storage=ika.png width=40 name=ika]
 [image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=50 name=komori]
-[button fix=true graphic=modoru2.png x=400 y=760 target=*KomoriTitle  name=fixbutton]
-[button fix=true graphic=tobasu.png  x=400 y=660 target=*KomoriTobasu name=fixbutton]
+[button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
+[button fix=true graphic=keiro.png   x=40  y=800 target=*Suimyaku     name=fixbutton]
+[button fix=true graphic=modoru2.png x=440 y=800 target=*KomoriTitle  name=fixbutton]
 [mask_off time=300]
 ;[call target=Set_Kotae]
 ;[jump target=Start]
@@ -195,6 +209,121 @@ $(".kotae").fadeToggle(300);
 [foreach name=f.item array=f.josekidata]
 [glink text="&f.item[0]" x=60  y=&400+tf.index*100 width=450 target=Restart exp="&f.item[1]"]
 [nextfor]
+[s]
+
+;=======================================
+*BaTK_Joseki_B
+;=======================================
+[cm]
+[iscript]
+f.joseki = "BaTK_Joseki_B"
+[endscript]
+
+[k_button  k=H target=*BaTK_Joseki_B_1]
+[yajirushi k=H]
+[s]
+
+*BaTK_Joseki_B_1
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('H', f.answer)"]
+    [yajirushi_move k=E]
+    [k_button       k=E target=*BaTK_Joseki_B_2]
+[else]
+    [yajirushi_move k=C]
+    [k_button       k=C target=*BaTK_Joseki_B_4]
+[endif]
+[s]
+
+*BaTK_Joseki_B_2
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('E', f.answer)"]
+    [yajirushi_move k=F]
+    [k_button       k=F target=*BaTK_Joseki_B_3]
+[else]
+    [yajirushi_move k=G]
+    [k_button       k=G target=*Kakutei]
+[endif]
+[s]
+
+*BaTK_Joseki_B_3
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=I]
+[k_button       k=I target=*Kakutei]
+[s]
+
+*BaTK_Joseki_B_4
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('C', f.answer)"]
+    [yajirushi_move k=A]
+    [k_button       k=A target=*BaTK_Joseki_B_5]
+[else]
+    [yajirushi_move k=D]
+    [k_button       k=D target=*Kakutei]
+[endif]
+[s]
+
+*BaTK_Joseki_B_5
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=B]
+[k_button       k=B target=*Kakutei]
+[s]
+
+;=======================================
+*BaTK_Joseki_A
+;=======================================
+[cm]
+[iscript]
+f.joseki = "BaTK_Joseki_A"
+[endscript]
+
+[k_button  k=A target=*BaTK_Joseki_A_1]
+[yajirushi k=A]
+[s]
+
+*BaTK_Joseki_A_1
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('A', f.answer)"]
+    [yajirushi_move k=C]
+    [k_button       k=C target=*BaTK_Joseki_A_2]
+[else]
+    [yajirushi_move k=D]
+    [k_button       k=D target=*BaTK_Joseki_A_3]
+[endif]
+[s]
+
+*BaTK_Joseki_A_2
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=B]
+[k_button       k=B target=*Kakutei]
+[s]
+
+*BaTK_Joseki_A_3
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('D', f.answer)"]
+    [yajirushi_move k=F]
+    [k_button       k=F target=*BaTK_Joseki_A_4]
+[else]
+    [yajirushi_move k=G]
+    [k_button       k=G target=*BaTK_Joseki_A_5]
+[endif]
+[s]
+
+*BaTK_Joseki_A_4
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=E]
+[k_button       k=E target=*Kakutei]
+[s]
+
+*BaTK_Joseki_A_5
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=H]
+[k_button       k=H target=*BaTK_Joseki_A_6]
+[s]
+
+*BaTK_Joseki_A_6
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=I]
+[k_button       k=I target=*Kakutei]
 [s]
 
 ;=======================================
@@ -750,11 +879,45 @@ f.y = a.y - 70;
 [return]
 
 ;=======================================
+*Define_Toba_Tsujo_Komori
+;=======================================
+[iscript]
+f.radius = 183;
+f.komoriLabel = "H";
+f.suimyaku = "toba_komorikeiro.png";
+f.bg = "../fgimage/toba_kanketsu.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 423, 542, ["B", "R"]),
+    new Kanketsusen("B", 370, 500, ["A", "C", "M"]),
+    new Kanketsusen("C", 292, 563, ["B", "G"]),
+    new Kanketsusen("D", 286, 694, ["E", "T"]),
+    new Kanketsusen("E", 238, 677, ["D", "F", "G", "H"]),
+    new Kanketsusen("F", 100, 743, ["E"]),
+    new Kanketsusen("G", 201, 564, ["C", "E", "H", "J"]),
+    new Kanketsusen("H",  38, 586, ["E", "G", "I"]),
+    new Kanketsusen("I",  88, 470, ["H", "J"]),
+    new Kanketsusen("J", 266, 439, ["G", "I", "K", "M"]),
+    new Kanketsusen("K", 274, 291, ["J", "L", "N"]),
+    new Kanketsusen("L", 340, 227, ["K", "N"]),
+    new Kanketsusen("M", 381, 408, ["B", "J", "N", "O"]),
+    new Kanketsusen("N", 438, 338, ["K", "L", "M", "O"]),
+    new Kanketsusen("O", 498, 432, ["M", "N", "P", "Q", "R"]),
+    new Kanketsusen("P", 627, 418, ["O"]),
+    new Kanketsusen("Q", 587, 479, ["O", "R"]),
+    new Kanketsusen("R", 479, 538, ["O", "Q", "A", "S", "T"]),
+    new Kanketsusen("S", 573, 559, ["R", "T"]),
+    new Kanketsusen("T", 495, 675, ["R", "S", "D"]),
+];
+[endscript]
+[return]
+
+;=======================================
 *Define_Damu_Tsujo_Komori
 ;=======================================
 [iscript]
 f.radius = 207;
 f.komoriLabel = "C";
+f.suimyaku = "damu_komorikeiro.png";
 f.bg = "../fgimage/damu_kanketsu.png";
 f.kanketsusen = [
     new Kanketsusen("A", 279, 425, ["B", "D", "F", "I", "K"]),
@@ -854,6 +1017,8 @@ f.kanketsusen = [
 ;=======================================
 [iscript]
 f.josekidata = [
+    ["各方面の先端から開けるやつ", "f.random = false; f.joseki='BaTK_Joseki_A'"],
+    ["Hから開ける最少手数のやつ", "f.random = false; f.joseki='BaTK_Joseki_B'"]
 ];
 f.suimyaku = "toba_suimyaku.png";
 f.bg = "../fgimage/toba_kanketsu.png";
