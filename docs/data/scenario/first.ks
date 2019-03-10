@@ -212,6 +212,41 @@ $(".kotae").fadeToggle(300);
 [s]
 
 ;=======================================
+*BaMK_Joseki_A
+;=======================================
+[cm]
+[iscript]
+f.joseki = "BaMK_Joseki_A"
+[endscript]
+
+[k_button  k=C target=*BaMK_Joseki_A_1]
+[yajirushi k=C]
+[s]
+
+*BaMK_Joseki_A_1
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('C', f.answer)"]
+    [yajirushi_move k=B]
+    [k_button       k=B target=*BaMK_Joseki_A_2]
+[else]
+    [yajirushi_move k=H]
+    [k_button       k=H target=*BaMK_Joseki_A_3]
+[endif]
+[s]
+
+*BaMK_Joseki_A_2
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=E]
+[k_button       k=E target=*Kakutei]
+[s]
+
+*BaMK_Joseki_A_3
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=I]
+[k_button       k=I target=*Kakutei]
+[s]
+
+;=======================================
 *BaTK_Joseki_B
 ;=======================================
 [cm]
@@ -1041,6 +1076,7 @@ f.kanketsusen = [
 ;=======================================
 [iscript]
 f.josekidata = [
+    ["Cから開けるやつ", "f.random = false; f.joseki='BaMK_Joseki_A'"],
 ];
 f.suimyaku = "toba_suimyaku_m.png";
 f.bg = "../fgimage/toba_kanketsu.png";
