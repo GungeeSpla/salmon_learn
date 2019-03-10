@@ -20,8 +20,15 @@
 [glink text=ポラリス通常水位     x=60  y=420 width=300 target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮                 x=440 y=420           target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
 [ptext layer=0 text=ブラコ、トバ、トキの定石は整備中 size=20 x=150 y=500]
-;[ptext layer=0 text=-コウモリMAP- size=40 x=180 y=550]
-;[glink text=シェケナダム通常水位 x=60  y=620 width=440 target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
+
+[iscript]
+var s = location.search;
+f.bool = (s.indexOf("test") > -1);
+[endscript]
+[if exp=f.bool]
+[ptext layer=0 text=-コウモリMAP- size=40 x=180 y=550]
+[glink text=シェケナダム通常水位 x=60  y=620 width=440 target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
+[endif]
 [s]
 
 ;=======================================
