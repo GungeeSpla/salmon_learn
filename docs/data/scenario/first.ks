@@ -40,6 +40,7 @@ f.bool = (s.indexOf("test") > -1);
 [ptext layer=0 text=シャケト場   size=30 x=60 y=655]
 [glink text=通常 x=270 y=580 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
 [glink text=通常 x=270 y=650 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toba_Tsujo_Komori'"]
+[glink text=干潮 x=390 y=650 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toba_Kancho_Komori'"]
 ;[endif]
 [s]
 
@@ -56,7 +57,7 @@ f.bool = (s.indexOf("test") > -1);
 ;[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
 [ptext layer=0 color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。赤の矢印はコウモリがいったん攻撃態勢に入り雨弾を2回射出してからその方向へ飛ぶことを、青の矢印はコウモリが攻撃態勢に入らず速やかに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
 [foreach name=f.item array=f.kanketsusen]
-[image layer=0 x=&f.item.x-f.radius y=&f.item.y-f.radius width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
+[image layer=0 x=&f.item.x-f.radius-2 y=&f.item.y-f.radius-2 width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
 [image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2]
 [ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 color=0x22DDCC bold=bold align=center width=50]
 [nextfor]
@@ -64,8 +65,8 @@ f.bool = (s.indexOf("test") > -1);
 f.kPos = getKomoriPos(f.komoriLabel);
 [endscript]
 [image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
-[image layer=1 zindex=200 x=250 y=400 storage=ika.png width=40 name=ika]
-[image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=50 name=komori]
+[image layer=1 zindex=200 x=250 y=400 storage=ika.png width=&f.ikaDx*2 name=ika]
+[image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=&f.komoriDx*2 name=komori]
 [button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
 [button fix=true graphic=keiro.png   x=40  y=800 target=*Suimyaku     name=fixbutton]
 [button fix=true graphic=modoru2.png x=440 y=800 target=*KomoriTitle  name=fixbutton]
@@ -911,6 +912,31 @@ f.y = a.y - 70;
 
 [plugin name=for]
 [plugin name=glink_show]
+[return]
+
+;=======================================
+*Define_Toba_Kancho_Komori
+;=======================================
+[iscript]
+f.radius = 237;
+f.komoriLabel = "D";
+f.suimyaku = "toba_komorikeiro_k.png";
+f.bg = "../fgimage/toba_komori_k.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 273, 479, ["B", "D", "H", "I", "J"]),
+    new Kanketsusen("B", 186, 472, ["A", "J", "C", "D"]),
+    new Kanketsusen("C", 101, 276, ["B", "D"]),
+    new Kanketsusen("D", 262, 328, ["C", "E", "F", "H", "A", "B"]),
+    new Kanketsusen("E", 258, 193, ["D"]),
+    new Kanketsusen("F", 508, 255, ["D", "G"]),
+    new Kanketsusen("G", 539, 380, ["F", "H"]),
+    new Kanketsusen("H", 433, 479, ["G", "L", "I", "A", "D"]),
+    new Kanketsusen("I", 345, 606, ["H", "L", "A", "K"]),
+    new Kanketsusen("J", 217, 592, ["A", "K", "B"]),
+    new Kanketsusen("K", 266, 623, ["I", "J"]),
+    new Kanketsusen("L", 542, 602, ["H", "I"])
+];
+[endscript]
 [return]
 
 ;=======================================
