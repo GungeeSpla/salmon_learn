@@ -28,6 +28,12 @@
 [glink text=通常 x=270 y=380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮 x=390 y=380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
 
+[ptext layer=0 text=THANKS size=30 x=60 y=760 bold=bold]
+[ptext layer=0 text=コウモリマップ:&nbsp;ザラメ(@zarame2431) size=20 x=60 y=805]
+[ptext layer=0 text=画像:&nbsp;https://wikiwiki.jp/splatoon2mix/ size=20 x=60 y=835]
+[ptext layer=0 text=画像:&nbsp;https://splatoonwiki.org/wiki/ size=20 x=60 y=865]
+[ptext layer=0 text=And&nbsp;You! size=20 x=60 y=895]
+
 [iscript]
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
