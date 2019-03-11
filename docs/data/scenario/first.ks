@@ -62,22 +62,27 @@ f.bool = (s.indexOf("test") > -1);
 [ptext layer=0 color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。赤の矢印はコウモリがいったん攻撃態勢に入り雨弾を2回射出してからその方向へ飛ぶことを、青の矢印はコウモリが攻撃態勢に入らず速やかに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
 [foreach name=f.item array=f.kanketsusen]
 [image layer=0 x=&f.item.x-f.radius-2 y=&f.item.y-f.radius-2 width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
-[image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2]
-[ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 color=0x22DDCC bold=bold align=center width=50]
+[image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2 name=park]
+[ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 name=park color=0x22DDCC bold=bold align=center width=50]
 [nextfor]
 [iscript]
+f.bakudanWidth = f.radius*2*0.58
 f.kPos = getKomoriPos(f.komoriLabel);
 [endscript]
 [image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
 [image layer=1 zindex=200 x=250 y=400 storage=ika.png width=&f.ikaDx*2 name=ika]
+[image layer=1 zindex=150 x=0 y=0 storage=bakudan_circle.png width=&f.bakudanWidth name=bakudan]
 [image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=&f.komoriDx*2 name=komori]
 [button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
 [button fix=true graphic=keiro.png   x=40  y=800 target=*Suimyaku     name=fixbutton]
 [button fix=true graphic=modoru2.png x=440 y=800 target=*KomoriTitle  name=fixbutton]
+[button fix=true graphic=bakudan.png x=110 y=880 target=*ToggleBakudan name=fixbutton]
+[button fix=true graphic=komori.png  x=360 y=880 target=*ToggleKomori  name=fixbutton]
 [mask_off time=300]
 ;[call target=Set_Kotae]
 ;[jump target=Start]
 [iscript]
+$(".bakudan").appendTo("#tyrano_base").draggable();
 var timer;
 $(".ika").appendTo("#tyrano_base").draggable({
     drag: function (e) {
@@ -145,6 +150,7 @@ $(".komori").animate({
 [iscript]
 $(".ika").remove();
 $(".komori").remove();
+$(".bakudan").remove();
 ctx.clearRect(0, 0, 640, 960);
 [endscript]
 [jump target=*Retitle]
@@ -193,6 +199,23 @@ f.random = true;
 ;=======================================
 [iscript]
 $(".suimyaku").fadeToggle(300);
+[endscript]
+[return]
+
+;=======================================
+*ToggleBakudan
+;=======================================
+[iscript]
+$(".bakudan").fadeToggle(300);
+[endscript]
+[return]
+
+;=======================================
+*ToggleKomori
+;=======================================
+[iscript]
+var c = ".park,.canvas,.komori,.komori_circle." + f.komoriLabel;
+$(c).fadeToggle(300);
 [endscript]
 [return]
 
@@ -948,8 +971,8 @@ $(".fixbutton").show();
 ;=======================================
 
 [iscript]
-f.ikaDx = 30;
-f.ikaDy = 30;
+f.ikaDx = 20;
+f.ikaDy = 20;
 f.komoriDx = 30;
 f.komoriDy = 35;
 [endscript]
@@ -985,7 +1008,7 @@ f.komoriDy = 35;
     }
   };
 })(CanvasRenderingContext2D);
-var $canvas = $("<canvas width='640' height='960' style='position: absolute; z-index: 10;'></canvas>");
+var $canvas = $("<canvas width='640' height='960' style='position: absolute; z-index: 10;' class='canvas'></canvas>");
 var $root = $("#root_layer_game");
 $root.append($canvas);
 window.canvas = $canvas[0];
