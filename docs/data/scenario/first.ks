@@ -66,7 +66,7 @@ f.bool = (s.indexOf("test") > -1);
 [ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 name=park color=0x22DDCC bold=bold align=center width=50]
 [nextfor]
 [iscript]
-f.bakudanWidth = f.radius*2*0.58
+f.bakudanWidth = f.radius*2*0.74
 f.kPos = getKomoriPos(f.komoriLabel);
 [endscript]
 [image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
@@ -1205,6 +1205,7 @@ f.y = a.y - 70;
 ;=======================================
 [iscript]
 f.radius = 237;
+f.bakudanWidth = f.radius*2*0.58
 f.komoriLabel = "D";
 f.suimyaku = "toba_komorikeiro_k.png";
 f.bg = "../fgimage/toba_komori_k.png";
@@ -1230,6 +1231,7 @@ f.kanketsusen = [
 ;=======================================
 [iscript]
 f.radius = 183;
+f.bakudanWidth = f.radius*2*0.58
 f.komoriLabel = "H";
 f.suimyaku = "toba_komorikeiro.png";
 f.bg = "../fgimage/toba_kanketsu.png";
@@ -1262,7 +1264,9 @@ f.kanketsusen = [
 *Define_Damu_Tsujo_Komori
 ;=======================================
 [iscript]
-f.radius = 207;
+f.radius = 233;
+//f.bakudanWidth = f.radius*2*0.68
+//f.bakudanWidth = f.radius*2*0.86
 f.komoriLabel = "C";
 f.suimyaku = "damu_komorikeiro.png";
 f.bg = "../fgimage/damu_kanketsu.png";
