@@ -10,7 +10,7 @@
 [bg time=0 storage=black.png]
 
 [image layer=0 x=50 y=20 storage=goldie.png width=60]
-[image layer=0 x=40 y=480 storage=komori.png width=90]
+[image layer=0 x=40 y=460 storage=komori.png width=90]
 [ptext layer=0 text=間欠泉 size=40 x=120 y=25 bold=bold]
 [ptext layer=0 text=シェケナダム size=30 x=60 y=105]
 [ptext layer=0 text=ドン･ブラコ  size=30 x=60 y=175]
@@ -28,23 +28,26 @@
 [glink text=通常 x=270 y=380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮 x=390 y=380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
 
-[ptext layer=0 text=THANKS size=30 x=60 y=760 bold=bold]
-[ptext layer=0 text=コウモリマップ:&nbsp;ザラメ(@zarame2431) size=20 x=60 y=805]
-[ptext layer=0 text=画像:&nbsp;https://wikiwiki.jp/splatoon2mix/ size=20 x=60 y=835]
-[ptext layer=0 text=画像:&nbsp;https://splatoonwiki.org/wiki/ size=20 x=60 y=865]
-[ptext layer=0 text=And&nbsp;You! size=20 x=60 y=895]
+[ptext layer=0 text=THANKS bold=bold                             size=30 x=60 y=780]
+[ptext layer=0 text=コウモリマップ:&nbsp;ザラメ(@zarame2431)     size=20 x=60 y=825]
+[ptext layer=0 text=画像:&nbsp;https://wikiwiki.jp/splatoon2mix/ size=20 x=60 y=855]
+[ptext layer=0 text=画像:&nbsp;https://splatoonwiki.org/wiki/    size=20 x=60 y=885]
+[ptext layer=0 text=And&nbsp;You!                                size=20 x=60 y=915]
 
 [iscript]
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
 ;[if exp=f.bool]
-[ptext layer=0 text=コウモリマップ size=40 x=120 y=500 bold=bold]
-[ptext layer=0 text=シェケナダム size=30 x=60 y=585]
-[ptext layer=0 text=シャケト場   size=30 x=60 y=655]
-[glink text=通常 x=270 y=580 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
-[glink text=通常 x=270 y=650 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toba_Tsujo_Komori'"]
-[glink text=干潮 x=390 y=650 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toba_Kancho_Komori'"]
+[ptext layer=0 text=コウモリマップ size=40 x=120 y=480 bold=bold]
+[ptext layer=0 text=シェケナダム size=30 x=60 y=565]
+[ptext layer=0 text=ドン･ブラコ  size=30 x=60 y=635]
+[ptext layer=0 text=シャケト場   size=30 x=60 y=705]
+[glink text=通常 x=270 y=560 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
+[glink text=通常 x=270 y=630 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Burako_Tsujo_Komori'"]
+[glink text=干潮 x=390 y=630 size=25 color=kancho target=*InitKomori exp="f.target='Define_Burako_Kancho_Komori'"]
+[glink text=通常 x=270 y=700 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toba_Tsujo_Komori'"]
+[glink text=干潮 x=390 y=700 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toba_Kancho_Komori'"]
 ;[endif]
 [s]
 
@@ -625,8 +628,8 @@ f.joseki = "PoTK_Joseki_B"
 *PoTK_Joseki_B_1
 [k_check][jump cond=f.atari target=*Atari][cm]
 [if exp="isBrother('F', f.answer)"]
-    [yajirushi_move k=C]
-    [k_button       k=C target=*PoTK_Joseki_B_3]
+    [yajirushi_move k=G]
+    [k_button       k=G target=*PoTK_Joseki_B_3]
 [else]
     [yajirushi_move k=B]
     [k_button       k=B target=*PoTK_Joseki_B_2]
@@ -644,20 +647,20 @@ f.joseki = "PoTK_Joseki_B"
 
 *PoTK_Joseki_B_3
 [k_check][jump cond=f.atari target=*Atari][cm]
-[if exp="isBrother('C', f.answer)"]
-    [yajirushi_move k=D]
-    [k_button       k=D target=*PoTK_Joseki_B_4]
+[if exp="isBrother('G', f.answer)"]
+    [yajirushi_move k=E]
+    [k_button       k=E target=*Kakutei]
 [else]
-    [yajirushi_move k=G]
-    [k_button       k=G target=*Kakutei]
+    [yajirushi_move k=C]
+    [k_button       k=C target=*PoTK_Joseki_B_4]
 [endif]
 [s]
 
 *PoTK_Joseki_B_4
 [k_check][jump cond=f.atari target=*Atari][cm]
 [if exp="isBrother('C', f.answer)"]
-    [yajirushi_move k=E]
-    [k_button       k=E target=*Kakutei]
+    [yajirushi_move k=D]
+    [k_button       k=D target=*Kakutei]
 [else]
 [endif]
 [s]
@@ -1256,6 +1259,70 @@ f.kanketsusen = [
     new Kanketsusen("R", 479, 538, ["O", "Q", "A", "S", "T"]),
     new Kanketsusen("S", 573, 559, ["R", "T"]),
     new Kanketsusen("T", 495, 675, ["R", "S", "D"]),
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Burako_Kancho_Komori
+;=======================================
+[iscript]
+f.radius = 190;
+//f.bakudanWidth = f.radius*2*0.68
+//f.bakudanWidth = f.radius*2*0.86
+f.komoriLabel = "C";
+f.suimyaku = "burako_komorikeiro_k.png";
+f.bg = "../fgimage/burako_komori_k.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 177, 413, ["F", "I", "L", "B"]),
+    new Kanketsusen("B",  70, 280, ["A", "C"]),
+    new Kanketsusen("C",  98, 192, ["B", "D"]),
+    new Kanketsusen("D", 193, 182, ["C", "E"]),
+    new Kanketsusen("E", 323, 205, ["D", "F"]),
+    new Kanketsusen("F", 356, 352, ["E", "G", "A"]),
+    new Kanketsusen("G", 420, 418, ["H", "I", "K", "F"]),
+    new Kanketsusen("H", 600, 386, ["G"]),
+    new Kanketsusen("I", 456, 523, ["G"]),
+    new Kanketsusen("J", 309, 509, ["K", "A"]),
+    new Kanketsusen("K", 405, 509, ["G", "J"]),
+    new Kanketsusen("L", 199, 509, ["A"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Burako_Tsujo_Komori
+;=======================================
+[iscript]
+f.radius = 205;
+//f.bakudanWidth = f.radius*2*0.68
+//f.bakudanWidth = f.radius*2*0.86
+f.komoriLabel = "C";
+f.suimyaku = "burako_komorikeiro.png";
+f.bg = "../fgimage/burako_komori.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 338, 718, ["B", "C"]),
+    new Kanketsusen("B", 428, 584, ["A", "C", "D", "T"]),
+    new Kanketsusen("C", 326, 497, ["A", "B", "D", "E", "J"]),
+    new Kanketsusen("D", 418, 458, ["B", "C", "E", "F"]),
+    new Kanketsusen("E", 351, 389, ["D", "C", "N", "G"]),
+    new Kanketsusen("F", 442, 364, ["S", "D", "G", "H"]),
+    new Kanketsusen("G", 393, 319, ["H", "F", "E", "N"]),
+    new Kanketsusen("H", 511, 255, ["R", "F", "G", "Q"]),
+    new Kanketsusen("I", 149, 635, ["J"]),
+    new Kanketsusen("J", 232, 566, ["C", "I", "K", "L"]),
+    new Kanketsusen("K", 101, 536, ["J"]),
+    new Kanketsusen("L", 232, 360, ["N", "J", "M"]),
+    new Kanketsusen("M", 108, 318, ["L"]),
+    new Kanketsusen("N", 314, 283, ["G", "E", "L", "O", "P"]),
+    new Kanketsusen("O", 276, 203, ["P", "N"]),
+    new Kanketsusen("P", 358, 166, ["Q", "N", "O"]),
+    new Kanketsusen("Q", 479, 163, ["R", "H", "P"]),
+    new Kanketsusen("R", 551, 199, ["S", "H", "Q"]),
+    new Kanketsusen("S", 557, 367, ["R", "T", "F"]),
+    new Kanketsusen("T", 510, 518, ["S", "U", "B"]),
+    new Kanketsusen("U", 589, 624, ["T", "V"]),
+    new Kanketsusen("V", 564, 717, ["U"])
 ];
 [endscript]
 [return]
