@@ -73,7 +73,7 @@ f.bool = (s.indexOf("test") > -1);
 [ptext layer=0 text=間欠泉         bold=bold                     size=30 x=60 y=350]
 [ptext layer=0 text=https://splatoon-yoru.com/                   size=20 x=60 y=400]
 [ptext layer=0 text=いh7(@ultmis)                                size=20 x=60 y=430]
-[ptext layer=0 text=えむいー(@tkglink)                           size=20 x=60 y=460]
+[ptext layer=0 text=えむいー(@tkgling)                           size=20 x=60 y=460]
 
 [ptext layer=0 text=画像ソース               bold=bold           size=30 x=60 y=520]
 [ptext layer=0 text=https://wikiwiki.jp/splatoon2mix/            size=20 x=60 y=570]
