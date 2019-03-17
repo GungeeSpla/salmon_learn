@@ -1,12 +1,14 @@
+[call target=Define]
+
 ;=======================================
 *Title
 ;=======================================
-[call target=Define]
 
 [layopt layer=0 visible=true]
 [layopt layer=1 visible=true]
 [layopt layer=message0 visible=false]
 
+[mask time=300]
 [bg time=0 storage=black.png]
 
 [image layer=0 x=50 y=20 storage=goldie.png width=60]
@@ -28,13 +30,10 @@
 [glink text=通常 x=270 y=380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮 x=390 y=380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
 
-[ptext layer=0 text=THANKS bold=bold                             size=30 x=60 y=780]
-[ptext layer=0 text=コウモリマップ:&nbsp;ザラメ(@zarame2431)     size=20 x=60 y=825]
-[ptext layer=0 text=画像:&nbsp;https://wikiwiki.jp/splatoon2mix/ size=20 x=60 y=855]
-[ptext layer=0 text=画像:&nbsp;https://splatoonwiki.org/wiki/    size=20 x=60 y=885]
-[ptext layer=0 text=And&nbsp;You!                                size=20 x=60 y=915]
 
 [iscript]
+window.xxx = 100;
+window.yyy = 100;
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
@@ -43,12 +42,50 @@ f.bool = (s.indexOf("test") > -1);
 [ptext layer=0 text=シェケナダム size=30 x=60 y=565]
 [ptext layer=0 text=ドン･ブラコ  size=30 x=60 y=635]
 [ptext layer=0 text=シャケト場   size=30 x=60 y=705]
+[ptext layer=0 text=トキシラズ   size=30 x=60 y=775]
+[ptext layer=0 text=ポラリス     size=30 x=60 y=845]
 [glink text=通常 x=270 y=560 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
+[glink text=干潮 x=390 y=560 size=25 color=kancho target=*InitKomori exp="f.target='Define_Damu_Kancho_Komori'"]
 [glink text=通常 x=270 y=630 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Burako_Tsujo_Komori'"]
 [glink text=干潮 x=390 y=630 size=25 color=kancho target=*InitKomori exp="f.target='Define_Burako_Kancho_Komori'"]
 [glink text=通常 x=270 y=700 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toba_Tsujo_Komori'"]
 [glink text=干潮 x=390 y=700 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toba_Kancho_Komori'"]
+[glink text=通常 x=270 y=770 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toki_Tsujo_Komori'"]
+[glink text=干潮 x=390 y=770 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toki_Kancho_Komori'"]
+[glink text=通常 x=270 y=840 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Pora_Tsujo_Komori'"]
+[glink text=干潮 x=390 y=840 size=25 color=kancho target=*InitKomori exp="f.target='Define_Pora_Kancho_Komori'"]
+
+[glink text=THANKS x=500 y=30 size=20 color=blue target=Thanks]
+[mask_off time=300]
 ;[endif]
+[s]
+
+*Thanks
+
+[cm]
+[mask time=300]
+[freelayer layer=0]
+[ptext layer=0 text=THANKS bold=bold                             size=60 x=60 y=100]
+[ptext layer=0 text=コウモリマップ bold=bold                     size=30 x=60 y=210]
+[ptext layer=0 text=ザラメ(@zarame2431)                          size=20 x=60 y=260]
+[ptext layer=0 text=カトレア(@ikatorea)                          size=20 x=60 y=290]
+
+[ptext layer=0 text=間欠泉         bold=bold                     size=30 x=60 y=350]
+[ptext layer=0 text=https://splatoon-yoru.com/                   size=20 x=60 y=400]
+[ptext layer=0 text=いh7(@ultmis)                                size=20 x=60 y=430]
+[ptext layer=0 text=えむいー(@tkglink)                           size=20 x=60 y=460]
+
+[ptext layer=0 text=画像ソース               bold=bold           size=30 x=60 y=520]
+[ptext layer=0 text=https://wikiwiki.jp/splatoon2mix/            size=20 x=60 y=570]
+[ptext layer=0 text=https://splatoonwiki.org/wiki/               size=20 x=60 y=600]
+[ptext layer=0 text=And&nbsp;You!                                size=20 x=60 y=670]
+
+[glink text=もどる x=240 y=730 size=35 color=blue target=Retitle]
+[glink text=作者のWish&nbsp;List x=240 y=873 size=18.6 color=black name=link target=Link]
+[iscript]
+$(".link").off("click").wrap('<a href="http://amzn.asia/1OJG2pV"></a>');
+[endscript]
+[mask_off time=300]
 [s]
 
 ;=======================================
@@ -62,11 +99,11 @@ f.bool = (s.indexOf("test") > -1);
 [call target=&f.target]
 [bg storage=&f.bg x=0 y=0 time=0]
 ;[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
-[ptext layer=0 color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。赤の矢印はコウモリがいったん攻撃態勢に入り雨弾を2回射出してからその方向へ飛ぶことを、青の矢印はコウモリが攻撃態勢に入らず速やかに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
+[ptext layer=0 color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。黒の矢印はコウモリがいったん攻撃態勢に入り雨弾を2回射出してからその方向へ飛ぶことを、青の矢印はコウモリが攻撃態勢に入らず速やかに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
 [foreach name=f.item array=f.kanketsusen]
 [image layer=0 x=&f.item.x-f.radius-2 y=&f.item.y-f.radius-2 width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
 [image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2 name=park]
-[ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 name=park color=0x22DDCC bold=bold align=center width=50]
+[ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 name=park color=rgb(255,173,255) bold=bold align=center width=50]
 [nextfor]
 [iscript]
 f.bakudanWidth = f.radius*2*0.74
@@ -124,7 +161,7 @@ window.updateKomoriArrow = function () {
     var dis = getDisIkaKomori(f.komoriLabel);
     var next = getKomoriNextLabel(f.komoriLabel);
     ctx.clearRect(0, 0, 640, 960);
-    ctx.fillStyle = (dis < f.radius) ? "Red" : "Blue";
+    ctx.fillStyle = (dis < f.radius) ? "Black" : "Blue";
     ctx.fillArrowKomori(f.komoriLabel, next);
 };
 updateKomoriArrow();
@@ -965,6 +1002,9 @@ $(".fixbutton").show();
 [bg time=0 storage=black.png]
 [freelayer layer=0]
 [freelayer layer=1]
+[iscript]
+$("canvas")[0].getContext("2d").clearRect(0, 0, 640, 960);
+[endscript]
 [mask_off time=300]
 [jump target=Title]
 [s]
@@ -1204,11 +1244,123 @@ f.y = a.y - 70;
 [return]
 
 ;=======================================
+*Define_Pora_Kancho_Komori
+;=======================================
+[iscript]
+f.radius = 189;
+f.komoriLabel = "H";
+f.suimyaku = "pora_komorikeiro_k.png";
+f.bg = "../fgimage/pora_komori_k.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 276, 422, ["B", "C", "I", "K"]),
+    new Kanketsusen("B", 412, 420, ["A", "G", "C"]),
+    new Kanketsusen("C", 339, 533, ["A", "B", "L", "D", "E"]),
+    new Kanketsusen("D", 448, 591, ["C", "E"]),
+    new Kanketsusen("E", 580, 521, ["C", "D", "F"]),
+    new Kanketsusen("F", 577, 411, ["E", "G"]),
+    new Kanketsusen("G", 524, 228, ["F", "H", "B"]),
+    new Kanketsusen("H", 438, 201, ["G", "I"]),
+    new Kanketsusen("I", 251, 223, ["H", "A", "J"]),
+    new Kanketsusen("J", 124, 312, ["I", "K"]),
+    new Kanketsusen("K",  95, 470, ["J", "L", "A"]),
+    new Kanketsusen("L", 222, 609, ["K", "C"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Pora_Tsujo_Komori
+;=======================================
+[iscript]
+f.radius = 198;
+f.komoriLabel = "T";
+f.suimyaku = "pora_komorikeiro.png";
+f.bg = "../fgimage/pora_komori.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 272, 471, ["O", "H", "B", "C"]),
+    new Kanketsusen("B", 157, 514, ["A", "C", "G", "K"]),
+    new Kanketsusen("C", 220, 408, ["A", "B", "D", "Q"]),
+    new Kanketsusen("D", 243, 323, ["C", "E", "T"]),
+    new Kanketsusen("E", 186, 268, ["D", "F"]),
+    new Kanketsusen("F",  52, 260, ["E", "G"]),
+    new Kanketsusen("G",  52, 410, ["B", "F"]),
+    new Kanketsusen("H", 236, 557, ["A", "I"]),
+    new Kanketsusen("I", 285, 596, ["H", "O", "L", "J"]),
+    new Kanketsusen("J", 218, 689, ["K", "I"]),
+    new Kanketsusen("K",  89, 540, ["B", "J"]),
+    new Kanketsusen("L", 444, 594, ["O", "M", "I"]),
+    new Kanketsusen("M", 593, 603, ["N", "L"]),
+    new Kanketsusen("N", 593, 462, ["P", "M"]),
+    new Kanketsusen("O", 452, 538, ["P", "L", "I", "A"]),
+    new Kanketsusen("P", 447, 420, ["O", "Q", "R", "N"]),
+    new Kanketsusen("Q", 397, 378, ["C", "P"]),
+    new Kanketsusen("R", 522, 320, ["P", "S"]),
+    new Kanketsusen("S", 494, 198, ["R", "T"]),
+    new Kanketsusen("T", 370, 195, ["D", "S"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Toki_Kancho_Komori
+;=======================================
+[iscript]
+f.radius = 250;
+f.komoriLabel = "G";
+f.suimyaku = "toki_komorikeiro_k.png";
+f.bg = "../fgimage/toki_komori_k.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 316, 554, ["B", "N"]),
+    new Kanketsusen("B", 449, 503, ["A", "C", "D", "E"]),
+    new Kanketsusen("C", 464, 677, ["O", "B"]),
+    new Kanketsusen("D", 466, 364, ["B", "E", "F"]),
+    new Kanketsusen("E", 580, 420, ["B", "D", "F"]),
+    new Kanketsusen("F", 524, 259, ["D", "E", "G"]),
+    new Kanketsusen("G", 428, 220, ["F", "H"]),
+    new Kanketsusen("H", 232, 218, ["G", "I"]),
+    new Kanketsusen("I", 146, 259, ["H", "J", "K"]),
+    new Kanketsusen("J",  52, 298, ["I", "K"]),
+    new Kanketsusen("K", 116, 377, ["I", "J", "N", "L"]),
+    new Kanketsusen("L",  44, 508, ["M", "K"]),
+    new Kanketsusen("M", 164, 522, ["L", "N", "O"]),
+    new Kanketsusen("N", 214, 435, ["K", "M", "A"]),
+    new Kanketsusen("O", 251, 677, ["M", "C"])
+];
+[endscript]
+[return]
+
+;=======================================
+*Define_Toki_Tsujo_Komori
+;=======================================
+[iscript]
+f.radius = 250;
+f.komoriLabel = "J";
+f.suimyaku = "toki_komorikeiro.png";
+f.bg = "../fgimage/toki_komori.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 359, 518, ["B", "M"]),
+    new Kanketsusen("B", 234, 602, ["A", "C", "D"]),
+    new Kanketsusen("C", 203, 725, ["B"]),
+    new Kanketsusen("D", 209, 479, ["B", "E", "G"]),
+    new Kanketsusen("E", 136, 427, ["D", "F"]),
+    new Kanketsusen("F", 184, 254, ["E", "G"]),
+    new Kanketsusen("G", 278, 279, ["F", "D", "H"]),
+    new Kanketsusen("H", 351, 240, ["I", "G"]),
+    new Kanketsusen("I", 423, 257, ["H", "J"]),
+    new Kanketsusen("J", 490, 312, ["I", "K", "M"]),
+    new Kanketsusen("K", 555, 371, ["J", "L"]),
+    new Kanketsusen("L", 560, 469, ["K", "M"]),
+    new Kanketsusen("M", 457, 533, ["J", "L", "N", "A"]),
+    new Kanketsusen("N", 508, 673, ["M"])
+];
+[endscript]
+[return]
+
+;=======================================
 *Define_Toba_Kancho_Komori
 ;=======================================
 [iscript]
 f.radius = 237;
-f.bakudanWidth = f.radius*2*0.58
 f.komoriLabel = "D";
 f.suimyaku = "toba_komorikeiro_k.png";
 f.bg = "../fgimage/toba_komori_k.png";
@@ -1234,7 +1386,6 @@ f.kanketsusen = [
 ;=======================================
 [iscript]
 f.radius = 183;
-f.bakudanWidth = f.radius*2*0.58
 f.komoriLabel = "H";
 f.suimyaku = "toba_komorikeiro.png";
 f.bg = "../fgimage/toba_kanketsu.png";
@@ -1268,8 +1419,6 @@ f.kanketsusen = [
 ;=======================================
 [iscript]
 f.radius = 190;
-//f.bakudanWidth = f.radius*2*0.68
-//f.bakudanWidth = f.radius*2*0.86
 f.komoriLabel = "C";
 f.suimyaku = "burako_komorikeiro_k.png";
 f.bg = "../fgimage/burako_komori_k.png";
@@ -1295,8 +1444,6 @@ f.kanketsusen = [
 ;=======================================
 [iscript]
 f.radius = 205;
-//f.bakudanWidth = f.radius*2*0.68
-//f.bakudanWidth = f.radius*2*0.86
 f.komoriLabel = "C";
 f.suimyaku = "burako_komorikeiro.png";
 f.bg = "../fgimage/burako_komori.png";
@@ -1328,12 +1475,32 @@ f.kanketsusen = [
 [return]
 
 ;=======================================
+*Define_Damu_Kancho_Komori
+;=======================================
+[iscript]
+f.radius = 229;
+f.komoriLabel = "G";
+f.suimyaku = "damu_komorikeiro_k.png";
+f.bg = "../fgimage/damu_komori_k.png";
+f.kanketsusen = [
+    new Kanketsusen("A", 317, 356, ["B", "C", "D", "E", "F", "G"]),
+    new Kanketsusen("B", 527, 274, ["C", "A"]),
+    new Kanketsusen("C", 490, 443, ["A", "B", "D"]),
+    new Kanketsusen("D", 309, 568, ["A", "C", "E", "H", "I"]),
+    new Kanketsusen("E", 156, 472, ["A", "D", "F", "G"]),
+    new Kanketsusen("F",  84, 297, ["A", "E"]),
+    new Kanketsusen("G", 264, 237, ["A", "E"]),
+    new Kanketsusen("H", 237, 655, ["D", "I"]),
+    new Kanketsusen("I", 427, 716, ["D", "H"])
+];
+[endscript]
+[return]
+
+;=======================================
 *Define_Damu_Tsujo_Komori
 ;=======================================
 [iscript]
 f.radius = 233;
-//f.bakudanWidth = f.radius*2*0.68
-//f.bakudanWidth = f.radius*2*0.86
 f.komoriLabel = "C";
 f.suimyaku = "damu_komorikeiro.png";
 f.bg = "../fgimage/damu_kanketsu.png";
