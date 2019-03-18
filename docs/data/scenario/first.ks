@@ -1277,8 +1277,8 @@ f.komoriLabel = "T";
 f.suimyaku = "pora_komorikeiro.png";
 f.bg = "../fgimage/pora_komori.png";
 f.kanketsusen = [
-    new Kanketsusen("A", 272, 471, ["O", "H", "B", "C"]),
-    new Kanketsusen("B", 157, 514, ["A", "C", "G", "K"]),
+    new Kanketsusen("A", 272, 471, ["O", "H", "C"]),
+    new Kanketsusen("B", 157, 514, ["C", "G", "K"]),
     new Kanketsusen("C", 220, 408, ["A", "B", "D", "Q"]),
     new Kanketsusen("D", 243, 323, ["C", "E", "T"]),
     new Kanketsusen("E", 186, 268, ["D", "F"]),
