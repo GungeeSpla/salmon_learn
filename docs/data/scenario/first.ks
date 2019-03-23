@@ -1272,7 +1272,7 @@ f.kanketsusen = [
 *Define_Pora_Tsujo_Komori
 ;=======================================
 [iscript]
-f.radius = 211;
+f.radius = 212;
 f.komoriLabel = "T";
 f.suimyaku = "pora_komorikeiro.png";
 f.bg = "../fgimage/pora_komori.png";
@@ -1289,8 +1289,8 @@ f.kanketsusen = [
     new Kanketsusen("J", 218, 689, ["K", "I"]),
     new Kanketsusen("K",  89, 540, ["B", "J"]),
     new Kanketsusen("L", 444, 594, ["O", "M", "I"]),
-    new Kanketsusen("M", 585, 603, ["N", "L"]),
-    new Kanketsusen("N", 585, 462, ["P", "M"]),
+    new Kanketsusen("M", 579, 603, ["N", "L"]),
+    new Kanketsusen("N", 579, 462, ["P", "M"]),
     new Kanketsusen("O", 452, 538, ["P", "L", "I", "A"]),
     new Kanketsusen("P", 447, 420, ["O", "Q", "R", "N"]),
     new Kanketsusen("Q", 397, 378, ["C", "P"]),
