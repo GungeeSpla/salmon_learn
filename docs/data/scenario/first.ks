@@ -1272,7 +1272,7 @@ f.kanketsusen = [
 *Define_Pora_Tsujo_Komori
 ;=======================================
 [iscript]
-f.radius = 198;
+f.radius = 211;
 f.komoriLabel = "T";
 f.suimyaku = "pora_komorikeiro.png";
 f.bg = "../fgimage/pora_komori.png";
