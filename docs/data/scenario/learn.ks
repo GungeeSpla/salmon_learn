@@ -1014,8 +1014,8 @@ $("canvas")[0].getContext("2d").clearRect(0, 0, 640, 960);
 ;=======================================
 
 [iscript]
-f.ikaDx = 20;
-f.ikaDy = 20;
+f.ikaDx = 40;
+f.ikaDy = 40;
 f.komoriDx = 30;
 f.komoriDy = 35;
 [endscript]
