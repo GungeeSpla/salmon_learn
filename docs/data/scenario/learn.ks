@@ -110,7 +110,7 @@ f.bakudanWidth = f.radius*2*0.74
 f.kPos = getKomoriPos(f.komoriLabel);
 [endscript]
 [image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
-[image layer=1 zindex=200 x=250 y=400 storage=ika.png width=&f.ikaDx*2 name=ika]
+[image layer=1 zindex=200 x=250 y=400 storage=ika.png?2 width=&f.ikaDx*2 name=ika]
 [image layer=1 zindex=150 x=0 y=0 storage=bakudan_circle.png width=&f.bakudanWidth name=bakudan]
 [image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=&f.komoriDx*2 name=komori]
 [button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
