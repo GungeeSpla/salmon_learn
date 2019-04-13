@@ -289,6 +289,26 @@ background: -webkit-linear-gradient(top, #45484d 0%,#000000 24%,#005da5 63%,#005
 background: linear-gradient(to bottom, #45484d 0%,#000000 24%,#005da5 63%,#005da5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#005da5',GradientType=0 ); /* IE6-9 */
 }
+
+.shake {
+    background-image: url(./images/system/sentaku.png);
+    background-size: 100% 100%;
+    box-shadow: initial;
+    color: White;
+    padding-top: 44px;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+.shake2 {
+    background-image: url(./images/system/sentaku2.png);
+    background-size: 100% 100%;
+    box-shadow: initial;
+    color: White;
+    padding-top: 44px;
+    box-sizing: border-box;
+    font-weight: bold;
+}
 .mancho {
 	color: #d7d7d7;
 	border: solid 1px #333;
