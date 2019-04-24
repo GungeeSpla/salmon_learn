@@ -1,7 +1,7 @@
 /*reset css */
 @import url("font.css");
 .message0_fore {
-    z-index: 10000;
+    z-index: 1000;
 }
 .message_outer {
     opacity: 0.85;
