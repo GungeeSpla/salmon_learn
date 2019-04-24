@@ -1,9 +1,18 @@
 /*reset css */
 @import url("font.css");
+.message0_fore {
+    z-index: 10000;
+}
+.message_outer {
+    opacity: 0.85;
+}
 .suimyaku {
     display: none;
 }
 .bakudan {
+    display: none;
+}
+.ika2 {
     display: none;
 }
 .komori_circle {
@@ -279,15 +288,25 @@ body{
 /* color styles 
 ---------------------------------------------- */
 
+.myblack {
+	color: #d7d7d7;
+	border: solid 1px #333;
+    background: #515151;
+    background: -moz-linear-gradient(top, #515151 0%, #000000 33%, #000000 93%, #333333 100%);
+    background: -webkit-linear-gradient(top, #515151 0%,#000000 33%,#000000 93%,#333333 100%);
+    background: linear-gradient(to bottom, #515151 0%,#000000 33%,#000000 93%,#333333 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#515151', endColorstr='#333333',GradientType=0 );
+}
+
 /* black */
 .tsujo {
 	color: #d7d7d7;
-	border: solid 1px #333;
-background: #45484d; /* Old browsers */
-background: -moz-linear-gradient(top, #45484d 0%, #000000 24%, #005da5 63%, #005da5 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top, #45484d 0%,#000000 24%,#005da5 63%,#005da5 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom, #45484d 0%,#000000 24%,#005da5 63%,#005da5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#005da5',GradientType=0 ); /* IE6-9 */
+    border: solid 1px #333;
+    background: #45484d; /* Old browsers */
+    background: -moz-linear-gradient(top, #45484d 0%, #000000 24%, #005da5 63%, #005da5 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #45484d 0%,#000000 24%,#005da5 63%,#005da5 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #45484d 0%,#000000 24%,#005da5 63%,#005da5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#005da5',GradientType=0 ); /* IE6-9 */
 }
 
 .shake {

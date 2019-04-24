@@ -13,6 +13,7 @@
 
 [image layer=0 x=50 y=20 storage=goldie.png width=60]
 [image layer=0 x=40 y=460 storage=komori.png width=90]
+[ptext layer=0 text=コウモリマップ size=40 x=120 y=480 bold=bold]
 [ptext layer=0 text=間欠泉 size=40 x=120 y=25 bold=bold]
 [ptext layer=0 text=シェケナダム size=30 x=60 y=105]
 [ptext layer=0 text=ドン･ブラコ  size=30 x=60 y=175]
@@ -29,16 +30,7 @@
 [glink text=満潮 x=390 y=310 size=25 color=mancho target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
 [glink text=通常 x=270 y=380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮 x=390 y=380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
-
-
-[iscript]
-window.xxx = 100;
-window.yyy = 100;
-var s = location.search;
-f.bool = (s.indexOf("test") > -1);
-[endscript]
-;[if exp=f.bool]
-[ptext layer=0 text=コウモリマップ size=40 x=120 y=480 bold=bold]
+[glink text=THANKS x=500 y=30 size=20 color=blue target=Thanks]
 [ptext layer=0 text=シェケナダム size=30 x=60 y=565]
 [ptext layer=0 text=ドン･ブラコ  size=30 x=60 y=635]
 [ptext layer=0 text=シャケト場   size=30 x=60 y=705]
@@ -55,10 +47,26 @@ f.bool = (s.indexOf("test") > -1);
 [glink text=通常 x=270 y=840 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Pora_Tsujo_Komori'"]
 [glink text=干潮 x=390 y=840 size=25 color=kancho target=*InitKomori exp="f.target='Define_Pora_Kancho_Komori'"]
 
-[glink text=THANKS x=500 y=30 size=20 color=blue target=Thanks]
+[iscript]
+var s = location.search;
+f.bool = (s.indexOf("test") > -1);
+[endscript]
+[if exp=f.bool]
+[glink text=？ x=555 y=902 size=25 color=myblack target=Init exp="f.target='Goto_Senpai'"]
+[endif]
+
 [mask_off time=300]
-;[endif]
 [s]
+
+*Goto_Senpai
+
+[mask time=300]
+[cm]
+[freelayer layer=0]
+[mask_off time=0]
+[jump storage=scene.ks]
+[s]
+
 
 *Thanks
 
@@ -103,7 +111,7 @@ $(".link").off("click").wrap('<a href="http://amzn.asia/1OJG2pV"></a>');
 [foreach name=f.item array=f.kanketsusen]
 [image layer=0 x=&f.item.x-f.radius-2 y=&f.item.y-f.radius-2 width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
 [image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2 name=park]
-[ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 name=park color=rgb(255,173,255) bold=bold align=center width=50]
+[ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 name=park color=rgb(173,255,255) bold=bold align=center width=50]
 [nextfor]
 [iscript]
 f.bakudanWidth = f.radius*2*0.74
@@ -111,20 +119,23 @@ f.kPos = getKomoriPos(f.komoriLabel);
 [endscript]
 [image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
 [image layer=1 zindex=200 x=250 y=400 storage=ika.png?2 width=&f.ikaDx*2 name=ika]
+[image layer=1 zindex=200 x=80 y=80 storage=ika.png?2 width=&f.ikaDx*2 name=ika2]
 [image layer=1 zindex=150 x=0 y=0 storage=bakudan_circle.png width=&f.bakudanWidth name=bakudan]
 [image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=&f.komoriDx*2 name=komori]
 [button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
 [button fix=true graphic=keiro.png   x=40  y=800 target=*Suimyaku     name=fixbutton]
 [button fix=true graphic=modoru2.png x=440 y=800 target=*KomoriTitle  name=fixbutton]
-[button fix=true graphic=bakudan.png x=110 y=880 target=*ToggleBakudan name=fixbutton]
-[button fix=true graphic=komori.png  x=360 y=880 target=*ToggleKomori  name=fixbutton]
+[button fix=true graphic=bakudan.png x=40 y=880 target=*ToggleBakudan name=fixbutton]
+[button fix=true graphic=komori.png  x=260 y=880 target=*ToggleKomori  name=fixbutton]
+[button fix=true graphic=ika2.png  x=484 y=880 target=*ToggleIka     name=fixbutton]
 [mask_off time=300]
 ;[call target=Set_Kotae]
 ;[jump target=Start]
 [iscript]
+$(".ika2").hide();
 $(".bakudan").appendTo("#tyrano_base").draggable();
 var timer;
-$(".ika").appendTo("#tyrano_base").draggable({
+$(".ika,.ika2").appendTo("#tyrano_base").draggable({
     drag: function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -158,7 +169,7 @@ $(".komori").appendTo("#tyrano_base").draggable({
 });
 $(".komori_circle." + f.komoriLabel).fadeIn(300);
 window.updateKomoriArrow = function () {
-    var dis = getDisIkaKomori(f.komoriLabel);
+    var dis = getDisIkaKomori(f.komoriLabel, "auto");
     var next = getKomoriNextLabel(f.komoriLabel);
     ctx.clearRect(0, 0, 640, 960);
     ctx.fillStyle = (dis < f.radius) ? "Black" : "Blue";
@@ -189,6 +200,7 @@ $(".komori").animate({
 [clearstack]
 [iscript]
 $(".ika").remove();
+$(".ika2").remove();
 $(".komori").remove();
 $(".bakudan").remove();
 ctx.clearRect(0, 0, 640, 960);
@@ -239,6 +251,16 @@ f.random = true;
 ;=======================================
 [iscript]
 $(".suimyaku").fadeToggle(300);
+[endscript]
+[return]
+
+;=======================================
+*ToggleIka
+;=======================================
+[iscript]
+$(".ika2").fadeToggle(300, function() {
+    updateKomoriArrow();    
+});
 [endscript]
 [return]
 
@@ -1084,8 +1106,10 @@ window.calcDistance = function (x1, y1, x2, y2) {
     var r = Math.sqrt(w*w + h*h);
     return r;
 };
-window.getIkaPos = function () {
-    var $ika = $(".ika");
+window.getIkaPos = function (num) {
+    if (!num) num = "";
+    else num = "" + num;
+    var $ika = $(".ika" + num);
     var x = parseInt($ika.css("left")) + f.ikaDx;
     var y = parseInt($ika.css("top")) + f.ikaDy;
     return {
@@ -1100,13 +1124,30 @@ window.getKomoriPos = function (label) {
         y: data.y
     };
 };
-window.getDisIkaKomori = function (label) {
-    var iPos = getIkaPos();
+window.getDisIkaKomori = function (label, opt) {
+    var iPos;
+    if (opt === "auto") {
+        if ($(".ika2").css("display") == "block" && getDisIkaKomori(label) > getDisIkaKomori(label, 2)) {
+            iPos = getIkaPos(2)
+        }
+        else {
+            iPos = getIkaPos()
+        }
+    }
+    else {
+        iPos = getIkaPos(opt);
+    }
     var kPos = getKomoriPos(label);
     return calcDistance(iPos, kPos);
 };
 window.getKomoriNextLabel = function (label) {
-    var iPos = getIkaPos();
+    var iPos;
+    if ($(".ika2").css("display") == "block" && getDisIkaKomori(label) > getDisIkaKomori(label, 2)) {
+        iPos = getIkaPos(2)
+    }
+    else {
+        iPos = getIkaPos()
+    }
     var data = getKanketsusen(label);
     var minDis = 9999;
     var nextLabel;

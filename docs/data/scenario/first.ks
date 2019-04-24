@@ -1,3 +1,4 @@
+[call storage="live2d/live2d.ks"]
 [plugin name=for]
 [plugin name=glink_show]
 [jump storage=learn.ks]
