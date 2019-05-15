@@ -149,7 +149,7 @@ zipを公開しておくから、[r]
 知識のある方はPCからどうぞ。
 [myp]
 
-[web url=https://gungeespla.github.io/salmon_learn//data/others/live2d/assets/ikachan.zip]
+[web url=https://www.axfc.net/u/3979915]
 [jump target=back_title]
 [s]
 

@@ -51,9 +51,9 @@
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
-[if exp=f.bool]
+;[if exp=f.bool]
 [glink text=？ x=555 y=902 size=25 color=myblack target=Init exp="f.target='Goto_Senpai'"]
-[endif]
+;[endif]
 
 [mask_off time=300]
 [s]
