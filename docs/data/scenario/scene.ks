@@ -33,25 +33,16 @@
 [live2d_motion     name="ikachan" filenm="s001.mtn" idle="ON"]
 [live2d_show       name="ikachan" time=1800]
 
-;メッセージウィンドウ
-[mw_on]
-[free  layer=message0 name=name]
-[image layer=message0 left=30 top=648 zindex=10000 storage=name_hatena.png name=name]
-
-
-
-
-
-
 
 
 [jump target=visited cond="sf.visited==1"]
 [eval exp="sf.visited=1"]
 
 
-
-
-
+;メッセージウィンドウ
+[mw_on]
+[free  layer=message0 name=name]
+[image layer=message0 left=30 top=648 zindex=10000 storage=name_hatena.png name=name]
 
 ......[p]
 [mo f=s002]
@@ -95,6 +86,12 @@
 [jump target=choice]
 
 *visited
+
+;メッセージウィンドウ
+[mw_on]
+[free  layer=message0 name=name]
+[image layer=message0 left=30 top=648 zindex=10000 storage=name_senpai.png name=name]
+
 [mo f=s002]
 おや、こんにちは。[r]
 バイト、楽しんでるかい？
