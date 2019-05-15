@@ -320,6 +320,7 @@ body{
 }
 
 .shake2 {
+	line-height: 170%;
     background-image: url(./images/system/sentaku2.png);
     background-size: 100% 100%;
     box-shadow: initial;
