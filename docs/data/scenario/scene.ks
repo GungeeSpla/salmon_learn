@@ -130,6 +130,7 @@
 [live2d_delete name=ikachan]
 [free_layermode time=0]
 [bg time=0 storage=black.png]
+[wait time=500]
 [mask_off time=0]
 [jump storage=learn.ks]
 [s]

@@ -9,10 +9,8 @@
 	"motions":{
 		"idle":[
 			{"file":"motions/m00.mtn"},
-			{"file":"motions/m01.mtn"},
-			{"file":"motions/m02.mtn"},
-			{"file":"motions/m03.mtn"},
-			{"file":"motions/m04.mtn"},
+			{"file":"motions/m10.mtn"},
+			{"file":"motions/m11.mtn"},
 			{"file":"motions/s001.mtn"},
 			{"file":"motions/s002.mtn"},
 			{"file":"motions/s003.mtn"},
@@ -24,10 +22,6 @@
 			{"file":"motions/s009.mtn"}
 		],
 		"":[
-			{"file":"motions/m10.mtn"},
-			{"file":"motions/m11.mtn"},
-			{"file":"motions/m20.mtn"},
-			{"file":"motions/m21.mtn"}
 		]
 	},
 	"physics":"ikachan.physics.json"
