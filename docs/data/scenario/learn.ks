@@ -1,3 +1,4 @@
+[clearstack]
 [call target=Define]
 
 ;=======================================
@@ -125,9 +126,9 @@ f.kPos = getKomoriPos(f.komoriLabel);
 [button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
 [button fix=true graphic=keiro.png   x=40  y=800 target=*Suimyaku     name=fixbutton]
 [button fix=true graphic=modoru2.png x=440 y=800 target=*KomoriTitle  name=fixbutton]
-[button fix=true graphic=bakudan.png x=40 y=880 target=*ToggleBakudan name=fixbutton]
+[button fix=true graphic=bakudan.png x=40 y=880  target=*ToggleBakudan name=fixbutton]
 [button fix=true graphic=komori.png  x=260 y=880 target=*ToggleKomori  name=fixbutton]
-[button fix=true graphic=ika2.png  x=484 y=880 target=*ToggleIka     name=fixbutton]
+[button fix=true graphic=ika2.png  x=484 y=880   target=*ToggleIka     name=fixbutton]
 [mask_off time=300]
 ;[call target=Set_Kotae]
 ;[jump target=Start]

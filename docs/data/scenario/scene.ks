@@ -122,12 +122,15 @@
 
 *back_title
 
+[cm]
 [mask time=500]
-[free  layer=message0 name=name]
-[live2d_delete name=ikachan]
-[free_layermode time=0]
 [bg time=0 storage=black.png]
-[wait time=500]
+[free  layer=message0 name=name]
+[live2d_hide name=ikachan time=0]
+[live2d_delete name=ikachan]
+;[free_layermode time=0]
+[layopt layer=message0 visible=false]
+[wait time=100]
 [mask_off time=0]
 [jump storage=learn.ks]
 [s]
