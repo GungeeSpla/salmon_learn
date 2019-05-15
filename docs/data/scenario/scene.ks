@@ -16,7 +16,7 @@
 ; 背景
 [mask time=0]
 [bg time=0 storage=bg.png]
-[layermode graphic=screen.png mode=screen time=0]
+;[layermode graphic=screen.png mode=screen time=0]
 [mask_off time=800]
 
 ; メッセージウィンドウの調整
