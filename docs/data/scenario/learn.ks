@@ -510,6 +510,63 @@ f.joseki = "SheTK_Joseki_A"
 [k_button       k=B target=*Kakutei]
 [s]
 
+;=======================================
+*SheTK_Joseki_B
+;=======================================
+[cm]
+[iscript]
+f.joseki = "SheTK_Joseki_B"
+[endscript]
+
+[k_button  k=F target=*SheTK_Joseki_B_1]
+[yajirushi k=F]
+[s]
+
+*SheTK_Joseki_B_1
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('F', f.answer)"]
+    [yajirushi_move k=D]
+    [k_button       k=D target=*SheTK_Joseki_B_2]
+[else]
+    [yajirushi_move k=G]
+    [k_button       k=G target=*SheTK_Joseki_B_4]
+[endif]
+[s]
+
+*SheTK_Joseki_B_2
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=E]
+[k_button       k=E target=*SheTK_Joseki_B_3]
+[s]
+
+*SheTK_Joseki_B_3
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=C]
+[k_button       k=C target=*Kakutei]
+[s]
+
+*SheTK_Joseki_B_4
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('G', f.answer)"]
+    [yajirushi_move k=H]
+    [k_button       k=H target=*SheTK_Joseki_B_5]
+[else]
+    [yajirushi_move k=I]
+    [k_button       k=I target=*Kakutei]
+[endif]
+[s]
+
+*SheTK_Joseki_B_5
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('H', f.answer)"]
+    [yajirushi_move k=A]
+    [k_button       k=A target=*Kakutei]
+[else]
+    [yajirushi_move k=B]
+    [k_button       k=B target=*Kakutei]
+[endif]
+[s]
+
 
 ;=======================================
 *SheMK_Joseki_A
@@ -1689,7 +1746,8 @@ f.kanketsusen = [
 ;=======================================
 [iscript]
 f.josekidata = [
-    ["Eから開けるやつ", "f.random = false; f.joseki='SheTK_Joseki_A'"]
+    ["Eから開けるやつ", "f.random = false; f.joseki='SheTK_Joseki_A'"],
+    ["Fから開けるやつ(早い)", "f.random = false; f.joseki='SheTK_Joseki_B'"]
 ];
 f.suimyaku = "damu_suimyaku.png";
 f.bg = "../fgimage/damu_kanketsu.png";
