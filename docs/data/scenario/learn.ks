@@ -226,6 +226,7 @@ ctx.clearRect(0, 0, 640, 960);
 [button fix=true graphic=suimyaku.png x=50  y=20 target=*Suimyaku name=fixbutton]
 [button fix=true graphic=kotae.png    x=250 y=20 target=*Kotae    name=fixbutton]
 [button fix=true graphic=joseki.png   x=450 y=20 target=*Joseki   name=fixbutton cond="f.josekidata.length > 0"]
+[button fix=true graphic=modoru2.png   x=450 y=870 target=*Retitle   name=fixbutton]
 [mask_off time=300]
 [call target=Set_Kotae]
 [jump target=Start]
@@ -1078,6 +1079,7 @@ $(".fixbutton").show();
 ;=======================================
 [cm]
 [clearfix]
+[clearstack]
 [mask time=300]
 [bg time=0 storage=black.png]
 [freelayer layer=0]
@@ -1085,7 +1087,7 @@ $(".fixbutton").show();
 [iscript]
 $("canvas")[0].getContext("2d").clearRect(0, 0, 640, 960);
 [endscript]
-[mask_off time=300]
+[mask_off time=200]
 [jump target=Title]
 [s]
 
