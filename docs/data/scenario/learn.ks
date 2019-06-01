@@ -90,9 +90,15 @@ f.bool = (s.indexOf("test") > -1);
 [ptext layer=0 text=And&nbsp;You!                                size=20 x=60 y=670]
 
 [glink text=もどる x=240 y=730 size=35 color=blue target=Retitle]
+/*
 [glink text=作者のWish&nbsp;List x=240 y=873 size=18.6 color=black name=link target=Link]
 [iscript]
 $(".link").off("click").wrap('<a href="http://amzn.asia/1OJG2pV"></a>');
+[endscript]
+*/
+[glink text=作者のTwitter x=240 y=873 size=18.6 color=black name=link target=Link]
+[iscript]
+$(".link").off("click").wrap('<a href="https://twitter.com/GungeeSpla"></a>');
 [endscript]
 [mask_off time=300]
 [s]
