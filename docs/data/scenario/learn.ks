@@ -359,43 +359,45 @@ f.joseki = "BaTK_Joseki_B"
 *BaTK_Joseki_B_1
 [k_check][jump cond=f.atari target=*Atari][cm]
 [if exp="isBrother('H', f.answer)"]
-    [yajirushi_move k=E]
-    [k_button       k=E target=*BaTK_Joseki_B_2]
+    [yajirushi_move k=G]
+    [k_button       k=G target=*BaTK_Joseki_B_2]
 [else]
-    [yajirushi_move k=C]
-    [k_button       k=C target=*BaTK_Joseki_B_4]
+	[ptext layer=1 color=0x000000 text=※奥は後回しにするほうが手数的には最短 name=hosoku size=20 x=50 y=110 width=570]
+    [yajirushi_move k=D]
+    [k_button       k=D target=*BaTK_Joseki_B_4]
 [endif]
 [s]
 
 *BaTK_Joseki_B_2
 [k_check][jump cond=f.atari target=*Atari][cm]
-[if exp="isBrother('E', f.answer)"]
+[if exp="isBrother('G', f.answer)"]
+    [yajirushi_move k=I]
+    [k_button       k=I target=*Kakutei]
+[else]
     [yajirushi_move k=F]
     [k_button       k=F target=*BaTK_Joseki_B_3]
-[else]
-    [yajirushi_move k=G]
-    [k_button       k=G target=*Kakutei]
 [endif]
 [s]
 
 *BaTK_Joseki_B_3
 [k_check][jump cond=f.atari target=*Atari][cm]
-[yajirushi_move k=I]
-[k_button       k=I target=*Kakutei]
+[yajirushi_move k=E]
+[k_button       k=E target=*Kakutei]
 [s]
 
 *BaTK_Joseki_B_4
 [k_check][jump cond=f.atari target=*Atari][cm]
-[if exp="isBrother('C', f.answer)"]
-    [yajirushi_move k=A]
-    [k_button       k=A target=*BaTK_Joseki_B_5]
-[else]
-    [yajirushi_move k=D]
-    [k_button       k=D target=*Kakutei]
-[endif]
+[yajirushi_move k=A]
+[k_button       k=A target=*BaTK_Joseki_B_5]
 [s]
 
 *BaTK_Joseki_B_5
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=C]
+[k_button       k=C target=*BaTK_Joseki_B_6]
+[s]
+
+*BaTK_Joseki_B_6
 [k_check][jump cond=f.atari target=*Atari][cm]
 [yajirushi_move k=B]
 [k_button       k=B target=*Kakutei]
@@ -572,6 +574,65 @@ f.joseki = "SheTK_Joseki_B"
     [yajirushi_move k=B]
     [k_button       k=B target=*Kakutei]
 [endif]
+[s]
+
+
+;=======================================
+*BaTK_Joseki_C
+;=======================================
+[cm]
+[iscript]
+f.joseki = "BaTK_Joseki_C"
+[endscript]
+
+[k_button  k=D target=*BaTK_Joseki_C_1]
+[yajirushi k=D]
+[s]
+
+*BaTK_Joseki_C_1
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('D', f.answer)"]
+    [yajirushi_move k=F]
+    [k_button       k=F target=*BaTK_Joseki_C_2]
+[else]
+    [yajirushi_move k=H]
+    [k_button       k=H target=*BaTK_Joseki_C_4]
+[endif]
+[s]
+
+*BaTK_Joseki_C_2
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=E]
+[k_button       k=E target=*Kakutei]
+[s]
+
+*BaTK_Joseki_C_4
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="isBrother('H', f.answer)"]
+    [yajirushi_move k=G]
+    [k_button       k=G target=*BaTK_Joseki_C_5]
+[else]
+    [yajirushi_move k=A]
+    [k_button       k=A target=*BaTK_Joseki_C_6]
+[endif]
+[s]
+
+*BaTK_Joseki_C_5
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=I]
+[k_button       k=I target=*Kakutei]
+[s]
+
+*BaTK_Joseki_C_6
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=C]
+[k_button       k=C target=*BaTK_Joseki_C_7]
+[s]
+
+*BaTK_Joseki_C_7
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=B]
+[k_button       k=B target=*Kakutei]
 [s]
 
 
@@ -1037,6 +1098,7 @@ f.joseki = ""
 *Atari
 ;=======================================
 [cm]
+[free layer=1 name=hosoku]
 [free layer=1 name=yajirushi]
 [iscript]
 $(".fixbutton").hide();
@@ -1711,8 +1773,9 @@ f.kanketsusen = [
 ;=======================================
 [iscript]
 f.josekidata = [
-    ["各方面の先端から開けるやつ", "f.random = false; f.joseki='BaTK_Joseki_A'"],
-    ["Hから開ける最少手数のやつ", "f.random = false; f.joseki='BaTK_Joseki_B'"]
+    ["桟橋から開けていくやつ",      "f.random = false; f.joseki='BaTK_Joseki_A'"],
+    ["正面から開けていくやつ",      "f.random = false; f.joseki='BaTK_Joseki_C'"],
+    ["右斜め前から開けていくやつ", "f.random = false; f.joseki='BaTK_Joseki_B'"]
 ];
 f.suimyaku = "toba_suimyaku.png";
 f.bg = "../fgimage/toba_kanketsu.png";
