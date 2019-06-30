@@ -1419,10 +1419,10 @@ f.suimyaku = "pora_komorikeiro_k.png";
 f.bg = "../fgimage/pora_komori_k.png";
 f.kanketsusen = [
     new Kanketsusen("A", 276, 422, ["B", "C", "I", "K"]),
-    new Kanketsusen("B", 412, 420, ["A", "G", "C"]),
+    new Kanketsusen("B", 412, 420, ["A", "G", "C", "E"]),
     new Kanketsusen("C", 339, 533, ["A", "B", "L", "D", "E"]),
     new Kanketsusen("D", 448, 591, ["C", "E"]),
-    new Kanketsusen("E", 580, 521, ["C", "D", "F"]),
+    new Kanketsusen("E", 580, 521, ["C", "D", "F", "B"]),
     new Kanketsusen("F", 577, 411, ["E", "G"]),
     new Kanketsusen("G", 524, 228, ["F", "H", "B"]),
     new Kanketsusen("H", 438, 201, ["G", "I"]),
