@@ -1,62 +1,73 @@
 function getWeaponsData(){
 	return new Promise(function(resolve, reject) {
-		$.get(WEAPONS_URL, {}).done(function(data){
-			console.log("✅ ブキデータの読み込みに成功しました.");
+		$.get(WEAPONS_URL, {dataType: "text"}).done(function(data){
+			console.log("✅ ブキデータを読み込みました.");
 			var stringArray = data.split("\n");
 			var jsonObject = csv2json(stringArray);
 			WEAPONS = jsonObject;
 			if (typeof resolve == "function") resolve();
 		}).fail(function(){
-			console.error("❌ ブキデータの読み込みに失敗しました.");
+			console.error("❌ ブキデータを読み込めませんでした.");
 			if (typeof reject == "function") reject();
 		});
 	});
 }
 function getSalmonAPI () {
 	return new Promise(function(resolve, reject) {
-		$.get(SALMON_API_URL, {}).done(function (data) {
-			console.log("✅ サーモンランAPIの実行に成功しました.");
-			data = parseSalmonAPI(data);
-			if (typeof resolve == "function") resolve(data);
-		}).fail(function (data) {
-			console.error("❌ サーモンランAPIの実行に失敗しました.");
-			if (typeof reject == "function") reject();
-		});
+		var isCached = false;
+		var cache_data = localStorage.getItem(STORAGE_KEY_ROTETION);
+		// キャッシュがあるなら
+		if (cache_data != null) {
+			console.log("✅ キャッシュを取得しました.");
+			// JavaScriptの型に直す
+			var data = cache_data;
+			if (typeof cache_data == "string") data = JSON.parse(cache_data);
+			// 期限切れでなければ
+			if (UNIX.getTime() < data[0].end) {
+				// キャッシュを返す
+				isCached = true;
+				console.log("✅ サーモンランAPIの実行を抑制しました.");
+				data = parseSalmonAPI(data);
+				if (typeof resolve == "function") resolve(data);
+			}
+			else {
+				console.log("❌ キャッシュの期限が切れていたので、サーモンランAPIを実行します.");
+			}
+		}
+		if (! isCached) {
+			$.get(SALMON_API_URL, {dataType: "text"}).done(function (data) {
+				console.log("✅ サーモンランAPIの実行に成功しました.");
+				
+				var json_data = data;
+				if (typeof data != "string") json_data = JSON.stringify(data);
+				localStorage.setItem(STORAGE_KEY_ROTETION, json_data);
+				
+				data = parseSalmonAPI(data);
+				if (typeof resolve == "function") resolve(data);
+			}).fail(function (data) {
+				console.error("❌ サーモンランAPIの実行に失敗しました.");
+				if (typeof reject == "function") reject();
+			});
+		}
 	});
 }
 function renderRotation(data, $target, next) {
 	$target.find(".salmon_rotation_stage_name").text(data.stage_ja);
 	$target.find(".salmon_rotation_title").text(next);
 	$target.find(".salmon_rotation_time").text(data.start_ja + " - " + data.end_ja);
-	$target.find(".salmon_rotation_stage").attr("src", "stage_" + data.stage + ".png");
+	$target.find(".salmon_rotation_stage").attr("src", "img/stage_" + data.stage + ".png");
 	$target.find(".salmon_rotation_weapon_1").attr("src", data.w1_img);
 	$target.find(".salmon_rotation_weapon_2").attr("src", data.w2_img);
 	$target.find(".salmon_rotation_weapon_3").attr("src", data.w3_img);
 	$target.find(".salmon_rotation_weapon_4").attr("src", data.w4_img);
 }
 function render (data) {
-	renderRotation(data[0], $(".salmon_rotation_1"), "もうすぐ");
-	renderRotation(data[1], $(".salmon_rotation_2"), "つぎ");
-	/*
 	var latestData = data[0];
 	var latestStartTime = UNIX.parse(latestData.start);
 	var nowTime = UNIX.getParsedTime();
-	var isHold = nowTime > latestStartTime;
-	if (isHold) {
-		console.log("現在サーモンラン開催中です.");
-		console.log("このシフトは残り" + latestData.dif_end_ja + "です.");
-	}
-	else {
-		console.log("現在サーモンラン開催中ではありません.");
-		console.log("次のシフトはいまから" + latestData.dif_start_ja + "後に開催されます.");
-	}
-	console.log(latestData.start_ja + " - " + latestData.end_ja);
-	console.log(latestData.stage_ja);
-	console.log(latestData.w1_ja);
-	console.log(latestData.w2_ja);
-	console.log(latestData.w3_ja);
-	console.log(latestData.w4_ja);
-	*/
+	var isHolding = nowTime > latestStartTime;
+	renderRotation(data[0], $(".salmon_rotation_1"), "もうすぐ");
+	renderRotation(data[1], $(".salmon_rotation_2"), "つぎ");
 }
 function parseSalmonAPI (data) {
 	var now = UNIX.getTime();
@@ -95,6 +106,7 @@ function Unix () {
 		return this.parse(this.getTime());
 	};
 	this.parse = function (intTime, type) {
+		intTime = parseInt(intTime);
 		if (! type) type = 0;
 		switch (type) {
 		case 0:
@@ -102,7 +114,7 @@ function Unix () {
 			var year  = d.getFullYear();
 			var month = d.getMonth() + 1;
 			var day   = d.getDate();
-			var hour  = ('0' + d.getHours()).slice(-2);
+			var hour  = d.getHours();
 			var min   = ('0' + d.getMinutes()).slice(-2);
 			var sec   = ('0' + d.getSeconds()).slice(-2);
 			var yobi  = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
@@ -120,8 +132,4 @@ function Unix () {
 			return hour + "時間" + min + "分";
 		}
 	};
-}
-function addText (text) {
-	var $p = $("<p>" + text + "</p>");
-	$("#message").append($p);
 }

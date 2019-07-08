@@ -1,0 +1,87 @@
+body {
+	background: White;
+	color: #666;
+}
+#main {
+	background-color: #591A09;
+	background-image: url(img/red_bg.png);
+	color: White;
+	font-family: メイリオ;
+	font-weight: bold;
+	font-size: 18px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 50px auto;
+	padding-top: 100px;
+	width: 640px;
+	height: 960px;
+	text-align: center;
+	transform: scale(1);
+	box-shadow: rgba(0,0,0,0.5) 5px 5px 10px;
+	box-sizing: border-box;
+}
+.salmon_rotation_title {
+	font-size: 30px;
+	text-align: left;
+	padding: 0px 24px;
+	margin: 0;
+	color: #73DD73;
+	text-shadow: black 4px 4px 4px;
+}
+.salmon_rotation {
+	position: relative;
+	margin: 10px 20px 40px;
+	padding: 0;
+	width: 600px;
+	height: 272px;
+	background-image: url(img/rotation_bg.png);
+	background-size: 100%;
+	background-repeat: none;
+	border-radius: 35px;
+	box-shadow: rgba(0,0,0,0.5) 5px 5px 5px;
+}
+.salmon_rotation * {
+	padding: 0;
+	margin: 0;
+}
+.salmon_rotation_time {
+	position: absolute;
+	top: 20px;
+	left: 92px;
+	font-size: 26px;
+}
+.salmon_rotation_stage {
+	width: 220px;
+	height: 123px;
+	position: absolute;
+	top: 90px;
+	left: 32px;
+	border-radius: 20px;
+}
+.salmon_rotation_stage_name {
+	position: absolute;
+	top: 224px;
+	left: 32px;
+	text-align: center;
+	width: 220px;
+	font-size: 16px;
+}
+.salmon_rotation_weapon_title {
+	position: absolute;
+	top: 100px;
+	left: 277px;
+	font-size: 20px;
+}
+.salmon_rotation_weapons {
+	position: absolute;
+	top: 140px;
+	left: 277px;
+}
+.salmon_rotation_weapons img {
+	width: 68px;
+	height: 68px;
+	margin-right: 5px;
+}

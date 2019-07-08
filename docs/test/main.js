@@ -1,6 +1,7 @@
 window.WEAPONS        = false;
 window.WEAPONS_URL    = "./weapons.csv";
 window.SALMON_API_URL = "https://splamp.info/salmon/api/now";
+window.STORAGE_KEY_ROTETION = "rotation_data";
 window.UNIX           = new Unix();
 window.initCount      = 0;
 function init() {
