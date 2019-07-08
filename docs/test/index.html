@@ -4,35 +4,22 @@
 <meta charset="UTF-8">
 <title>テスト</title>
 <script type="text/javascript" src="jquery.js"></script>
-<script>
-	$.get("https://splamp.info/salmon/api/now").done(function (data) {
-		console.log("成功しました.");
-		console.log(data);
-	}).fail(function (data) {
-		console.log("失敗しました.");
-	});
-</script>
+<script type="text/javascript" src="test.js"></script>
 <style>
 	body {
-		background: darkblue;
-		color: white;
+		background: white;
+		color: #666;
 	}
 	#message {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		margin: auto;
-		width: 600px;
-		height: 50px;
+		margin-top: 100px;
 		text-align: center;
 	}
 </style>
 </head>
 <body>
 	<div id="message">
-	Hello, World.
+		<p>サーモンランAPIのテストページです。</p>
+		<p>　</p>
 	</div>
 </body>
 </html>
