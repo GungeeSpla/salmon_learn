@@ -2,37 +2,37 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>無題のHTML</title>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<title>テスト</title>
+<script type="text/javascript" src="jquery.js"></script>
 <script>
-$.get("https://splamp.info/salmon/api/now").done(function (data) {
-	console.log("成功しました.");
-	console.log(data);
-}).fail(function (data) {
-	console.log("失敗しました.");
-});
+	$.get("https://splamp.info/salmon/api/now").done(function (data) {
+		console.log("成功しました.");
+		console.log(data);
+	}).fail(function (data) {
+		console.log("失敗しました.");
+	});
 </script>
 <style>
-body {
-    background: darkblue;
-    color: white;
-}
-#message {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 600px;
-    height: 50px;
-    text-align: center;
-}
+	body {
+		background: darkblue;
+		color: white;
+	}
+	#message {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		width: 600px;
+		height: 50px;
+		text-align: center;
+	}
 </style>
 </head>
 <body>
-<div id="message">
-Hello, World.
-</div>
+	<div id="message">
+	Hello, World.
+	</div>
 </body>
 </html>
