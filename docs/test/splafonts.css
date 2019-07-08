@@ -1,0 +1,29 @@
+/* https://fudangi.hatenadiary.jp/entry/2018/05/19/113530 */
+
+@font-face {
+    font-family: Splatoon1;
+    src:
+    	url(https://app.splatoon2.nintendo.net/fonts/bundled/5476b40d543260503fbccbbab305b1f9.woff2) format("woff2"), 
+    	url(https://app.splatoon2.nintendo.net/fonts/bundled/f85b6b75e658c1758ee0b3f2262c9522.woff) format("woff")
+}
+
+@font-face {
+    font-family: Splatoon1;
+    src:
+    	url(https://app.splatoon2.nintendo.net/fonts/bundled/0e12b13c359d4803021dc4e17cecc311.woff2) format("woff2"), 
+    	url(https://app.splatoon2.nintendo.net/fonts/bundled/f25982b8ab52a929938cd63f15656ecf.woff) format("woff")
+}
+
+@font-face {
+    font-family: Splatoon2;
+    src:
+	    url(https://app.splatoon2.nintendo.net/fonts/bundled/61f6c62eb1065d00c9a2bcf85e090fe4.woff2) format("woff2"), 
+	    url(https://app.splatoon2.nintendo.net/fonts/bundled/b426a8e06ebdfcb82b481ab57922d6b4.woff) format("woff")
+}
+
+@font-face {
+    font-family: Splatoon2;
+    src: 
+	    url(https://app.splatoon2.nintendo.net/fonts/bundled/eb82d017016045bf998cade4dac1ec22.woff2) format("woff2"), 
+	    url(https://app.splatoon2.nintendo.net/fonts/bundled/b4fab2f6ac35a758f6aeb5b7054ab121.woff) format("woff")
+}
