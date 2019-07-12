@@ -55,7 +55,7 @@ function renderRotation(data, $target, next) {
 	$target.find(".salmon_rotation_stage_name").text(data.stage_ja);
 	$target.find(".salmon_rotation_title").text(next);
 	$target.find(".salmon_rotation_time").text(data.start_ja + " - " + data.end_ja);
-	$target.find(".salmon_rotation_stage").attr("src", "img/stage_" + data.stage + ".png");
+	$target.find(".salmon_rotation_stage").attr("src", "../data/fgimage/stage_" + data.stage + ".png");
 	$target.find(".salmon_rotation_weapon_1").attr("src", data.w1_img);
 	$target.find(".salmon_rotation_weapon_2").attr("src", data.w2_img);
 	$target.find(".salmon_rotation_weapon_3").attr("src", data.w3_img);
@@ -63,10 +63,8 @@ function renderRotation(data, $target, next) {
 }
 function render (data) {
 	var latestData = data[0];
-	var latestStartTime = UNIX.parse(latestData.start);
-	var nowTime = UNIX.getParsedTime();
-	var isHolding = nowTime > latestStartTime;
-	renderRotation(data[0], $(".salmon_rotation_1"), "もうすぐ");
+	var isOpening = UNIX.getTime() > latestData.start;
+	renderRotation(data[0], $(".salmon_rotation_1"), isOpening ? "オープン!" : "もうすぐ");
 	renderRotation(data[1], $(".salmon_rotation_2"), "つぎ");
 }
 function parseSalmonAPI (data) {
@@ -114,7 +112,7 @@ function Unix () {
 			var year  = d.getFullYear();
 			var month = d.getMonth() + 1;
 			var day   = d.getDate();
-			var hour  = d.getHours();
+			var hour  = ('0' + d.getHours()).slice(-2);
 			var min   = ('0' + d.getMinutes()).slice(-2);
 			var sec   = ('0' + d.getSeconds()).slice(-2);
 			var yobi  = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];

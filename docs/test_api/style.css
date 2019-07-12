@@ -4,7 +4,7 @@ body {
 }
 #main {
 	background-color: #591A09;
-	background-image: url(img/red_bg.png);
+	background-image: url(../data/bgimage/red_bg.png);
 	color: White;
 	font-family: メイリオ;
 	font-weight: bold;
@@ -37,7 +37,7 @@ body {
 	padding: 0;
 	width: 600px;
 	height: 272px;
-	background-image: url(img/rotation_bg.png);
+	background-image: url(../tyrano/images/rotation_bg.png);
 	background-size: 100%;
 	background-repeat: none;
 	border-radius: 35px;

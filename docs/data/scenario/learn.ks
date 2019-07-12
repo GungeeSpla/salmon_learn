@@ -5,16 +5,405 @@
 *Title
 ;=======================================
 
+;[mask time=300]
+[iscript]
+if (! sf.last_visit_version) sf.last_visit_version = 0;
+[endscript]
+[wait     cond="sf.last_visit_version < 20000" time=2000]
+[if exp="sf.last_visit_version < 20000"]
+	[preload wait=true storage=data/image/masking_image.png]
+	[mask graphic=masking_image.png]
+	[wait time=2000]
+[else]
+	[mask time=300]
+[endif]
+[layopt layer=0 visible=true]
+[layopt layer=1 visible=true]
+[layopt layer=message0 visible=false]
+[bg time=0 storage=red_bg.png]
+[image layer=1 zindex=100 x=40 y=20 storage=logo.png width=550 name=logo]
+;[image layer=1 zindex=100 x=0 y=840 width=640 height=120 storage=../bgimage/black.png zindex=100]
+[button fix=true graphic=panel_1.png  x=0   y=840 width=160 target=*Panel_1 name=panel,panel_1]
+[button fix=true graphic=panel_2.png  x=160 y=840 width=160 target=*Panel_2 name=panel,panel_2]
+[button fix=true graphic=panel_3.png  x=320 y=840 width=160 target=*Panel_3 name=panel,panel_3]
+[button fix=true graphic=panel_4.png  x=480 y=840 width=160 target=*Panel_4 name=panel,panel_4]
+[eval exp="tf.reseted=true"]
+[iscript]
+if (! sf.panel) sf.panel = 1;
+tf.panel = "*Panel_" + sf.panel;
+[endscript]
+[call target=&tf.panel]
+[eval exp="tf.reseted=false"]
+[if exp="sf.last_visit_version < 20000"]
+	[mask_off time=1000]
+[else]
+	[mask_off time=300]
+[endif]
+[eval exp="sf.last_visit_version = window.VERSION"]
+[s]
+
+;=======================================
+*Panel_Reset
+[return cond="tf.reseted"]
+[cm]
+[anim layer=1 name=logo opacity=255 time=0]
+[freeimage layer=0 time=0]
+[return]
+
+;=======================================
+*Panel_1
+[eval exp="sf.panel = 1"]
+[call target=*Panel_Reset]
+[iscript]
+tf.x = 40;
+tf.y = 180;
+$(".panel").removeClass("panel_now");
+$(".panel_1").addClass("panel_now");
+[endscript]
+[image layer=0                           x=&tf.x+150  y=&tf.y+20 storage=goldie.png width=60]
+[ptext layer=0 text=間欠泉 size=40       x=&tf.x+220 y=&tf.y+25 bold=bold]
+[ptext layer=0 text=シェケナダム size=30 x=&tf.x+60  y=&tf.y+105]
+[ptext layer=0 text=ドン･ブラコ  size=30 x=&tf.x+60  y=&tf.y+175]
+[ptext layer=0 text=シャケト場   size=30 x=&tf.x+60  y=&tf.y+245]
+[ptext layer=0 text=トキシラズ   size=30 x=&tf.x+60  y=&tf.y+315]
+[ptext layer=0 text=ポラリス     size=30 x=&tf.x+60  y=&tf.y+385]
+[glink text=通常 x=&tf.x+270 y=&tf.y+100 size=25 color=tsujo  target=Init exp="f.target='Define_Damu_Tsujo_Kanketsu'"]
+[glink text=満潮 x=&tf.x+390 y=&tf.y+100 size=25 color=mancho target=Init exp="f.target='Define_Damu_Mancho_Kanketsu'"]
+[glink text=通常 x=&tf.x+270 y=&tf.y+170 size=25 color=tsujo  target=Init exp="f.target='Define_Burako_Tsujo_Kanketsu'"]
+[glink text=満潮 x=&tf.x+390 y=&tf.y+170 size=25 color=mancho target=Init exp="f.target='Define_Burako_Mancho_Kanketsu'"]
+[glink text=通常 x=&tf.x+270 y=&tf.y+240 size=25 color=tsujo  target=Init exp="f.target='Define_Toba_Tsujo_Kanketsu'"]
+[glink text=満潮 x=&tf.x+390 y=&tf.y+240 size=25 color=mancho target=Init exp="f.target='Define_Toba_Mancho_Kanketsu'"]
+[glink text=通常 x=&tf.x+270 y=&tf.y+310 size=25 color=tsujo  target=Init exp="f.target='Define_Toki_Tsujo_Kanketsu'"]
+[glink text=満潮 x=&tf.x+390 y=&tf.y+310 size=25 color=mancho target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
+[glink text=通常 x=&tf.x+270 y=&tf.y+380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
+[glink text=満潮 x=&tf.x+390 y=&tf.y+380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
+[return]
+
+;=======================================
+*Panel_2
+[eval exp="sf.panel = 2"]
+[call target=*Panel_Reset]
+[iscript]
+tf.x = 40;
+tf.y = -280;
+$(".panel").removeClass("panel_now");
+$(".panel_2").addClass("panel_now");
+[endscript]
+[image layer=0                             x=&tf.x+80 y=&tf.y+460 storage=komori.png width=90]
+[ptext layer=0 text=コウモリマップ size=40 x=&tf.x+160 y=&tf.y+480 bold=bold]
+[ptext layer=0 text=シェケナダム   size=30 x=&tf.x+60 y=&tf.y+565]
+[ptext layer=0 text=ドン･ブラコ    size=30 x=&tf.x+60 y=&tf.y+635]
+[ptext layer=0 text=シャケト場     size=30 x=&tf.x+60 y=&tf.y+705]
+[ptext layer=0 text=トキシラズ     size=30 x=&tf.x+60 y=&tf.y+775]
+[ptext layer=0 text=ポラリス       size=30 x=&tf.x+60 y=&tf.y+845]
+[glink text=通常 x=&tf.x+270 y=&tf.y+560 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
+[glink text=干潮 x=&tf.x+390 y=&tf.y+560 size=25 color=kancho target=*InitKomori exp="f.target='Define_Damu_Kancho_Komori'"]
+[glink text=通常 x=&tf.x+270 y=&tf.y+630 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Burako_Tsujo_Komori'"]
+[glink text=干潮 x=&tf.x+390 y=&tf.y+630 size=25 color=kancho target=*InitKomori exp="f.target='Define_Burako_Kancho_Komori'"]
+[glink text=通常 x=&tf.x+270 y=&tf.y+700 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toba_Tsujo_Komori'"]
+[glink text=干潮 x=&tf.x+390 y=&tf.y+700 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toba_Kancho_Komori'"]
+[glink text=通常 x=&tf.x+270 y=&tf.y+770 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toki_Tsujo_Komori'"]
+[glink text=干潮 x=&tf.x+390 y=&tf.y+770 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toki_Kancho_Komori'"]
+[glink text=通常 x=&tf.x+270 y=&tf.y+840 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Pora_Tsujo_Komori'"]
+[glink text=干潮 x=&tf.x+390 y=&tf.y+840 size=25 color=kancho target=*InitKomori exp="f.target='Define_Pora_Kancho_Komori'"]
+[return]
+
+;=======================================
+*Panel_3
+[eval exp="sf.panel = 3"]
+[call target=*Panel_Reset]
+;[anim layer=0 name=logo opacity=0 time=0]
+[ptext layer=0 page=fore text=エラーが発生しました🤔     size=24 bold=bold x=0 y=350 width=640 align=center name=error_message,hidden]
+[ptext layer=0 page=fore text=現在ご利用いただけません🙇 size=24 bold=bold x=0 y=400 width=640 align=center name=error_message,hidden]
+[ptext layer=0 page=fore text=オープン! color=0x22FF22     size=24 bold=bold x=0 y=170 width=640 align=center name=open_title,hidden]
+[glink text=»&nbsp;予報を見る x=1380 y=433 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=0; f.noselect=1"]
+[glink text=»&nbsp;予報を見る x=1380 y=743 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=1; f.noselect=0"]
+[iscript]
+tf.x = 20;
+tf.y = 120;
+$(".panel").removeClass("panel_now");
+$(".panel_3").addClass("panel_now");
+salmonrunAPI.cloneRotationObj("salmon_rotation_1", 0, 200);
+salmonrunAPI.cloneRotationObj("salmon_rotation_2", 0, 510);
+salmonrunAPI.get(function (data) {
+	salmonrunAPI.render(data);
+	$(".rotation_eval_button").animate({left: "-=1000"}, 0);
+}, function () {
+	console.error("サーモンランAPIの実行に失敗しました。");
+	$(".error_message").fadeIn(0);
+});
+[endscript]
+[return]
+
+*Panel_3_Eval
+[iscript]
+$('<div class="button_cover"></div>').appendTo(".tyrano_base");
+[endscript]
+[iscript]
+$(".error_message").remove();
+$(".open_title").remove();
+$logo     = $(".logo");
+$select   = $(".salmon_rotation_" + (f.select + 1));
+$noselect = $(".salmon_rotation_" + (f.noselect + 1));
+var time = 1200;
+var ease = "easeInOutCubic";
+$select.animate({"top": "6px"}, time, ease);
+$logo.animate({"opacity": "0"}, time, ease);
+$noselect.fadeOut(time, ease);
+[endscript]
+[wait time=1200]
+[html name=html_space]
+<div class="canvas_chart_wrapper">
+	<canvas class="canvas_chart" id="canvas_chart" width="400" height="400"></canvas>
+</div>
+<div class="eval_score">
+	<span class="eval_score_1">偏差値は…</span>
+	<span class="eval_score_2">50</span>
+	<span class="eval_score_3">.0!</span>
+</div>
+[endhtml]
+[iscript]
+$(".html_space").appendTo(".0_fore")
+[endscript]
+[wait time=1000]
+[iscript]
+var rater = salmonrunRater;
+window.evalData   = ROTATION_DATA[f.select];
+window.evalResult = rater.eval(evalData.w1, evalData.w2, evalData.w3, evalData.w4);
+rater.showScore(evalResult.score);
+rater.drawChart(evalResult.radarData);
+[endscript]
+[wait time=100]
+[wait time=1200]
+[glink text=次へ x=280 y=750 size=24 color=eval_next_button target=Panel_3_Message]
+[iscript]
+$(".button_cover").remove();
+[endscript]
+[s]
+
+*Panel_3_Message
+
+[iscript]
+$(".canvas_chart_wrapper").css({"animation-fill-mode": "none"}).fadeOut(500, function(){$(this).remove()});
+$(".eval_score"          ).css({"animation-fill-mode": "none"}).fadeOut(500, function(){
+	$(this).remove()
+	$('<div class="eval_fukidashi"></div>').appendTo(".0_fore");
+	$('<img class="eval_ika" src="./data/fgimage/eval_ika.png">').appendTo(".0_fore");
+	tf.messages = salmonrunRater.createEvalMessage(evalResult);
+	tf.messageArea = $(".eval_fukidashi");
+	tyranoAPI.jump("", "Panel_3_Message_Next", 300);
+});
+[endscript]
+[s]
+
+*Panel_3_Message_Next
+
+[iscript]
+$('<div class="button_cover"></div>').appendTo(".tyrano_base");
+[endscript]
+[iscript]
+tf.wait = false;
+var $p = tf.messageArea.find("p");
+if ($p.size() > 0) {
+	tf.wait = true;
+	$p.css({"animation-name": "none"}).fadeOut(500, function(){$(this).remove()});
+}
+[endscript]
+[wait time=500 cond=tf.wait]
+[iscript]
+var count = 0;
+if (tf.messages.length > 0) {
+	for (var i = 0; i < 3; i++) {
+		if (tf.messages.length > 0) {
+			var mes = tf.messages.shift();
+			var delay = i * 300;
+			tf.messageArea.append('<p style="animation-delay: ' + delay + 'ms">' + mes + '</p>');
+			count++;
+		}
+	}
+}
+if (tf.messages.length > 0) {
+	tf.end = false;
+	tf.text = "次へ";
+	tf.target = "Panel_3_Message_Next";
+	tf.x = 280;
+	tf.y = 750;
+}
+else {
+	tf.x = 270;
+	tf.y = 770;
+	tf.end = true;
+	tf.text = "終わる";
+	tf.target = "Panel_3_Eval_End";
+	if (evalResult.randomType > 1) {
+		tf.end = false;
+		tf.x = 280;
+		tf.y = 750;
+	}
+}
+tf.time = 300 + 300 * count;
+[endscript]
+[wait time=&tf.time]
+[glink text=&tf.text x=&tf.x y=&tf.y size=24 color=eval_next_button target=&tf.target exp="tf.end2 = true"]
+[glink text=ブキの個別パラメータを見る x=30 y=700 size=24 color=eval_next_button target=Panel_3_Eval_End cond="tf.end" exp="tf.end2 = false"]
+[iscript]
+$(".button_cover").remove();
+[endscript]
+[s]
+
+*Panel_3_Eval_End
+[iscript]
+$('<div class="button_cover"></div>').appendTo(".tyrano_base");
+[endscript]
+[iscript]
+tf.messageArea.css({"animation-fill-mode": "none"}).fadeOut(500, function(){$(this).remove()});
+$(".eval_ika").css({"animation-fill-mode": "none"}).fadeOut(500, function(){$(this).remove()});
+$(".salmon_rotation_cloned").css({"animation-fill-mode": "none"}).fadeOut(500, function(){$(this).remove()});
+[endscript]
+[wait time=800]
+[iscript]
+$(".button_cover").remove();
+[endscript]
+[jump cond="!tf.end2" target=Panel_3_Eval_Weapon]
+[call target=Panel_3]
+[s]
+
+*Panel_3_Eval_Weapon
+[cm]
+[iscript]
+weaponRater.make([
+	parseInt(evalData.w1),
+	parseInt(evalData.w2),
+	parseInt(evalData.w3),
+	parseInt(evalData.w4)
+]);
+$(".layer_free").show(0);
+[endscript]
+[s]
+
+;=======================================
+*Panel_4
+[eval exp="sf.panel = 4"]
+[call target=*Panel_Reset]
+[iscript]
+if (! tf.credit) tf.credit = "Panel_4_1";
+tf.x = 40;
+tf.y = 200;
+$(".panel").removeClass("panel_now");
+$(".panel_4").addClass("panel_now");
+[endscript]
+[jump target=&tf.credit]
+
+*Panel_4_1
+[html name=credit_wrapper]
+<div class="credit about">
+	<p>「SALMON LEARN -サーモンラーン-」は、<br>Nintendo Switch用のゲームソフト「Splatoon2」の<br>ゲームモード「サーモンラン」についての<br>情報を提供するWebアプリです。</p>
+	<br>
+	<p>間欠泉の開栓シミュレーション、<br>コウモリの誘導シミュレーション、<br>シフトの確認および予報のチェックを<br>することができます。</p>
+	<br>
+	<p>Ver.2.0.0</p>
+</div>
+[endhtml]
+[glink text=作者と関連リンク x=060 width=200 y=730 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]
+[glink text=クレジット       x=355 width=200 y=730 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_3'"]
+[jump target=Panel_4_4]
+
+*Panel_4_Jump
+[call target=&tf.credit]
+[eval exp="tf.credit = false"]
+[s]
+
+*Panel_4_2
+[html name=credit_wrapper]
+<div class="credit author">
+	<h1>作者</h1>
+	<br>
+	<p>ガンジー (<a href="https://twitter.com/gungeespla">@GungeeSpla</a>)</p>
+	<p>バグ報告などはTwitterまでお願いします。</p>
+	<br>
+	<h1>その他</h1>
+	<br>
+	<p><a href="javascript:void(0)" class="live2d">Live2Dのイカちゃんイラストを見る</a></p>
+	<p>動作環境によっては、カクついたり、<br>真っ暗なまま表示されなったりします🙇</p>
+	<br>
+	<p><a href="http://amzn.asia/1OJG2pV">作者のWith List</a></p>
+</div>
+[endhtml]
+[iscript]
+$(".live2d").click(function(){
+	f.target="Goto_Senpai";
+	tyranoAPI.jump("", "Init");
+});
+[endscript]
+[jump target=Panel_4_4]
+
+*Panel_4_3
+[html name=credit_wrapper]
+<div class="credit">
+	<h1>クレジット</h1>
+	<h2>コウモリマップに関する知見の引用･参考</h2>
+	<p>ザラメ (<a href="https://twitter.com/zarame2431">@zarame2431</a>)</p>
+	<p>カトレア (<a href="https://twitter.com/ikatorea">@ikatorea</a>)</p>
+	
+	<h2>間欠泉の開栓手順に関する知見の引用･参考</h2>
+	<p>いh7 (<a href="https://twitter.com/ultmis">@ultmis</a>)</p>
+	<p>えむいー (<a href="https://twitter.com/tkgling">@tkgling</a>, <a href="https://tkgstrator.work/">https://tkgstrator.work/</a>)</p>
+	<p><a href="https://splatoon-yoru.com/">https://splatoon-yoru.com/</a></p>
+	
+	<h2>サーモンランのシフト取得API</h2>
+	<p>ウラル (<a href="https://twitter.com/barley_ural">@barley_ural</a>, <a href="https://splamp.info/">https://splamp.info/</a>)</p>
+	
+	<h2>その他画像や情報の引用など</h2>
+	<p><a href="https://wikiwiki.jp/splatoon2mix/">https://wikiwiki.jp/splatoon2mix/</a></p>
+	<p><a href="https://splatoonwiki.org/wiki/">https://splatoonwiki.org/wiki/</a></p>
+</div>
+[endhtml]
+[jump target=Panel_4_4]
+
+/*
+[ptext layer=0 text=引用･参考･協力 bold=bold                     size=40 x=0   y=200 width=640 align=center]
+[ptext layer=0 text=ザラメ&nbsp;(@zarame2431)                    size=20 x=160 y=270]
+[ptext layer=0 text=カトレア&nbsp;(@ikatorea)                    size=20 x=160 y=300]
+[ptext layer=0 text=いh7&nbsp;(@ultmis)                          size=20 x=160 y=330]
+[ptext layer=0 text=えむいー&nbsp;(@tkgling)                     size=20 x=160 y=360]
+[ptext layer=0 text=https://splatoon-yoru.com/                   size=20 x=160 y=410]
+[ptext layer=0 text=https://wikiwiki.jp/splatoon2mix/            size=20 x=160 y=440]
+[ptext layer=0 text=https://splatoonwiki.org/wiki/               size=20 x=160 y=470]
+[ptext layer=0 text=https://splamp.info/                         size=20 x=160 y=500]
+[ptext layer=0 text=制作 bold=bold                               size=40 x=0   y=560 width=640 align=center]
+[ptext layer=0 text=ガンジー&nbsp;(@GungeeSpla)                  size=20 x=160 y=630]
+;[glink text=作者のWish&nbsp;List x=240 y=873 size=18.6 color=black name=link target=Link]
+;[iscript]
+;$(".link").off("click").wrap('<a href="http://amzn.asia/1OJG2pV"></a>');
+;[endscript]
+[mylink link=https://twitter.com/GungeeSpla text=作者のTwitterへ x=155 y=666 size=19 color=black name=link target=Link]
+[glink text=たわむれ x=155 y=716 size=19 color=black name=link target=Init exp="f.target='Goto_Senpai'"]
+*/
+*Panel_4_4
+[return]
+
+
+
+
+
+
+
+
+
+
+
+;=======================================
+*OldTitle
+;=======================================
+
 [layopt layer=0 visible=true]
 [layopt layer=1 visible=true]
 [layopt layer=message0 visible=false]
 
 [mask time=300]
-[bg time=0 storage=black.png]
+[bg time=0 storage=red_bg.png]
 
 [image layer=0 x=50 y=20 storage=goldie.png width=60]
-[image layer=0 x=40 y=460 storage=komori.png width=90]
-[ptext layer=0 text=コウモリマップ size=40 x=120 y=480 bold=bold]
 [ptext layer=0 text=間欠泉 size=40 x=120 y=25 bold=bold]
 [ptext layer=0 text=シェケナダム size=30 x=60 y=105]
 [ptext layer=0 text=ドン･ブラコ  size=30 x=60 y=175]
@@ -31,7 +420,11 @@
 [glink text=満潮 x=390 y=310 size=25 color=mancho target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
 [glink text=通常 x=270 y=380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
 [glink text=満潮 x=390 y=380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
+
 [glink text=THANKS x=500 y=30 size=20 color=blue target=Thanks]
+
+[image layer=0 x=40 y=460 storage=komori.png width=90]
+[ptext layer=0 text=コウモリマップ size=40 x=120 y=480 bold=bold]
 [ptext layer=0 text=シェケナダム size=30 x=60 y=565]
 [ptext layer=0 text=ドン･ブラコ  size=30 x=60 y=635]
 [ptext layer=0 text=シャケト場   size=30 x=60 y=705]
@@ -59,11 +452,26 @@ f.bool = (s.indexOf("test") > -1);
 [mask_off time=300]
 [s]
 
+*Goto_Eval
+
+[mask time=300]
+[clearfix]
+[cm]
+[bg storage=black.png time=0]
+[freelayer layer=0]
+[wait time=100]
+[mask_off time=0]
+[jump storage=eval.ks]
+[s]
+
 *Goto_Senpai
 
 [mask time=300]
+[clearfix]
 [cm]
+[bg storage=black.png time=0]
 [freelayer layer=0]
+[wait time=100]
 [mask_off time=0]
 [jump storage=scene.ks]
 [s]
@@ -1105,9 +1513,9 @@ $(".fixbutton").hide();
 [endscript]
 [image layer=1 storage=atari.png x=0 y=0]
 
-[glink text=もう1回               x=60  y=680 width=450 target=Restart]
-[glink text=答えを指定してもう1回 x=60  y=760 width=450 target=RestartB]
-[glink text=もどる                x=60  y=840 width=450 target=Retitle]
+[glink text=もう1回               x=60  size=28 y=740 width=450 target=Restart]
+[glink text=答えを指定してもう1回 x=60  size=28 y=815 width=450 target=RestartB]
+[glink text=もどる                x=60  size=28 y=890 width=450 target=Retitle]
 [s]
 
 ;=======================================
@@ -1163,11 +1571,19 @@ $("canvas")[0].getContext("2d").clearRect(0, 0, 640, 960);
 *Define
 ;=======================================
 
+[macro name=mylink]
+[glink *]
+[iscript]
+$("."+mp.name).off("click").wrap('<a href="'+mp.link+'"></a>');
+[endscript]
+[endmacro]
+
 [iscript]
 f.ikaDx = 40;
 f.ikaDy = 40;
 f.komoriDx = 30;
 f.komoriDy = 35;
+f.bg = "black.png";
 [endscript]
 [iscript]
 (function(target) {

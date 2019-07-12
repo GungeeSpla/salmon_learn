@@ -8,14 +8,25 @@
 <meta name="viewport" content=" user-scalable=no" />
 <meta name="robots" content="noindex,nofollow" />
 
+<meta name="twitter:card"          content="player" />
+<meta name="twitter:site"          content="@username" />
+<meta name="twitter:title"         content="SALMON LEARN -サーモンラーン-" />
+<meta name="twitter:description"   content="Splatoon2のサーモンランの間欠泉シミュレーションやコウモリ誘導シミュレーションなどが可能なWebアプリです。" />
+<meta name="twitter:url"           content="https://gungeespla.github.io/salmon_learn/" />
+<meta name="twitter:image"         content="https://gungeespla.github.io/salmon_learn/data/image/thumb.jpg" />
+<meta name="twitter:player"        content="https://gungeespla.github.io/salmon_learn/" />
+<meta name="twitter:player:width"  content="640" />
+<meta name="twitter:player:height" content="960" />
+
+
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="favicon.png">
-<link href="./tyrano/tyrano.css?6" rel="stylesheet" type="text/css"/>
+<link href="./tyrano/tyrano.css?020000" rel="stylesheet" type="text/css"/>
 <link href="./tyrano/animate.css" rel="stylesheet" type="text/css"/>
 <link href="./tyrano/libs/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
 <script type="text/javascript" src="./tyrano/libs/jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="./tyrano/libs/jquery-ui.min.js?1"></script>
+<script type="text/javascript" src="./tyrano/libs/jquery-ui.min.js?020000"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery.a3d.js"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery.ui.touch-punch.min.js"></script>
 
@@ -37,6 +48,13 @@
 <script type="text/javascript" src="./tyrano/lang.js" ></script>
 <script type="text/javascript" src="./tyrano/libs.js" ></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script type="text/javascript" src="./tyrano/salmon.others.js?020000" ></script>
+<script type="text/javascript" src="./tyrano/salmon.weapons.js?020000" ></script>
+<script type="text/javascript" src="./tyrano/salmon.api.js?020000" ></script>
+<script type="text/javascript" src="./tyrano/salmon.rater.js?020000" ></script>
+<script type="text/javascript" src="./tyrano/salmon.history.js?020000" ></script>
+
 <script type="text/javascript" src="./tyrano/tyrano.js" ></script>
 <script type="text/javascript" src="./tyrano/tyrano.base.js" ></script>
 
@@ -52,6 +70,7 @@
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_ext.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_system.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag.js" ></script>
+
 
 
 <link href="./tyrano/libs/textillate/assets/animate.css" rel="stylesheet">
@@ -93,6 +112,19 @@ window.onload = function() { setTimeout(doScroll, 100); }
   <button data-remodal-action="confirm" class="remodal-confirm">OK</button>
 </div>
 
+<!-- シフト用 -->
+<div class="hidden salmon_rotation_wrapper salmon_rotation_origin">
+	<p class="salmon_rotation_title">　</p>
+	<div class="salmon_rotation">
+		<p class="salmon_rotation_time"></p>
+		<img class="salmon_rotation_stage" src="tyrano/images/transport.png">
+		<p class="salmon_rotation_stage_name"></p>
+		<p class="salmon_rotation_weapon_title">支給ブキ</p>
+		<div class="salmon_rotation_weapons">
+			<img class="salmon_rotation_weapon_1" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_2" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_3" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_4" src="tyrano/images/transport.png">
+		</div>
+	</div>
+</div>
 
 </body>
 </html>

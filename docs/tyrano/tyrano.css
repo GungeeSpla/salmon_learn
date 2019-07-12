@@ -559,3 +559,402 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
     z-index:9999999;
 }
 
+.panel {
+	filter: brightness(50%);
+	background-color: black;
+	background-size: 100%;
+	background-image: none;
+}
+.panel_now {
+	filter: brightness(100%);
+	background-image: url(images/panel.png);
+}
+.hidden {
+	display: none;
+}
+.salmon_rotation_wrapper {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	width: auto;
+	color: White;
+	font-weight: bold;
+}
+.salmon_rotation_title {
+	font-size: 30px;
+	text-align: center;
+	width: 600px;
+	padding: 0px 24px;
+	margin: 0;
+	color: #73DD73;
+	text-shadow: black 4px 4px 4px;
+	display: none;
+}
+.salmon_rotation {
+	position: relative;
+	margin: 10px 20px 40px;
+	padding: 0;
+	width: 600px;
+	height: 272px;
+	background-color: Black;
+	background-image: url(images/rotation_bg.png);
+	background-size: 100%;
+	background-repeat: none;
+	border-radius: 35px;
+	box-shadow: rgba(0,0,0,0.5) 5px 5px 5px;
+}
+.salmon_rotation * {
+	padding: 0;
+	margin: 0;
+}
+.salmon_rotation_time {
+	position: absolute;
+	top: 20px;
+	left: 92px;
+	font-size: 26px;
+}
+.salmon_rotation_stage {
+	width: 220px;
+	height: 123px;
+	position: absolute;
+	top: 90px;
+	left: 32px;
+	border-radius: 20px;
+}
+.salmon_rotation_stage_name {
+	position: absolute;
+	top: 224px;
+	left: 32px;
+	text-align: center;
+	width: 220px;
+	font-size: 16px;
+}
+.salmon_rotation_weapon_title {
+	position: absolute;
+	top: 100px;
+	left: 277px;
+	font-size: 20px;
+}
+.salmon_rotation_weapons {
+	position: absolute;
+	top: 140px;
+	left: 277px;
+}
+.salmon_rotation_weapons img {
+	width: 68px;
+	height: 68px;
+	margin-right: 5px;
+}
+.rotation_yobi {
+	font-size: 70%;
+	margin-left: -6px;
+	display: inline-block;
+	transform: translate(0px, -1px);
+}
+.rotation_eval_button {
+	color: #fd5f5f;
+	background: #5f1001;
+	font-weight: bold;
+	border-radius: 20px;
+}
+.rotation_eval_button:hover {
+	background: #9a250f;
+}
+.html_space {
+	width: 100%;
+	height: 100%;
+}
+.canvas_chart_wrapper {
+	position: absolute;
+	top: 275px;
+	left: 130px;
+	width: 400px;
+	height: 400px;
+	background-image: url(images/canvas_chart_bg.png);
+	background-size: 100%;
+	
+	animation-name: myFadeIn;
+	animation-duration: 1.5s;
+	animation-fill-mode: both;
+}
+.canvas_chart {
+	width: 100%;
+	height: 100%;
+	display: block;
+	filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.5));
+}
+.chart_point_title {
+	color: white;
+	font-weight: bold;
+	font-size: 24px;
+	position: absolute;
+	top: 309px;
+	left: 326px;
+	display: block;
+}
+.eval_score_commnt {
+	filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.5));
+	position: absolute;
+	top: 721px;
+	left: 0px;
+	width: 640px;
+	text-align: center;
+	color: #f9ff00;
+	font-weight: bold;
+	font-size: 30px;
+	
+	animation-name: myFadeInUp;
+	animation-delay: 2.5s;
+	animation-duration: 1.5s;
+	animation-fill-mode: both;
+}
+.eval_score {
+	filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.5));
+	position: absolute;
+	top: 660px;
+	left: 149px;
+	color: #f9ff00;
+	font-weight: bold;
+	font-size: 40px;
+	line-height: 40px;
+	border-bottom: 8px solid #f9ff00;
+	
+	animation-name: myFadeInUp;
+	animation-delay: 1.5s;
+	animation-duration: 1.5s;
+	animation-fill-mode: both;
+}
+.eval_score_2 {
+	font-size: 170%;
+}
+.button_cover {
+    position: absolute;
+    z-index: 199999999;
+    display: inline;
+    left: 0px;
+    top: 840px;
+    width: 960px;
+    height: 120px;
+}
+.eval_fukidashi {
+    position: absolute;
+    left: 0px;
+    top: 300px;
+    width: 640px;
+    height: 440px;
+    background-image: url(images/fukidashi.png);
+    background-size: 100%;
+    box-sizing: border-box;
+    padding: 50px 110px 20px;
+    color: White;
+    font-size: 20px;
+    font-weight: bold;
+	animation-name: myFadeIn;
+	animation-duration: 800ms;
+	animation-fill-mode: both;
+}
+.eval_fukidashi p {
+	animation-name: myFadeInUp;
+	animation-duration: 1500ms;
+	animation-fill-mode: both;
+    margin-bottom: 20px;
+}
+.eval_fukidashi b {
+	color: Orange;
+}
+.eval_ika {
+    position: absolute;
+    left: 410px;
+    top: 600px;
+	animation-name: myFadeIn;
+	animation-duration: 800ms;
+	animation-fill-mode: both;
+}
+.eval_next_button {
+    color: #606a21;
+    background: #fffc00;
+    font-weight: bold;
+    border-radius: 34px;
+	animation-name: myFadeIn;
+	animation-duration: 400ms;
+	animation-fill-mode: both;
+}
+.credit_button {
+    color: #144b3b;
+    background: #14d053;
+    font-weight: bold;
+    border-radius: 34px;
+}
+.credit h1 {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 10px 0px;
+}
+.credit h2 {
+	color: Orange;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 20px 0px 10px;
+}
+.credit a {
+	color: White;
+}
+.credit {
+    position: absolute;
+    left: 0px;
+    top: 190px;
+    width: 640px;
+}
+.about {
+	top: 250px;
+	line-height: 200%;
+}
+.author {
+	top: 230px;
+	line-height: 200%;
+}
+.credit_wrapper {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 640px;
+    height: 960px;
+    color: White;
+    text-align: center;
+    font-size: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+.weapon_menu {
+	position: absolute;
+    top: 15px;
+    left: 65px;
+    width: 510px;
+    height: 84px;
+    box-sizing: border-box;
+    padding: 8px 20px;
+	background-image: url(../data/bgimage/shimashima.png);
+	background-repeat: no-repeat;
+	border-radius: 20px;
+    text-align: center;
+}
+.weapon_menu img {
+    width: 66px;
+    height: 66px;
+    cursor: pointer;
+    margin: 0px 13px;
+}
+.weapon_comment_wrapper {
+	position: absolute;
+    top: 465px;
+    left: 65px;
+    width: 510px;
+    height: 340px;
+    box-sizing: border-box;
+    padding: 14px 30px;
+	background-image: url(../data/bgimage/shimashima.png);
+	background-repeat: no-repeat;
+	border-radius: 20px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 18px;
+    color: White;
+}
+.weapon_comment_a {
+	display: inline-block;
+}
+.weapon_comment_b {
+    font-size: 80%;
+    font-weight: bold;
+    color: orange;
+}
+.weapon_comment_c {
+	
+}
+.weapon_comment_wrapper h1 {
+    text-align: center;
+    font-weight: bold;
+    margin: 0 0 8px;
+    padding: 0;
+    font-size: 24px;
+    color: Orange;
+}
+.weapon_comment_wrapper p {
+    margin: 0;
+    padding: 0;
+}
+.canvas_chart_weapon_wrapper {
+	position: absolute;
+	top: 115px;
+	left: 295px;
+	width: 320px;
+	height: 320px;
+	background-image: url(./images/canvas_chart_bg.png);
+	background-size: 100%;
+	background-repeat: no-repeat;
+	
+	animation-name: myFadeIn;
+	animation-duration: 1.5s;
+	animation-fill-mode: both;
+}
+.canvas_chart_weapon {
+	width: 100%;
+	height: 100%;
+	display: block;
+	filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.5));
+}
+
+.weapon_image {
+	position: absolute;
+	top: 160px;
+	left: 70px;
+	display: inline-block;
+	width: 180px;
+	height: 180px;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	-webkit-box-reflect: below 2px -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(0.5, transparent), to(rgba(0,0,0,0.4)));
+}
+.weapon_image_shadow {
+	position: absolute;
+	display: block;
+	width: 100%;
+	top: 99%;
+}
+
+
+
+
+
+
+
+
+
+
+@keyframes myFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes myFadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

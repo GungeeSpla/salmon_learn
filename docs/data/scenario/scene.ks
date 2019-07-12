@@ -1,43 +1,26 @@
+*start
+
+/*
+s001 待機中 視線を漂わせる
+s002 こちらを見る
+s003 └→待機
+s004 顔を傾けてにっこり笑う
+s005 └→待機
+s006 体を引きながら照れる
+s007 └→待機
+s008 左上を見上げながら考える（wait=1300）
+*/
+
 [call target=init_macro]
-
-; プリロード
-[load_start]
-[preload wait=true storage=data/others/live2d/assets/ikachan/ikachan.1024/texture_00.png]
-[preload wait=true storage=data/bgimage/bg.png]
-[preload wait=true storage=data/fgimage/name_hatena.png]
-[preload wait=true storage=data/fgimage/name_senpai.png]
-[preload wait=true storage=data/image/mw.png]
-[preload wait=true storage=tyrano/images/system/sentaku.png]
-[preload wait=true storage=tyrano/images/system/sentaku2.png]
-[preload wait=true storage=tyrano/images/system/nextpage.png]
-[preload wait=true storage=data/image/screen.png]
-[load_end]
-
-; 背景
-[mask time=0]
-[bg time=0 storage=bg.png]
-;[layermode graphic=screen.png mode=screen time=0]
-[mask_off time=800]
-
-; メッセージウィンドウの調整
-[layopt layer=message0 visible=false]
-[position width=640 height=240 frame=mw.png top=640 left=0 marginl=120 margint=54 marginr=40 opacity=220]
-[glyph fix=true line=nextpage.png left=590 top=830]
-
-;フォント設定
-[deffont color=0xFFFFFF size=28 bold=true]
-[resetfont]
+[call target=init_setting]
 
 ;立ち絵表示(LIVE2D)
 [live2d_new        name="ikachan" left=-160 top=0 width=960 height=960 gltop=0.4 glleft=0 glscale=1.4]
 [live2d_motion     name="ikachan" filenm="s001.mtn" idle="ON"]
 [live2d_show       name="ikachan" time=1800]
 
-
-
-[jump target=visited cond="sf.visited==1"]
+;[jump target=visited cond="sf.visited==1"]
 [eval exp="sf.visited=1"]
-
 
 ;メッセージウィンドウ
 [mw_on]
@@ -200,6 +183,37 @@ STタイマーをちょこっとだけ[r]
 [jump target=back_title]
 [s]
 
+*init_setting
+
+; プリロード
+[load_start]
+[preload wait=true storage=data/others/live2d/assets/ikachan/ikachan.1024/texture_00.png]
+[preload wait=true storage=data/bgimage/bg.png]
+[preload wait=true storage=data/fgimage/name_hatena.png]
+[preload wait=true storage=data/fgimage/name_senpai.png]
+[preload wait=true storage=data/image/mw.png]
+[preload wait=true storage=tyrano/images/system/sentaku.png]
+[preload wait=true storage=tyrano/images/system/sentaku2.png]
+[preload wait=true storage=tyrano/images/system/nextpage.png]
+[preload wait=true storage=data/image/screen.png]
+[load_end]
+
+; 背景
+[mask time=0]
+[bg time=0 storage=bg.png]
+;[layermode graphic=screen.png mode=screen time=0]
+[mask_off time=800]
+
+; メッセージウィンドウの調整
+[layopt layer=message0 visible=false]
+[position width=640 height=240 frame=mw.png top=640 left=0 marginl=120 margint=54 marginr=40 opacity=220]
+[glyph fix=true line=nextpage.png left=590 top=830]
+
+;フォント設定
+[deffont color=0xFFFFFF size=28 bold=true]
+[resetfont]
+[return]
+
 *init_macro
 
 ;[b]
@@ -234,7 +248,7 @@ STタイマーをちょこっとだけ[r]
 [iscript]
 $(".message0_fore").fadeIn(500)
 [endscript]
-[wait time=500]
+[wait time=600]
 [endmacro]
 
 ;[mw_off]
