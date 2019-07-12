@@ -9,7 +9,6 @@
 [iscript]
 if (! sf.last_visit_version) sf.last_visit_version = 0;
 [endscript]
-[wait     cond="sf.last_visit_version < 20000" time=2000]
 [if exp="sf.last_visit_version < 20000"]
 	[preload wait=true storage=data/image/masking_image.png]
 	[mask graphic=masking_image.png]
