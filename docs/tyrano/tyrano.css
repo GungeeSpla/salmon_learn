@@ -199,6 +199,9 @@ body{
 }
 
 .tyrano_base{
+
+    font-family: メイリオ, sans-serif;
+
     -moz-user-select: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
