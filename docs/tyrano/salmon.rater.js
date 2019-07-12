@@ -335,7 +335,7 @@ for (var i = 0; i < 100; i++) {
 		var score2, score3;
 		if (score > 0) {
 			score2 = Math.floor(score);
-			score3 = parseInt((score - score2)*10);
+			score3 = Math.round((score - score2)*10);
 			$(".eval_score_2").text(score2);
 			$(".eval_score_3").text("." + score3 + "!");
 		}
