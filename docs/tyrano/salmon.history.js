@@ -1,7 +1,14 @@
 window.EVAL_AVERAGE   = {"isCalced": false};
 window.EVAL_STANDARD  = {"isCalced": false};
-window.EVAL_AVERAGE  = {"isCalced":true,"runk":59.2,"powerInWinning":63.4,"powerInLosing":52.3,"stability":51.3,"firePower":63.2,"range":55.6,"handling":56,"mobility":52.8,"flexibility":54.6,"paintabilityFloor":55,"paintabilityWall":56,"stingers":72.6,"steelheads":67.9,"drizzlers":69.7,"scrappers":75.2,"grillers":65.2,"mothership":65.9,"rush":70.7,"goldieSeeking":65.6,"smalls":63.8,"fats":71.4,"score":50};
-window.EVAL_STANDARD = {"isCalced":true,"runk":6,"powerInWinning":6,"powerInLosing":6.8,"stability":6,"firePower":7,"range":7.2,"handling":6.7,"mobility":5.4,"flexibility":6.2,"paintabilityFloor":6,"paintabilityWall":7.2,"stingers":9.1,"steelheads":6.9,"drizzlers":7.1,"scrappers":7.4,"grillers":6.6,"mothership":6,"rush":9.3,"goldieSeeking":7.7,"smalls":8.6,"fats":8.7,"score":6.7};
+window.EVAL_AVERAGE  = {"isCalced":true,"runk":59.3,"powerInWinning":63.4,"powerInLosing":52.3,"stability":51.3,"firePower":63.4,"range":55.6,"handling":56,"mobility":52.8,"flexibility":54.4,"paintabilityFloor":55,"paintabilityWall":56,"stingers":72.6,"steelheads":67.9,"drizzlers":69.7,"scrappers":75.2,"grillers":65.2,"mothership":65.9,"rush":70.7,"goldieSeeking":65.6,"smalls":63.8,"fats":71.4,"score":50};
+window.EVAL_STANDARD = {"isCalced":true,"runk":6,"powerInWinning":6,"powerInLosing":6.8,"stability":6,"firePower":7.1,"range":7.2,"handling":6.7,"mobility":5.4,"flexibility":6,"paintabilityFloor":6,"paintabilityWall":7.2,"stingers":9.1,"steelheads":6.9,"drizzlers":7.1,"scrappers":7.4,"grillers":6.6,"mothership":6,"rush":9.3,"goldieSeeking":7.7,"smalls":8.6,"fats":8.7,"score":6.8};
+/*
+window.EVAL_AVERAGE = ;
+window.EVAL_STANDARD = ;
+JSON.stringify(EVAL_AVERAGE);
+JSON.stringify(EVAL_STANDARD);
+
+*/
 window.SALMON_HISTORY = 
 [
 	[1010, 20, 3040, 5030],
