@@ -300,7 +300,7 @@ $(".panel_4").addClass("panel_now");
 	<br>
 	<p>間欠泉の開栓シミュレーション、<br>コウモリの誘導シミュレーション、<br>シフトの確認および予報のチェックを<br>することができます。</p>
 	<br>
-	<p>Ver.2.0.0</p>
+	<p>[emb exp="VERSION_STR"]</p>
 </div>
 [endhtml]
 [glink text=作者と関連リンク x=060 width=200 y=730 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]

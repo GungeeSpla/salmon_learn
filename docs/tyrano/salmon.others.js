@@ -17,7 +17,7 @@ function Unix () {
 			year  = d.getFullYear();
 			month = d.getMonth() + 1;
 			day   = d.getDate();
-			hour  = ('0' + d.getHours()).slice(-2);
+			hour  = d.getHours();
 			min   = ('0' + d.getMinutes()).slice(-2);
 			sec   = ('0' + d.getSeconds()).slice(-2);
 			yobi  = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
@@ -47,4 +47,11 @@ function TyranoAPI () {
 		}, time || 0);
 	};
 	return this;
+}
+function parseVersion (version) {
+	var v = ("000000" + version).slice(-6);
+	var a = parseInt(v[0] + v[1]);
+	var b = parseInt(v[2] + v[3]);
+	var c = parseInt(v[4] + v[5]);
+	return "Ver." + a + "." + b + "." +  c;
 }
