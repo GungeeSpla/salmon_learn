@@ -478,20 +478,23 @@ f.bool = (s.indexOf("test") > -1);
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
+/*
 [if exp=f.bool]
 	[mask time=300 color=red]
 [else]
 	[mask time=300]
 [endif]
-
+*/
 [clearstack]
 [cm]
 [clearfix]
-[freeimage layer=0 time=0]
-[freeimage layer=1 time=0]
+[freelayer layer=0]
+[freelayer layer=1]
 [bg storage=black.png time=0]
 [wait time=100]
+/*
 [mask_off time=0]
+*/
 [jump storage=scene.ks]
 [s]
 
