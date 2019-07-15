@@ -222,7 +222,7 @@ STタイマーをちょこっとだけ[r]
 [endif]
 
 ; 背景
-[mask time=0]
+[mask time=100]
 [bg time=0 storage=bg.png]
 ;[layermode graphic=screen.png mode=screen time=0]
 [mask_off time=800]
