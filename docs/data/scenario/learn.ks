@@ -22,10 +22,7 @@ if (! sf.last_visit_version) sf.last_visit_version = 0;
 [bg time=0 storage=red_bg.png]
 [image layer=1 zindex=100 x=40 y=20 storage=logo.png width=550 name=logo]
 ;[image layer=1 zindex=100 x=0 y=840 width=640 height=120 storage=../bgimage/black.png zindex=100]
-[button fix=true graphic=panel_1.png  x=0   y=840 width=160 target=*Panel_1 name=panel,panel_1]
-[button fix=true graphic=panel_2.png  x=160 y=840 width=160 target=*Panel_2 name=panel,panel_2]
-[button fix=true graphic=panel_3.png  x=320 y=840 width=160 target=*Panel_3 name=panel,panel_3]
-[button fix=true graphic=panel_4.png  x=480 y=840 width=160 target=*Panel_4 name=panel,panel_4]
+[call target=Panel_Fix_Button]
 [eval exp="tf.reseted=true"]
 [iscript]
 if (! sf.panel) sf.panel = 1;
@@ -44,9 +41,18 @@ tf.panel = "*Panel_" + sf.panel;
 ;=======================================
 *Panel_Reset
 [return cond="tf.reseted"]
+[call target=Panel_Fix_Button]
 [cm]
 [anim layer=1 name=logo opacity=255 time=0]
 [freeimage layer=0 time=0]
+[return]
+
+*Panel_Fix_Button
+[clearfix]
+[button fix=true graphic=panel_1.png  x=0   y=840 width=160 target=*Panel_1 name=panel,panel_1]
+[button fix=true graphic=panel_2.png  x=160 y=840 width=160 target=*Panel_2 name=panel,panel_2]
+[button fix=true graphic=panel_3.png  x=320 y=840 width=160 target=*Panel_3 name=panel,panel_3]
+[button fix=true graphic=panel_4.png  x=480 y=840 width=160 target=*Panel_4 name=panel,panel_4]
 [return]
 
 ;=======================================
