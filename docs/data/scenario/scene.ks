@@ -4,11 +4,6 @@
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
-[if exp=f.bool]
-[iscript]
-alert("!");
-[endscript]
-[endif]
 
 
 /*
@@ -197,13 +192,15 @@ STタイマーをちょこっとだけ[r]
 *init_setting
 
 
+[if exp=f.bool]
+[ptext x=100 y=100 layer=0 color=0xffffff bold=bold size=24 text=111111]
+[endif]
+
 ; プリロード
 [load_start]
 
 [if exp=f.bool]
-[iscript]
-alert("load_start");
-[endscript]
+[ptext x=100 y=200 layer=0 color=0xffffff bold=bold size=24 text=222222]
 [endif]
 
 [preload wait=true storage=data/others/live2d/assets/ikachan/ikachan.1024/texture_00.png]
@@ -218,9 +215,7 @@ alert("load_start");
 [load_end]
 
 [if exp=f.bool]
-[iscript]
-alert("load_end");
-[endscript]
+[ptext x=100 y=200 layer=0 color=0xffffff bold=bold size=24 text=333333]
 [endif]
 
 ; 背景
