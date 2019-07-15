@@ -478,7 +478,7 @@ f.bool = (s.indexOf("test") > -1);
 [clearfix]
 [cm]
 [bg storage=black.png time=0]
-[freelayer layer=0]
+[freeimage layer=0]
 [wait time=100]
 [mask_off time=0]
 [jump storage=scene.ks]
