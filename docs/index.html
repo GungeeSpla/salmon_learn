@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Loading TyranoScript</title>
+
+<title>SALMON LEARN -サーモンラーン-</title>
+<meta name="description" content="Splatoon2 (スプラトゥーン2) のゲームモード ｢サーモンラン｣ の攻略情報を載せているサイトです。間欠泉のシミュレーションや、コウモリ誘導のシミュレーション、シフトの確認などができます。" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <meta name="viewport" content=" user-scalable=no" />
-<meta name="robots" content="noindex,nofollow" />
 
-<meta name="twitter:card"          content="player" />
-<meta name="twitter:site"          content="@username" />
-<meta name="twitter:title"         content="SALMON LEARN -サーモンラーン-" />
+<meta name="twitter:card"		  content="player" />
+<meta name="twitter:site"		  content="@username" />
+<meta name="twitter:title"		 content="SALMON LEARN -サーモンラーン-" />
 <meta name="twitter:description"   content="Splatoon2のサーモンランの間欠泉シミュレーションやコウモリ誘導シミュレーションなどが可能なWebアプリです。" />
-<meta name="twitter:url"           content="https://gungeespla.github.io/salmon_learn/" />
-<meta name="twitter:image"         content="https://gungeespla.github.io/salmon_learn/data/image/thumb.jpg" />
-<meta name="twitter:player"        content="https://gungeespla.github.io/salmon_learn/" />
+<meta name="twitter:url"		   content="https://gungeespla.github.io/salmon_learn/" />
+<meta name="twitter:image"		 content="https://gungeespla.github.io/salmon_learn/data/image/thumb.jpg" />
+<meta name="twitter:player"		content="https://gungeespla.github.io/salmon_learn/" />
 <meta name="twitter:player:width"  content="640" />
 <meta name="twitter:player:height" content="960" />
 
 
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="favicon.png">
-<link href="./tyrano/tyrano.css?020002" rel="stylesheet" type="text/css"/>
+<link href="./tyrano/tyrano.css?020100" rel="stylesheet" type="text/css"/>
 <link href="./tyrano/animate.css" rel="stylesheet" type="text/css"/>
 <link href="./tyrano/libs/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
@@ -49,14 +49,40 @@
 <script type="text/javascript" src="./tyrano/libs.js" ></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
-<script type="text/javascript"  src="./tyrano/salmon.others.js?020002" ></script>
-<script type="text/javascript" src="./tyrano/salmon.weapons.js?020002" ></script>
-<script type="text/javascript"     src="./tyrano/salmon.api.js?020002" ></script>
-<script type="text/javascript"   src="./tyrano/salmon.rater.js?020002" ></script>
-<script type="text/javascript" src="./tyrano/salmon.history.js?020002" ></script>
+<script type="text/javascript"  src="./tyrano/salmon.others.js?020100" ></script>
+<script type="text/javascript" src="./tyrano/salmon.weapons.js?020100" ></script>
+<script type="text/javascript"	 src="./tyrano/salmon.api.js?020100" ></script>
+<script type="text/javascript"   src="./tyrano/salmon.rater.js?020100" ></script>
+<script type="text/javascript" src="./tyrano/salmon.history.js?020100" ></script>
 <script type="text/javascript">
-window.VERSION = 20002;
+window.VERSION = 20100;
 window.VERSION_STR = parseVersion(VERSION);
+</script>
+<script type="text/javascript">
+/* https://ajike.github.io/progressive-web-application/ */
+if ("serviceWorker" in navigator) {
+navigator.serviceWorker
+		 .register("/service-worker.js");
+		 .then(function() { console.log("Service Worker Registered"); });
+}
+if (("standalone" in window.navigator) && window.navigator.standalone) {
+	window.addEventListener("load", function() {
+		var links = document.links,
+			link,
+			i;
+		for (i = 0; i < links.length; i++) {
+			if (!~(link = links[i]).href.toLowerCase().indexOf("javascript")) {
+				if("href" in link && link.href.indexOf("http") !== -1 && link.href.indexOf(document.location.host) !== -1)
+				{
+					link.addEventListener("click", function(event) {
+						event.preventDefault();
+						document.location.href = this.href;
+					}, false);
+				}
+			}
+		}
+	}, false);
+}
 </script>
 
 <script type="text/javascript" src="./tyrano/tyrano.js" ></script>

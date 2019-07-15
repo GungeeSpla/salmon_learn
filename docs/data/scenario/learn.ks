@@ -325,7 +325,7 @@ $(".panel_4").addClass("panel_now");
 	<p><a href="javascript:void(0)" class="live2d">Live2Dのイカちゃんイラストを見る</a></p>
 	<p>動作環境によっては、カクついたり、<br>真っ暗なまま表示されなったりします🙇</p>
 	<br>
-	<p><a href="http://amzn.asia/1OJG2pV">作者のWith List</a></p>
+	<p><a href="http://amzn.asia/1OJG2pV">作者のWish List</a></p>
 </div>
 [endhtml]
 [iscript]
