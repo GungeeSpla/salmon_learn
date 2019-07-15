@@ -203,6 +203,7 @@ STタイマーをちょこっとだけ[r]
 [ptext x=100 y=200 layer=0 color=0xffffff bold=bold size=24 text=222222]
 [endif]
 
+/*
 [preload wait=true storage=data/others/live2d/assets/ikachan/ikachan.1024/texture_00.png]
 [preload wait=true storage=data/bgimage/bg.png]
 [preload wait=true storage=data/fgimage/name_hatena.png]
@@ -212,6 +213,7 @@ STタイマーをちょこっとだけ[r]
 [preload wait=true storage=tyrano/images/system/sentaku2.png]
 [preload wait=true storage=tyrano/images/system/nextpage.png]
 [preload wait=true storage=data/image/screen.png]
+*/
 
 [load_end cond="!f.bool"]
 
