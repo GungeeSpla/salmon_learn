@@ -55,3 +55,20 @@ function parseVersion (version) {
 	var c = parseInt(v[4] + v[5]);
 	return "Ver." + a + "." + b + "." +  c;
 }
+function fixFitBaseSize () {
+	this.timer1 = -1;
+	this.timer2 = -1;
+	var that = this;
+	var origin = TYRANO.base.fitBaseSize;
+	TYRANO.base.fitBaseSize = function () {
+		origin.apply(TYRANO.kag, [TYRANO.kag.config.scWidth, TYRANO.kag.config.scHeight]);
+		clearTimeout(that.timer1);
+		clearTimeout(that.timer2);
+		that.timer1 = setTimeout(function(){
+			origin.apply(TYRANO.kag, [TYRANO.kag.config.scWidth, TYRANO.kag.config.scHeight]);
+		}, 1000);
+		that.timer2 = setTimeout(function(){
+			origin.apply(TYRANO.kag, [TYRANO.kag.config.scWidth, TYRANO.kag.config.scHeight]);
+		}, 2000);
+	};
+}
