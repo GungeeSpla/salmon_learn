@@ -305,7 +305,16 @@ $(".panel_4").addClass("panel_now");
 [endhtml]
 [glink text=作者と関連リンク x=060 width=200 y=730 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]
 [glink text=クレジット       x=355 width=200 y=730 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_3'"]
+[glink text=リロード         x=435 width=130 y=650 size=18 color=credit_button target=Reload cond="getUrlQueries().utm_source=='homescreen'"]
 [jump target=Panel_4_4]
+
+*Reload
+[mask time=300]
+[iscript]
+sf.panel = 1;
+location.reload(true);
+[endscript]
+
 
 *Panel_4_Jump
 [call target=&tf.credit]

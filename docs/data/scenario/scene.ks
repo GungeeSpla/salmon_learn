@@ -5,11 +5,9 @@ var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
 [if exp=f.bool]
-[image layer=0 left=270 y=430 storage=loading.gif]
 [iscript]
 alert("!");
 [endscript]
-[s]
 [endif]
 
 
@@ -198,8 +196,16 @@ STタイマーをちょこっとだけ[r]
 
 *init_setting
 
+
 ; プリロード
 [load_start]
+
+[if exp=f.bool]
+[iscript]
+alert("load_start");
+[endscript]
+[endif]
+
 [preload wait=true storage=data/others/live2d/assets/ikachan/ikachan.1024/texture_00.png]
 [preload wait=true storage=data/bgimage/bg.png]
 [preload wait=true storage=data/fgimage/name_hatena.png]
@@ -210,6 +216,12 @@ STタイマーをちょこっとだけ[r]
 [preload wait=true storage=tyrano/images/system/nextpage.png]
 [preload wait=true storage=data/image/screen.png]
 [load_end]
+
+[if exp=f.bool]
+[iscript]
+alert("load_end");
+[endscript]
+[endif]
 
 ; 背景
 [mask time=0]

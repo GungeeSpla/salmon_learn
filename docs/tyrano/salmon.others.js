@@ -72,3 +72,20 @@ function fixFitBaseSize () {
 		}, 1000);
 	};
 }
+function getUrlQueries() {
+  var queryStr = window.location.search.slice(1);  // 文頭?を除外
+      queries = {};
+  if (!queryStr) {
+    return queries;
+  }
+  queryStr.split('&').forEach(function(queryStr) {
+    var queryArr = queryStr.split('=');
+    if (queryArr[1]) {
+    	queries[queryArr[0]] = queryArr[1];
+  	}
+  	else {
+    	queries[queryArr[0]] = '';
+  	}
+  });
+  return queries;
+}
