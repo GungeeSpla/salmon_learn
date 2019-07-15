@@ -183,6 +183,12 @@ STタイマーをちょこっとだけ[r]
 [jump target=back_title]
 [s]
 
+
+
+
+
+
+
 *init_setting
 
 
@@ -206,6 +212,7 @@ STタイマーをちょこっとだけ[r]
 [preload wait=true storage=tyrano/images/system/sentaku2.png]
 [preload wait=true storage=tyrano/images/system/nextpage.png]
 [preload wait=true storage=data/image/screen.png]
+
 [load_end]
 
 [if exp=f.bool]
@@ -228,6 +235,12 @@ STタイマーをちょこっとだけ[r]
 [resetfont]
 [return]
 
+
+
+
+
+
+
 *init_macro
 
 ;[b]
@@ -246,7 +259,7 @@ STタイマーをちょこっとだけ[r]
 [bg time=0 storage=black.png]
 [layopt layer=message visible=false]
 [layopt layer=0 visible=true]
-[image layer=0 left=270 y=430 storage=loading.gif]
+[image layer=0 left=270 y=430 storage=loading.gif cond="!f.bool"]
 [mask_off time=800]
 [endmacro]
 
