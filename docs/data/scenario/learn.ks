@@ -474,7 +474,17 @@ f.bool = (s.indexOf("test") > -1);
 
 *Goto_Senpai
 
-[mask time=300]
+
+[iscript]
+var s = location.search;
+f.bool = (s.indexOf("test") > -1);
+[endscript]
+[if exp=f.bool]
+	[mask time=300 color=red]
+[else]
+	[mask time=300]
+[endif]
+
 [clearfix]
 [cm]
 [bg storage=black.png time=0]

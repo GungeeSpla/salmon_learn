@@ -4,7 +4,6 @@
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
-
 [if exp=f.bool]
 [ptext x=100 y=0 layer=0 color=0xffffff bold=bold size=24 text=000000]
 [endif]
