@@ -339,8 +339,7 @@ location.reload(true);
 [endhtml]
 [iscript]
 $(".live2d").click(function(){
-	f.target="Goto_Senpai";
-	tyranoAPI.jump("", "Init");
+	tyranoAPI.jump("", "Goto_Senpai");
 });
 [endscript]
 [jump target=Panel_4_4]
@@ -463,8 +462,8 @@ f.bool = (s.indexOf("test") > -1);
 *Goto_Eval
 
 [mask time=300]
-[clearfix]
 [cm]
+[clearfix]
 [bg storage=black.png time=0]
 [freelayer layer=0]
 [wait time=100]
@@ -485,10 +484,12 @@ f.bool = (s.indexOf("test") > -1);
 	[mask time=300]
 [endif]
 
-[clearfix]
+[clearstack]
 [cm]
+[clearfix]
+[freeimage layer=0 time=0]
+[freeimage layer=1 time=0]
 [bg storage=black.png time=0]
-[freeimage layer=0]
 [wait time=100]
 [mask_off time=0]
 [jump storage=scene.ks]
