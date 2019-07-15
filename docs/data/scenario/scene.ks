@@ -197,7 +197,7 @@ STタイマーをちょこっとだけ[r]
 [endif]
 
 ; プリロード
-[load_start]
+[load_start cond="!f.bool"]
 
 [if exp=f.bool]
 [ptext x=100 y=200 layer=0 color=0xffffff bold=bold size=24 text=222222]
@@ -213,7 +213,7 @@ STタイマーをちょこっとだけ[r]
 [preload wait=true storage=tyrano/images/system/nextpage.png]
 [preload wait=true storage=data/image/screen.png]
 
-[load_end]
+[load_end cond="!f.bool"]
 
 [if exp=f.bool]
 [ptext x=100 y=200 layer=0 color=0xffffff bold=bold size=24 text=333333]
@@ -259,7 +259,7 @@ STタイマーをちょこっとだけ[r]
 [bg time=0 storage=black.png]
 [layopt layer=message visible=false]
 [layopt layer=0 visible=true]
-[image layer=0 left=270 y=430 storage=loading.gif cond="!f.bool"]
+[image layer=0 left=270 y=430 storage=loading.gif]
 [mask_off time=800]
 [endmacro]
 
