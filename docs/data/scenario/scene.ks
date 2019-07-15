@@ -114,7 +114,7 @@ s008 左上を見上げながら考える（wait=1300）
 ;[free_layermode time=0]
 [layopt layer=message0 visible=false]
 [wait time=100]
-[mask_off time=0]
+[mask_off time=50]
 [jump storage=learn.ks]
 [s]
 

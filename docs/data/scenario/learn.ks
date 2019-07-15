@@ -467,7 +467,7 @@ f.bool = (s.indexOf("test") > -1);
 [bg storage=black.png time=0]
 [freelayer layer=0]
 [wait time=100]
-[mask_off time=0]
+[mask_off time=50]
 [jump storage=eval.ks]
 [s]
 
