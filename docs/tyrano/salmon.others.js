@@ -66,9 +66,9 @@ function fixFitBaseSize () {
 		clearTimeout(that.timer2);
 		that.timer1 = setTimeout(function(){
 			origin.apply(TYRANO.kag, [TYRANO.kag.config.scWidth, TYRANO.kag.config.scHeight]);
-		}, 1000);
+		}, 500);
 		that.timer2 = setTimeout(function(){
 			origin.apply(TYRANO.kag, [TYRANO.kag.config.scWidth, TYRANO.kag.config.scHeight]);
-		}, 2000);
+		}, 1000);
 	};
 }

@@ -1,5 +1,18 @@
 *start
 
+[iscript]
+var s = location.search;
+f.bool = (s.indexOf("test") > -1);
+[endscript]
+[if exp=f.bool]
+[image layer=0 left=270 y=430 storage=loading.gif]
+[iscript]
+alert("!");
+[endscript]
+[s]
+[endif]
+
+
 /*
 s001 待機中 視線を漂わせる
 s002 こちらを見る
