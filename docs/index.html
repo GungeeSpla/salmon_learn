@@ -60,32 +60,13 @@ window.VERSION_STR = parseVersion(VERSION);
 </script>
 
 <!-- PWA対応 -->
-<link rel="manifest" href="./manifest.json?20000">
+<link rel="manifest" href="./manifest.json?20001">
 <script type="text/javascript">
 /* https://qiita.com/umamichi/items/0e2b4b1c578e7335ba20 */
 /* https://ajike.github.io/progressive-web-application/ */
-if ("serviceWorker" in navigator) {
-navigator.serviceWorker
-		 .register("/service-worker.js?20000");
-		 .then(function() { console.log("Service Worker Registered"); });
-}
-if (("standalone" in window.navigator) && window.navigator.standalone) {
-	window.addEventListener("load", function() {
-		var links = document.links,
-			link,
-			i;
-		for (i = 0; i < links.length; i++) {
-			if (!~(link = links[i]).href.toLowerCase().indexOf("javascript")) {
-				if("href" in link && link.href.indexOf("http") !== -1 && link.href.indexOf(document.location.host) !== -1)
-				{
-					link.addEventListener("click", function(event) {
-						event.preventDefault();
-						document.location.href = this.href;
-					}, false);
-				}
-			}
-		}
-	}, false);
+// service workerが有効なら、service-worker.js を登録します
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js?20001').then(function() { console.log('Service Worker Registered'); });
 }
 </script>
 
