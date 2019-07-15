@@ -478,26 +478,15 @@ f.bool = (s.indexOf("test") > -1);
 var s = location.search;
 f.bool = (s.indexOf("test") > -1);
 [endscript]
-/*
-[if exp=f.bool]
-	[mask time=300 color=red]
-[else]
-	[mask time=300]
-[endif]
-*/
+[mask time=300]
 [clearstack]
 [cm]
 [clearfix]
-[freelayer layer=0 time=1000]
-[freelayer layer=1 time=1000]
-[bg storage=black.png time=1000]
-[if exp=f.bool]
-[ptext x=100 y=000 layer=0 color=0xffffff bold=bold size=24 text=000000]
-[endif]
+[freelayer layer=0 time=0]
+[freelayer layer=1 time=0]
+[bg storage=black.png time=0]
 [wait time=1000]
-/*
-[mask_off time=0]
-*/
+[mask_off time=50]
 [jump storage=scene.ks]
 [s]
 

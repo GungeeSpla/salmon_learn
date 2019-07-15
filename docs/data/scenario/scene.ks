@@ -191,19 +191,9 @@ STタイマーをちょこっとだけ[r]
 
 *init_setting
 
-
-[if exp=f.bool]
-[ptext x=100 y=100 layer=0 color=0xffffff bold=bold size=24 text=111111]
-[endif]
-
 ; プリロード
-[load_start cond="!f.bool"]
+[load_start]
 
-[if exp=f.bool]
-[ptext x=100 y=200 layer=0 color=0xffffff bold=bold size=24 text=222222]
-[endif]
-
-/*
 [preload wait=true storage=data/others/live2d/assets/ikachan/ikachan.1024/texture_00.png]
 [preload wait=true storage=data/bgimage/bg.png]
 [preload wait=true storage=data/fgimage/name_hatena.png]
@@ -213,17 +203,12 @@ STタイマーをちょこっとだけ[r]
 [preload wait=true storage=tyrano/images/system/sentaku2.png]
 [preload wait=true storage=tyrano/images/system/nextpage.png]
 [preload wait=true storage=data/image/screen.png]
-*/
 
-[load_end cond="!f.bool"]
-
-[if exp=f.bool]
-[ptext x=100 y=200 layer=0 color=0xffffff bold=bold size=24 text=333333]
-[endif]
+[load_end]
 
 ; 背景
-[mask time=100]
-[bg time=0 storage=bg.png]
+[mask time=50]
+[bg time=50 storage=bg.png]
 ;[layermode graphic=screen.png mode=screen time=0]
 [mask_off time=800]
 
@@ -257,8 +242,8 @@ STタイマーをちょこっとだけ[r]
 
 ;[load_start]
 [macro name=load_start]
-[mask time=0]
-[bg time=0 storage=black.png]
+[mask time=50]
+[bg time=50 storage=black.png]
 [layopt layer=message visible=false]
 [layopt layer=0 visible=true]
 [image layer=0 left=270 y=430 storage=loading.gif]
@@ -269,7 +254,7 @@ STタイマーをちょこっとだけ[r]
 [macro name=load_end]
 [mask time=800]
 [freelayer layer=0 time=0]
-[mask_off time=0]
+[mask_off time=50]
 [endmacro]
 
 ;[mw_on]
