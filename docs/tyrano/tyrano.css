@@ -968,3 +968,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 		transform: translateY(0);
 	}
 }
+
+
+
+
+
+.remodal {
+	border-radius: 20px;
+	font-size: 24px;
+	font-family: メイリオ, sans-serif;
+}
+.remodal h1 {
+	font-weight: bold;
+}
+.remodal b {
+	color: DarkOrange;
+}
+.remodal-confirm {
+	border-radius: 10px;
+}
+.remodal-overlay {
+	background-color: rgba(0, 0, 0, 0.5);
+}

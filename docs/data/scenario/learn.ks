@@ -26,17 +26,43 @@ if (! sf.last_visit_version) sf.last_visit_version = 0;
 [iscript]
 if (! sf.panel) sf.panel = 1;
 tf.panel = "*Panel_" + sf.panel;
+tf.isPC    = ($.userenv() == "pc");
+tf.isPWA   = getUrlQueries && (getUrlQueries().utm_source == "homescreen");
+tf.version = sf.last_visit_version;
 [endscript]
 [call target=Panel_Fix_Button]
 [call target=&tf.panel]
 [eval exp="tf.reseted=false"]
+; Ver.2.0.0以降に訪れたことがない人にはタイトル画面を見せよう
 [if exp="sf.last_visit_version < 20000"]
 	[mask_off time=1000]
 [else]
 	[mask_off time=300]
 [endif]
 [eval exp="sf.last_visit_version = window.VERSION"]
+[call target="Dialog"]
 [s]
+
+;=======================================
+*Dialog
+[iscript]
+var isRemodal = false;
+// スマホのブラウザから見ていてVer.2.1.2以降を訪れたことがない人には
+//「ホーム画面に追加」対応のアナウンスを出そう
+if (! tf.isPWA && ! tf.isPC && tf.version < 20102) {
+	isRemodal = true;
+	var title = "スマホのブラウザ(Safari等)でご覧の方へ";
+	var text = "Ver.2.1.0より「<b>ホーム画面に追加</b>」ができるようになりました！";
+}
+if (isRemodal) {
+	var $modal = $(".remodal");
+	$modal.find(".remodal_title").html(title);
+	$modal.find(".remodal_txt").html(text);
+	$modal.find(".remodal-cancel").hide(0);
+	$modal.remodal().open();
+}
+[endscript]
+[return]
 
 ;=======================================
 *Panel_Reset
