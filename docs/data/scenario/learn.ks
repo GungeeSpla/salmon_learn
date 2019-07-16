@@ -41,7 +41,7 @@ tf.panel = "*Panel_" + sf.panel;
 ;=======================================
 *Panel_Reset
 [return cond="tf.reseted"]
-[call target=Panel_Fix_Button]
+;[call target=Panel_Fix_Button]
 [cm]
 [anim layer=1 name=logo opacity=255 time=0]
 [freeimage layer=0 time=0]
@@ -49,10 +49,13 @@ tf.panel = "*Panel_" + sf.panel;
 
 *Panel_Fix_Button
 [clearfix]
+[eval exp="addFixButton()"]
+/*
 [button fix=true graphic=panel_1.png  x=0   y=840 width=160 target=*Panel_1 name=panel,panel_1]
 [button fix=true graphic=panel_2.png  x=160 y=840 width=160 target=*Panel_2 name=panel,panel_2]
 [button fix=true graphic=panel_3.png  x=320 y=840 width=160 target=*Panel_3 name=panel,panel_3]
 [button fix=true graphic=panel_4.png  x=480 y=840 width=160 target=*Panel_4 name=panel,panel_4]
+*/
 [return]
 
 ;=======================================
@@ -62,8 +65,7 @@ tf.panel = "*Panel_" + sf.panel;
 [iscript]
 tf.x = 40;
 tf.y = 180;
-$(".panel").removeClass("panel_now");
-$(".panel_1").addClass("panel_now");
+changeCurrentFixButton(1);
 [endscript]
 [image layer=0                           x=&tf.x+150  y=&tf.y+20 storage=goldie.png width=60]
 [ptext layer=0 text=間欠泉 size=40       x=&tf.x+220 y=&tf.y+25 bold=bold]
@@ -91,8 +93,7 @@ $(".panel_1").addClass("panel_now");
 [iscript]
 tf.x = 40;
 tf.y = -280;
-$(".panel").removeClass("panel_now");
-$(".panel_2").addClass("panel_now");
+changeCurrentFixButton(2);
 [endscript]
 [image layer=0                             x=&tf.x+80 y=&tf.y+460 storage=komori.png width=90]
 [ptext layer=0 text=コウモリマップ size=40 x=&tf.x+160 y=&tf.y+480 bold=bold]
@@ -126,8 +127,7 @@ $(".panel_2").addClass("panel_now");
 [iscript]
 tf.x = 20;
 tf.y = 120;
-$(".panel").removeClass("panel_now");
-$(".panel_3").addClass("panel_now");
+changeCurrentFixButton(3);
 salmonrunAPI.cloneRotationObj("salmon_rotation_1", 0, 200);
 salmonrunAPI.cloneRotationObj("salmon_rotation_2", 0, 510);
 salmonrunAPI.get(function (data) {
@@ -294,8 +294,7 @@ $(".layer_free").show(0);
 if (! tf.credit) tf.credit = "Panel_4_1";
 tf.x = 40;
 tf.y = 200;
-$(".panel").removeClass("panel_now");
-$(".panel_4").addClass("panel_now");
+changeCurrentFixButton(4);
 [endscript]
 [jump target=&tf.credit]
 

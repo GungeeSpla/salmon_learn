@@ -567,6 +567,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 	background-color: black;
 	background-size: 100%;
 	background-image: none;
+    position: absolute;
+    cursor: pointer;
+    z-index: 99999999;
+    display: inline;
+    left: 0px;
+    top: 0px;
+    width: 160px;
 }
 .panel_now {
 	filter: brightness(100%);
