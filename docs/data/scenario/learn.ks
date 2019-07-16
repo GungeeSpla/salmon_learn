@@ -22,12 +22,12 @@ if (! sf.last_visit_version) sf.last_visit_version = 0;
 [bg time=0 storage=red_bg.png]
 [image layer=1 zindex=100 x=40 y=20 storage=logo.png width=550 name=logo]
 ;[image layer=1 zindex=100 x=0 y=840 width=640 height=120 storage=../bgimage/black.png zindex=100]
-[call target=Panel_Fix_Button]
 [eval exp="tf.reseted=true"]
 [iscript]
 if (! sf.panel) sf.panel = 1;
 tf.panel = "*Panel_" + sf.panel;
 [endscript]
+[call target=Panel_Fix_Button]
 [call target=&tf.panel]
 [eval exp="tf.reseted=false"]
 [if exp="sf.last_visit_version < 20000"]
@@ -41,7 +41,7 @@ tf.panel = "*Panel_" + sf.panel;
 ;=======================================
 *Panel_Reset
 [return cond="tf.reseted"]
-;[call target=Panel_Fix_Button]
+[call target=Panel_Fix_Button]
 [cm]
 [anim layer=1 name=logo opacity=255 time=0]
 [freeimage layer=0 time=0]
@@ -49,7 +49,15 @@ tf.panel = "*Panel_" + sf.panel;
 
 *Panel_Fix_Button
 [clearfix]
-[eval exp="addFixButton()"]
+[button fix=true graphic=panel_1a.png   x=0   y=840 width=160 target=*Panel_1 cond="sf.panel != 1"]
+[button fix=true graphic=panel_2a.png   x=160 y=840 width=160 target=*Panel_2 cond="sf.panel != 2"]
+[button fix=true graphic=panel_3a.png   x=320 y=840 width=160 target=*Panel_3 cond="sf.panel != 3"]
+[button fix=true graphic=panel_4a.png   x=480 y=840 width=160 target=*Panel_4 cond="sf.panel != 4"]
+[button fix=true graphic=panel_1ab.png  x=0   y=840 width=160 target=*Panel_1 cond="sf.panel == 1"]
+[button fix=true graphic=panel_2ab.png  x=160 y=840 width=160 target=*Panel_2 cond="sf.panel == 2"]
+[button fix=true graphic=panel_3ab.png  x=320 y=840 width=160 target=*Panel_3 cond="sf.panel == 3"]
+[button fix=true graphic=panel_4ab.png  x=480 y=840 width=160 target=*Panel_4 cond="sf.panel == 4"]
+;[eval exp="addFixButton()"]
 /*
 [button fix=true graphic=panel_1.png  x=0   y=840 width=160 target=*Panel_1 name=panel,panel_1]
 [button fix=true graphic=panel_2.png  x=160 y=840 width=160 target=*Panel_2 name=panel,panel_2]
@@ -65,7 +73,7 @@ tf.panel = "*Panel_" + sf.panel;
 [iscript]
 tf.x = 40;
 tf.y = 180;
-changeCurrentFixButton(1);
+//changeCurrentFixButton(1);
 [endscript]
 [image layer=0                           x=&tf.x+150  y=&tf.y+20 storage=goldie.png width=60]
 [ptext layer=0 text=間欠泉 size=40       x=&tf.x+220 y=&tf.y+25 bold=bold]
@@ -93,7 +101,7 @@ changeCurrentFixButton(1);
 [iscript]
 tf.x = 40;
 tf.y = -280;
-changeCurrentFixButton(2);
+//changeCurrentFixButton(2);
 [endscript]
 [image layer=0                             x=&tf.x+80 y=&tf.y+460 storage=komori.png width=90]
 [ptext layer=0 text=コウモリマップ size=40 x=&tf.x+160 y=&tf.y+480 bold=bold]
@@ -127,7 +135,7 @@ changeCurrentFixButton(2);
 [iscript]
 tf.x = 20;
 tf.y = 120;
-changeCurrentFixButton(3);
+//changeCurrentFixButton(3);
 salmonrunAPI.cloneRotationObj("salmon_rotation_1", 0, 200);
 salmonrunAPI.cloneRotationObj("salmon_rotation_2", 0, 510);
 salmonrunAPI.get(function (data) {
@@ -294,7 +302,7 @@ $(".layer_free").show(0);
 if (! tf.credit) tf.credit = "Panel_4_1";
 tf.x = 40;
 tf.y = 200;
-changeCurrentFixButton(4);
+//changeCurrentFixButton(4);
 [endscript]
 [jump target=&tf.credit]
 
