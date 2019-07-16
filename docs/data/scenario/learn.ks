@@ -2126,7 +2126,8 @@ f.kanketsusen = [
     new Kanketsusen("F",  84, 297, ["A", "E"]),
     new Kanketsusen("G", 264, 237, ["A", "E"]),
     new Kanketsusen("H", 237, 655, ["D", "I"]),
-    new Kanketsusen("I", 427, 716, ["D", "H"])
+    new Kanketsusen("I", 427, 716, ["D", "H"]),
+    new Kanketsusen("J", 484, 636, ["C", "D", "I"])
 ];
 [endscript]
 [return]
