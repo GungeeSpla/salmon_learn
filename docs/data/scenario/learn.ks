@@ -275,9 +275,17 @@ else {
 	tf.text = "終わる";
 	tf.target = "Panel_3_Eval_End";
 	if (evalResult.randomType > 1) {
+		/*
 		tf.end = false;
 		tf.x = 280;
 		tf.y = 750;
+		*/
+		/*
+		evalData.w1 = 7000;
+		evalData.w2 = 7010;
+		evalData.w3 = 7020;
+		evalData.w4 = 7030;
+		*/
 	}
 }
 tf.time = 300 + 300 * count;
@@ -310,12 +318,17 @@ $(".button_cover").remove();
 *Panel_3_Eval_Weapon
 [cm]
 [iscript]
-weaponRater.make([
-	parseInt(evalData.w1),
-	parseInt(evalData.w2),
-	parseInt(evalData.w3),
-	parseInt(evalData.w4)
-]);
+if (evalResult.randomType > 1) {
+	weaponRater.make([7000, 7010, 7020, 7030]);
+}
+else {
+	weaponRater.make([
+		parseInt(evalData.w1),
+		parseInt(evalData.w2),
+		parseInt(evalData.w3),
+		parseInt(evalData.w4)
+	]);
+}
 $(".layer_free").show(0);
 [endscript]
 [s]
