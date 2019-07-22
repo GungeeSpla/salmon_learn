@@ -356,8 +356,8 @@ function StTimerApp () {
 			app.dateFormatter.getMinText(this.etaDate);
 		this.$eta.text(str);
 		
+		this.clearCanvas();
 		if (! this.enableNowMode) {
-			this.clearCanvas();
 			if (this.stageIndex == this.lastStageIndex) {
 				if (this.stageFrame < 60 && this.isClearing) {
 					this.ctx.globalAlpha = 1 - this.stageFrame / 60;
@@ -372,6 +372,7 @@ function StTimerApp () {
 				this.renderCountdown(progress, isClockwise, this.etaSec);
 			}
 		}
+		
 		this.stageFrame++;
 	};
 	
