@@ -75,12 +75,14 @@ function StTimerApp () {
 		if (this.$checkSound.attr("is_set_event") != "true") {
 			this.$checkSound.attr("is-set-event", "true");
 			//## * soundTest
-			this.$soundTest.on("click", function () {
+			this.$soundTest.on("click", function (e) {
+				e.preventDefault();
 				app.sound.play("manmenmi");
 				return false;
 			});
 			//## * friendPlus
-			this.$friendPlus.on("click", function () {
+			this.$friendPlus.on("click", function (e) {
+				e.preventDefault();
 				app.stTimer.timeOffset.friendOffset += 100;
 				var num = app.stTimer.timeOffset.friendOffset / 1000;
 				app.$friendOffset.text(num.toFixed(1));
@@ -88,7 +90,8 @@ function StTimerApp () {
 				return false;
 			});
 			//## * friendMinus
-			this.$friendMinus.on("click", function () {
+			this.$friendMinus.on("click", function (e) {
+				e.preventDefault();
 				app.stTimer.timeOffset.friendOffset -= 100;
 				var num = app.stTimer.timeOffset.friendOffset / 1000;
 				app.$friendOffset.text(num.toFixed(1));
@@ -96,7 +99,8 @@ function StTimerApp () {
 				return false;
 			});
 			//## * stPlus
-			this.$stPlus.on("click", function () {
+			this.$stPlus.on("click", function (e) {
+				e.preventDefault();
 				app.stTimer.offsetMin = Math.min(7, app.stTimer.offsetMin + 1);
 				var sign = app.stTimer.offsetMin >= 0 ? "+" : "";
 				var str = app.stTimer.enableOffset ? "(" + sign + app.stTimer.offsetMin + "分)" : "";
@@ -120,7 +124,8 @@ function StTimerApp () {
 				return false;
 			});
 			//## * stMinus
-			this.$stMinus.on("click", function () {
+			this.$stMinus.on("click", function (e) {
+				e.preventDefault();
 				app.stTimer.offsetMin = Math.max(1, app.stTimer.offsetMin - 1);
 				var sign = app.stTimer.offsetMin >= 0 ? "+" : "";
 				var str = app.stTimer.enableOffset ? "(" + sign + app.stTimer.offsetMin + "分)" : "";
@@ -144,7 +149,7 @@ function StTimerApp () {
 				return false;
 			});
 			//## * checkSound
-			this.$checkSound.on("click touchend", function () {
+			this.$checkSound.on("click", function (e) {
 				if (! app.isFreeSound) {
 					app.sound.playSilent();
 					app.isFreeSound = true;
@@ -157,9 +162,9 @@ function StTimerApp () {
 						});
 					}, 12000);
 				}
-				$(this).off("click touchend");
+				$(this).off("click");
 			});
-			this.$checkSound.on("change", function () {
+			this.$checkSound.on("change", function (e) {
 				var isChecked = $(this).prop("checked");
 				if (isChecked) {
 					app.sound.enable = true;

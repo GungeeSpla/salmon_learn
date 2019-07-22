@@ -112,6 +112,7 @@ body {
   -webkit-transition: all .2s;
   transition: all .2s;
   overflow: hidden;
+  cursor: pointer;
 }
 .input_st+label .sound_test_button {
   width: 100px;
