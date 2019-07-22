@@ -168,9 +168,9 @@ function StTimerApp () {
 			this.$checkSound.on("change", function (e) {
 				var isChecked = $(this).prop("checked");
 				if (isChecked) {
+					app.$soundTest.removeClass("hidden_button");
 					app.sound.enable = true;
 					app.sound.play("switch");
-					app.$soundTest.removeClass("hidden_button");
 					/*
 					setTimeout(function () {
 						app.sound.play("switch");
@@ -178,8 +178,8 @@ function StTimerApp () {
 					*/
 				}
 				else {
-					app.sound.play("switch");
 					app.$soundTest.addClass("hidden_button");
+					app.sound.play("switch");
 					app.sound.enable = false;
 				}
 				app.setStTitle();
