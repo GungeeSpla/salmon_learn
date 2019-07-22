@@ -334,9 +334,9 @@ function StTimerApp () {
 				if (! this.enableNowMode) app.sound.play("60");
 				break;
 			case this.lastStageIndex: // 残り60秒以上
-				if (! this.enableNowMode) app.sound.play("manmenmi");
 				this.isClearing = true;
 				this.updateStList();
+				if (! this.enableNowMode) app.sound.play("manmenmi");
 				break;
 			}
 		}
