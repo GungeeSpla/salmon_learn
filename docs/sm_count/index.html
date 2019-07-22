@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>バイトサポーター</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style2.css">
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="smcount.js"></script>
+</head>
+<body onload="init()">
+<div id="main">
+	<div class="smcount_wrapper">
+		<button class="smcount_button smcount_button_stop"   >停止</button>
+		<button class="smcount_button smcount_button_start"  >開始</button>
+		<br><br>
+		<button class="smcount_button smcount_button_gensoku">ちょっと戻す</button>
+		<button class="smcount_button smcount_button_kasoku" >ちょっと進める</button>
+		<br><br>
+		<button class="smcount_button smcount_button_low">低ノルマ</button>
+		<button class="smcount_button smcount_button_middle">中ノルマ</button>
+		<button class="smcount_button smcount_button_high">高ノルマ</button>
+		<br><br>
+		<button class="smcount_button smcount_button_vminus" >音量-</button>
+		<button class="smcount_button smcount_button_vplus"  >音量+</button>
+		<br><br>
+		<p class="smcount_start_date"></p>
+		<p class="smcount_debug"></p>
+	</div>
+	<div class="st_eta">
+		<div class="st_eta_description">　</div>
+		<div class="st_eta_count">　</div>
+		<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+		<div class="st_eta_next">　</div>
+		<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため、<br>最後の5･4･3･2･1のカウントを行いません。</div>
+		<canvas class="st_eta_canvas" width="100" height="100"></canvas>
+		<div class="input_st_wrapper">
+			<div class="input_st_item">
+				<input type="checkbox" class="input_st" id="check_friend"  />
+				<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
+			</div>
+			<div class="input_st_item">	
+				<input type="checkbox" class="input_st" id="check_sound"  />
+				<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
+			</div>
+			<div class="input_st_item">	
+				<input type="checkbox" class="input_st" id="check_now"  />
+				<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
+			</div>
+			<div class="input_st_item">	
+				<input type="checkbox" class="input_st" id="check_st_offset"  />
+				<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
+			</div>
+		</div>
+		<div class="credit_emaame"><a href="https://emaame.github.io/salmonrun_time_timer/">@emaameさんのSTタイマー</a>を元に作成しています</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+.st_eta {
+	left: -640px;
+}
+.smcount_wrapper {
+	position: absolute;
+	top: 90px;
+	left: 0px;
+	width: 640px;
+	margin: 0;
+	padding: 0;
+	color: white;
+	font-family: メイリオ, sans-serif;
+	font-weight: bold;
+	font-size : 24px;
+	text-align: center;
+}
+
+.smcount_button {
+  display: inline-block;
+  padding: 0.5em 1em;
+  border: none;
+  text-decoration: none;
+  background: #668ad8;/*ボタン色*/
+  color: #FFF;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+  font-family: メイリオ, sans-serif;
+  font-size : 24px;
+  font-weight: bold;
+}
+.smcount_button:active {
+  /*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
+}
