@@ -1,12 +1,17 @@
-window.UNIX = new Unix();
-window.tyranoAPI = new TyranoAPI();
+window.UNIX      = new Unix();      //
+window.tyranoAPI = new TyranoAPI(); //
+
+//# Unix ()
 function Unix () {
+	//## .getTime ()
 	this.getTime = function () {
 		return Math.floor(new Date().getTime()/1000);
 	};
+	//## .getParsedTime ()
 	this.getParsedTime = function () {
 		return this.parse(this.getTime());
 	};
+	//## .parse (intTime, type)
 	this.parse = function (intTime, type) {
 		intTime = parseInt(intTime);
 		var d, year, month, day, hour, min, sec, yobi;
@@ -37,7 +42,9 @@ function Unix () {
 		}
 	};
 }
+//# TyranoAPI ()
 function TyranoAPI () {
+	//## .jump (storage, target, time)
 	this.jump = function (storage, target, time) {
 		setTimeout(function () {
 			TYRANO.kag.ftag.startTag("jump", {
@@ -48,6 +55,7 @@ function TyranoAPI () {
 	};
 	return this;
 }
+//# parseVersion (version)
 function parseVersion (version) {
 	var v = ("000000" + version).slice(-6);
 	var a = parseInt(v[0] + v[1]);
@@ -55,6 +63,7 @@ function parseVersion (version) {
 	var c = parseInt(v[4] + v[5]);
 	return "Ver." + a + "." + b + "." +	c;
 }
+//# fixFitBaseSize ()
 function fixFitBaseSize () {
 	this.timer1 = -1;
 	this.timer2 = -1;
@@ -72,6 +81,7 @@ function fixFitBaseSize () {
 		}, 1000);
 	};
 }
+//# getUrlQueries ()
 function getUrlQueries() {
 	var queryStr = window.location.search.slice(1);
 			queries = {};
@@ -89,6 +99,7 @@ function getUrlQueries() {
 	});
 	return queries;
 }
+//# addFixButton ()
 function addFixButton () {
 	var $wrapper = $("<div></div>");
 	$wrapper.addClass("fixlayer");
@@ -131,6 +142,7 @@ function addFixButton () {
 	}
 	$("#tyrano_base").append($wrapper);
 }
+//# changeCurrentFixButton (num)
 function changeCurrentFixButton (num) {
 	var id = "#panel_" + num;
 	$(".panel").removeClass("panel_now").filter(id).addClass("panel_now");

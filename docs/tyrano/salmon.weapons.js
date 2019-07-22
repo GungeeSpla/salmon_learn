@@ -1,5 +1,10 @@
+// ブキの評価データと基礎データ
 window.WEAPONS          = false;
 window.WEAPONS_WIKIDATA = false;
+
+
+
+// ブキのID一覧
 window.WEAPON_IDS = [
 	-2,
 	-1,
@@ -58,6 +63,11 @@ window.WEAPON_IDS = [
 	7020,
 	7030
 ];
+
+
+
+// WEAPONSを取得したもの
+// 毎回csvを$.get()するのは無駄なのでこれでWEAPONSを上書きすると高速
 window.WEAPONS2  = {
 	"0": {
 		"id": 0,
