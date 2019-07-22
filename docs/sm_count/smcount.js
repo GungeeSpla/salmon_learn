@@ -219,15 +219,67 @@ function SmCountApp () {
 	
 	//## render ()
 	this.render = function () {
-		var norma = this.norma;
 		var wave = this.wave;
+		var norma;
+		switch (wave) {
+		case 0:
+		case 1:
+			switch (this.norma) {
+			case "low":
+				norma = "11～16";
+				break;
+			case "middle":
+				norma = "17～20";
+				break;
+			case "high":
+				norma = "21";
+				break;
+			}
+			break;
+		case 2:
+			switch (this.norma) {
+			case "low":
+				norma = "12～18";
+				break;
+			case "middle":
+				norma = "18～22";
+				break;
+			case "high":
+				norma = "23";
+				break;
+			}
+			break;
+		case 3:
+		case 4:
+			switch (this.norma) {
+			case "low":
+				norma = "14～20";
+				break;
+			case "middle":
+				norma = "20～24";
+				break;
+			case "high":
+				norma = "25";
+				break;
+			}
+			break;
+		default:
+			norma = "";
+		}
 		var volume = this.sound.volume.toFixed(1);
-		var time = wave ? ((110000 - this.timeWave)/1000).toFixed(3): "";
+		var time = wave == 0 ? 110000 + this.wave1Time : wave < 4 ? 110000 : 0;
+		time = (0, (time - this.timeWave)/1000).toFixed(3);
+		wave = Math.max(1, this.wave);
+		if (wave >= 4) {
+			wave  = "";
+			norma = "";
+			time  = "";
+		}
 		this.$debug.html(""
-			+ "volume: " + volume + "<br>"
-			+ "norma: " + norma + "<br>"
-			+ "wave: " + wave + "<br>"
-			+ "time: " + time + "<br>"
+			+ "<span style='color: Orange'>Wave</span> " + wave + "<br>"
+			+ "<span style='color: Orange'>ノルマ</span> " + norma + "<br>"
+			+ "<span style='color: Orange'>残り時間</span> " + time + "<br><br>"
+			+ "<span style='color: Orange'>音量</span> " + volume + "<br>"
 		);
 	};
 	
