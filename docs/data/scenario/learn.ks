@@ -75,14 +75,16 @@ if (isRemodal) {
 
 *Panel_Fix_Button
 [clearfix]
-[button fix=true graphic=panel_1a.png   x=0   y=840 width=160 target=*Panel_1 cond="sf.panel != 1"]
-[button fix=true graphic=panel_2a.png   x=160 y=840 width=160 target=*Panel_2 cond="sf.panel != 2"]
-[button fix=true graphic=panel_3a.png   x=320 y=840 width=160 target=*Panel_3 cond="sf.panel != 3"]
-[button fix=true graphic=panel_4a.png   x=480 y=840 width=160 target=*Panel_4 cond="sf.panel != 4"]
-[button fix=true graphic=panel_1ab.png  x=0   y=840 width=160 target=*Panel_1 cond="sf.panel == 1"]
-[button fix=true graphic=panel_2ab.png  x=160 y=840 width=160 target=*Panel_2 cond="sf.panel == 2"]
-[button fix=true graphic=panel_3ab.png  x=320 y=840 width=160 target=*Panel_3 cond="sf.panel == 3"]
-[button fix=true graphic=panel_4ab.png  x=480 y=840 width=160 target=*Panel_4 cond="sf.panel == 4"]
+[button fix=true graphic=panel_1a.png   x=&128*0 y=840 width=&128 target=*Panel_1 cond="sf.panel != 1"]
+[button fix=true graphic=panel_2a.png   x=&128*1 y=840 width=&128 target=*Panel_2 cond="sf.panel != 2"]
+[button fix=true graphic=panel_3a.png   x=&128*2 y=840 width=&128 target=*Panel_3 cond="sf.panel != 3"]
+[button fix=true graphic=panel_5a.png   x=&128*3 y=840 width=&128 target=*Panel_5 cond="sf.panel != 5"]
+[button fix=true graphic=panel_4a.png   x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel != 4"]
+[button fix=true graphic=panel_1ab.png  x=&128*0 y=840 width=&128 target=*Panel_1 cond="sf.panel == 1"]
+[button fix=true graphic=panel_2ab.png  x=&128*1 y=840 width=&128 target=*Panel_2 cond="sf.panel == 2"]
+[button fix=true graphic=panel_3ab.png  x=&128*2 y=840 width=&128 target=*Panel_3 cond="sf.panel == 3"]
+[button fix=true graphic=panel_5ab.png  x=&128*3 y=840 width=&128 target=*Panel_5 cond="sf.panel == 5"]
+[button fix=true graphic=panel_4ab.png  x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel == 4"]
 ;[eval exp="addFixButton()"]
 /*
 [button fix=true graphic=panel_1.png  x=0   y=840 width=160 target=*Panel_1 name=panel,panel_1]
@@ -90,6 +92,122 @@ if (isRemodal) {
 [button fix=true graphic=panel_3.png  x=320 y=840 width=160 target=*Panel_3 name=panel,panel_3]
 [button fix=true graphic=panel_4.png  x=480 y=840 width=160 target=*Panel_4 name=panel,panel_4]
 */
+[return]
+
+;=======================================
+
+*Panel_Reload
+[iscript]
+tf.panel = "*Panel_" + sf.panel;
+[endscript]
+[call target=Panel_Fix_Button]
+[call target=&tf.panel]
+[clearstack]
+[s]
+
+
+*Panel_5
+[eval exp="sf.panel = 5"]
+[call target=*Panel_Reset]
+[iscript]
+if (! sf.st_step) sf.st_step = 1;
+[endscript]
+[jump target=Panel_5_1 cond="sf.st_step <= 1"]
+[jump target=Panel_5_2 cond="sf.st_step <= 2"]
+[jump target=Panel_5_3 cond="sf.st_step >= 3"]
+
+*Panel_5_1
+[html name=html_space]
+<div class="st_description">
+<h1>STとは</h1>
+<b>ST（サーモンランタイム）</b>とは，
+<br>@rayudne75 さんが興した草の根運動です。
+<br>
+<br>「<b>野良でも誘導理解者同士で組みたい</b>」という人たちが
+<br>みんなで既定の時刻にマッチングを開始することで
+<br>お互いをスナイプしあう、という仕組みです。
+<br>
+<br>名前の最後に「<b>/</b>」「<b>/ST</b>」などを付けることが
+<br>参加者の目印になります。
+<br>
+<br>ただし、手軽にポイントを稼ぎたい、簡単にクリアしたい、
+<br>といった目的での参加は<b>推奨されていません</b>。
+<br>
+<br>「/ST」は上手さを誇示するタグではなく
+<br>あくまで誘導の意思を示すものであり、
+<br>クリア率はノルマの増加によって低くなりうる旨を
+<br>理解した上で参加しましょう！
+</div>
+[endhtml]
+[glink text=次へ x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.st_step = 2"]
+[return]
+
+*Panel_5_2
+[html name=html_space]
+<div class="st_description">
+<h1>STタイマーとは</h1>
+STタイマーは、
+<br>STへの参加をより<b>簡単かつ確実</b>に行うためのツールで、
+<br>もとは @emaame さんが開発したものです。
+<br>
+<br>STタイマーでは、次のSTまでの時間が
+<br><b>カウントダウン形式</b>で表示されるため、
+<br>カウントがゼロになった瞬間に「<b>参加する</b>」を押すことで
+<br>簡単にSTに参加することができます。
+<br>
+<br>NICTのサービスを利用して
+<br>コンピュータの時刻のずれを修正するため
+<br>ただ時計を見て参加するより確実にスナイプできます。
+<br>
+<br>なお、フレンド部屋を作って「仲間を集める」場合は
+<br>マッチングの開始タイミングが野良と異なるため
+<br><b>フレ部屋モードを有効</b>にしてください。
+<br>
+<!--
+<br>このアプリにおけるSTタイマーは、
+<br>本家である @emaame さんのSTタイマー <br><span style="font-size: 100%;">(クリエイティブ･コモンズ･ライセンス 表示4.0 国際)</span> を
+<br>改変して作成しました。
+-->
+</div>
+[endhtml]
+[glink text=OK! x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.st_step = 3"]
+[return]
+
+*Panel_5_3
+[anim layer=0 name=logo opacity=0 time=0]
+[html name=html_space]
+	<div class="st_eta">
+		<div class="st_eta_description">　</div>
+		<div class="st_eta_count">　</div>
+		<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+		<div class="st_eta_next">　</div>
+		<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため<br>最後の5･4･3･2･1のカウントを行いません。</div>
+		<canvas class="st_eta_canvas" width="100" height="100"></canvas>
+		<div class="input_st_wrapper">
+			<div class="input_st_item">
+				<input type="checkbox" class="input_st" id="check_friend"  />
+				<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
+			</div>
+			<div class="input_st_item">	
+				<input type="checkbox" class="input_st" id="check_sound"  />
+				<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
+			</div>
+			<div class="input_st_item">	
+				<input type="checkbox" class="input_st" id="check_now"  />
+				<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
+			</div>
+			<div class="input_st_item">	
+				<input type="checkbox" class="input_st" id="check_st_offset"  />
+				<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
+			</div>
+		</div>
+		<div class="credit_emaame">@emaameさんのSTタイマー (CC 表示4.0 国際) を改変しています</div>
+	</div>
+[endhtml]
+[iscript]
+stTimerApp.startApp();
+[endscript]
+[glink text=STについて x=246 width=110 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.st_step = 1"]
 [return]
 
 ;=======================================
@@ -399,7 +517,6 @@ $(".live2d").click(function(){
 *Panel_4_3
 [html name=credit_wrapper]
 <div class="credit">
-	<h1>クレジット</h1>
 	<h2>コウモリマップに関する知見の引用･参考</h2>
 	<p>ザラメ (<a href="https://twitter.com/zarame2431">@zarame2431</a>)</p>
 	<p>カトレア (<a href="https://twitter.com/ikatorea">@ikatorea</a>)</p>
@@ -411,6 +528,9 @@ $(".live2d").click(function(){
 	
 	<h2>サーモンランのシフト取得API</h2>
 	<p>ウラル (<a href="https://twitter.com/barley_ural">@barley_ural</a>, <a href="https://splamp.info/">https://splamp.info/</a>)</p>
+	
+	<h2>STタイマー</h2>
+	<p>ema (<a href="https://twitter.com/emaame">@emaame</a>, <a href="https://emaame.github.io/salmonrun_time_timer/">https://emaame.github.io/</a>)</p>
 	
 	<h2>その他画像や情報の引用など</h2>
 	<p><a href="https://wikiwiki.jp/splatoon2mix/">https://wikiwiki.jp/splatoon2mix/</a></p>
