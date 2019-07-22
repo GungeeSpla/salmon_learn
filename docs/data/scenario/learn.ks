@@ -25,9 +25,12 @@ if (! sf.last_visit_version) sf.last_visit_version = 0;
 [eval exp="tf.reseted=true"]
 [iscript]
 if (! sf.panel) sf.panel = 1;
+if (getUrlQueries) tf.queries = getUrlQueries();
+else tf.queries = {};
+if (tf.queries.panel) sf.panel = parseInt(tf.queries.panel) || 1;
 tf.panel = "*Panel_" + sf.panel;
 tf.isPC    = ($.userenv() == "pc");
-tf.isPWA   = getUrlQueries && (getUrlQueries().utm_source == "homescreen");
+tf.isPWA   = (tf.queries.utm_source == "homescreen");
 tf.version = sf.last_visit_version;
 [endscript]
 [call target=Panel_Fix_Button]

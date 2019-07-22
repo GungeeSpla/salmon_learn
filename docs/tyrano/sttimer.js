@@ -223,6 +223,8 @@ function StTimerApp () {
 					app.$friendPlus.addClass("hidden_button");
 					app.$friendMinus.addClass("hidden_button");
 				}
+				var num = app.stTimer.timeOffset.friendOffset / 1000;
+				app.$friendOffset.text(num.toFixed(1));
 				app.save();
 				app.setStTitle();
 				app.sound.play("switch");
