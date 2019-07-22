@@ -291,7 +291,7 @@ function SmCountApp () {
 		this.SMCOUNT_DEFINE_HIGH = {
 			"110": "10,wave2,wave3",
 			"109": "9,,",
-			"108": "8,,",
+			"108": "8,,sp",
 			"107": "7,,",
 			"106": "6,,",
 			"105": "5,,",
