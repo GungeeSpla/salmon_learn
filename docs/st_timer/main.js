@@ -1,42 +1,11 @@
-function init () {
-	window.dateFormatter = new DateFormatter();
-	window.stTimerApp    = new StTimerApp();
-	
-	
-}
-// based on https://www.nict.go.jp/JST/JST5.js
 // based on https://github.com/emaame/salmonrun_time_timer
 
-
-
-
-function defineAnimationFrame () {
-	var duration = 1000 / 60;
-	
-	window.requestAnimationFrame = 
-	window.requestAnimationFrame || 
-	window.webkitRequestAnimationFrame || 
-	window.mozRequestAnimationFrame || 
-	window.oRequestAnimationFrame || 
-	window.msRequestAnimationFrame || 
-	function (callback) {
-		return window.setTimeout(callback, duration);
-	};
-	
-	window.cancelAnimationFrame = 
-	window.cancelAnimationFrame || 
-	window.webkitCancelRequestAnimationFrame || 
-	window.mozCancelRequestAnimationFrame || 
-	window.oCancelRequestAnimationFrame || 
-	window.msCancelRequestAnimationFrame || 
-	function (id) {
-		clearTimeout(id);
-	};
+function init () {
+	window.stTimerApp = new StTimerApp();	
 }
 
 
 
-	
 
 
 //# StTimerApp ()
@@ -58,7 +27,12 @@ function StTimerApp () {
 	this.enableSound = false;
 	this.isClearing  = false;
 	this.enableNowMode = false;
-	this.stTitle     = "ST";
+	this.stTitle       = "ST";
+	this.dateFormatter = new DateFormatter();
+	this.loopTimerId   = -1;
+	this.loopDuration  = 1000 / 60; // タイマーの画面更新頻度 これは秒間60F
+	this.updateSttId   = -1;
+	this.updateSttDuration = 60 * 1000;
 	
 	//## setStTitle ()
 	this.setStTitle = function () {
@@ -67,7 +41,7 @@ function StTimerApp () {
 			str = "現在時刻は";
 		}
 		else {
-			var friend = this.stTimer.timeOffset.enableFriendMode ? "（フレ部屋）" : "<span style='color: Orange'>";
+			var friend = this.stTimer.timeOffset.enableFriendMode ? "（フレ部屋）" : "";
 			var sign = app.stTimer.offsetMin >= 0 ? "+" : "";
 			var offset = app.stTimer.enableOffset ? sign + app.stTimer.offsetMin + "分" : "";
 			str = this.stTitle + "<span style='color: Orange'>" + offset + friend + "</span>まで";
@@ -284,41 +258,6 @@ function StTimerApp () {
 			this.$checkFriend.attr("is_set_event", "true");
 		}
 	};
-	this.getJqueryObject();
-	
-    this.notifySound = function (eta_ms) {
-    	this.sound.play(3);
-    	/*
-        if (!this.useSound) { return; }
-        if (eta_ms > this.least_sound_trigger) {
-            this.played_min = false;
-            return;
-        }
-        if (this.played_min) { return; }
-        const index = this.sound_triggers.findIndex(trigger_ms => eta_ms < trigger_ms);
-        this.sound.play(index);
-        // 1 を再生後、巻き戻すが、巻き戻したことを記憶しておかないといけない。
-        this.played_min = (index <= 0);
-        // 次のサウンドに移動する。末尾（this.sound_triggers.length - 1）は通知音なので len-2
-        const next_trigger_index = this.played_min ? this.sound_triggers.length - 2 : index - 1;
-        console.log(next_trigger_index);
-        this.least_sound_trigger = this.sound_triggers[next_trigger_index];
-        */
-    }
-	
-	
-	/*
-	this.stageIndexは、残りカウントの状態によって0から10の整数値をとる
-	0: 残り1分以上  1: 残り1分を切った瞬間
-	2: 残り30秒以上 3: 残り30秒を切った瞬間
-	4: 残り10秒以上 5: 残り10秒を切った瞬間
-	6: 残り5秒以上  7: 残り5秒を切った瞬間
-	8: 残り0秒以上  9: 残り0秒を切った瞬間  10: 残り0秒を切ってから1秒間
-	*/
-	this.loopTimerId = -1;
-	this.loopDuration = 1000 / 60; // タイマーの画面更新頻度 これは秒間60F
-	this.updateSttId = -1;
-	this.updateSttDuration = 60 * 1000;
 	
 	//## calcEta ()
 	// 残りカウントを計算します
@@ -411,8 +350,8 @@ function StTimerApp () {
 	// 画面を描画する関数です
 	this.render = function () {
 		var str = this.enableNowMode ? 
-			dateFormatter.getHourText(this.nowDate):
-			dateFormatter.getMinText(this.etaDate);
+			app.dateFormatter.getHourText(this.nowDate):
+			app.dateFormatter.getMinText(this.etaDate);
 		this.$eta.text(str);
 		
 		if (! this.enableNowMode) {
@@ -489,7 +428,7 @@ function StTimerApp () {
 		// リストを更新
 		app.list = app.stTimer.listupNextSTT();
 		if (! app.enableNowMode) {
-			var date = dateFormatter.getMonthText(app.list[0]);
+			var date = app.dateFormatter.getMonthText(app.list[0]);
 			var str = "%date までのカウントダウンを表示しています";
 			    str = str.replace("%date", date);
 			app.$next.text(str);
@@ -498,13 +437,19 @@ function StTimerApp () {
 	
 	//## updateOffset ()
 	this.updateOffset = function () {
-		this.stTimer.timeOffset.getOffsetJST(function(json){
+		app.stTimer.timeOffset.getOffsetJST(function(json){
 			app.updateStList();
 			app.renderOffset(json);
 		});
 	};
 	
+	//## run functions
+	// jQueryオブジェクトを取得する
+	this.getJqueryObject();
+	// Canvasのcontextの設定を行う
 	this.setCtx();
+	// STのタイトルを設定する
+	this.setStTitle();
 	// STリストを作成
 	this.updateStList();
 	// ループスタート
@@ -512,7 +457,7 @@ function StTimerApp () {
 	// 音声のプリロード
 	this.sound.loadAll();
 	// NICTにアクセス
-	this.updateOffset();
+	setTimeout(this.updateOffset, 200);
 	
 	return this;
 }
