@@ -75,15 +75,24 @@ function StTimerApp () {
 		var clickEvent    = "ontouchstart" in window ? "touchstart" : "click";
 		if (this.$checkSound.attr("is_set_event") != "true") {
 			this.$checkSound.attr("is-set-event", "true");
+			function activeButton (self) {
+				var $self = $(self);
+				$self.addClass("button_active");
+				setTimeout(function () {
+					$self.removeClass("button_active");
+				}, 100);
+			}
 			//## * soundTest
 			this.$soundTest.on(clickEvent, function (e) {
 				e.preventDefault();
+				activeButton(this);
 				app.sound.play("manmenmi");
 				return false;
 			});
 			//## * friendPlus
 			this.$friendPlus.on(clickEvent, function (e) {
 				e.preventDefault();
+				activeButton(this);
 				app.stTimer.timeOffset.friendOffset += 100;
 				var num = app.stTimer.timeOffset.friendOffset / 1000;
 				app.$friendOffset.text(num.toFixed(1));
@@ -93,6 +102,7 @@ function StTimerApp () {
 			//## * friendMinus
 			this.$friendMinus.on(clickEvent, function (e) {
 				e.preventDefault();
+				activeButton(this);
 				app.stTimer.timeOffset.friendOffset -= 100;
 				var num = app.stTimer.timeOffset.friendOffset / 1000;
 				app.$friendOffset.text(num.toFixed(1));
@@ -102,6 +112,7 @@ function StTimerApp () {
 			//## * stPlus
 			this.$stPlus.on(clickEvent, function (e) {
 				e.preventDefault();
+				activeButton(this);
 				app.stTimer.offsetMin = Math.min(7, app.stTimer.offsetMin + 1);
 				var sign = app.stTimer.offsetMin >= 0 ? "+" : "";
 				var str = app.stTimer.enableOffset ? "(" + sign + app.stTimer.offsetMin + "分)" : "";
@@ -127,6 +138,7 @@ function StTimerApp () {
 			//## * stMinus
 			this.$stMinus.on(clickEvent, function (e) {
 				e.preventDefault();
+				activeButton(this);
 				app.stTimer.offsetMin = Math.max(1, app.stTimer.offsetMin - 1);
 				var sign = app.stTimer.offsetMin >= 0 ? "+" : "";
 				var str = app.stTimer.enableOffset ? "(" + sign + app.stTimer.offsetMin + "分)" : "";
