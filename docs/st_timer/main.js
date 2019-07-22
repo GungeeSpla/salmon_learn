@@ -72,16 +72,17 @@ function StTimerApp () {
 		this.$stMinus     = $(".st_minus_button");
 		this.$stOffset    = $(".st_offset");
 		this.$soundDesc   = $(".st_eta_sound_desc");
+		var clickEvent    = "ontouchstart" in window ? "touchstart" : "click";
 		if (this.$checkSound.attr("is_set_event") != "true") {
 			this.$checkSound.attr("is-set-event", "true");
 			//## * soundTest
-			this.$soundTest.on("click", function (e) {
+			this.$soundTest.on(clickEvent, function (e) {
 				e.preventDefault();
 				app.sound.play("manmenmi");
 				return false;
 			});
 			//## * friendPlus
-			this.$friendPlus.on("click", function (e) {
+			this.$friendPlus.on(clickEvent, function (e) {
 				e.preventDefault();
 				app.stTimer.timeOffset.friendOffset += 100;
 				var num = app.stTimer.timeOffset.friendOffset / 1000;
@@ -90,7 +91,7 @@ function StTimerApp () {
 				return false;
 			});
 			//## * friendMinus
-			this.$friendMinus.on("click", function (e) {
+			this.$friendMinus.on(clickEvent, function (e) {
 				e.preventDefault();
 				app.stTimer.timeOffset.friendOffset -= 100;
 				var num = app.stTimer.timeOffset.friendOffset / 1000;
@@ -99,7 +100,7 @@ function StTimerApp () {
 				return false;
 			});
 			//## * stPlus
-			this.$stPlus.on("click", function (e) {
+			this.$stPlus.on(clickEvent, function (e) {
 				e.preventDefault();
 				app.stTimer.offsetMin = Math.min(7, app.stTimer.offsetMin + 1);
 				var sign = app.stTimer.offsetMin >= 0 ? "+" : "";
@@ -124,7 +125,7 @@ function StTimerApp () {
 				return false;
 			});
 			//## * stMinus
-			this.$stMinus.on("click", function (e) {
+			this.$stMinus.on(clickEvent, function (e) {
 				e.preventDefault();
 				app.stTimer.offsetMin = Math.max(1, app.stTimer.offsetMin - 1);
 				var sign = app.stTimer.offsetMin >= 0 ? "+" : "";
@@ -149,7 +150,7 @@ function StTimerApp () {
 				return false;
 			});
 			//## * checkSound
-			this.$checkSound.on("click", function (e) {
+			this.$checkSound.on(clickEvent, function (e) {
 				if (! app.isFreeSound) {
 					app.sound.playSilent();
 					app.isFreeSound = true;
@@ -162,7 +163,7 @@ function StTimerApp () {
 						});
 					}, 12000);
 				}
-				$(this).off("click");
+				$(this).off(clickEvent);
 			});
 			this.$checkSound.on("change", function (e) {
 				var isChecked = $(this).prop("checked");
