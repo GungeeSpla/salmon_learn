@@ -74,6 +74,10 @@ if (isRemodal) {
 [cm]
 [anim layer=1 name=logo opacity=255 time=0]
 [freeimage layer=0 time=0]
+[iscript]
+stTimerApp.stopApp();
+document.title = "サーモンラーン";
+[endscript]
 [return]
 
 *Panel_Fix_Button

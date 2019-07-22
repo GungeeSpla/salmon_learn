@@ -351,6 +351,11 @@ function StTimerApp () {
 		this.calcEta();
 		// stageIndexの更新
 		this.updateCountStage();
+		if (! this.enableNowMode) {
+			document.title = "STまで " + this.dateFormatter.getMinText2(this.etaDate) + " - サーモンラーン ";
+		} else {
+			document.title = this.dateFormatter.getHourText2(this.nowDate) + " - サーモンラーン ";
+		}
 		// console.log(this.stageIndex + ": " + this.stageFrame);
 		
 	};
@@ -588,13 +593,28 @@ function DateFormatter () {
 		return (d.mm + ":" + d.ss + "." + d.SSS);
 	};
 	
-	//## getMinText (d)
+	//## getMinText2 (d)
+	this.getMinText2 = function (d) {
+		d.mm  = ("00" + d.getMinutes()).slice(-2);
+		d.ss  = ("00" + d.getSeconds()).slice(-2);
+		return (d.mm + ":" + d.ss);
+	};
+	
+	//## getHourText (d)
 	this.getHourText = function (d) {
 		d.h   = d.getHours();
 		d.mm  = ("00" + d.getMinutes()).slice(-2);
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
 		d.SSS = ("000" + d.getMilliseconds()).slice(-3);
 		return (d.h + ":" + d.mm + ":" + d.ss + "." + d.SSS);
+	};
+	
+	//## getHourText2 (d)
+	this.getHourText2 = function (d) {
+		d.h   = d.getHours();
+		d.mm  = ("00" + d.getMinutes()).slice(-2);
+		d.ss  = ("00" + d.getSeconds()).slice(-2);
+		return (d.h + ":" + d.mm + ":" + d.ss);
 	};
 	
 	return this;
