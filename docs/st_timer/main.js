@@ -38,7 +38,9 @@ function StTimerApp () {
 	this.setStTitle = function () {
 		var str;
 		if (this.enableNowMode) {
-			str = "現在時刻は";
+			var num = app.stTimer.timeOffset.friendOffset / 1000;
+			var friend = this.stTimer.timeOffset.enableFriendMode ? "<span style='color: Orange'>（" + num.toFixed(1) + "秒遅れ）</span>" : "";
+			str = "現在時刻" + friend + "は";
 		}
 		else {
 			var friend = this.stTimer.timeOffset.enableFriendMode ? "（フレ部屋）" : "";
