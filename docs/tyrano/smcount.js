@@ -39,7 +39,7 @@ function SmCountApp () {
 	this.timeoutId       = -1;
 	this.framePerSec     = 60;
 	this.timeoutDuration = 1000 / this.framePerSec;
-	this.waveTimes       = [3548, 123583, 243797, 355000];
+	this.waveTimes       = [3348, 123383, 243597, 355000];
 	this.clickEvent      = "ontouchend" in window ? "touchend" : "click";
 	
 	//## init ()

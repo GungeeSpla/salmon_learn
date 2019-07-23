@@ -661,7 +661,7 @@ tf.y = 200;
 	<p>[emb exp="VERSION_STR"]</p>
 </div>
 [endhtml]
-[glink text=リロード x=412 width=130 y=563 size=18 color=credit_button target=Reload cond="true || getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
+[glink text=リロード x=412 width=130 y=563 size=18 color=credit_button target=Reload cond="getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
 [jump target=Panel_4_5]
 
 *Reload
