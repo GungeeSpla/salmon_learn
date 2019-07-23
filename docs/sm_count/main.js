@@ -761,12 +761,16 @@ function StSound () {
 		src.connect(this.audioCtx.destination);
 		src.start(0);
 	}
+	this.defaultOpt = {
+		volume: 1,
+		loop: false
+	};
 	//## play (index)
-	this.play = function (index) {
+	this.play = function (index, opt) {
 		if (! this.enable) return;
+		opt = $.extend({}, this.defaultOpt, opt);
 		// ファイル名でも指定できるようにする
 		// 文字列だったらファイル名と判断してindexを特定
-		var volume = 1;
 		if (typeof index == "string") {
 			if (index.indexOf(".mp3") > -1) volume = 0.2;
 			index = this.soundUrls.indexOf(index);
@@ -784,8 +788,9 @@ function StSound () {
 			if (!source) { return; }
 
 			var gainNode = this.audioCtx.createGain();
-			gainNode.gain.value = this.volume * volume;
+			gainNode.gain.value = this.volume * opt.volume;
 
+			source.loop = opt.loop;
 			source.buffer = buffer;
 			source.connect(gainNode).connect(this.audioCtx.destination);
 			source.onended = function () {
