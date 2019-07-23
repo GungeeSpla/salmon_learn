@@ -540,8 +540,8 @@ function StTimerApp () {
 		this.setStTitle();
 		this.updateStList();
 		setTimeout(this.updateOffset, 200);
-		this.load();
 		this.changeMode("timer");
+		this.load();
 		this.loop();
 	};
 	
@@ -575,7 +575,7 @@ function StTimerApp () {
 				stOffset          : 1,
 				enableNowMode     : false,
 				volume            : 0.5,
-				normaType         : "low",
+				normaType         : "middle",
 				isUseStTimer      : false
 			};
 			saveData = $.extend({}, defaultData, saveData);
@@ -618,8 +618,8 @@ function StTimerApp () {
 		this.sound.loadAll();
 		// NICTにアクセス
 		setTimeout(this.updateOffset, 200);
-		this.load();
 		this.changeMode("timer");
+		this.load();
 		this.isStarted = true;
 		// ループスタート
 		this.loop();
