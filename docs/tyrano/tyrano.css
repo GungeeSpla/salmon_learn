@@ -1559,3 +1559,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
     background-image: url(./images/smcount_prev.png);
 	left: 640px;
 }
+
+
+
+.ui-draggable-handle {
+	cursor: pointer;
+}

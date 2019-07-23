@@ -2431,13 +2431,13 @@ f.bg = "../fgimage/damu_komori_k.png";
 f.kanketsusen = [
     new Kanketsusen("A", 317, 356, ["B", "C", "D", "E", "F", "G"]),
     new Kanketsusen("B", 527, 274, ["C", "A"]),
-    new Kanketsusen("C", 490, 443, ["A", "B", "D"]),
-    new Kanketsusen("D", 309, 568, ["A", "C", "E", "H", "I"]),
+    new Kanketsusen("C", 490, 443, ["A", "B", "D", "J"]),
+    new Kanketsusen("D", 309, 568, ["A", "C", "E", "H", "I", "J"]),
     new Kanketsusen("E", 156, 472, ["A", "D", "F", "G"]),
     new Kanketsusen("F",  84, 297, ["A", "E"]),
     new Kanketsusen("G", 264, 237, ["A", "E"]),
     new Kanketsusen("H", 237, 655, ["D", "I"]),
-    new Kanketsusen("I", 427, 716, ["D", "H"]),
+    new Kanketsusen("I", 427, 716, ["D", "H", "J"]),
     new Kanketsusen("J", 484, 636, ["C", "D", "I"])
 ];
 [endscript]
