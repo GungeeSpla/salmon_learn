@@ -126,12 +126,12 @@ var transform = $(".fix_sonota_item_1").attr("state");
 var isOpening = (transform == "opening");
 if (isOpening) {
 	$(".fix_sonota_tab").attr("src", "./data/image/panel_7a.png");
-	$(".fix_sonota_item_1").css("transform", "translateY(0)").attr("state", "closing");
-	$(".fix_sonota_item_2").css("transform", "translateY(0)").attr("state", "closing");
+	$(".fix_sonota_item_1").css("top", "840px").attr("state", "closing");
+	$(".fix_sonota_item_2").css("top", "840px").attr("state", "closing");
 } else {
 	$(".fix_sonota_tab").attr("src", "./data/image/panel_8a.png");
-	$(".fix_sonota_item_1").css("transform", "translateY(" + (- 120 * 1) + "px)").attr("state", "opening");
-	$(".fix_sonota_item_2").css("transform", "translateY(" + (- 120 * 2) + "px)").attr("state", "opening");
+	$(".fix_sonota_item_1").css("top", (840 - 120 * 1) + "px").attr("state", "opening");
+	$(".fix_sonota_item_2").css("top", (840 - 120 * 2) + "px").attr("state", "opening");
 }
 [endscript]
 [return]
@@ -736,7 +736,7 @@ $(".live2d").click(function(){
 [glink text=作者と関連リンク x=330 width=200 y=690 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]
 [glink text=クレジット１     x=060 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_3'"]
 [glink text=クレジット２     x=330 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_4'"]
-[glink text=リロード         x=435 width=130 y=650 size=18 color=credit_button target=Reload cond="getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
+[glink text=リロード         x=412 width=130 y=563 size=18 color=credit_button target=Reload cond="true || getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
 [return]
 
 
