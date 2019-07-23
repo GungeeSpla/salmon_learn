@@ -590,9 +590,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 	display: none;
 }
 .fix_sonota_item {
+	z-index: 199999999 ! important;
 }
 .fix_sonota_tab {
-	z-index: 199999999 ! important;
+	z-index: 299999999 ! important;
 }
 
 
