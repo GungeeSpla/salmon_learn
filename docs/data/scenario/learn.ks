@@ -661,6 +661,7 @@ tf.y = 200;
 	<p>[emb exp="VERSION_STR"]</p>
 </div>
 [endhtml]
+[glink text=リロード x=412 width=130 y=563 size=18 color=credit_button target=Reload cond="true || getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
 [jump target=Panel_4_5]
 
 *Reload
@@ -736,7 +737,6 @@ $(".live2d").click(function(){
 [glink text=作者と関連リンク x=330 width=200 y=690 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]
 [glink text=クレジット１     x=060 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_3'"]
 [glink text=クレジット２     x=330 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_4'"]
-[glink text=リロード         x=412 width=130 y=563 size=18 color=credit_button target=Reload cond="true || getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
 [return]
 
 
