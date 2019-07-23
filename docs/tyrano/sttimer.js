@@ -367,7 +367,7 @@ function StTimerApp () {
 				this.updateStList();
 				// SMcountと併用する場合は
 				// SMcountに遷移する
-				if (window.smCountApp.isUseStTimer) {
+				if (window.smCountApp.askStTimerCombined()) {
 					this.changeMode("counter");
 				}
 				if (! this.enableNowMode) app.sound.play("manmenmi");
@@ -427,8 +427,8 @@ function StTimerApp () {
 		this.clearCanvas();
 		if (! this.enableNowMode) {
 			if (this.stageIndex == this.lastStageIndex) {
-				if (this.stageFrame < 60 && this.isClearing && ! window.smCountApp.isUseStTimer) {
-					this.ctx.globalAlpha = 1 - this.stageFrame / 60;
+				if (this.stageFrame < 60 && this.isClearing && !window.smCountApp.askStTimerCombined()) {
+					this.ctx.globalAlpha = 1 - this.stageFrame / this.framePerSec;
 					this.renderCountdown(1, true, "0");
 				}
 				else this.isClearing = false;
@@ -747,7 +747,7 @@ function StTimer () {
 function TimeOffset () {
 	var self              = this;
 	this.resulat          = {};
-	this.offset           = 0;
+	this.offsetJST        = 0;
 	this.enableFriendOffset = false;
 	this.friendOffset = 2500;
 	this.serverUrls = [
@@ -763,7 +763,7 @@ function TimeOffset () {
 	//## getTime ()
 	this.getTime = function () {
 		var time = new Date().getTime();
-		var offset = this.offset;
+		var offset = this.offsetJST;
 		if (this.enableFriendOffset) offset -= this.friendOffset;
 		return time + offset;
 	};

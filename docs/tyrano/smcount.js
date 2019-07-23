@@ -8,6 +8,7 @@ function SmCountApp () {
 	var app = this;
 	
 	this.mode            = "counter";
+	this.isRunning       = false;
 	this.isStarted       = false;
 	this.isUseStTimer    = false;
 	this.isDebug         = false;
@@ -586,12 +587,19 @@ function SmCountApp () {
 		window.stTimerApp.save();
 	};
 	
+	//## load ()
 	this.load = function () {
 		window.stTimerApp.load();
 	};
 	
+	//## check ()
+	this.askStTimerCombined = function () {
+		return (window.smCountApp.isUseStTimer && window.smCountApp.isRunning);
+	};
+	
 	//## stopApp ()
 	this.stopApp = function () {
+		this.isRunning = false;
 		if (this.isPlaying) {
 			this.stop();
 		} else clearTimeout(this.timeoutId);
@@ -600,6 +608,7 @@ function SmCountApp () {
 	//## resetApp ()
 	this.resetApp = function () {
 		this.stopApp();
+		this.isRunning = true;
 		this.getJqueryObject();
 		this.setCtx();
 		window.stTimerApp.changeMode("counter");
@@ -608,6 +617,7 @@ function SmCountApp () {
 	
 	//## startApp ()
 	this.startApp = function () {
+		this.isRunning = true;
 		if (this.isStarted) return this.resetApp();
 		this.getJqueryObject();
 		this.setCtx();
