@@ -5,6 +5,7 @@ window.stTimerApp = new StTimerApp();
 //# StTimerApp ()
 function StTimerApp () {
 	var app = this;
+	this.mode        = "timer";
 	this.isStarted   = false;
 	this.stTimer     = new StTimer();
 	this.list        = [];
@@ -23,8 +24,9 @@ function StTimerApp () {
 	this.enableNowMode = false;
 	this.stTitle       = "ST";
 	this.dateFormatter = new DateFormatter();
+	this.framePerSec   = 60;
 	this.loopTimerId   = -1;
-	this.loopDuration  = 1000 / 60; // タイマーの画面更新頻度 これは秒間60F
+	this.loopDuration  = 1000 / this.framePerSec;
 	this.updateSttId       = -1;
 	this.updateSttDuration = 60 * 1000;
 	this.updateOffsetId       = -1;
@@ -50,6 +52,7 @@ function StTimerApp () {
 	
 	//## getJqueryObject ()
 	this.getJqueryObject = function () {
+		this.$allWrapper  = $(".all_wrapper");
 		this.$eta         = $(".st_eta_count");
 		this.$next        = $(".st_eta_next");
 		this.$canvas      = $(".st_eta_canvas");
@@ -71,7 +74,7 @@ function StTimerApp () {
 		this.$soundDesc   = $(".st_eta_sound_desc");
 		var clickEvent    = "ontouchstart" in window ? "touchstart" : "click";
 		if (this.$checkSound.attr("is_set_event") != "true") {
-			this.$checkSound.attr("is-set-event", "true");
+			this.$checkSound.attr("is_set_event", "true");
 			function activeButton (self) {
 				var $self = $(self);
 				$self.addClass("button_active");
@@ -302,6 +305,30 @@ function StTimerApp () {
 		this.etaMsec   = this.etaDate.getMilliseconds() + 1;
 	};
 	
+	//## changeMode ()
+	this.changeMode = function (target) {
+		var theApp = window.smCountApp;
+		theApp.mode = target;
+		this.mode = target;
+		switch (target) {
+		case "counter":
+			document.title = "サーモンラーン";
+			this.framePerSec = 1;
+			this.loopDuration = 1000 / this.framePerSec;
+			theApp.framePerSec = 60;
+			theApp.timeoutDuration = 1000 / theApp.framePerSec;
+			if (theApp.$allWrapper) theApp.$allWrapper.css("transform", "translate(-640px)");
+			break;
+		case "timer":
+			this.framePerSec = 60;
+			this.loopDuration = 1000 / this.framePerSec;
+			theApp.framePerSec = 1;
+			theApp.timeoutDuration = 1000 / theApp.framePerSec;
+			if (theApp.$allWrapper) theApp.$allWrapper.css("transform", "translate(0px)");
+			break;
+		}
+	};
+	
 	//## updateCountStage ()
 	// stageIndexを更新します
 	this.updateCountStage = function () {
@@ -338,6 +365,11 @@ function StTimerApp () {
 			case this.lastStageIndex: // 残り60秒以上
 				this.isClearing = true;
 				this.updateStList();
+				// SMcountと併用する場合は
+				// SMcountに遷移する
+				if (window.smCountApp.isUseStTimer) {
+					this.changeMode("counter");
+				}
 				if (! this.enableNowMode) app.sound.play("manmenmi");
 				break;
 			}
@@ -351,10 +383,12 @@ function StTimerApp () {
 		this.calcEta();
 		// stageIndexの更新
 		this.updateCountStage();
-		if (! this.enableNowMode) {
-			document.title = "STまで " + this.dateFormatter.getMinText2(this.etaDate) + " - サーモンラーン ";
-		} else {
-			document.title = this.dateFormatter.getHourText2(this.nowDate) + " - サーモンラーン ";
+		if (window.smCountApp.mode == "timer") {
+			if (! this.enableNowMode) {
+				document.title = "STまで " + this.dateFormatter.getMinText2(this.etaDate) + " - サーモンラーン ";
+			} else {
+				document.title = this.dateFormatter.getHourText2(this.nowDate) + " - サーモンラーン ";
+			}
 		}
 		// console.log(this.stageIndex + ": " + this.stageFrame);
 		
@@ -383,6 +417,8 @@ function StTimerApp () {
 	//## render ()
 	// 画面を描画する関数です
 	this.render = function () {
+		if (this.mode != "timer") return;
+		
 		var str = this.enableNowMode ? 
 			app.dateFormatter.getHourText(this.nowDate):
 			app.dateFormatter.getMinText(this.etaDate);
@@ -391,7 +427,7 @@ function StTimerApp () {
 		this.clearCanvas();
 		if (! this.enableNowMode) {
 			if (this.stageIndex == this.lastStageIndex) {
-				if (this.stageFrame < 60 && this.isClearing) {
+				if (this.stageFrame < 60 && this.isClearing && ! window.smCountApp.isUseStTimer) {
 					this.ctx.globalAlpha = 1 - this.stageFrame / 60;
 					this.renderCountdown(1, true, "0");
 				}
@@ -503,9 +539,10 @@ function StTimerApp () {
 		this.setCtx();
 		this.setStTitle();
 		this.updateStList();
-		this.loop();
 		setTimeout(this.updateOffset, 200);
 		this.load();
+		this.changeMode("timer");
+		this.loop();
 	};
 	
 	//## save ()
@@ -516,9 +553,11 @@ function StTimerApp () {
 			friendOffset      : this.stTimer.timeOffset.friendOffset,
 			enableStOffset    : this.stTimer.enableStOffset,
 			stOffset          : this.stTimer.stOffset,
-			enableNowMode     : this.enableNowMode
+			enableNowMode     : this.enableNowMode,
+			volume            : window.smCountApp.sound.volume,
+			normaType         : window.smCountApp.normaType,
+			isUseStTimer      : window.smCountApp.isUseStTimer
 		};
-		console.log(saveData);
 		var saveDataStr = JSON.stringify(saveData);
 		localStorage.setItem(this.storageKey, saveDataStr);
 	}
@@ -528,17 +567,39 @@ function StTimerApp () {
 		var saveDataStr = localStorage.getItem(this.storageKey);
 		if (saveDataStr) {
 			var saveData = JSON.parse(saveDataStr);
-			this.sound.enable = false;
+			var defaultData = {
+				enableSound       : false,
+				enableFriendOffset: false,
+				friendOffset      : 2500,
+				enableStOffset    : false,
+				stOffset          : 1,
+				enableNowMode     : false,
+				volume            : 0.5,
+				normaType         : "low",
+				isUseStTimer      : false
+			};
+			saveData = $.extend({}, defaultData, saveData);
 			this.stTimer.timeOffset.enableFriendOffset = saveData.enableFriendOffset;
 			this.stTimer.timeOffset.friendOffset       = saveData.friendOffset;
 			this.stTimer.enableStOffset                = saveData.enableStOffset;
 			this.stTimer.stOffset                      = saveData.stOffset;
+			this.sound.volume                          = saveData.volume;
 			this.enableNowMode                         = saveData.enableNowMode;
-			this.$checkFriend.prop("checked",   this.stTimer.timeOffset.enableFriendOffset).trigger("change");
-			this.$checkStOffset.prop("checked", this.stTimer.enableStOffset).trigger("change");
-			this.$checkNow.prop("checked",      this.enableNowMode).trigger("change");
-			this.sound.enable = saveData.enableSound && this.isFreeSound;
-			this.$checkSound.prop("checked",    this.sound.enable).trigger("change");
+			this.sound.enable                          = saveData.enableSound && this.isFreeSound;
+			window.smCountApp.sound.volume             = saveData.volume;
+			window.smCountApp.normaType                = saveData.normaType;
+			window.smCountApp.isUseStTimer             = saveData.isUseStTimer;
+			if (this.mode == "timer") {
+				this.$checkFriend.prop("checked",   this.stTimer.timeOffset.enableFriendOffset).trigger("change");
+				this.$checkStOffset.prop("checked", this.stTimer.enableStOffset).trigger("change");
+				this.$checkNow.prop("checked",      this.enableNowMode).trigger("change");
+				this.$checkSound.prop("checked",    this.sound.enable).trigger("change");
+			}
+			else if (this.mode == "counter") {
+				window.smCountApp.$settingNorma.render();
+				window.smCountApp.$settingVolume.render();
+				window.smCountApp.$useStTimer.prop("checked", window.smCountApp.isUseStTimer).trigger("change");
+			}
 		}
 	}
 	
@@ -553,14 +614,15 @@ function StTimerApp () {
 		this.setStTitle();
 		// STリストを作成
 		this.updateStList();
-		// ループスタート
-		this.loop();
 		// 音声のプリロード
 		this.sound.loadAll();
 		// NICTにアクセス
 		setTimeout(this.updateOffset, 200);
 		this.load();
+		this.changeMode("timer");
 		this.isStarted = true;
+		// ループスタート
+		this.loop();
 	};
 	
 	return this;
@@ -790,6 +852,7 @@ function StSound () {
 		"manmenmi"
 	];
 	this.enable  = false;
+	this.volume  = 0.5;
 	this.sources = new Array(this.soundUrls.length);
 	this.buffers = new Array(this.soundUrls.length);
 	this.playing = new Array(this.soundUrls.length, false)
@@ -840,6 +903,7 @@ function StSound () {
 		}
 		return this._load(index).then(buffer => {
 			if (this.noAudioContext) {
+				this.fallbackAudio.volume = this.volume;
 				this.fallbackAudio.currentTime = 0;
 				this.fallbackAudio.play();
 				return;
@@ -847,8 +911,12 @@ function StSound () {
 			this.audioCtx.resume();
 			var source = this.audioCtx.createBufferSource();
 			if (!source) { return; }
+
+			var gainNode = this.audioCtx.createGain();
+			gainNode.gain.value = this.volume;
+			
 			source.buffer = buffer;
-			source.connect(this.audioCtx.destination);
+			source.connect(gainNode).connect(this.audioCtx.destination);
 			source.onended = function () {
 				this.stop(index);
 			};

@@ -12,6 +12,7 @@ function init () {
 //# StTimerApp ()
 function StTimerApp () {
 	var app = this;
+	this.mode        = "timer";
 	this.stTimer     = new StTimer();
 	this.list        = [];
 	this.bEta        = 0;
@@ -57,6 +58,7 @@ function StTimerApp () {
 		this.$eta         = $(".st_eta_count");
 		this.$next        = $(".st_eta_next");
 		this.$canvas      = $(".st_eta_canvas");
+		this.$allWrapper  = $(".all_wrapper");
 		this.ctx          = this.$canvas[0].getContext("2d");
 		this.$checkSound  = $("#check_sound");
 		this.$checkFriend = $("#check_friend");
@@ -73,9 +75,9 @@ function StTimerApp () {
 		this.$stMinus     = $(".st_minus_button");
 		this.$stOffset    = $(".st_offset");
 		this.$soundDesc   = $(".st_eta_sound_desc");
-		var clickEvent    = "ontouchstart" in window ? "touchstart" : "click";
+		var clickEvent    = "ontouchend" in window ? "touchend" : "click";
 		if (this.$checkSound.attr("is_set_event") != "true") {
-			this.$checkSound.attr("is-set-event", "true");
+			this.$checkSound.attr("is_set_event", "true");
 			function activeButton (self) {
 				var $self = $(self);
 				$self.addClass("button_active");
@@ -294,6 +296,29 @@ function StTimerApp () {
 		this.etaMsec   = this.etaDate.getMilliseconds() + 1;
 	};
 	
+	//## changeMode ()
+	this.changeMode = function (target) {
+		var theApp = window.smCountApp;
+		theApp.mode = target;
+		this.mode = target;
+		switch (target) {
+		case "counter":
+			theApp.framePerSec = 60;
+			theApp.timeoutDuration = 1000 / theApp.framePerSec;
+			this.timeoutDuration = 1000 / this.framePerSec;
+			this.loopDuration = 1000;
+			
+			this.$allWrapper.css("transform", "translate(-640px)");
+			break;
+		case "timer":
+			theApp.framePerSec = 1;
+			theApp.timeoutDuration = 1000 / theApp.framePerSec;
+			this.loopDuration = 1000 / 60;
+			this.$allWrapper.css("transform", "translate(0px)");
+			break;
+		}
+	};
+	
 	//## updateCountStage ()
 	// stageIndexを更新します
 	this.updateCountStage = function () {
@@ -331,6 +356,11 @@ function StTimerApp () {
 				if (! this.enableNowMode) app.sound.play("manmenmi");
 				this.isClearing = true;
 				this.updateStList();
+				// SMcountと併用する場合は
+				// SMcountに遷移する
+				if (window.smCountApp.isUseStTimer) {
+					this.changeMode("counter");
+				}
 				break;
 			}
 		}
@@ -370,6 +400,7 @@ function StTimerApp () {
 	//## render ()
 	// 画面を描画する関数です
 	this.render = function () {
+		if (this.mode != "timer") return;
 		var str = this.enableNowMode ? 
 			app.dateFormatter.getHourText(this.nowDate):
 			app.dateFormatter.getMinText(this.etaDate);

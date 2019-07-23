@@ -47,15 +47,16 @@
 <script type="text/javascript" src="./tyrano/lang.js" ></script>
 <script type="text/javascript" src="./tyrano/libs.js" ></script>
 
-<link   type="text/css"              href="./tyrano/tyrano.css?20200" rel="stylesheet" />
-<script type="text/javascript"        src="./tyrano/sttimer.js?20200c" ></script>
+<link   type="text/css"              href="./tyrano/tyrano.css?20300" rel="stylesheet" />
+<script type="text/javascript"        src="./tyrano/sttimer.js?20300" ></script>
+<script type="text/javascript"        src="./tyrano/smcount.js?20300" ></script>
 <script type="text/javascript"  src="./tyrano/salmon.others.js?20200" ></script>
 <script type="text/javascript" src="./tyrano/salmon.weapons.js?20200" ></script>
 <script type="text/javascript"	   src="./tyrano/salmon.api.js?20200" ></script>
 <script type="text/javascript"   src="./tyrano/salmon.rater.js?20200" ></script>
 <script type="text/javascript" src="./tyrano/salmon.history.js?20200" ></script>
 <script type="text/javascript">
-window.VERSION = 20200;
+window.VERSION = 20300;
 window.VERSION_STR = parseVersion(VERSION);
 </script>
 
@@ -72,7 +73,6 @@ if ('serviceWorker' in navigator) {
 
 <script type="text/javascript" src="./tyrano/tyrano.js" ></script>
 <script type="text/javascript" src="./tyrano/tyrano.base.js" ></script>
-
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.event.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.key_mouse.js" ></script>
@@ -86,8 +86,6 @@ if ('serviceWorker' in navigator) {
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_system.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag.js" ></script>
 
-
-
 <link href="./tyrano/libs/textillate/assets/animate.css" rel="stylesheet">
 <script type="text/javascript" src="./tyrano/libs/textillate/assets/jquery.lettering.js"></script>
 <script type="text/javascript" src="./tyrano/libs/textillate/jquery.textillate.js"></script>
@@ -97,21 +95,14 @@ if ('serviceWorker' in navigator) {
 
 <script type="text/javascript">
 function doScroll() { if (window.pageYOffset === 0) { window.scrollTo(0,1); } }  
-window.onload = function() { setTimeout(doScroll, 100); }  
-
+window.onload = function() { setTimeout(doScroll, 100); } 
 </script>  
 
 </head>
 
 <body onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()" >
-
 <div id="tyrano_base" class="tyrano_base" style="overflow:hidden" ></div>
 
-
-<!--  First シナリオファイルに外部ファイルを利用したい場合は、こちらにシナリオファイルのURLを指定できます-->
-<!--
-<input type="hidden" id="first_scenario_file" value="http://test.com/tyrano/data/scenario/first.ks">
--->
 
 <!-- モーダル用 -->
 <div class="remodal-bg" ></div>

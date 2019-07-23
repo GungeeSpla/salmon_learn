@@ -114,7 +114,7 @@ body {
   transition: all .2s;
   overflow: hidden;
   cursor: pointer;
-	transform: scale(1);
+  transform: scale(1);
 }
 .input_st+label .button_active {
 	transform: scale(1.1);

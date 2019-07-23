@@ -72,10 +72,10 @@ if (isRemodal) {
 [return cond="tf.reseted"]
 [call target=Panel_Fix_Button]
 [cm]
-[anim layer=1 name=logo opacity=255 time=0]
 [freeimage layer=0 time=0]
 [iscript]
 stTimerApp.stopApp();
+smCountApp.stopApp();
 document.title = "サーモンラーン";
 [endscript]
 [return]
@@ -86,12 +86,18 @@ document.title = "サーモンラーン";
 [button fix=true graphic=panel_2a.png   x=&128*1 y=840 width=&128 target=*Panel_2 cond="sf.panel != 2"]
 [button fix=true graphic=panel_3a.png   x=&128*2 y=840 width=&128 target=*Panel_3 cond="sf.panel != 3"]
 [button fix=true graphic=panel_5a.png   x=&128*3 y=840 width=&128 target=*Panel_5 cond="sf.panel != 5"]
-[button fix=true graphic=panel_4a.png   x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel != 4"]
+[button fix=true graphic=panel_4a.png   x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel != 4" name=fix_sonota_item,fix_sonota_item_1]
+[button fix=true graphic=panel_6a.png   x=&128*4 y=840 width=&128 target=*Panel_6 cond="sf.panel != 6" name=fix_sonota_item,fix_sonota_item_2]
+[button fix=true graphic=panel_7a.png   x=&128*4 y=840 width=&128 target=*Panel_7 cond="sf.panel != 7" name=fix_sonota_tab]
+
 [button fix=true graphic=panel_1ab.png  x=&128*0 y=840 width=&128 target=*Panel_1 cond="sf.panel == 1"]
 [button fix=true graphic=panel_2ab.png  x=&128*1 y=840 width=&128 target=*Panel_2 cond="sf.panel == 2"]
 [button fix=true graphic=panel_3ab.png  x=&128*2 y=840 width=&128 target=*Panel_3 cond="sf.panel == 3"]
 [button fix=true graphic=panel_5ab.png  x=&128*3 y=840 width=&128 target=*Panel_5 cond="sf.panel == 5"]
-[button fix=true graphic=panel_4ab.png  x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel == 4"]
+[button fix=true graphic=panel_4ab.png  x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel == 4" name=fix_sonota_item,fix_sonota_item_1]
+[button fix=true graphic=panel_6ab.png  x=&128*4 y=840 width=&128 target=*Panel_6 cond="sf.panel == 6" name=fix_sonota_item,fix_sonota_item_2]
+;[button fix=true graphic=panel_4ab.png  x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel == 4" name=fix_sonota_item,fix_sonota_item_1]
+;[button fix=true graphic=panel_4a.png   x=&128*4 y=840 width=&128 target=*Panel_6 cond="sf.panel != 6" name=fix_sonota_item,fix_sonota_item_2]
 ;[eval exp="addFixButton()"]
 /*
 [button fix=true graphic=panel_1.png  x=0   y=840 width=160 target=*Panel_1 name=panel,panel_1]
@@ -113,6 +119,169 @@ tf.panel = "*Panel_" + sf.panel;
 [s]
 
 
+
+*Panel_7
+[iscript]
+var transform = $(".fix_sonota_item_1").attr("state");
+var isOpening = (transform == "opening");
+if (isOpening) {
+	$(".fix_sonota_tab").attr("src", "./data/image/panel_7a.png");
+	$(".fix_sonota_item_1").css("transform", "translateY(0)").attr("state", "closing");
+	$(".fix_sonota_item_2").css("transform", "translateY(0)").attr("state", "closing");
+} else {
+	$(".fix_sonota_tab").attr("src", "./data/image/panel_8a.png");
+	$(".fix_sonota_item_1").css("transform", "translateY(" + (- 120 * 1) + "px)").attr("state", "opening");
+	$(".fix_sonota_item_2").css("transform", "translateY(" + (- 120 * 2) + "px)").attr("state", "opening");
+}
+[endscript]
+[return]
+
+
+
+*Panel_6
+[eval exp="sf.panel = 6"]
+[call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=0 time=0]
+[iscript]
+if (! sf.sm_count_step) sf.sm_count_step = 1;
+[endscript]
+[jump target=Panel_6_1 cond="sf.sm_count_step <= 1"]
+[jump target=Panel_6_2 cond="sf.sm_count_step <= 2"]
+[jump target=Panel_6_3 cond="sf.sm_count_step <= 3"]
+
+*Panel_6_1
+[anim layer=1 name=logo opacity=255 time=0]
+[html name=html_space]
+<div class="st_description">
+	<h1>SMcountとは</h1>
+	<b>SMcount</b>は，サーモンランにおいて、<br>
+	シャケの湧いてくる方向が一定の時刻で切り替わることを<br>
+	理解するための<b>トレーニングボイス</b>です。<br><br>
+	<h1>使い方</h1>
+	バイトが始まると、ステージの風景映像が流れて、<br>
+	（キケン度MAXの場合はここで特殊な演出が入ります）<br>
+	そのあとアルバイターたちがスーパージャンプで飛んできますね。<br><br>
+	そのアルバイターたちが<b>着地してチャポンと音が鳴るのと同時</b>に<br>
+	SMcountの「<b>Start</b>」を押してみましょう。<br><br>
+	すると、あとはバイトの時間経過に合わせて<br>
+	SMcountがカウントを行ってくれます。<br><br>
+</div>
+[endhtml]
+[glink text=次へ x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.sm_count_step = 2"]
+[return]
+
+*Panel_6_2
+[anim layer=1 name=logo opacity=255 time=0]
+[html name=html_space]
+<div class="st_description">
+	<h1>詳しい使い方</h1>
+	シャケの湧いてくる方向が変わる時刻は<br>
+	ノルマの高さによって変わってきますが、<br>
+	それを判別するには<b>Wave1のノルマ</b>を見ればよいです。<br><br>
+	画面下側にあるノルマ設定について、<br>
+	<div style="display: inline-block; width: 420px; text-align: left;">
+	●Wave1のノルマが <b>11～16</b> ならば、<b>Low</b><br>
+	●Wave1のノルマが <b>17～20</b> ならば、<b>Middle</b><br>
+	●Wave1のノルマが <b>21　 　</b> ならば、<b>High</b><br>
+	</div><br>
+	を、選ぶようにしてください。<br><br>
+	（キケン度MAXの演出があればHigh、<br>
+	なければMiddleにすれば大体合うと思います）<br><br>
+	Startボタンを押すタイミングが最適ではなかった、<br>
+	処理落ちが発生したなどの理由で<b>カウントがズレた</b>場合、<br>
+	カウンターの下にあるボタンで<b>微調整</b>を行ってください。<br>
+[endhtml]
+[glink text=OK! x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.sm_count_step = 3"]
+[return]
+
+*Panel_6_3
+[anim layer=1 name=logo opacity=0 time=0]
+[eval exp="sf.sm_count_step = 3"]
+[html name=html_space]
+	<div class="all_wrapper">
+		<div class="smcount_button smcount_translate translate_right" style="display: none;" target="counter">→</div>
+		<div class="smcount_button smcount_translate translate_left"  style="display: none;" target="timer">←</div>
+		<div class="smcount_wrapper">
+			<div class="smcount_button smcount_button_start">Start</div>
+			<canvas class="smcount_canvas" width="260" height="260" style=""></canvas>
+			<div class="smcount_wave_wrapper" style="opacity: 0;">
+				<div class="smcount_wave">Wave<span class="smcount_wave_span">1</span></div>
+				<div class="smcount_sec">100</div>
+			</div>
+			<div class="smcount_kasoku_wrapper" style="opacity: 0;">
+				<div class="smcount_button smcount_button_kasoku  next3 prev" move=" 110000"></div>
+				<div class="smcount_button smcount_button_kasoku  next2 prev" move="   1000"></div>
+				<div class="smcount_button smcount_button_kasoku  next1 prev" move="    200"></div>
+				<div class="smcount_button smcount_button_kasoku  next1"      move="   -200"></div>
+				<div class="smcount_button smcount_button_kasoku  next2"      move="  -1000"></div>
+				<div class="smcount_button smcount_button_kasoku  next3"      move="-100000"></div>
+			</div>
+			<div class="smcount_setting_wrapper">
+				<div class="smcount_setting_item">
+					<p>ノルマ <span class="smcount_setting_norma_span">Middle</span></p>
+					<div class="smcount_setting_button_wrapper">
+						<div class="smcount_setting_button smcount_setting_norma no_select" norma="low">Low</div>
+						<div class="smcount_setting_button smcount_setting_norma" norma="middle">Middle</div>
+						<div class="smcount_setting_button smcount_setting_norma no_select" norma="high">High</div>
+					</div>
+				</div>
+				<div class="smcount_setting_item">
+					<p>音量 <span class="smcount_setting_volume_span">50%</span></p>
+					<div class="smcount_setting_button_wrapper">
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_minus" move="-0.1">－</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_plus" move=" 0.1">＋</div>
+					</div>
+				</div>
+				<div class="smcount_setting_item">
+					<input type="checkbox" class="input_st" style="left: 0px; top: 0px;" id="use_st_timer"  />
+					<label for="use_st_timer" data-on-label="On" data-off-label="Off"><p>STタイマーと併用</p></label>
+				</div>
+			</div>
+		</div>
+		<div class="st_eta">
+			<div class="st_eta_description">　</div>
+			<div class="st_eta_count">　</div>
+			<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+			<div class="st_eta_next">　</div>
+			<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため、<br>最後の5･4･3･2･1のカウントを行いません。</div>
+			<canvas class="st_eta_canvas" width="100" height="100"></canvas>
+			<div class="input_st_wrapper">
+				<div class="input_st_item">
+					<input type="checkbox" class="input_st" id="check_friend"  />
+					<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_sound"  />
+					<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_now"  />
+					<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_st_offset"  />
+					<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
+				</div>
+			</div>
+			<div class="credit_emaame"><a href="https://emaame.github.io/salmonrun_time_timer/">@emaameさんのSTタイマー</a>を元に作成しています</div>
+		</div>
+	</div>
+[endhtml]
+[iscript]
+stTimerApp.startApp();
+smCountApp.startApp();
+[endscript]
+[glink text=SMcountの使い方 x=216 width=170 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.sm_count_step = 1"]
+[return]
+
+
+
+
+
+
+
+
+
 *Panel_5
 [eval exp="sf.panel = 5"]
 [call target=*Panel_Reset]
@@ -124,6 +293,7 @@ if (! sf.st_step) sf.st_step = 1;
 [jump target=Panel_5_3 cond="sf.st_step >= 3"]
 
 *Panel_5_1
+[anim layer=1 name=logo opacity=255 time=0]
 [html name=html_space]
 <div class="st_description">
 <h1>STとは</h1>
@@ -150,6 +320,7 @@ if (! sf.st_step) sf.st_step = 1;
 [return]
 
 *Panel_5_2
+[anim layer=1 name=logo opacity=255 time=0]
 [html name=html_space]
 <div class="st_description">
 <h1>STタイマーとは</h1>
@@ -181,34 +352,36 @@ STタイマーは、
 [return]
 
 *Panel_5_3
-[anim layer=0 name=logo opacity=0 time=0]
+[anim layer=1 name=logo opacity=0 time=0]
 [html name=html_space]
-	<div class="st_eta">
-		<div class="st_eta_description">　</div>
-		<div class="st_eta_count">　</div>
-		<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
-		<div class="st_eta_next">　</div>
-		<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため<br>最後の5･4･3･2･1のカウントを行いません。</div>
-		<canvas class="st_eta_canvas" width="100" height="100"></canvas>
-		<div class="input_st_wrapper">
-			<div class="input_st_item">
-				<input type="checkbox" class="input_st" id="check_friend"  />
-				<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
+	<div class="all_wrapper" style="transform: translate(0)">
+		<div class="st_eta">
+			<div class="st_eta_description">　</div>
+			<div class="st_eta_count">　</div>
+			<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+			<div class="st_eta_next">　</div>
+			<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため<br>最後の5･4･3･2･1のカウントを行いません。</div>
+			<canvas class="st_eta_canvas" width="100" height="100"></canvas>
+			<div class="input_st_wrapper">
+				<div class="input_st_item">
+					<input type="checkbox" class="input_st" id="check_friend"  />
+					<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_sound"  />
+					<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_now"  />
+					<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_st_offset"  />
+					<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
+				</div>
 			</div>
-			<div class="input_st_item">	
-				<input type="checkbox" class="input_st" id="check_sound"  />
-				<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
-			</div>
-			<div class="input_st_item">	
-				<input type="checkbox" class="input_st" id="check_now"  />
-				<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
-			</div>
-			<div class="input_st_item">	
-				<input type="checkbox" class="input_st" id="check_st_offset"  />
-				<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
-			</div>
+			<div class="credit_emaame">@emaameさんのSTタイマー (CC 表示4.0 国際) を改変しています</div>
 		</div>
-		<div class="credit_emaame">@emaameさんのSTタイマー (CC 表示4.0 国際) を改変しています</div>
 	</div>
 [endhtml]
 [iscript]
@@ -221,6 +394,7 @@ stTimerApp.startApp();
 *Panel_1
 [eval exp="sf.panel = 1"]
 [call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=255 time=0]
 [iscript]
 tf.x = 40;
 tf.y = 180;
@@ -249,6 +423,7 @@ tf.y = 180;
 *Panel_2
 [eval exp="sf.panel = 2"]
 [call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=255 time=0]
 [iscript]
 tf.x = 40;
 tf.y = -280;
@@ -277,7 +452,7 @@ tf.y = -280;
 *Panel_3
 [eval exp="sf.panel = 3"]
 [call target=*Panel_Reset]
-;[anim layer=0 name=logo opacity=0 time=0]
+[anim layer=1 name=logo opacity=255 time=0]
 [ptext layer=0 page=fore text=エラーが発生しました🤔     size=24 bold=bold x=0 y=350 width=640 align=center name=error_message,hidden]
 [ptext layer=0 page=fore text=現在ご利用いただけません🙇 size=24 bold=bold x=0 y=400 width=640 align=center name=error_message,hidden]
 [ptext layer=0 page=fore text=オープン! color=0x22FF22     size=24 bold=bold x=0 y=170 width=640 align=center name=open_title,hidden]
@@ -462,6 +637,7 @@ $(".layer_free").show(0);
 *Panel_4
 [eval exp="sf.panel = 4"]
 [call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=255 time=0]
 [iscript]
 if (! tf.credit) tf.credit = "Panel_4_1";
 tf.x = 40;
@@ -473,17 +649,19 @@ tf.y = 200;
 *Panel_4_1
 [html name=credit_wrapper]
 <div class="credit about">
-	<p>「SALMON LEARN -サーモンラーン-」は、<br>Nintendo Switch用のゲームソフト「Splatoon2」の<br>ゲームモード「サーモンラン」についての<br>情報を提供するWebアプリです。</p>
-	<br>
-	<p>間欠泉の開栓シミュレーション、<br>コウモリの誘導シミュレーション、<br>シフトの確認および予報のチェックを<br>することができます。</p>
-	<br>
+	<br><br>このアプリについて<br><br>
+	<p>「<b>SALMON LEARN -サーモンラーン-</b>」は、<br>
+	Nintendo Switch用のゲームソフト「Splatoon2」の<br>
+	ゲームモード「サーモンラン」についての<br>
+	情報を提供するWebアプリです。</p><br>
+	<p>間欠泉の開栓シミュレーション、<br>
+	コウモリの誘導シミュレーション、<br>
+	シフトの確認および予報のチェックを<br>
+	することができます。</p><br>
 	<p>[emb exp="VERSION_STR"]</p>
 </div>
 [endhtml]
-[glink text=作者と関連リンク x=060 width=200 y=730 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]
-[glink text=クレジット       x=355 width=200 y=730 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_3'"]
-[glink text=リロード         x=435 width=130 y=650 size=18 color=credit_button target=Reload cond="getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
-[jump target=Panel_4_4]
+[jump target=Panel_4_5]
 
 *Reload
 [mask time=300]
@@ -501,17 +679,14 @@ location.reload(true);
 *Panel_4_2
 [html name=credit_wrapper]
 <div class="credit author">
-	<h1>作者</h1>
 	<br>
-	<p>ガンジー (<a href="https://twitter.com/gungeespla">@GungeeSpla</a>)</p>
-	<p>バグ報告などはTwitterまでお願いします。</p>
-	<br>
-	<h1>その他</h1>
-	<br>
-	<p><a href="javascript:void(0)" class="live2d">Live2Dのイカちゃんイラストを見る</a></p>
-	<p>動作環境によっては、カクついたり、<br>真っ暗なまま表示されなったりします🙇</p>
-	<br>
-	<p><a href="http://amzn.asia/1OJG2pV">作者のWish List</a></p>
+	<h2>作者</h2><br>
+	<p>ガンジー (<a href="https://twitter.com/gungeespla" target="_black">@GungeeSpla</a>)</p>
+	<p>バグ報告などはTwitterまでお願いします。</p><br>
+	<h2>関連リンク</h2><br>
+	<p><a href="javascript:void(0)" class="live2d">Live2Dのイカちゃんイラスト</a></p><br>
+	<p><a href="https://tiermaker.com/create/splatoon-2-salmon-run-weapons" target="_black">鮭ブキランキングメーカー</a></p><br>
+	<p><a href="http://amzn.asia/1OJG2pV" target="_black">作者のWish List</a></p><br>
 </div>
 [endhtml]
 [iscript]
@@ -519,53 +694,49 @@ $(".live2d").click(function(){
 	tyranoAPI.jump("", "Goto_Senpai");
 });
 [endscript]
-[jump target=Panel_4_4]
+[jump target=Panel_4_5]
 
 *Panel_4_3
 [html name=credit_wrapper]
 <div class="credit">
 	<h2>コウモリマップに関する知見の引用･参考</h2>
-	<p>ザラメ (<a href="https://twitter.com/zarame2431">@zarame2431</a>)</p>
-	<p>カトレア (<a href="https://twitter.com/ikatorea">@ikatorea</a>)</p>
+	<p>ザラメ (<a href="https://twitter.com/zarame2431" target="_black">@zarame2431</a>)</p>
+	<p>カトレア (<a href="https://twitter.com/ikatorea" target="_black">@ikatorea</a>)</p>
 	
 	<h2>間欠泉の開栓手順に関する知見の引用･参考</h2>
-	<p>いh7 (<a href="https://twitter.com/ultmis">@ultmis</a>)</p>
-	<p>えむいー (<a href="https://twitter.com/tkgling">@tkgling</a>, <a href="https://tkgstrator.work/">https://tkgstrator.work/</a>)</p>
-	<p><a href="https://splatoon-yoru.com/">https://splatoon-yoru.com/</a></p>
+	<p>いh7 (<a href="https://twitter.com/ultmis" target="_black">@ultmis</a>)</p>
+	<p>えむいー (<a href="https://twitter.com/tkgling" target="_black">@tkgling</a>, <a href="https://tkgstrator.work/" target="_black">https://tkgstrator.work/</a>)</p>
+	<p><a href="https://splatoon-yoru.com/" target="_black">https://splatoon-yoru.com/</a></p>
 	
 	<h2>サーモンランのシフト取得API</h2>
-	<p>ウラル (<a href="https://twitter.com/barley_ural">@barley_ural</a>, <a href="https://splamp.info/">https://splamp.info/</a>)</p>
+	<p>ウラル (<a href="https://twitter.com/barley_ural" target="_black">@barley_ural</a>, <a href="https://splamp.info/" target="_black">https://splamp.info/</a>)</p>
 	
-	<h2>STタイマー</h2>
-	<p>ema (<a href="https://twitter.com/emaame">@emaame</a>, <a href="https://emaame.github.io/salmonrun_time_timer/">https://emaame.github.io/</a>)</p>
-	
-	<h2>その他画像や情報の引用など</h2>
-	<p><a href="https://wikiwiki.jp/splatoon2mix/">https://wikiwiki.jp/splatoon2mix/</a></p>
-	<p><a href="https://splatoonwiki.org/wiki/">https://splatoonwiki.org/wiki/</a></p>
+	<h2>STタイマーの改変元</h2>
+	<p>ema (<a href="https://twitter.com/emaame" target="_black">@emaame</a>, <a href="https://emaame.github.io/salmonrun_time_timer/" target="_black">https://emaame.github.io/...</a>)</p>
 </div>
 [endhtml]
-[jump target=Panel_4_4]
+[jump target=Panel_4_5]
 
-/*
-[ptext layer=0 text=引用･参考･協力 bold=bold                     size=40 x=0   y=200 width=640 align=center]
-[ptext layer=0 text=ザラメ&nbsp;(@zarame2431)                    size=20 x=160 y=270]
-[ptext layer=0 text=カトレア&nbsp;(@ikatorea)                    size=20 x=160 y=300]
-[ptext layer=0 text=いh7&nbsp;(@ultmis)                          size=20 x=160 y=330]
-[ptext layer=0 text=えむいー&nbsp;(@tkgling)                     size=20 x=160 y=360]
-[ptext layer=0 text=https://splatoon-yoru.com/                   size=20 x=160 y=410]
-[ptext layer=0 text=https://wikiwiki.jp/splatoon2mix/            size=20 x=160 y=440]
-[ptext layer=0 text=https://splatoonwiki.org/wiki/               size=20 x=160 y=470]
-[ptext layer=0 text=https://splamp.info/                         size=20 x=160 y=500]
-[ptext layer=0 text=制作 bold=bold                               size=40 x=0   y=560 width=640 align=center]
-[ptext layer=0 text=ガンジー&nbsp;(@GungeeSpla)                  size=20 x=160 y=630]
-;[glink text=作者のWish&nbsp;List x=240 y=873 size=18.6 color=black name=link target=Link]
-;[iscript]
-;$(".link").off("click").wrap('<a href="http://amzn.asia/1OJG2pV"></a>');
-;[endscript]
-[mylink link=https://twitter.com/GungeeSpla text=作者のTwitterへ x=155 y=666 size=19 color=black name=link target=Link]
-[glink text=たわむれ x=155 y=716 size=19 color=black name=link target=Init exp="f.target='Goto_Senpai'"]
-*/
 *Panel_4_4
+[html name=credit_wrapper]
+<div class="credit">
+	
+	<h2>STの提唱及びSMcountの着想</h2>
+	<p>鮭走情報専 (<a href="https://twitter.com/rayudne75" target="_black">@rayudne75</a>)</p>
+	
+	<h2>その他画像や情報の引用など</h2>
+	<p><a href="https://wikiwiki.jp/splatoon2mix/" target="_black">https://wikiwiki.jp/splatoon2mix/</a></p>
+	<p><a href="https://splatoonwiki.org/wiki/" target="_black">https://splatoonwiki.org/wiki/</a></p>
+</div>
+[endhtml]
+[jump target=Panel_4_5]
+
+*Panel_4_5
+[glink text=アプリについて   x=060 width=200 y=690 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_1'"]
+[glink text=作者と関連リンク x=330 width=200 y=690 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]
+[glink text=クレジット１     x=060 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_3'"]
+[glink text=クレジット２     x=330 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_4'"]
+[glink text=リロード         x=435 width=130 y=650 size=18 color=credit_button target=Reload cond="getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
 [return]
 
 

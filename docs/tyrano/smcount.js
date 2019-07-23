@@ -1,6 +1,5 @@
-function init2 () {
-	window.smCountApp = new SmCountApp();
-}
+
+window.smCountApp = new SmCountApp();
 
 //# SmCountApp ()
 // SMcountを動かすオブジェクトを作成するコンストラクタ
@@ -9,6 +8,7 @@ function SmCountApp () {
 	var app = this;
 	
 	this.mode            = "counter";
+	this.isStarted       = false;
 	this.isUseStTimer    = false;
 	this.isDebug         = false;
 	this.frame           = 0;
@@ -45,10 +45,7 @@ function SmCountApp () {
 	// このコンストラクタが呼ばれたときに一度だけ呼び出す関数
 	this.init = function () {
 		this.defineSmCount();
-		this.getJqueryObject();
-		this.setCtx();
 		this.sound = this.createSmSound();
-		this.sound.loadAll();
 	};
 	
 	//## loop ()
@@ -64,13 +61,17 @@ function SmCountApp () {
 			app.render();  // 画面の更新
 			app.sounder(); // 効果音の再生
 			// 終了判定
-			if (app.wave >= 4 && app.frameWave >= 100) {
-				app.$buttonStart.trigger(app.clickEvent);
-				// STタイマーと併用する場合
-				// STタイマーの画面に遷移する
-				if (app.isUseStTimer) {
-					window.stTimerApp.changeMode("timer");
-				}
+			if (app.wave >= 4 && app.frameWave >= app.framePerSec * 1.5) {
+				app.isPlaying = false;
+				setTimeout(function () {
+					app.isPlaying = true;
+					app.$buttonStart.trigger(app.clickEvent);
+					// STタイマーと併用する場合
+					// STタイマーの画面に遷移する
+					if (app.isUseStTimer) {
+						window.stTimerApp.changeMode("timer");
+					}
+				}, 1000);
 			}
 		}
 	};
@@ -401,15 +402,18 @@ function SmCountApp () {
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
 				var $this = $(this);
-				active($this);
-				var text  = app.isPlaying ? "Start" : "Stop";
-				var color = app.isPlaying ? "#1491da" : "#da5414";
-				$this.text(text);
-				$this.css("background", color);
+				app.$buttonStart.render();
 				app.isPlaying ? app.stop() : app.start();
 				app.sound.play("switch");
 				return false;
 			});
+			this.$buttonStart.render = function () {
+				var text = app.isPlaying ? "Start" : "Stop";
+				var name = app.isPlaying ? "" : "started";
+				app.$buttonStart.text(text);
+				app.$buttonStart.removeClass("started");
+				app.$buttonStart.addClass(name);
+			};
 			
 			// 加速減速ボタン
 			this.$buttonKasoku.each(function(){
@@ -433,23 +437,26 @@ function SmCountApp () {
 				$this.on(app.clickEvent, function (e) {
 					if (app.normaType == normaType) return;
 					active($this);
-					app.$settingNorma.addClass("no_select");
-					$this.removeClass("no_select");
 					app.normaType  = normaType;
+					app.$settingNorma.render(normaTypeJP);
 					app.useDefine = app.SMCOUNT_DEFINE[app.normaType];
 					app.useCycle  = app.SMCOUNT_CYCLE[app.normaType];
-					app.$settingNormaSpan.text(normaTypeJP);
+					app.save();
 					app.sound.play("switch");
 					return false;
 				});
 			});
+			this.$settingNorma.render = function () {
+				app.$settingNorma.addClass("no_select");
+				var $select = app.$settingNorma.filter("[norma=" + app.normaType + "]").removeClass("no_select");
+				app.$settingNormaSpan.text($select.text());
+			}
 			
 			// 画面の横移動
 			this.$translate.each(function(){
 				var $this = $(this);
 				var target = $this.attr("target");
 				$this.on(app.clickEvent, function (e) {
-					active($this);
 					window.stTimerApp.changeMode(target);
 					return false;
 				});
@@ -460,27 +467,34 @@ function SmCountApp () {
 				var $this = $(this);
 				var move = parseFloat($this.attr("move"));
 				$this.on(app.clickEvent, function (e) {
+					active($this);
 					app.sound.volume = app.sound.volume + move;
 					app.sound.volume = Math.round(app.sound.volume * 10) / 10;
 					app.sound.volume = Math.max(0, Math.min(1, app.sound.volume));
-					if (app.sound.volume == 0) {
-						show(app.$settingVolumePlus);
-						hide(app.$settingVolumeMinus);
-					}
-					else if (app.sound.volume == 1) {
-						hide(app.$settingVolumePlus);
-						show(app.$settingVolumeMinus);
-					}
-					else {
-						show(app.$settingVolumePlus);
-						show(app.$settingVolumeMinus);
-					}
-					var percent = (app.sound.volume * 100).toFixed(0);
-					app.$settingVolumeSpan.text(percent + "%");
+					window.stTimerApp.sound.volume = app.sound.volume;
+					app.$settingVolume.render();
+					app.save();
 					app.sound.play("switch");
 					return false;
 				});
 			});
+			
+			this.$settingVolume.render = function () {
+				if (app.sound.volume == 0) {
+					show(app.$settingVolumePlus);
+					hide(app.$settingVolumeMinus);
+				}
+				else if (app.sound.volume == 1) {
+					hide(app.$settingVolumePlus);
+					show(app.$settingVolumeMinus);
+				}
+				else {
+					show(app.$settingVolumePlus);
+					show(app.$settingVolumeMinus);
+				}
+				var percent = (app.sound.volume * 100).toFixed(0);
+				app.$settingVolumeSpan.text(percent + "%");
+			};
 			
 			// STタイマーを併用するか
 			this.$useStTimer.on("change", function(){
@@ -494,6 +508,7 @@ function SmCountApp () {
 					app.isUseStTimer = false;
 					app.$translate.css("display", "none");
 				}
+				app.save();
 				app.sound.play("switch");
 				return false;
 			});
@@ -556,14 +571,50 @@ function SmCountApp () {
 	// SMcountを止める
 	this.stop = function () {
 		this.debugLog("stop.");
+		clearTimeout(this.timeoutId);
 		this.$waveWrapper.css("opacity", "0");
 		this.$kasokuWrapper.css("opacity", "0");
 		this.clearRender();
-		clearTimeout(this.timeoutId);
 		this.$debug.empty();
 		this.startDate = null;
 		this.isPlaying = false;
 		this.sound.stop();
+	};
+	
+	//## save ()
+	this.save = function () {
+		window.stTimerApp.save();
+	};
+	
+	this.load = function () {
+		window.stTimerApp.load();
+	};
+	
+	//## stopApp ()
+	this.stopApp = function () {
+		if (this.isPlaying) {
+			this.stop();
+		} else clearTimeout(this.timeoutId);
+	};
+	
+	//## resetApp ()
+	this.resetApp = function () {
+		this.stopApp();
+		this.getJqueryObject();
+		this.setCtx();
+		window.stTimerApp.changeMode("counter");
+		this.load();
+	};
+	
+	//## startApp ()
+	this.startApp = function () {
+		if (this.isStarted) return this.resetApp();
+		this.getJqueryObject();
+		this.setCtx();
+		window.stTimerApp.changeMode("counter");
+		this.load();
+		this.sound.loadAll();
+		this.isStarted = true;
 	};
 	
 	//## debugLog (str)
@@ -575,7 +626,7 @@ function SmCountApp () {
 	// StSoundを流用してサウンドオブジェクトを作成する
 	this.createSmSound = function () {
 		var smSound = new StSound();
-		smSound.soundUrlBase = "./countsounds/";
+		smSound.soundUrlBase = "./tyrano/countsounds/";
 		smSound.soundUrls = this.getUniqueValueArrayOfSmCount();
 		smSound.soundUrls.push("switch");
 		smSound.soundUrls.push("otsukare");
@@ -638,11 +689,11 @@ function SmCountApp () {
 			"high": {
 				"110": "10,wave2,wave3",
 				"109": "9,,",
-				"108": "8,,sp",
-				"107": "7,,",
-				"106": "6,,",
-				"105": "5,,",
-				"104": "4,,",
+				"108": "8,8,sp",
+				"107": "7,7,",
+				"106": "6,6,6",
+				"105": "5,5,5",
+				"104": "4,4,4",
 				"103": "3,3,3",
 				"102": "2,2,2",
 				"101": "1,1,1",
@@ -720,7 +771,7 @@ function SmCountApp () {
 				"29": "1",
 				"28": "28b",
 				"27": "",
-				"26": "",
+				"26": "lastboss",
 				"25": "",
 				"24": "",
 				"23": "",
@@ -746,16 +797,16 @@ function SmCountApp () {
 				"3" : "3",
 				"2" : "2",
 				"1" : "1",
-				"0" : "finish"
+				"0" : "wave1end,wave2end,wave3end"
 			},
 			"middle": {
 				"110": "10,wave2,wave3",
 				"109": "9,,",
-				"108": "8,,sp",
-				"107": "7,,",
-				"106": "6,,",
-				"105": "5,,",
-				"104": "4,,",
+				"108": "8,8,sp",
+				"107": "7,7,",
+				"106": "6,6,6",
+				"105": "5,5,5",
+				"104": "4,4,4",
 				"103": "3,3,3",
 				"102": "2,2,2",
 				"101": "1,1,1",
@@ -833,7 +884,7 @@ function SmCountApp () {
 				"29": "1",
 				"28": "28b",
 				"27": "",
-				"26": "",
+				"26": "lastboss",
 				"25": "",
 				"24": "",
 				"23": "",
@@ -856,23 +907,23 @@ function SmCountApp () {
 				"6" : "2",
 				"5" : "1",
 				"4" : "4b",
-				"3" : "3",
-				"2" : "2",
-				"1" : "1",
-				"0" : "finish"
+				"3" : "",
+				"2" : "",
+				"1" : "",
+				"0" : "wave1end,wave2end,wave3end"
 			},
 			"low": {
-				"110": "10",
-				"109": "9",
-				"108": "8,,sp",
-				"107": "7",
-				"106": "6",
-				"105": "5",
-				"104": "4",
+				"110": "10,wave2,wave3",
+				"109": "9,,",
+				"108": "8,8,sp",
+				"107": "7,7,",
+				"106": "6,6,6",
+				"105": "5,5,5",
+				"104": "4,4,4",
 				"103": "3,3,3",
 				"102": "2,2,2",
 				"101": "1,1,1",
-				"100": "100b",
+				"100": "start",
 				"99": "",
 				"98": "",
 				"97": "",
@@ -946,7 +997,7 @@ function SmCountApp () {
 				"29": "1",
 				"28": "28b",
 				"27": "",
-				"26": "",
+				"26": "lastboss",
 				"25": "",
 				"24": "",
 				"23": "",
@@ -972,11 +1023,12 @@ function SmCountApp () {
 				"3" : "3",
 				"2" : "2",
 				"1" : "1",
-				"0" : "finish"
+				"0" : "wave1end,wave2end,wave3end"
 			}
 		};
 	};
 	
+	//## finish
 	this.init();
 	
 	return this;
