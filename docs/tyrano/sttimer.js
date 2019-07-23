@@ -898,9 +898,11 @@ function StSound () {
 			index = this.soundUrls.indexOf(index);
 			if (index < 0) return;
 		}
+		/*
 		if (this.playing[index]) {
 			this.stop(index);
 		}
+		*/
 		return this._load(index).then(buffer => {
 			if (this.noAudioContext) {
 				this.fallbackAudio.volume = this.volume;
