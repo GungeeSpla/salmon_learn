@@ -1316,7 +1316,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 /* 進み･戻しボタン */
 .smcount_button_kasoku {
     position: relative;
-    margin-right: 12px;
+    /* margin-right: 12px; */
+    margin: 0 20px;
     left: 0;
     top: 0;
     width: 90px;
