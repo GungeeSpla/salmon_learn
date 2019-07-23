@@ -403,12 +403,15 @@ function SmCountApp () {
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
 				
+				
+				
 				var $this = $(this);
 				active($this);
 				var text  = app.isPlaying ? "Start" : "Stop";
 				var color = app.isPlaying ? "#1491da" : "#da5414";
 				$this.text(text);
 				$this.css("background", color);
+				app.isPlaying ? app.sound.stop("bgmtest.mp3") : app.sound.play("bgmtest.mp3");
 				app.isPlaying ? app.stop() : app.start();
 				app.sound.play("switch");
 				return false;
@@ -582,6 +585,7 @@ function SmCountApp () {
 		smSound.soundUrls = this.getUniqueValueArrayOfSmCount();
 		smSound.soundUrls.push("switch");
 		smSound.soundUrls.push("otsukare");
+		smSound.soundUrls.push("bgmtest.mp3");
 		smSound.enable  = true;
 		smSound.sources = new Array(smSound.soundUrls.length);
 		smSound.buffers = new Array(smSound.soundUrls.length);

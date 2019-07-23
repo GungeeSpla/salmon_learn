@@ -766,12 +766,11 @@ function StSound () {
 		if (! this.enable) return;
 		// ファイル名でも指定できるようにする
 		// 文字列だったらファイル名と判断してindexを特定
+		var volume = 1;
 		if (typeof index == "string") {
+			if (index.indexOf(".mp3") > -1) volume = 0.2;
 			index = this.soundUrls.indexOf(index);
 			if (index < 0) return;
-		}
-		if (this.playing[index]) {
-			this.stop(index);
 		}
 		return this._load(index).then(buffer => {
 			if (this.noAudioContext) {
@@ -785,7 +784,7 @@ function StSound () {
 			if (!source) { return; }
 
 			var gainNode = this.audioCtx.createGain();
-			gainNode.gain.value = this.volume;
+			gainNode.gain.value = this.volume * volume;
 
 			source.buffer = buffer;
 			source.connect(gainNode).connect(this.audioCtx.destination);
@@ -799,6 +798,12 @@ function StSound () {
 	}
 	//## stop (index)
 	this.stop = function (index) {
+		// ファイル名でも指定できるようにする
+		// 文字列だったらファイル名と判断してindexを特定
+		if (typeof index == "string") {
+			index = this.soundUrls.indexOf(index);
+			if (index < 0) return;
+		}
 		this.playing[index] = false;
 		if (this.sources[index]) {
 			this.sources[index].stop(0);
@@ -809,7 +814,8 @@ function StSound () {
 	}
 	//## _load (index)
 	this._load = function (index) {
-		var url = this.soundUrlBase + this.soundUrls[index] + ".wav";
+		var url = this.soundUrlBase + this.soundUrls[index];
+		if (url.indexOf(".mp3") < 0) url += ".wav";
 		
 		if (this.noAudioContext) {
 			this.fallbackAudio.src = url;
