@@ -1,5 +1,7 @@
 function init2 () {
 	window.smCountApp = new SmCountApp();
+	window.noSleep = new NoSleep();
+    window.wakeLockEnabled = false;
 }
 
 //# SmCountApp ()
@@ -400,6 +402,12 @@ function SmCountApp () {
 		
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
+				
+				if (!tf.isPC && !window.wakeLockEnabled) {
+					window.noSleep.enable();
+					window.wakeLockEnabled = true;
+				}
+				
 				var $this = $(this);
 				active($this);
 				var text  = app.isPlaying ? "Start" : "Stop";
