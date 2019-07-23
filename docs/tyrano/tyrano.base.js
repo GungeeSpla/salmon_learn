@@ -52,9 +52,12 @@ tyrano.base ={
 
             setTimeout(function() {
                     
+                   var x = 0, y = 0
+                    
                    //中央寄せなら、画面サイズ分を引く。
                    if(that.tyrano.kag.config["ScreenCentering"] && that.tyrano.kag.config["ScreenCentering"]=="true"){
                        
+                       $(".tyrano_base").css("position", "initial");
                        $(".tyrano_base").css("transform-origin","0 0");
                        $(".tyrano_base").css({
                            margin: 0
@@ -63,19 +66,26 @@ tyrano.base ={
                        var width = Math.abs(parseInt(window.innerWidth) - parseInt(that.tyrano.kag.config.scWidth*scale_f))/2;
                        var height = Math.abs(parseInt(window.innerHeight) - parseInt(that.tyrano.kag.config.scHeight*scale_f))/2;
                        
+                       
                        if(width_f > height_f){
+                            x = width / scale_f;
+                            y = 0;
+                            /*
                             $(".tyrano_base").css("left",width+"px");
                             $(".tyrano_base").css("top","0px");
+                            */
                        }else{
-                            
+                            x = 0;
+                            y = height / scale_f;
+                            /*
                             $(".tyrano_base").css("left","0px");
                             $(".tyrano_base").css("top",height+"px");
-                            
+                            */
                        }
                        
                    }
                    
-                   $(".tyrano_base").css("transform", "scale(" + scale_f + ") ");
+                   $(".tyrano_base").css("transform", "scale(" + scale_f + ") translate(" + x + "px, " + y + "px)");
                    if (parseInt(view_width) < parseInt(width)) {
                         if (scale_f < 1) {
                             window.scrollTo(width, height);

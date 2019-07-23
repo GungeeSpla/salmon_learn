@@ -403,11 +403,6 @@ function SmCountApp () {
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
 				
-				if (!tf.isPC && !window.wakeLockEnabled) {
-					window.noSleep.enable();
-					window.wakeLockEnabled = true;
-				}
-				
 				var $this = $(this);
 				active($this);
 				var text  = app.isPlaying ? "Start" : "Stop";
