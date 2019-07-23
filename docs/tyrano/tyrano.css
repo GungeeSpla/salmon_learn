@@ -1311,7 +1311,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 	left: 0;
 	top: 0;
 	width: 640px;
-    margin: 30px 0 0;
+    margin: 10px 0 0;
 }
 /* 進み･戻しボタン */
 .smcount_button_kasoku {
@@ -1403,7 +1403,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 }
 /* Wave数ラッパー */
 .smcount_wave_wrapper {
-    margin: 0 0 0;
+    margin: 20px 0 0;
 	position: relative;
 	left: 160px;
 	top: 0px;
@@ -1415,9 +1415,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
     position: absolute;
     left: 30px;
     top: 30px;
+    font-size: 30px;
+    line-height: 30px;
     text-align: left;
     width: 150px;
-    font-size: 30px;
 }
 .smcount_wave_span {
 	font-size: 40px;
@@ -1429,6 +1430,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
     top: 0px;
     text-align: right;
     font-size: 70px;
+    line-height: 70px;
     width: 150px;
 }
 /* デバッグエリア */
