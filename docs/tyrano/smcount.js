@@ -7,6 +7,8 @@ function SmCountApp () {
 	
 	var app = this;
 	
+	this.noSoundName_    = "bgmtest.mp3";
+	this.noSoundName     = "nosound.mp3";
 	this.mode            = "counter";
 	this.isRunning       = false;
 	this.isStarted       = false;
@@ -535,6 +537,19 @@ function SmCountApp () {
 		}
 	};
 	
+	//## playNoSound ()
+	this.playNoSound = function () {
+		this.sound.play(this.noSoundName, {
+			volume: 0.2,
+			loop: true
+		});
+	};
+	
+	//## stopNoSound ()
+	this.stopNoSound = function () {
+		this.sound.stop(this.noSoundName);
+	};
+	
 	//## start ()
 	// SMcountを始める
 	this.start = function () {
@@ -566,6 +581,7 @@ function SmCountApp () {
 		this.wave2Date = new Date(this.startTime + this.waveTimes[1]);
 		this.wave3Date = new Date(this.startTime + this.waveTimes[2]);
 		this.loop();
+		this.playNoSound();
 	};
 	
 	//## stop ()
@@ -579,6 +595,7 @@ function SmCountApp () {
 		this.$debug.empty();
 		this.startDate = null;
 		this.isPlaying = false;
+		this.stopNoSound();
 		this.sound.stop();
 	};
 	
@@ -640,6 +657,8 @@ function SmCountApp () {
 		smSound.soundUrls = this.getUniqueValueArrayOfSmCount();
 		smSound.soundUrls.push("switch");
 		smSound.soundUrls.push("otsukare");
+		smSound.soundUrls.push("bgmtest.mp3");
+		smSound.soundUrls.push("nosound.mp3");
 		smSound.enable  = true;
 		smSound.sources = new Array(smSound.soundUrls.length);
 		smSound.buffers = new Array(smSound.soundUrls.length);

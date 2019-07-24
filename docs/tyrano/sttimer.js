@@ -889,16 +889,27 @@ function StSound () {
 		src.connect(this.audioCtx.destination);
 		src.start(0);
 	}
+	//## defaultOpt
+	// play()のデフォルトオプションを新設
+	this.defaultOpt = {
+		volume: 1,
+		loop: false
+	};
 	//## play (index)
-	this.play = function (index) {
+	this.play = function (index, opt) {
+		// サウンドが無効なら即return
 		if (! this.enable) return;
+		// オプションをデフォルトオプションに統合する
+		opt = $.extend({}, this.defaultOpt, opt);
 		// ファイル名でも指定できるようにする
 		// 文字列だったらファイル名と判断してindexを特定
 		if (typeof index == "string") {
 			index = this.soundUrls.indexOf(index);
 			if (index < 0) return;
-		}
+		} // indexが特定できた
 		/*
+		// 再生中だったら停止する処理を入れようと思ったが
+		// どうも動作がおかしくなるので廃止
 		if (this.playing[index]) {
 			this.stop(index);
 		}
@@ -914,10 +925,15 @@ function StSound () {
 			var source = this.audioCtx.createBufferSource();
 			if (!source) { return; }
 
+			// 音量を調節
 			var gainNode = this.audioCtx.createGain();
-			gainNode.gain.value = this.volume;
+			gainNode.gain.value = this.volume * opt.volume;
+
+			// ループ設定を新設
+			source.loop = opt.loop;
 			
 			source.buffer = buffer;
+			// gainNodeを経由して接続する
 			source.connect(gainNode).connect(this.audioCtx.destination);
 			source.onended = function () {
 				this.stop(index);
@@ -929,6 +945,12 @@ function StSound () {
 	}
 	//## stop (index)
 	this.stop = function (index) {
+		// ファイル名でも指定できるようにする
+		// 文字列だったらファイル名と判断してindexを特定
+		if (typeof index == "string") {
+			index = this.soundUrls.indexOf(index);
+			if (index < 0) return;
+		} // indexが特定できた
 		this.playing[index] = false;
 		if (this.sources[index]) {
 			this.sources[index].stop(0);
@@ -939,7 +961,12 @@ function StSound () {
 	}
 	//## _load (index)
 	this._load = function (index) {
-		var url = this.soundUrlBase + this.soundUrls[index] + ".wav";
+		// indexからurlを決定
+		var url = this.soundUrlBase + this.soundUrls[index];
+		// urlに.mp3が含まれるなら何もしない
+		if (url.indexOf(".mp3") > -1) ;
+		// .mp3が含まれないなら.wavを足す
+		else url += ".wav";
 		
 		if (this.noAudioContext) {
 			this.fallbackAudio.src = url;
