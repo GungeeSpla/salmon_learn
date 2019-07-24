@@ -209,12 +209,12 @@ if (! sf.sm_count_step) sf.sm_count_step = 1;
 				<div class="smcount_sec">100</div>
 			</div>
 			<div class="smcount_kasoku_wrapper" style="opacity: 0;">
-				<div class="smcount_button smcount_button_kasoku  next3 prev" move=" 110000"></div>
+				<div class="smcount_button smcount_button_kasoku  next3 prev" move=" 115000"></div>
 				<div class="smcount_button smcount_button_kasoku  next2 prev" move="   1000"></div>
 				<div class="smcount_button smcount_button_kasoku  next1 prev" move="    200"></div>
 				<div class="smcount_button smcount_button_kasoku  next1"      move="   -200"></div>
 				<div class="smcount_button smcount_button_kasoku  next2"      move="  -1000"></div>
-				<div class="smcount_button smcount_button_kasoku  next3"      move="-100000"></div>
+				<div class="smcount_button smcount_button_kasoku  next3"      move="-115000"></div>
 			</div>
 			<div class="smcount_setting_wrapper">
 				<div class="smcount_setting_item">

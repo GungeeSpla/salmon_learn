@@ -9,6 +9,7 @@ function SmCountApp () {
 	
 	this.noSoundName_    = "bgmtest.mp3";
 	this.noSoundName     = "nosound.mp3";
+	this.isBookedStop    = false;
 	this.mode            = "counter";
 	this.isRunning       = false;
 	this.isStarted       = false;
@@ -25,6 +26,8 @@ function SmCountApp () {
 	this.isPlaying       = false;
 	this.isChangingWave  = false;
 	this.isChangingCycle = false;
+	this.isChangingSec   = false;
+	this.secWave         = 0;
 	this.bTime           = 0;
 	this.bTimeWave       = 0;
 	this.time            = 0;
@@ -64,9 +67,11 @@ function SmCountApp () {
 			app.render();  // 画面の更新
 			app.sounder(); // 効果音の再生
 			// 終了判定
-			if (app.wave >= 4 && app.frameWave >= app.framePerSec * 1.5) {
+			if (app.wave >= 4 && app.secWave >= 2) {
 				app.isPlaying = false;
+				app.isBookedStop = true;
 				setTimeout(function () {
+					app.isBookedStop = false;
 					app.isPlaying = true;
 					app.$buttonStart.trigger(app.clickEvent);
 					// STタイマーと併用する場合
@@ -82,6 +87,7 @@ function SmCountApp () {
 	//## update ()
 	// 情報のアップデート
 	this.update = function () {
+		this.isChangingSec = false;
 		this.isChangingWave = false;
 		this.isChangingCycle = false;
 		
@@ -121,12 +127,13 @@ function SmCountApp () {
 		this.updateWave = function () {
 			var isDecided = false;
 			var start = 110000;
+			var waveTime, waveTimeB;
 			for (var i = 0; i < this.waveTimes.length; i++) {
-				var waveTime = this.waveTimes[i];
+				waveTime = this.waveTimes[i];
 				if (this.time < waveTime) {
 					isDecided = true;
 					this.wave = i;
-					var waveTimeB = i > 0 ? this.waveTimes[i - 1] : 0;
+					waveTimeB = i > 0 ? this.waveTimes[i - 1] : 0;
 					this.timeWave = this.time - waveTimeB;
 					this.timeWaveLeft = start - this.timeWave;
 					break;
@@ -134,9 +141,16 @@ function SmCountApp () {
 			}
 			if (! isDecided) {
 				this.wave = 4;
-				this.timeWave = 0;
+				this.timeWave = this.time - waveTime;
 				this.timeWaveLeft = 0;
 			}
+			
+			// 直前及び現在の残り秒数（小数点以下切り捨て）を計算する
+			var time1 = Math.floor(this.bTimeWave / 1000);
+			var time2 = Math.floor(this.timeWave / 1000);
+			// これが異なるということはちょうど秒数が切り替わったということ
+			this.isChangingSec = (time1 != time2);
+			this.secWave = time2;
 		};
 	
 		//## updateCycle ()
@@ -175,15 +189,12 @@ function SmCountApp () {
 				// this.sound.play("switch");
 			}
 		}
-		// Wave1, 2, 3の最中ならば
-		else if (this.wave <= 3) {
-			// 直前及び現在の残り秒数（小数点以下切り捨て）を計算する
-			var time1 = Math.floor(this.bTimeWave / 1000);
-			var time2 = Math.floor(this.timeWave / 1000);
-			// これが異なるということはちょうど秒数が切り替わったということだから
-			if (time1 != time2) {
+		// Wave1以降ならば
+		else {
+			// Wave 1, 2, 3ならば
+			if (this.wave <= 3 && this.isChangingSec) {
 				// useDefineから取り出すkeyを計算
-				var key = 110 - time2;
+				var key = 110 - this.secWave;
 				var soundName = this.useDefine[key];
 				// soundNameが空ではない文字列ならば
 				if (typeof soundName == "string" && soundName != "") {
@@ -195,12 +206,13 @@ function SmCountApp () {
 					this.sound.play(soundName);
 				}
 			}
-		}
-		// Wave3が終わった後ならば
-		else {
-			// frameWave==30でotsukareを鳴らす
-			if (this.frameWave == 30) {
-				this.sound.play("otsukare");
+			// Wave3が終わった後ならば
+			else if (this.isChangingSec) {
+				switch (this.secWave) {
+				case 1:
+					this.sound.play("otsukare");
+					break;
+				}
 			}
 		}
 	};
@@ -236,6 +248,8 @@ function SmCountApp () {
 				this.$debug.html(""
 					+ "<span style='color: Orange'>wave</span> " + this.wave + "<br>"
 					+ "<span style='color: Orange'>frameWave</span> " + this.frameWave + "<br>"
+					+ "<span style='color: Orange'>timeWave</span> " + this.timeWave + "<br>"
+					+ "<span style='color: Orange'>secWave</span> " + this.secWave + "<br>"
 					/*
 					+ "<span style='color: Orange'>norma</span> " + this.getNorma(this.wave, this.normaType) + "<br>"
 					+ "<span style='color: Orange'>timeWave</span> " + this.timeWave + "<br>"
@@ -404,6 +418,7 @@ function SmCountApp () {
 		
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
+				if (app.isBookedStop) return;
 				var $this = $(this);
 				app.$buttonStart.render();
 				app.isPlaying ? app.stop() : app.start();
@@ -572,6 +587,8 @@ function SmCountApp () {
 		this.nextCycle     = 0;
 		this.bWave         = 0;
 		this.wave          = 0;
+		this.isChangingSec = false;
+		this.secWave       = 0;
 		this.useDefine     = this.SMCOUNT_DEFINE[this.normaType];
 		this.useCycle      = this.SMCOUNT_CYCLE[this.normaType];
 		this.isPlaying = true;
