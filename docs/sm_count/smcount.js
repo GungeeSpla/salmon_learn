@@ -404,6 +404,9 @@ function SmCountApp () {
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
 				
+				var video = $(".novideo")[0];
+				video.play();
+				
 				var $this = $(this);
 				active($this);
 				var text  = app.isPlaying ? "Start" : "Stop";
