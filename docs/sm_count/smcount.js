@@ -2,6 +2,14 @@ function init2 () {
 	window.smCountApp = new SmCountApp();
 	window.noSleep = new NoSleep();
     window.wakeLockEnabled = false;
+    
+	if (getWakeLock in navigator) {
+		navigator.getWakeLock("screen").then(function(wakeLock) {
+			var request = wakeLock.createRequest();
+		});
+	} else {
+		smCountApp.isDebug = true;
+	}
 }
 
 //# SmCountApp ()
