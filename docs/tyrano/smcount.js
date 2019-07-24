@@ -7,6 +7,7 @@ function SmCountApp () {
 	
 	var app = this;
 	
+	this.uniqueSoundNames = [];
 	this.noSoundName_    = "bgmtest.mp3";
 	this.noSoundName     = "nosound.mp3";
 	this.isBookedStop    = false;
@@ -46,12 +47,22 @@ function SmCountApp () {
 	this.timeoutDuration = 1000 / this.framePerSec;
 	this.waveTimes       = [3348, 123383, 243597, 355000];
 	this.clickEvent      = "ontouchend" in window ? "touchend" : "click";
+	this.sound           = null;
+	this.soundParty      = {};
 	
 	//## init ()
 	// このコンストラクタが呼ばれたときに一度だけ呼び出す関数
 	this.init = function () {
+		
+		// SMcountの定義を行う
 		this.defineSmCount();
-		this.sound = this.createSmSound();
+		
+		// Soundオブジェクトを作る
+		this.soundParty["bouyomichan"] = this.createSmSound("bouyomichan", false);
+		this.soundParty["gungeespla"]  = this.createSmSound("gungeespla", false);
+		
+		// 使うサウンドを決定
+		this.sound = this.soundParty["bouyomichan"];
 	};
 	
 	//## loop ()
@@ -401,10 +412,12 @@ function SmCountApp () {
 		this.$settingNorma       = $(".smcount_setting_norma");
 		this.$allWrapper         = $(".all_wrapper");
 		this.$translate          = $(".smcount_translate");
+		this.$settingVolumeShitei= $(".smcount_setting_volume_shitei");
 		this.$settingVolumePlus  = $(".smcount_setting_volume_plus");
 		this.$settingVolumeMinus = $(".smcount_setting_volume_minus");
+		this.$settingVolumeMute  = $(".smcount_setting_volume_mute");
 		this.$settingVolumeSpan  = $(".smcount_setting_volume_span");
-		this.$settingVolume      = $(".smcount_setting_volume");
+		this.$settingVolume      = $(".smcount_setting_volume_plus, .smcount_setting_volume_minus");
 		this.$useStTimer         = $("#use_st_timer");
 		
 		// デバッグ用のDOMを作る
@@ -418,19 +431,46 @@ function SmCountApp () {
 		
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
-				if (app.isBookedStop) return;
 				var $this = $(this);
-				app.$buttonStart.render();
-				app.isPlaying ? app.stop() : app.start();
+				
+				// stopが予約されている場合何もしない
+				if (app.isBookedStop) return;
+				
+				// いまカウント中かどうかの判定
+				// カウント中ならそれを止めるし
+				// カウント中でなければ新規にカウントを始める
+				var isStarted = $this.hasClass("started") && app.isPlaying;
+				if (isStarted) {
+					app.stop();
+				} else {
+					app.start();
+				}
+				
+				// 見た目の調整
+				app.$buttonStart.render(isStarted);
+				
+				// サウンド再生
 				app.sound.play("switch");
 				return false;
 			});
-			this.$buttonStart.render = function () {
-				var text = app.isPlaying ? "Start" : "Stop";
-				var name = app.isPlaying ? "" : "started";
+			
+			this.$buttonStart.render = function (isStarted) {
+				var text, className;
+				
+				// もしカウント中なら現在はStop表示になっている
+				// それを押したらStart表記に戻さねばならない
+				if (isStarted) {
+					text = "Start";
+					className = "";
+				}
+				// その逆
+				else {
+					text = "Stop";
+					className = "started";
+				}
+				
 				app.$buttonStart.text(text);
-				app.$buttonStart.removeClass("started");
-				app.$buttonStart.addClass(name);
+				app.$buttonStart.removeClass("started").addClass(className);
 			};
 			
 			// 加速減速ボタン
@@ -480,6 +520,30 @@ function SmCountApp () {
 				});
 			});
 			
+			/*
+			this.$settingVolumeShitei.each(function(){
+				var $this = $(this);
+				var value = parseFloat($this.attr("value"));
+				$this.on(app.clickEvent, function (e) {
+					active($this);
+					app.sound.volume = value;
+					app.sound.volume = Math.max(0, Math.min(1, app.sound.volume));
+					window.stTimerApp.sound.volume = app.sound.volume;
+					app.$settingVolume.render();
+					app.save();
+					app.sound.play("switch");
+					return false;
+				});
+			});
+			*/
+			
+			this.$settingVolumeMute.on(app.clickEvent, function (e) {
+				var isMuted = app.sound.isMuted;
+				var newIsMuted = !isMuted;
+				app.sound.isMuted = newIsMuted;
+				app.$settingVolume.render();
+			});
+			
 			// 音量
 			this.$settingVolume.each(function(){
 				var $this = $(this);
@@ -498,7 +562,12 @@ function SmCountApp () {
 			});
 			
 			this.$settingVolume.render = function () {
-				if (app.sound.volume == 0) {
+				var isMuted = app.sound.isMuted;
+				if (isMuted) {
+					hide(app.$settingVolumePlus);
+					hide(app.$settingVolumeMinus);
+				}
+				else if (app.sound.volume == 0) {
 					show(app.$settingVolumePlus);
 					hide(app.$settingVolumeMinus);
 				}
@@ -510,8 +579,19 @@ function SmCountApp () {
 					show(app.$settingVolumePlus);
 					show(app.$settingVolumeMinus);
 				}
+				
 				var percent = (app.sound.volume * 100).toFixed(0);
-				app.$settingVolumeSpan.text(percent + "%");
+				var text = percent + "%";
+				if (isMuted) {
+					text = "Muted";
+				}
+				app.$settingVolumeSpan.text(text);
+				
+				var muteText = "Mute";
+				if (isMuted) {
+					muteText = "Play";
+				}
+				app.$settingVolumeMute.text(muteText);
 			};
 			
 			// STタイマーを併用するか
@@ -568,10 +648,14 @@ function SmCountApp () {
 	//## start ()
 	// SMcountを始める
 	this.start = function () {
+	
+		// すでに再生中だったらいったんstop()する
 		if (this.isPlaying) this.stop();
+		
+		// 初期化地獄
+		this.debugLog("start.");
 		this.$waveWrapper.css("opacity", "1");
 		this.$kasokuWrapper.css("opacity", "1");
-		this.debugLog("start.");
 		this.frame         = 0;
 		this.frameWave     = 0;
 		this.frameCycle    = 0;
@@ -591,29 +675,43 @@ function SmCountApp () {
 		this.secWave       = 0;
 		this.useDefine     = this.SMCOUNT_DEFINE[this.normaType];
 		this.useCycle      = this.SMCOUNT_CYCLE[this.normaType];
+		this.startDate     = new Date();
+		this.startTime     = this.startDate.getTime();
+		this.wave1Date     = new Date(this.startTime + this.waveTimes[0]);
+		this.wave2Date     = new Date(this.startTime + this.waveTimes[1]);
+		this.wave3Date     = new Date(this.startTime + this.waveTimes[2]);
+		
+		// isPlayingのフラグを立ててloopスタート
 		this.isPlaying = true;
-		this.startDate = new Date();
-		this.startTime = this.startDate.getTime();
-		this.wave1Date = new Date(this.startTime + this.waveTimes[0]);
-		this.wave2Date = new Date(this.startTime + this.waveTimes[1]);
-		this.wave3Date = new Date(this.startTime + this.waveTimes[2]);
 		this.loop();
+		
+		// 無音BGMを再生しておくことで
+		// スマホがスリープしなくなる
 		this.playNoSound();
 	};
 	
 	//## stop ()
 	// SMcountを止める
 	this.stop = function () {
+		
+		// 初期化や画面のクリアなど
 		this.debugLog("stop.");
-		clearTimeout(this.timeoutId);
 		this.$waveWrapper.css("opacity", "0");
 		this.$kasokuWrapper.css("opacity", "0");
 		this.clearRender();
-		this.$debug.empty();
 		this.startDate = null;
+		if (this.isDebug) {
+			this.$debug.empty();
+		}
+		
+		// isPlayingのフラグを折ってloopを停止
 		this.isPlaying = false;
+		clearTimeout(this.timeoutId);
+		
+		// 再生していた無音BGMを止める
 		this.stopNoSound();
-		this.sound.stop();
+		
+		//this.sound.stop();
 	};
 	
 	//## save ()
@@ -668,24 +766,42 @@ function SmCountApp () {
 	
 	//## createSmSound ()
 	// StSoundを流用してサウンドオブジェクトを作成する
-	this.createSmSound = function () {
-		var smSound = new StSound();
-		smSound.soundUrlBase = "./tyrano/countsounds/";
-		smSound.soundUrls = this.getUniqueValueArrayOfSmCount();
-		smSound.soundUrls.push("switch");
-		smSound.soundUrls.push("otsukare");
-		smSound.soundUrls.push("bgmtest.mp3");
-		smSound.soundUrls.push("nosound.mp3");
-		smSound.enable  = true;
-		smSound.sources = new Array(smSound.soundUrls.length);
-		smSound.buffers = new Array(smSound.soundUrls.length);
-		smSound.playing = new Array(smSound.soundUrls.length, false);
-		return smSound;
+	this.createSmSound = function (charaName, shouldPreload) {
+		if (! charaName) charaName = "bouyomichan";
+		
+		// SMcountの音声定義オブジェクトからユニークな値を抽出した配列を作る
+		var soundArray = this.getUniqueValueArrayOfSmCount();
+		
+		// そこに必要な音声を加える
+		this.margeArray(soundArray, [
+			"otsukare", "switch", "nosound.mp3"
+		]);
+		
+		// StSoundコンストラクタから作成
+		var stSound = new StSound("./tyrano/countsounds/" + charaName + "/", soundArray, true);
+		
+		// プリロードすべきならロードを始める
+		if (shouldPreload) stSound.loadAll();
+		
+		return stSound;
+		
 	};
+	
+	//## margeArray (array, margedArray)
+	this.margeArray = function (array, margedArray) {
+		margedArray.forEach(function (value) {
+			if (array.indexOf(value) < 0) {
+				array.push(value);
+			}
+		});
+	}
 	
 	//## getUniqueValueArrayOfSmCount ()
 	// Defineからユニークな値を取り出して配列にして返す
 	this.getUniqueValueArrayOfSmCount = function () {
+		if (this.uniqueSoundNames.length > 0) {
+			return this.uniqueSoundNames.concat();
+		}
 		var uniqueArray = [];
 		var defineObjectArray = [
 			this.SMCOUNT_DEFINE.high,
@@ -715,7 +831,9 @@ function SmCountApp () {
 				});
 			});
 		});
-		return uniqueArray;
+		
+		this.uniqueSoundNames = uniqueArray;
+		return this.uniqueSoundNames.concat();
 	};
 	
 	//## defineSmCount ()
@@ -745,7 +863,7 @@ function SmCountApp () {
 				"101": "1",
 				"100": "start",
 				"99": "",
-				"98": "",
+				"98": "spcheck,,",
 				"97": "",
 				"96": "",
 				"95": "",
@@ -858,7 +976,7 @@ function SmCountApp () {
 				"101": "1",
 				"100": "start",
 				"99": "",
-				"98": "",
+				"98": "spcheck,,",
 				"97": "",
 				"96": "",
 				"95": "",
@@ -971,7 +1089,7 @@ function SmCountApp () {
 				"101": "1",
 				"100": "start",
 				"99": "",
-				"98": "",
+				"98": "spcheck,,",
 				"97": "",
 				"96": "",
 				"95": "",

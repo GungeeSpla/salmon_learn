@@ -158,13 +158,13 @@ if (! sf.sm_count_step) sf.sm_count_step = 1;
 	シャケの湧いてくる方向が一定の時刻で切り替わることを<br>
 	理解するための<b>アシスタントボイス</b>です。<br><br>
 	<h1>使い方</h1>
-	バイトが始まると、ステージの風景映像が流れて、<br>
+	バイトが始まると、ステージの風景映像が流れて<br>
 	（キケン度MAXの場合はここで特殊な演出が入ります）<br>
-	そのあとアルバイターたちがスーパージャンプで飛んできますね。<br><br>
+	ホワイトアウトしたあとアルバイターたちが飛んできますね。<br><br>
 	そのアルバイターたちが<b>着地してチャポンと音が鳴るのと同時</b>に<br>
 	SMcountの「<b>Start</b>」を押してみましょう。<br><br>
 	すると、あとはバイトの時間経過に合わせて<br>
-	SMcountがカウントを行ってくれます。<br><br>
+	Wave3の終了までSMcountがカウントを行ってくれます。<br><br>
 </div>
 [endhtml]
 [glink text=次へ x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.sm_count_step = 2"]
@@ -175,9 +175,8 @@ if (! sf.sm_count_step) sf.sm_count_step = 1;
 [html name=html_space]
 <div class="st_description">
 	<h1>詳しい使い方</h1>
-	シャケの湧いてくる方向が変わる時刻は<br>
-	ノルマの高さによって変わってきますが、<br>
-	それを判別するには<b>Wave1のノルマ</b>を見ればよいです。<br><br>
+	シャケの湧いてくる方向が変わる時刻はノルマによって変わります。<br>
+	それを判別するために<b>Wave1のノルマ</b>を見てください。<br><br>
 	画面下側にあるノルマ設定について、<br>
 	<div style="display: inline-block; width: 420px; text-align: left;">
 	●Wave1のノルマが <b>11～16</b> ならば、<b>Low</b><br>
@@ -189,7 +188,8 @@ if (! sf.sm_count_step) sf.sm_count_step = 1;
 	なければMiddleにすれば大体合うと思います）<br><br>
 	Startボタンを押すタイミングが最適ではなかった、<br>
 	処理落ちが発生したなどの理由で<b>カウントがズレた</b>場合、<br>
-	カウンターの下にあるボタンで<b>微調整</b>を行ってください。<br>
+	カウンターの下にあるボタンで<b>微調整</b>を行ってください。<br><br>
+	なお、タブが非アクティブだと、カウントがズレることがあります。<br>
 [endhtml]
 [glink text=OK! x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.sm_count_step = 3"]
 [return]
@@ -228,6 +228,14 @@ if (! sf.sm_count_step) sf.sm_count_step = 1;
 				<div class="smcount_setting_item">
 					<p>音量 <span class="smcount_setting_volume_span">50%</span></p>
 					<div class="smcount_setting_button_wrapper">
+						<!--
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.00"  >0</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.25" >25</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.50" >50</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.75" >75</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="1.00">100</div>
+						-->
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_mute">Mute</div>
 						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_minus" move="-0.1">－</div>
 						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_plus" move=" 0.1">＋</div>
 					</div>

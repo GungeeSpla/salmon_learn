@@ -838,31 +838,29 @@ function TimeOffset () {
  */
 
 //# StSound ()
-function StSound () {
+function StSound (urlBase, soundUrls, enable) {
 	var self = this;
-	this.soundUrlBase = "./tyrano/sounds/";
-	this.soundUrls = [
-		"5",
-		"10",
-		"30",
-		"60",
-		"54321",
-		"switch",
-		"click",
-		"manmenmi"
-	];
-	this.enable  = false;
+	
+	// 引数を代入していく
+	this.soundUrlBase = urlBase   || "./tyrano/sounds/";
+	this.soundUrls    = soundUrls || ["5", "10", "30", "60", "54321", "switch", "click", "manmenmi"];
+	this.enable       = enable    || false;
+	
+	// 初期化
 	this.volume  = 0.5;
+	this.isMuted = false;
 	this.sources = new Array(this.soundUrls.length);
 	this.buffers = new Array(this.soundUrls.length);
 	this.playing = new Array(this.soundUrls.length, false)
 	this.audioContext = (window.AudioContext || window.webkitAudioContext);
 	this.noAudioContext = false;
 	this.fallbackAudio;
+	
 	// AudioContextが使用可能ならそのコンテキストを使う
 	if (this.audioContext !== undefined) {
 		this.audioCtx = new this.audioContext();
 	}
+	
 	// AudioContextが使用不可ならば<audio>エレメントを使う
 	else {
 		this.noAudioContext = true;
@@ -874,14 +872,17 @@ function StSound () {
 		return Promise.all(this.soundUrls.map((v, index, a) =>
 			this._load(index)
 				.then((buffer) => {
-					if (!buffer) { return; }
+					if (! buffer) return;
 					this.buffers[index] = buffer;
 				}))).then(function () {
 					console.log("✅ 音声データをすべてプリロードしました.");
 				});
 	};
+	
 	//## playSilent ()
 	this.playSilent = function () {
+		// 無音のBufferを生成して再生する
+		// iOSやChromeのサウンド再生制限の解除に用いる
 		this.audioCtx.resume();
 		var buf = this.audioCtx.createBuffer(1, 1, 22050);
 		var src = this.audioCtx.createBufferSource();
@@ -889,24 +890,52 @@ function StSound () {
 		src.connect(this.audioCtx.destination);
 		src.start(0);
 	}
+	
+	
+	//## filename2index (filename)
+	this.filename2index = function (filename) {
+		
+		// filenameが文字列じゃなければfilenameをそのまま返す
+		if (typeof filename != "string") return filename;
+		
+		// soundUrlsの中をサーチ
+		var idx = this.soundUrls.indexOf(filename);
+		
+		// 見つかったらそれを返す
+		if (idx > -1) {
+			return idx;
+		}
+		
+		// 見つからなかったら
+		else {
+			// filenameに".mp3"を加えてもう一度サーチし
+			// その結果を返す（これでも見つからなければ-1が返る）
+			return this.soundUrls.indexOf(filename + ".mp3");
+		}
+	};
+	
 	//## defaultOpt
 	// play()のデフォルトオプションを新設
 	this.defaultOpt = {
 		volume: 1,
 		loop: false
 	};
+	
 	//## play (index)
 	this.play = function (index, opt) {
+		
 		// サウンドが無効なら即return
 		if (! this.enable) return;
+		
 		// オプションをデフォルトオプションに統合する
 		opt = $.extend({}, this.defaultOpt, opt);
-		// ファイル名でも指定できるようにする
-		// 文字列だったらファイル名と判断してindexを特定
-		if (typeof index == "string") {
-			index = this.soundUrls.indexOf(index);
-			if (index < 0) return;
-		} // indexが特定できた
+		
+		// indexが文字列（＝ファイル名）だった場合にそれを真のindexに変換する
+		index = this.filename2index(index);
+		
+		// indexが0未満ならば何もできない
+		if (index < 0) return ;
+		
 		/*
 		// 再生中だったら停止する処理を入れようと思ったが
 		// どうも動作がおかしくなるので廃止
@@ -914,60 +943,105 @@ function StSound () {
 			this.stop(index);
 		}
 		*/
+		
+		// _loadを呼び出してbufferの準備ができたら
 		return this._load(index).then(buffer => {
+			
+			// AudioContextがなければfallbackを実行
 			if (this.noAudioContext) {
 				this.fallbackAudio.volume = this.volume;
 				this.fallbackAudio.currentTime = 0;
 				this.fallbackAudio.play();
 				return;
 			}
+			
+			// AudioContextを再開する
 			this.audioCtx.resume();
+			
+			// AudioBufferSourceNodeを生成するが
 			var source = this.audioCtx.createBufferSource();
-			if (!source) { return; }
+			
+			// なんかfalseになっちゃったら何もできない
+			if (! source) return;
 
-			// 音量を調節
+			// GainNodeを生成（音量の調節）
 			var gainNode = this.audioCtx.createGain();
-			gainNode.gain.value = this.volume * opt.volume;
+			var volume = this.volume * opt.volume;
+			if (this.isMuted) volume = 0;
+			gainNode.gain.value = volume;
 
-			// ループ設定を新設
+			// SourceNodeにループ設定を加える
 			source.loop = opt.loop;
 			
+			// SourceNodeにbufferを代入する
 			source.buffer = buffer;
-			// gainNodeを経由して接続する
+			
+			// SourceNode - GainNode - AudioContext.destinationの経路で接続する
 			source.connect(gainNode).connect(this.audioCtx.destination);
+			
+			// 再生が終わったら
+			// 注1: ループ再生の場合はonendedは呼ばれない。また
+			// 注2: 外部からstopをかけられた場合も呼ばれる
 			source.onended = function () {
 				this.stop(index);
 			};
-			source.start(0);
+			
+			// フラグを立てる
 			this.sources[index] = source;
 			this.playing[index] = true;
+			
+			// 再生を開始する
+			source.start(0);
 		});
 	}
+	
 	//## stop (index)
 	this.stop = function (index) {
-		// ファイル名でも指定できるようにする
-		// 文字列だったらファイル名と判断してindexを特定
-		if (typeof index == "string") {
-			index = this.soundUrls.indexOf(index);
-			if (index < 0) return;
-		} // indexが特定できた
+		
+		// indexが文字列（＝ファイル名）だった場合にそれを真のindexに変換する
+		index = this.filename2index(index);
+		
+		// indexが0未満ならば何もできない
+		if (index < 0) return ;
+		
+		// playing配列のindex番目にアクセスしフラグを折る
 		this.playing[index] = false;
+		
+		// ソースがあればストップをかける
 		if (this.sources[index]) {
 			this.sources[index].stop(0);
 		}
+		
+		// AudioContextがなければfallbackを実行
 		if (this.noAudioContext) {
 			fallbackAudio.pause();
 		}
 	}
+	
+	//## stopAll ()
+	// 再生中のすべての音声を停止する
+	this.stopAll = function () {
+		for (var i = 0; i < this.playing.length; i++) {
+			if (this.playing[i]) {
+				this.stop(i);
+			}
+		}
+	};
+	
 	//## _load (index)
 	this._load = function (index) {
-		// indexからurlを決定
+		
+		// urlを決定
+		// indexは数値でなければならない
 		var url = this.soundUrlBase + this.soundUrls[index];
+		
 		// urlに.mp3が含まれるなら何もしない
-		if (url.indexOf(".mp3") > -1) ;
+		if (url.lastIndexOf(".mp3") > -1) ;
+		
 		// .mp3が含まれないなら.wavを足す
 		else url += ".wav";
 		
+		// AudioContextがなければfallbackを実行
 		if (this.noAudioContext) {
 			this.fallbackAudio.src = url;
 			return new Promise((resolve, reject) => {
@@ -975,17 +1049,20 @@ function StSound () {
 			});
 		}
 		
-		// AudioContext must be resumed after the document received a user gesture to enable audio playback.
+		// AudioContextを再開する
 		this.audioCtx.resume();
-
+		
+		// まずはキャッシュをチェックする
 		var buffer = this.buffers[index];
-		if (!!buffer == true) {
-			// If the buffer is already loaded, use that.
+		
+		// キャッシュにあればそれを返せばいい
+		if (!! buffer == true) {
 			return new Promise((resolve, reject) => {
 				resolve(buffer);
 			});
 		}
-
+		
+		// キャッシュになければXMLHttpRequestを生成
 		// @ref https://qiita.com/cortyuming/items/b6e3784d08d7a90b3614
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
@@ -1006,5 +1083,6 @@ function StSound () {
 			xhr.send(null);
 		});
 	}
+	
 	return this;
 }

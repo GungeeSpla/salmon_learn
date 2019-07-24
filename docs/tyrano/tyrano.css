@@ -1366,6 +1366,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 .smcount_button_kasoku.next3 {
 	display: none;
 }
+.smcount_caution {
+    position: absolute;
+    top: 500px;
+    font-size: 15px;
+    text-align: center;
+    width: 640px;
+    color: #ff8a53;
+}
 /* スタートボタン */
 .smcount_button_start {
     position: absolute;
@@ -1515,6 +1523,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 }
 .smcount_setting_volume.smcount_button_active {
 	transform: scale(0.9);
+}
+.smcount_setting_volume_shitei {
+	transform: scale(1);
+	width: 66px;
+	margin-left: 8px;
+}
+.smcount_setting_volume_shitei.smcount_button_active {
+	transform: scale(1.1);
+	width: 66px;
+	margin-left: 8px;
+}
+.smcount_setting_shitei.selected {
 }
 .smcount_setting_norma_span,
 .smcount_setting_volume_span {
