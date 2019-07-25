@@ -2,12 +2,14 @@
 <html>
 <head>
 
-<title>サーモンラーン</title>
-<meta name="description" content="Splatoon2 (スプラトゥーン2) のゲームモード ｢サーモンラン｣ の攻略情報を載せているサイトです。間欠泉のシミュレーションや、コウモリ誘導のシミュレーション、シフトの確認などができます。" />
 
+<title>SALMON LEARN -サーモンラーン-</title>
+<meta name="description" content="Splatoon2 (スプラトゥーン2) のゲームモード ｢サーモンラン｣ の攻略情報を載せているサイトです。間欠泉のシミュレーションや、コウモリ誘導のシミュレーション、シフトの確認などができます。" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content=" user-scalable=no" />
 
+
+<!-- Twitter Card -->
 <meta name="twitter:card"		  content="player" />
 <meta name="twitter:site"		  content="@username" />
 <meta name="twitter:title"		 content="SALMON LEARN -サーモンラーン-" />
@@ -17,22 +19,25 @@
 <meta name="twitter:player"		content="https://gungeespla.github.io/salmon_learn/" />
 <meta name="twitter:player:width"  content="640" />
 <meta name="twitter:player:height" content="960" />
-<link rel="apple-touch-icon" href="data/image/icon-520x520.png" />
+
 
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="favicon.png">
 <link href="./tyrano/animate.css" rel="stylesheet" type="text/css"/>
 <link href="./tyrano/libs/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
+
 <script type="text/javascript" src="./tyrano/libs/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery-ui.min.js?20302a"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery.a3d.js"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery.ui.touch-punch.min.js"></script>
 
+
 <!-- 廃止予定 alertify.js -->
 <link href="./tyrano/libs/alertify/alertify.core.css" rel="stylesheet" type="text/css"/>
 <link href="./tyrano/libs/alertify/alertify.default.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="./tyrano/libs/alertify/alertify.min.js"></script>
+
 
 <!-- remodal -->
 <link rel="stylesheet" href="./tyrano/libs/remodal/remodal.css">
@@ -41,15 +46,16 @@
 
 
 <script type="text/javascript" src="./tyrano/libs/html2canvas.js"></script>
-
 <script type="text/javascript" src="./data/system/KeyConfig.js"></script>
-
 <script type="text/javascript" src="./tyrano/lang.js" ></script>
 <script type="text/javascript" src="./tyrano/libs.js" ></script>
 
-<link   type="text/css"              href="./tyrano/tyrano.css?20303" rel="stylesheet" />
-<script type="text/javascript"        src="./tyrano/sttimer.js?20303" ></script>
-<script type="text/javascript"        src="./tyrano/smcount.js?20303" ></script>
+
+<!-- 独自ライブラリ -->
+<link   type="text/css"              href="./tyrano/tyrano.css?20304" rel="stylesheet" />
+<script type="text/javascript"        src="./tyrano/sttimer.js?20304" ></script>
+<script type="text/javascript"        src="./tyrano/smcount.js?20304" ></script>
+<script type="text/javascript"  src="./tyrano/salmon.gusher.js?20200" ></script>
 <script type="text/javascript"  src="./tyrano/salmon.others.js?20200" ></script>
 <script type="text/javascript" src="./tyrano/salmon.weapons.js?20200" ></script>
 <script type="text/javascript"	   src="./tyrano/salmon.api.js?20200" ></script>
@@ -60,19 +66,22 @@ window.VERSION = 20303;
 window.VERSION_STR = parseVersion(VERSION);
 </script>
 
+
 <!-- PWA対応 -->
+<link rel="apple-touch-icon" href="data/image/icon-520x520.png" />
 <link rel="manifest" href="./manifest.json?20104">
 <script type="text/javascript">
-/* https://qiita.com/umamichi/items/0e2b4b1c578e7335ba20 */
-/* https://ajike.github.io/progressive-web-application/ */
+// https://qiita.com/umamichi/items/0e2b4b1c578e7335ba20
 // service workerが有効なら、service-worker.js を登録します
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./service-worker.js?20101').then(function() { console.log('Service Worker Registered'); });
 }
 </script>
 
+
+<!-- ティラノライブラリ -->
 <script type="text/javascript" src="./tyrano/tyrano.js" ></script>
-<script type="text/javascript" src="./tyrano/tyrano.base.js?20302" ></script>
+<script type="text/javascript" src="./tyrano/tyrano.base.js?20304" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.event.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.key_mouse.js" ></script>
@@ -81,11 +90,10 @@ if ('serviceWorker' in navigator) {
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.parser.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.rider.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_audio.js" ></script>
-<script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_camera.js" ></script>
+<script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_camera.js?20304" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_ext.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_system.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag.js" ></script>
-
 <link href="./tyrano/libs/textillate/assets/animate.css" rel="stylesheet">
 <script type="text/javascript" src="./tyrano/libs/textillate/assets/jquery.lettering.js"></script>
 <script type="text/javascript" src="./tyrano/libs/textillate/jquery.textillate.js"></script>
@@ -93,51 +101,46 @@ if ('serviceWorker' in navigator) {
 <script type="text/javascript" src="./tyrano/libs/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="./tyrano/libs/lz-string.min.js"></script>
 
+
 <script type="text/javascript">
 function doScroll() { if (window.pageYOffset === 0) { window.scrollTo(0,1); } }  
 window.onload = function() { setTimeout(doScroll, 100); } 
 </script>  
 
+
 </head>
-
 <body onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()" >
-<div id="tyrano_base" class="tyrano_base" style="overflow:hidden" ></div>
-
-
-<!-- モーダル用 -->
-<div class="remodal-bg" ></div>
-<div class="remodal" data-remodal-id="modal" data-remodal-options="closeOnEscape:false, closeOnOutsideClick:false">
-  <!--
-  <button data-remodal-action="close" class="remodal-close"></button>
-  -->
-  <h1 class="remodal_title"></h1>
-  <p class="remodal_txt">
-  </p>
-  <br>
-  <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
-  <button data-remodal-action="confirm" class="remodal-confirm">OK</button>
-</div>
-
-<!-- シフト用 -->
-<div class="hidden salmon_rotation_wrapper salmon_rotation_origin">
-	<p class="salmon_rotation_title">　</p>
-	<div class="salmon_rotation">
-		<p class="salmon_rotation_time"></p>
-		<img class="salmon_rotation_stage" src="tyrano/images/transport.png">
-		<p class="salmon_rotation_stage_name"></p>
-		<p class="salmon_rotation_weapon_title">支給ブキ</p>
-		<div class="salmon_rotation_weapons">
-			<img class="salmon_rotation_weapon_1" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_2" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_3" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_4" src="tyrano/images/transport.png">
+	
+	<!-- ティラノベース -->
+	<div id="tyrano_base" class="tyrano_base" style="overflow:hidden" ></div>
+	
+	<!-- モーダル用 -->
+	<div class="remodal-bg" ></div>
+	<div class="remodal" data-remodal-id="modal" data-remodal-options="closeOnEscape:false, closeOnOutsideClick:false">
+	  <!--
+	  <button data-remodal-action="close" class="remodal-close"></button>
+	  -->
+	  <h1 class="remodal_title"></h1>
+	  <p class="remodal_txt">
+	  </p>
+	  <br>
+	  <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
+	  <button data-remodal-action="confirm" class="remodal-confirm">OK</button>
+	</div>
+	
+	<!-- シフト用 -->
+	<div class="hidden salmon_rotation_wrapper salmon_rotation_origin">
+		<p class="salmon_rotation_title">　</p>
+		<div class="salmon_rotation">
+			<p class="salmon_rotation_time"></p>
+			<img class="salmon_rotation_stage" src="tyrano/images/transport.png">
+			<p class="salmon_rotation_stage_name"></p>
+			<p class="salmon_rotation_weapon_title">支給ブキ</p>
+			<div class="salmon_rotation_weapons">
+				<img class="salmon_rotation_weapon_1" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_2" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_3" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_4" src="tyrano/images/transport.png">
+			</div>
 		</div>
 	</div>
-</div>
-
-<!--
-<video style="position: fixed; top: 0; left: 0; height: 0; opacity: 0;" muted autoplay loop>
-<source src="./tyrano/videos/novideo.mp4">
-<source src="./tyrano/videos/novideo.webm">
-</video>
--->
-
+	
 </body>
 </html>

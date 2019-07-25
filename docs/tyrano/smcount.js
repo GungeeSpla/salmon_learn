@@ -675,6 +675,10 @@ function SmCountApp () {
 		this.secWave       = 0;
 		this.useDefine     = this.SMCOUNT_DEFINE[this.normaType];
 		this.useCycle      = this.SMCOUNT_CYCLE[this.normaType];
+		/*
+		this.startDate     = new Date(new Date().getTime() - this.waveTimes[1] + this.waveTimes[0] - 500);
+		this.startDate     = new Date(new Date().getTime() - this.waveTimes[2] + this.waveTimes[0] - 500);
+		*/
 		this.startDate     = new Date();
 		this.startTime     = this.startDate.getTime();
 		this.wave1Date     = new Date(this.startTime + this.waveTimes[0]);
@@ -750,6 +754,10 @@ function SmCountApp () {
 	//## startApp ()
 	this.startApp = function () {
 		this.isRunning = true;
+		this.sound.disable = true;
+		setTimeout(function(){
+			app.sound.disable = false;
+		},500);
 		if (this.isStarted) return this.resetApp();
 		this.getJqueryObject();
 		this.setCtx();

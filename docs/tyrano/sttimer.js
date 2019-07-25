@@ -14,12 +14,13 @@ function StTimerApp () {
 	this.nowDate     = null;
 	this.etaDate     = null;
 	this.bStageIndex = null;
-	this.stageIndex  = null;
 	this.stageFrame  = 0;
 	this.stageCounts = [0, 5, 10, 30, 60].map(time => time *= 1000);
 	this.lastStageIndex = this.stageCounts.length - 1;
+	this.stageIndex     = this.lastStageIndex;
 	this.sound       = new StSound();
-	this.isFreeSound = false;	
+	this.isFreeSound = false;
+	this.enableSound = false;
 	this.isClearing  = false;
 	this.enableNowMode = false;
 	this.stTitle       = "ST";
@@ -188,7 +189,8 @@ function StTimerApp () {
 				if (isChecked) {
 					app.$soundTest.removeClass("hidden_button");
 					app.sound.enable = true;
-					app.sound.play("switch");
+					app.enableSound = true;
+					if (! e.isTrigger) app.sound.play("switch");
 					/*
 					setTimeout(function () {
 						app.sound.play("switch");
@@ -197,16 +199,17 @@ function StTimerApp () {
 				}
 				else {
 					app.$soundTest.addClass("hidden_button");
-					app.sound.play("switch");
+					if (! e.isTrigger) app.sound.play("switch");
+					app.enableSound = false;
 					app.sound.enable = false;
 				}
-				app.save();
+				if (! e.isTrigger) app.save();
 				app.setStTitle();
 				return false;
 			});
 			
 			//## * checkFriend
-			this.$checkFriend.on("change", function () {
+			this.$checkFriend.on("change", function (e) {
 				var isChecked = $(this).prop("checked");
 				if (isChecked) {
 					app.stTimer.timeOffset.enableFriendOffset = true;
@@ -228,14 +231,14 @@ function StTimerApp () {
 				}
 				var num = app.stTimer.timeOffset.friendOffset / 1000;
 				app.$friendOffset.text(num.toFixed(1));
-				app.save();
+				if (! e.isTrigger) app.save();
 				app.setStTitle();
-				app.sound.play("switch");
+				if (! e.isTrigger) app.sound.play("switch");
 				return false;
 			});
 			
 			//## * checkStOffset
-			this.$checkStOffset.on("change", function () {
+			this.$checkStOffset.on("change", function (e) {
 				var isChecked = $(this).prop("checked");
 				if (isChecked) {
 					app.stTimer.enableStOffset = true;
@@ -264,15 +267,15 @@ function StTimerApp () {
 					app.$stOffset.text("");
 				}
 				app.stageIndex = null;
-				app.updateStList();
-				app.save();
+				if (! e.isTrigger) app.updateStList();
+				if (! e.isTrigger) app.save();
 				app.setStTitle();
-				app.sound.play("switch");
+				if (! e.isTrigger) app.sound.play("switch");
 				return false;
 			});
 			
 			//## * checkNow
-			this.$checkNow.on("change", function () {
+			this.$checkNow.on("change", function (e) {
 				var isChecked = $(this).prop("checked");
 				if (isChecked) {
 					app.enableNowMode = true;
@@ -282,11 +285,12 @@ function StTimerApp () {
 					app.enableNowMode = false;
 					app.updateStList();
 				}
-				app.save();
+				if (! e.isTrigger) app.save();
 				app.setStTitle();
-				app.sound.play("switch");
+				if (! e.isTrigger) app.sound.play("switch");
 				return false;
 			});
+			
 			this.$checkFriend.attr("is_set_event", "true");
 		}
 	};
@@ -426,13 +430,15 @@ function StTimerApp () {
 		
 		this.clearCanvas();
 		if (! this.enableNowMode) {
+			// ゼロのフェードアウトを描画
 			if (this.stageIndex == this.lastStageIndex) {
-				if (this.stageFrame < 60 && this.isClearing && !window.smCountApp.askStTimerCombined()) {
+				if (this.stageFrame < this.framePerSec && this.isClearing && !window.smCountApp.askStTimerCombined()) {
 					this.ctx.globalAlpha = 1 - this.stageFrame / this.framePerSec;
 					this.renderCountdown(1, true, "0");
 				}
 				else this.isClearing = false;
 			}
+			// 残り10～0秒のカウントサークルを表示
 			else if (this.stageIndex <= 1) {
 				this.ctx.globalAlpha = 1;
 				var progress = this.etaMsec / 1000;
@@ -548,7 +554,7 @@ function StTimerApp () {
 	//## save ()
 	this.save = function () {
 		var saveData = {
-			enableSound       : this.sound.enable,
+			enableSound       : this.enableSound,
 			enableFriendOffset: this.stTimer.timeOffset.enableFriendOffset,
 			friendOffset      : this.stTimer.timeOffset.friendOffset,
 			enableStOffset    : this.stTimer.enableStOffset,
@@ -585,6 +591,7 @@ function StTimerApp () {
 			this.stTimer.stOffset                      = saveData.stOffset;
 			this.sound.volume                          = saveData.volume;
 			this.enableNowMode                         = saveData.enableNowMode;
+			this.enableSound                           = saveData.enableSound;
 			this.sound.enable                          = saveData.enableSound && this.isFreeSound;
 			window.smCountApp.sound.volume             = saveData.volume;
 			window.smCountApp.normaType                = saveData.normaType;
@@ -605,6 +612,10 @@ function StTimerApp () {
 	
 	//## startApp ()
 	this.startApp = function () {
+		this.sound.disable = true;
+		setTimeout(function(){
+			app.sound.disable = false;
+		},500);
 		if (this.isStarted) return this.resetApp();
 		// jQueryオブジェクトを取得する
 		this.getJqueryObject();
@@ -845,6 +856,7 @@ function StSound (urlBase, soundUrls, enable) {
 	this.soundUrlBase = urlBase   || "./tyrano/sounds/";
 	this.soundUrls    = soundUrls || ["5", "10", "30", "60", "54321", "switch", "click", "manmenmi"];
 	this.enable       = enable    || false;
+	this.disable      = false;
 	
 	// 初期化
 	this.volume  = 0.5;
@@ -925,7 +937,9 @@ function StSound (urlBase, soundUrls, enable) {
 	this.play = function (index, opt) {
 		
 		// サウンドが無効なら即return
-		if (! this.enable) return;
+		if (! this.enable || this.disable) return;
+		
+		stTimerApp.isFreeSound = true;
 		
 		// オプションをデフォルトオプションに統合する
 		opt = $.extend({}, this.defaultOpt, opt);

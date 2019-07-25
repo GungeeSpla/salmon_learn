@@ -76,8 +76,8 @@ tyrano.base ={
                        
                        
                        if(width_f > height_f){
-	                       window.tyranoDivInfo.left = width;
-	                       window.tyranoDivInfo.top = 0;
+	                        window.tyranoDivInfo.left = width;
+	                        window.tyranoDivInfo.top = 0;
                             x = width / scale_f;
                             y = 0;
                             /*
@@ -97,6 +97,11 @@ tyrano.base ={
                        
                    }
                    
+	               window.tyranoDivInfo.width = width;
+	               window.tyranoDivInfo.height = height;
+	               window.tyranoDivInfo.translateX = x;
+	               window.tyranoDivInfo.translateY = y;
+	               window.tyranoDivInfo.scale = scale_f;
                    $(".tyrano_base").css("transform", "scale(" + scale_f + ") translate(" + x + "px, " + y + "px)");
                    if (parseInt(view_width) < parseInt(width)) {
                         if (scale_f < 1) {
