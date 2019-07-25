@@ -1156,10 +1156,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
   left: -150px;
 }
 .input_st+label .plus_button {
-  left: -170px;
+  left: -90px;
 }
 .input_st+label .minus_button {
-  left: -90px;
+  left: -170px;
 }
 .input_st+label .hidden_button {
   transform: scale(0);
