@@ -1,5 +1,6 @@
 window.UNIX      = new Unix();      //
 window.tyranoAPI = new TyranoAPI(); //
+window.queries   = getUrlQueries();
 
 //# Unix ()
 function Unix () {

@@ -1585,3 +1585,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 .ui-draggable-handle {
 	cursor: pointer;
 }
+
+
+
+
+
+.sttimer_test {
+	background: blue;
+	color: white;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 500px;
+	height: 500px;
+	font-size: 20px;
+}

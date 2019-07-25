@@ -612,6 +612,16 @@ function StTimerApp () {
 	
 	//## startApp ()
 	this.startApp = function () {
+		
+		if (window.queries && window.queries.test == "1") {
+			if ($(".sttimer_test").size() < 1) {
+				this.$test = $("<div></div>").addClass("sttimer_test");
+				$("body").append(this.$test);
+				var str = "テスト用の画面";
+				this.$test.text(str);
+			}
+		}
+		
 		this.sound.disable = true;
 		setTimeout(function(){
 			app.sound.disable = false;
@@ -671,6 +681,14 @@ function DateFormatter () {
 		d.mm  = ("00" + d.getMinutes()).slice(-2);
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
 		return (d.mm + ":" + d.ss);
+	};
+	
+	//## getMinText3 (d)
+	this.getMinText3 = function (d) {
+		d.mm  = ("00" + d.getMinutes()).slice(-2);
+		d.ss  = ("00" + d.getSeconds()).slice(-2);
+		d.SSS = ("000" + d.getMilliseconds()).slice(-3);
+		return (d.mm + "分" + d.ss + "秒" + d.SSS);
 	};
 	
 	//## getHourText (d)
@@ -819,6 +837,21 @@ function TimeOffset () {
 				json.rtt = json.rt - json.it;     // 応答時間
 				json.dif = json.st - (json.it + json.rt) / 2; // JST - PC Clock
 				json.dif = Math.round(json.dif);
+		
+				if (window.queries && window.queries.test == "1" && window.stTimerApp.$test) {
+					var f = window.stTimerApp.dateFormatter.getHourText;
+					var g = window.stTimerApp.dateFormatter.getMinText3;
+					var sign = Math.sign(json.dif) > 0 ? "+" : "-";
+					var strs = [
+						"NICTサーバーへの発信時刻: " + f(new Date(json.it)),
+						"NICTサーバーからの受信時刻: " + f(new Date(json.rt)),
+						"NICTサーバーの時刻: " + f(new Date(json.st)),
+						"送信から受信までにかかった時間: " + g(new Date(json.rtt)),
+						"推定されるサーバー時刻との時差: " + sign + g(new Date(Math.abs(json.dif)))
+					];
+					var str = strs.join("<br>");
+					window.stTimerApp.$test.html(str);
+				}
 				
 				// 結果の格納
 				that.result = json;
