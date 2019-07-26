@@ -160,6 +160,7 @@ function SettingApp () {
 				// 判定
 				var str = "何も起こりませんでした。";
 				switch (value) {
+				case "あきらさけがり":
 				case "くあつすまねえ":
 					app.isUsableAkiraVoice = true;
 					str = "おめでとう！<br>「<b>あきらさん</b>」ボイスを<br>ゲットしました！"
