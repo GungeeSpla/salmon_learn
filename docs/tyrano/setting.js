@@ -164,7 +164,7 @@ function SettingApp () {
 					app.isUsableAkiraVoice = true;
 					str = "おめでとう！<br>「<b>あきらさん</b>」ボイスを<br>ゲットしました！"
 					break;
-				case "みどりたまごおじさん":
+				case "みどりのたまご":
 					app.isUsableGungeeVoice = true;
 					str = "おめでとう！<br>「<b>みどりたまごおじさん</b>」ボイスを<br>ゲットしました！"
 					break;
