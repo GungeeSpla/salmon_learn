@@ -321,14 +321,14 @@ function StTimerApp () {
 			this.loopDuration = 1000 / this.framePerSec;
 			theApp.framePerSec = 60;
 			theApp.timeoutDuration = 1000 / theApp.framePerSec;
-			if (theApp.$allWrapper) theApp.$allWrapper.css("transform", "translate(-640px)");
+			if (theApp.$allWrapper) theApp.$allWrapper.css("transform", "translate(-640px)").attr("mode", "smcount");
 			break;
 		case "timer":
 			this.framePerSec = 60;
 			this.loopDuration = 1000 / this.framePerSec;
 			theApp.framePerSec = 1;
 			theApp.timeoutDuration = 1000 / theApp.framePerSec;
-			if (theApp.$allWrapper) theApp.$allWrapper.css("transform", "translate(0px)");
+			if (theApp.$allWrapper) theApp.$allWrapper.css("transform", "translate(0px)").attr("mode", "sttimer");
 			break;
 		}
 	};
@@ -348,23 +348,24 @@ function StTimerApp () {
 		this.stageIndex = i;
 		// 直前のstageIndexと現在のstageIndexが違う＝stageIndexが変わった瞬間には
 		// 特殊な処理を行う
+		var charaName = settingApp.usingVoice + "/";
 		if (this.bStageIndex != null && this.bStageIndex != this.stageIndex) {
 			this.stageFrame = 0;
 			switch (this.stageIndex) {
 			case 0: // 残り5秒以内
-				if (! this.enableNowMode) {
-					if (document.hasFocus && document.hasFocus()) app.sound.play("54321");
-					else app.sound.play("5");
+				if (! this.enableNowMode && window.smCountApp.askStTimerCombined2()) {
+					if (document.hasFocus && document.hasFocus()) app.sound.play(charaName + "54321");
+					else app.sound.play(charaName + "5");
 				}
 				break;
 			case 1: // 残り10秒以内
-				if (! this.enableNowMode) app.sound.play("10");
+				if (! this.enableNowMode && window.smCountApp.askStTimerCombined2()) app.sound.play(charaName + "10");
 				break;
 			case 2: // 残り30秒以内
-				if (! this.enableNowMode) app.sound.play("30");
+				if (! this.enableNowMode && window.smCountApp.askStTimerCombined2()) app.sound.play(charaName + "30");
 				break;
 			case 3: // 残り60秒以内
-				if (! this.enableNowMode) app.sound.play("60");
+				if (! this.enableNowMode && window.smCountApp.askStTimerCombined2()) app.sound.play(charaName + "60");
 				break;
 			case this.lastStageIndex: // 残り60秒以上
 				this.isClearing = true;
@@ -374,10 +375,15 @@ function StTimerApp () {
 				if (window.smCountApp.askStTimerCombined()) {
 					this.changeMode("counter");
 				}
-				if (! this.enableNowMode) app.sound.play("manmenmi");
+				if (! this.enableNowMode && window.smCountApp.askStTimerCombined2()) app.sound.play("manmenmi");
 				break;
 			}
 		}
+		/*
+		setInterval(function(){
+			if (! window.stTimerApp.enableNowMode && window.smCountApp.askStTimerCombined2()) window.stTimerApp.sound.play("akira/10");
+		},1000);
+		*/
 	};
 	
 	//## update ()
@@ -887,7 +893,24 @@ function StSound (urlBase, soundUrls, enable) {
 	
 	// 引数を代入していく
 	this.soundUrlBase = urlBase   || "./tyrano/sounds/";
-	this.soundUrls    = soundUrls || ["5", "10", "30", "60", "54321", "switch", "click", "manmenmi"];
+	this.soundUrls    = soundUrls || [
+		"bouyomichan/5",
+		"bouyomichan/10",
+		"bouyomichan/30",
+		"bouyomichan/60",
+		"bouyomichan/54321",
+		"gungee/5.mp3",
+		"gungee/10.mp3",
+		"gungee/30.mp3",
+		"gungee/60.mp3",
+		"gungee/54321.mp3",
+		"akira/5.mp3",
+		"akira/10.mp3",
+		"akira/30.mp3",
+		"akira/60.mp3",
+		"akira/54321.mp3",
+		"switch", "click", "manmenmi"
+	];
 	this.enable       = enable    || false;
 	this.disable      = false;
 	
@@ -1082,7 +1105,7 @@ function StSound (urlBase, soundUrls, enable) {
 		// indexは数値でなければならない
 		var url = this.soundUrlBase + this.soundUrls[index];
 		
-		// urlに.mp3が含まれるなら何もしない
+		// urlに.mp3が含まれるなら
 		if (url.lastIndexOf(".mp3") > -1) ;
 		
 		// .mp3が含まれないなら.wavを足す

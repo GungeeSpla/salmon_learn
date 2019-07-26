@@ -286,14 +286,12 @@ document.title = "サーモンラーン";
 [button fix=true graphic=panel_5a.png   x=&128*3 y=840 width=&128 target=*Panel_5 cond="sf.panel != 5"]
 [button fix=true graphic=panel_5ab.png  x=&128*3 y=840 width=&128 target=*Panel_5 cond="sf.panel == 5"]
 [button fix=true graphic=panel_7a.png   x=&128*4 y=840 width=&128 target=*Panel_7 cond="sf.panel != 7" name=fix_sonota_tab]
-/*
-[button fix=true graphic=panel_10a.png   x=&128*4 y=840 width=&128 target=*Panel_10 cond="sf.panel != 10" name=fix_sonota_item]
-[button fix=true graphic=panel_10ab.png  x=&128*4 y=840 width=&128 target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
-*/
 [button fix=true graphic=panel_4a.png   x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel != 4" name=fix_sonota_item]
 [button fix=true graphic=panel_4ab.png  x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel == 4" name=fix_sonota_item]
 [button fix=true graphic=panel_6a.png   x=&128*4 y=840 width=&128 target=*Panel_6 cond="sf.panel != 6" name=fix_sonota_item]
 [button fix=true graphic=panel_6ab.png  x=&128*4 y=840 width=&128 target=*Panel_6 cond="sf.panel == 6" name=fix_sonota_item]
+[button fix=true graphic=panel_10a.png   x=&128*4 y=840 width=&128 target=*Panel_10 cond="sf.panel != 10" name=fix_sonota_item]
+[button fix=true graphic=panel_10ab.png  x=&128*4 y=840 width=&128 target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
 
 [return]
 
@@ -996,22 +994,46 @@ location.reload(true);
 ;=======================================
 [eval exp="sf.panel = 10"]
 [call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=255 time=0]
 [html name=html_space]
-<div class="st_description">
-	<h1>SMcountとは</h1>
-	<b>SMcount</b>は，サーモンランにおいて、<br>
-	シャケの湧いてくる方向が一定の時刻で切り替わることを<br>
-	理解するための<b>アシスタントボイス</b>です。<br><br>
-	<h1>使い方</h1>
-	バイトが始まると、ステージの風景映像が流れて<br>
-	（キケン度MAXの場合はここで特殊な演出が入ります）<br>
-	ホワイトアウトしたあとアルバイターたちが飛んできますね。<br><br>
-	そのアルバイターたちが<b>着地してチャポンと音が鳴るのと同時</b>に<br>
-	SMcountの「<b>Start</b>」を押してみましょう。<br><br>
-	すると、あとはバイトの時間経過に合わせて<br>
-	Wave3の終了までSMcountがカウントを行ってくれます。<br><br>
-</div>
+	<div class="learn_setting_wrapper">
+		<div class="input_password_wrapper setting_hidden">
+			<div class="input_password_outer"></div>
+			<div class="input_password_inner">
+				<p>パスワードを入力してください。</p>
+				<form>
+				<p><input type="text" class="input_text" placeholder="password"></input></p>
+				<p><input type="submit" class="input_ok" value="OK"></input></p>
+				</form>
+			</div>
+		</div>
+		<div class="alert_wrapper alert_wrapper_normal setting_hidden">
+			<div class="alert_outer"></div>
+			<div class="alert_inner">
+				<p class="alert_text">何も起こりませんでした。</p>
+				<input type="button" class="input_ok" value="OK"></input>
+			</div>
+		</div>
+		<h2>SMcount</h2>
+		<div class="learn_setting_item">
+			<div class="learn_setting_item_title">読み上げ</div>
+			<div class="learn_setting_item_prof">棒読みちゃん</div>
+			<input type="button" class="learn_setting_change" value="変更">
+		</div>
+		
+		<div class="alert_wrapper alert_wrapper_radio setting_hidden">
+			<div class="alert_outer"></div>
+			<div class="alert_inner">
+				<p class="radio_area"></p>
+				<input type="button" class="input_ok" value="OK"></input>
+			</div>
+		</div>
+		<p class="goto_password_wrapper"><input type="button" class="goto_password" value="パスワードを入力"></input></p>
+	</div>
 [endhtml]
+[iscript]
+settingApp.startApp();
+[endscript]
 [return]
 
 

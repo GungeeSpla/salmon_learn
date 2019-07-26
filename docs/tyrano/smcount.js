@@ -58,11 +58,12 @@ function SmCountApp () {
 		this.defineSmCount();
 		
 		// Soundオブジェクトを作る
-		this.soundParty["bouyomichan"] = this.createSmSound("bouyomichan", false);
-		this.soundParty["gungeespla"]  = this.createSmSound("gungeespla", false);
+		this.soundParty["bouyomichan"] = this.createSmSound("bouyomichan", false, "wav");
+		this.soundParty["gungee"]      = this.createSmSound("gungee", false, "mp3");
+		this.soundParty["akira"]       = this.createSmSound("akira", false, "mp3");
 		
 		// 使うサウンドを決定
-		this.sound = this.soundParty["bouyomichan"];
+		this.sound = this.soundParty[settingApp.usingVoice];
 	};
 	
 	//## loop ()
@@ -728,9 +729,14 @@ function SmCountApp () {
 		window.stTimerApp.load();
 	};
 	
-	//## check ()
+	//## askStTimerCombined ()
 	this.askStTimerCombined = function () {
 		return (window.smCountApp.isUseStTimer && window.smCountApp.isRunning);
+	};
+	
+	//## askStTimerCombined2 ()
+	this.askStTimerCombined2 = function () {
+		return (! window.smCountApp.isRunning) || (window.smCountApp.$allWrapper.attr("mode") == "sttimer");
 	};
 	
 	//## stopApp ()
@@ -749,6 +755,7 @@ function SmCountApp () {
 		this.setCtx();
 		window.stTimerApp.changeMode("counter");
 		this.load();
+		this.sound.loadAll();
 	};
 	
 	//## startApp ()
@@ -758,6 +765,7 @@ function SmCountApp () {
 		setTimeout(function(){
 			app.sound.disable = false;
 		},500);
+		this.sound = this.soundParty[settingApp.usingVoice];
 		if (this.isStarted) return this.resetApp();
 		this.getJqueryObject();
 		this.setCtx();
@@ -774,7 +782,7 @@ function SmCountApp () {
 	
 	//## createSmSound ()
 	// StSoundを流用してサウンドオブジェクトを作成する
-	this.createSmSound = function (charaName, shouldPreload) {
+	this.createSmSound = function (charaName, shouldPreload, extension) {
 		if (! charaName) charaName = "bouyomichan";
 		
 		// SMcountの音声定義オブジェクトからユニークな値を抽出した配列を作る
@@ -784,6 +792,12 @@ function SmCountApp () {
 		this.margeArray(soundArray, [
 			"otsukare", "switch", "nosound.mp3"
 		]);
+		
+		if (extension == "mp3") {
+			soundArray.forEach(function(d, i){
+				if (d.lastIndexOf("mp3") < 0) soundArray[i] = d + ".mp3";
+			});
+		}
 		
 		// StSoundコンストラクタから作成
 		var stSound = new StSound("./tyrano/countsounds/" + charaName + "/", soundArray, true);
@@ -915,13 +929,13 @@ function SmCountApp () {
 				"57": "",
 				"56": "",
 				"55": "",
-				"54": "",
+				"54": "norma",
 				"53": "",
 				"52": "3",
 				"51": "2",
 				"50": "1",
 				"49": "49b",
-				"48": "norma",
+				"48": "",
 				"47": "",
 				"46": "",
 				"45": "",
