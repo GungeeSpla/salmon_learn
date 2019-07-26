@@ -138,8 +138,6 @@ function Sound (urlBase, soundUrls, enable) {
 		// indexが文字列（＝ファイル名）だった場合にそれを真のindexに変換する
 		index = this.filename2index(index);
 		
-		console.log(index);
-		
 		// indexが0未満ならば何もできない
 		if (index < 0) return ;
 		

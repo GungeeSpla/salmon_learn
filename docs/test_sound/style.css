@@ -13,15 +13,21 @@ body {
 	-webkit-user-select: none;
 	user-select: none;
 	color: White;
-	background: DarkOrange;
 	font-size: 22px;
 	cursor: pointer;
 	padding: 20px;
 	border-radius: 10px;
 	margin-bottom: 40px;
 	line-height: 22px;
+	-webkit-transition: background-color 0.3s;
+	transition: background-color 0.3s;
+	background-color: DarkOrange;
 }
-
+.sound_item:active {
+	-webkit-transition: none;
+	transition: none;
+	background-color: white;
+}
 .sound_item h1 {
 	font-size: 30px;
 	line-height: 30px;
