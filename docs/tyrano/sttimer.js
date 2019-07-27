@@ -379,8 +379,9 @@ function StTimerApp () {
 				// SMcountに遷移する
 				if (window.smCountApp.askStTimerCombined()) {
 					this.changeMode("counter");
+					app.sound.play("manmenmi");
 				}
-				if (! this.enableNowMode && window.smCountApp.askStTimerCombined2()) app.sound.play("manmenmi");
+				else if (! this.enableNowMode && window.smCountApp.askStTimerCombined2()) app.sound.play("manmenmi");
 				break;
 			}
 		}
