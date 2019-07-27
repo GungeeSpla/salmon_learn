@@ -2,10 +2,15 @@
 ;# 初期化
 ;=======================================
 
+[eval exp="console.log('learn.ks')"]
 [clearstack]
+[eval exp="console.log('プリロード')"]
 [call target=Init_Preload]
+[eval exp="console.log('スクリプト')"]
 [call target=Init_Iscript]
+[eval exp="console.log('マクロ定義')"]
 [call target=Init_Macro]
+[eval exp="console.log('タイトル')"]
 [jump target=Title]
 [s]
 
@@ -164,6 +169,8 @@ f.y = a.y - 70;
 if (! sf.last_visit_version) sf.last_visit_version = 0;
 [endscript]
 
+[eval exp="console.log('マスク')"]
+
 ; 最後に訪れたバージョンが20000(2.0.0)以下ならばロゴを見せる
 ; 20000以降のバージョンに訪れたことがあれば300ミリ秒のマスク
 [if exp="sf.last_visit_version < 20000"]
@@ -178,6 +185,8 @@ if (! sf.last_visit_version) sf.last_visit_version = 0;
 [layopt layer=0 visible=true]
 [layopt layer=1 visible=true]
 [layopt layer=message0 visible=false]
+
+[eval exp="console.log('背景とロゴ')"]
 
 ; 背景とロゴ
 [bg time=0 storage=red_bg.png]
@@ -212,6 +221,8 @@ tf.version = sf.last_visit_version;
 ; リセットはまだされていない
 [eval exp="tf.reseted = false"]
 
+[eval exp="console.log('マスクオフ')"]
+
 ; ここで画面が完成したのでマスクを外したいのだが
 ; Ver.2.0.0以降に訪れたことがない人にはゆっくりタイトル画面を見せよう
 [if exp="sf.last_visit_version < 20000"]
@@ -222,6 +233,8 @@ tf.version = sf.last_visit_version;
 
 ; 最後に訪れたバージョンの保存
 [eval exp="sf.last_visit_version = window.VERSION"]
+
+[eval exp="console.log('ダイアログ')"]
 
 ; ダイアログがあれば出す
 [call target="Dialog"]
