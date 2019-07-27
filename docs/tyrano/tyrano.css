@@ -1113,6 +1113,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 	position: absolute;
 	top: 400px;
 	left: 0px;
+    text-shadow: none;
 }
 .input_st_item:first-child {
 	border-top: 1px solid rgba(255, 255, 255, 0.4);

@@ -5,6 +5,7 @@ window.stTimerApp = new StTimerApp();
 //# StTimerApp ()
 function StTimerApp () {
 	var app = this;
+	this.specialStTitle = "";
 	this.mode        = "timer";
 	this.isStarted   = false;
 	this.stTimer     = new StTimer();
@@ -41,6 +42,9 @@ function StTimerApp () {
 			var num = app.stTimer.timeOffset.friendOffset / 1000;
 			var friend = this.stTimer.timeOffset.enableFriendOffset ? "<span style='color: Orange'>（" + num.toFixed(1) + "秒遅れ）</span>" : "";
 			str = "現在時刻" + friend + "は";
+		}
+		else if (this.specialStTitle) {
+			str = "<span style='color: Yellow;'>" + this.specialStTitle + "まで</span>";
 		}
 		else {
 			var friend = this.stTimer.timeOffset.enableFriendOffset ? "（フレ部屋）" : "";
@@ -396,7 +400,11 @@ function StTimerApp () {
 		this.updateCountStage();
 		if (window.smCountApp.mode == "timer") {
 			if (! this.enableNowMode) {
-				document.title = "STまで " + this.dateFormatter.getMinText2(this.etaDate) + " - サーモンラーン ";
+				var sign = app.stTimer.stOffset >= 0 ? "+" : "";
+				var offset = app.stTimer.enableStOffset ? sign + app.stTimer.stOffset + "分" : "";
+				str = this.stTitle + offset;
+				if (this.specialStTitle) str = this.specialStTitle;
+				document.title = str + "まで " + this.dateFormatter.getMinText2(this.etaDate) + " - サーモンラーン ";
 			} else {
 				document.title = this.dateFormatter.getHourText2(this.nowDate) + " - サーモンラーン ";
 			}

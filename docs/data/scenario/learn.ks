@@ -264,10 +264,12 @@ if (isRemodal) {
 [call target=Panel_Fix_Button]
 [cm]
 [freeimage layer=0 time=0]
+[bg time=0 storage=red_bg.png]
 [iscript]
 stTimerApp.stopApp();
 smCountApp.stopApp();
 document.title = "サーモンラーン";
+stTimerApp.specialStTitle = "";
 [endscript]
 [return]
 
@@ -316,7 +318,6 @@ tf.panel = "*Panel_" + sf.panel;
 [iscript]
 var state = $(".fix_sonota_tab").attr("state");
 var isOpening = (state == "opening");
-
 if (isOpening) {
 	$(".fix_sonota_tab").attr("src", "./data/image/panel_7a.png").attr("state", "closing");
 	$(".fix_sonota_item").each(function(i){
@@ -567,6 +568,9 @@ STタイマーは、
 *Panel_5_3
 ;=======================================
 [anim layer=1 name=logo opacity=0 time=0]
+[iscript]
+stTimerApp.specialStTitle = "";
+[endscript]
 [html name=html_space]
 	<div class="all_wrapper" style="transform: translate(0)">
 		<div class="st_eta">
@@ -601,7 +605,40 @@ STタイマーは、
 [iscript]
 stTimerApp.startApp();
 [endscript]
+[button fix=true graphic=GT_on.png x=20 y=20 width=100 target=*Panel_5_GT_On name=GT]
 [glink text=STについて x=246 width=110 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.st_step = 1"]
+[return]
+
+;=======================================
+*Panel_5_GT_On
+;=======================================
+
+[clearfix name=GT]
+[iscript]
+stTimerApp.specialStTitle = "GT (ST+1分) ";
+stTimerApp.setStTitle();
+stTimerApp.stTimer.enableStOffset = true;
+stTimerApp.stTimer.stOffset = 1;
+stTimerApp.$checkStOffset.prop("checked", stTimerApp.stTimer.enableStOffset).trigger("change");
+$(".html_space").css({
+    "text-shadow": "5px 5px 5px black"
+});
+$("#check_st_offset").parent().hide(0);
+stTimerApp.updateStList();
+[endscript]
+[bg storage=GT_bg.jpg time=1000]
+[return]
+
+;=======================================
+*Panel_5_GT_Off
+;=======================================
+
+[clearfix name=GT]
+[iscript]
+stTimerApp.specialStTitle = "";
+[endscript]
+[bg storage=red_bg.jpg time=1000]
+[button fix=true graphic=panel_1a.png x=40 y=40 width=128 target=*Panel_5_GT_On name=GT]
 [return]
 
 
