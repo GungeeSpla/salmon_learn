@@ -451,7 +451,11 @@ function SmCountApp () {
 				app.$buttonStart.render(isStarted);
 				
 				// サウンド再生
-				app.sound.play("switch");
+				if (app.sound.isTested) {
+					app.sound.play("switch");
+				} else {
+					app.sound.testPlay();
+				}
 				return false;
 			});
 			

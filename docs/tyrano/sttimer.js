@@ -170,7 +170,8 @@ function StTimerApp () {
 			if (! app.isFreeSound) {
 				this.$checkSound.on(clickEvent, function (e) {
 					if (! app.isFreeSound) {
-						app.sound.playSilent();
+						//app.sound.playSilent();
+						app.sound.testPlaySilent();
 						app.isFreeSound = true;
 						console.log("✅ サウンドの再生制限を解除しました.");
 						app.$soundDesc.css("display", "block");
@@ -922,17 +923,18 @@ function StSound (urlBase, soundUrls, enable) {
 	this.playing = new Array(this.soundUrls.length, false)
 	this.audioContext = (window.AudioContext || window.webkitAudioContext);
 	this.noAudioContext = false;
-	this.fallbackAudio;
+	this.fallbackAudio = document.createElement("audio");
+	this.isTested = false;
 	
 	// AudioContextが使用可能ならそのコンテキストを使う
 	if (this.audioContext !== undefined) {
 		this.audioCtx = new this.audioContext();
+		this.audioCtx.createGain = this.audioCtx.createGain || this.audioCtx.createGainNode;
 	}
 	
 	// AudioContextが使用不可ならば<audio>エレメントを使う
 	else {
 		this.noAudioContext = true;
-		this.fallbackAudio = document.createElement("audio");
 	}
 	
 	//## loadAll ()
@@ -957,7 +959,25 @@ function StSound (urlBase, soundUrls, enable) {
 		src.buffer = buf;
 		src.connect(this.audioCtx.destination);
 		src.start(0);
-	}
+	};
+	
+	//## testPlay ()
+	this.testPlay = function () {
+		this.isTested = true;
+		var audio = document.getElementById("sound_switch");
+		audio.volume = this.volume;
+		audio.currentTime = 0;
+		audio.play();
+	};
+	
+	//## testPlaySilent ()
+	this.testPlaySilent = function () {
+		this.isTested = true;
+		var audio = document.getElementById("sound_silent");
+		audio.volume = this.volume;
+		audio.currentTime = 0;
+		audio.play();
+	};
 	
 	
 	//## filename2index (filename)
@@ -1047,7 +1067,8 @@ function StSound (urlBase, soundUrls, enable) {
 			source.buffer = buffer;
 			
 			// SourceNode - GainNode - AudioContext.destinationの経路で接続する
-			source.connect(gainNode).connect(this.audioCtx.destination);
+			source.connect(gainNode);
+			gainNode.connect(this.audioCtx.destination);
 			
 			// 再生が終わったら
 			// 注1: ループ再生の場合はonendedは呼ばれない。また
