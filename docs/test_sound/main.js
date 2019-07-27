@@ -55,6 +55,12 @@ function init () {
 		var instance = createjs.Sound.play("sound2");
 		instance.play();
 	});
+	
+	$("#sound_item_12").on(touchend, function(e){
+		var instance = createjs.Sound.play("sound2");
+		instance.volume = 0.3;
+		instance.play();
+	});
 }
 
 
