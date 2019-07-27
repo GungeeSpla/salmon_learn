@@ -605,7 +605,7 @@ stTimerApp.specialStTitle = "";
 [iscript]
 stTimerApp.startApp();
 [endscript]
-[button fix=true graphic=GT_on.png x=20 y=20 width=100 target=*Panel_5_GT_On name=GT]
+;[button fix=true graphic=GT_on.png x=20 y=20 width=100 target=*Panel_5_GT_On name=GT]
 [glink text=STについて x=246 width=110 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.st_step = 1"]
 [return]
 
