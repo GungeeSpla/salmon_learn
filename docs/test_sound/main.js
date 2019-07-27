@@ -92,6 +92,7 @@ function Sound (urlBase, soundUrls, enable) {
 	// AudioContextが使用可能ならそのコンテキストを使う
 	if (this.audioContext !== undefined) {
 		this.audioCtx = new this.audioContext();
+		this.audioCtx.createGain = this.audioCtx.createGain || this.audioCtx.createGainNode;
 	}
 	
 	// AudioContextが使用不可ならば<audio>エレメントを使う
