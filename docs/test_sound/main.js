@@ -4,7 +4,11 @@ function init () {
 	var click      = "click";
 	var touchend   = "ontouchend"   in window ? "touchend"   : "mouseup";
 	var touchstart = "ontouchstart" in window ? "touchstart" : "mousedown";
-		
+	
+	createjs.Sound.registerSound("./test.wav","sound");
+	createjs.Sound.registerSound("./test.mp3","sound2");
+	createjs.Sound.registerSound("./test.ogg","sound3");
+	
 	$("#sound_item_01").on(touchend, function(e){
 		sound.play("test");
 	});
@@ -31,6 +35,25 @@ function init () {
 		
 	$("#sound_item_07").on(touchend, function(e){
 		sound.play("test", {doUseAudioContext: false});
+	});
+		
+	$("#sound_item_08").on(touchstart, function(e){
+		sound.play("test", {doUseGainNode: false});
+	});
+	
+	$("#sound_item_09").on(touchstart, function(e){
+		var instance = createjs.Sound.play("sound");
+		instance.play();
+	});
+	
+	$("#sound_item_10").on(touchend, function(e){
+		var instance = createjs.Sound.play("sound");
+		instance.play();
+	});
+	
+	$("#sound_item_11").on(touchend, function(e){
+		var instance = createjs.Sound.play("sound2");
+		instance.play();
 	});
 }
 

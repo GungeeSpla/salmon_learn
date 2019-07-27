@@ -26,7 +26,7 @@ body {
 .sound_item:active {
 	-webkit-transition: none;
 	transition: none;
-	background-color: white;
+	background-color: Orange;
 }
 .sound_item h1 {
 	font-size: 30px;

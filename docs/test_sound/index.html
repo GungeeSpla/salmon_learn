@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>サーモンランタイム・タイマー</title>
-<link rel="stylesheet" href="style.css?2">
+<link rel="stylesheet" href="style.css?5">
+<script type="text/javascript" src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="main.js?2"></script>
+<script type="text/javascript" src="main.js?5"></script>
 </head>
 <body onload="init()">
 <div id="main">
@@ -32,11 +33,27 @@
 	</div>
 	<div class="sound_item" id="sound_item_06">
 		<h1>サウンドテスト 06</h1>
-		test.wav click AudioContext
+		test.wav touchend/mouseup AudioContext
 	</div>
 	<div class="sound_item" id="sound_item_07">
 		<h1>サウンドテスト 07</h1>
 		test.wav touchend/mouseup < audio > element
+	</div>
+	<div class="sound_item" id="sound_item_08">
+		<h1>サウンドテスト 08</h1>
+		test.wav touchstart/mousedown AudioContext
+	</div>
+	<div class="sound_item" id="sound_item_09">
+		<h1>サウンドテスト 09</h1>
+		test.wav touchstart/mousedown SoundJS
+	</div>
+	<div class="sound_item" id="sound_item_10">
+		<h1>サウンドテスト 10</h1>
+		test.wav touchend/mouseup SoundJS
+	</div>
+	<div class="sound_item" id="sound_item_11">
+		<h1>サウンドテスト 11</h1>
+		test.mp3 touchend/mouseup SoundJS
 	</div>
 </div>
 </body>
