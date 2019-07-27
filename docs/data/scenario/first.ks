@@ -1,7 +1,3 @@
-[eval exp="console.log('first.ks')"]
-[eval exp="console.log('Live2Dプラグイン')"]
-[call storage="live2d/live2d.ks"]
-[eval exp="console.log('その他プラグイン')"]
 [eval exp="loadPlugin()"]
 ;[plugin name=for]
 ;[plugin name=glink_show]
@@ -9,6 +5,5 @@
 [iscript]
 fixFitBaseSize();
 [endscript]
-[eval exp="console.log('learn.ksにジャンプ')"]
 [jump storage=learn.ks]
 [s]

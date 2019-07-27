@@ -2,15 +2,10 @@
 ;# 初期化
 ;=======================================
 
-[eval exp="console.log('learn.ks')"]
 [clearstack]
-[eval exp="console.log('プリロード')"]
 [call target=Init_Preload]
-[eval exp="console.log('スクリプト')"]
 [call target=Init_Iscript]
-[eval exp="console.log('マクロ定義')"]
 [call target=Init_Macro]
-[eval exp="console.log('タイトル')"]
 [jump target=Title]
 [s]
 
@@ -19,30 +14,33 @@
 ;=======================================
 *Init_Preload
 ;=======================================
-[preload storage=data/bgimage/red_bg.png]
-[preload storage=data/fgimage/logo.png]
-[preload storage=data/fgimage/goldie.png]
-[preload storage=data/fgimage/komori.png]
-[preload storage=tyrano/images/rotation_bg.png]
-[preload storage=data/image/panel_1a.png]
-[preload storage=data/image/panel_2a.png]
-[preload storage=data/image/panel_3a.png]
-[preload storage=data/image/panel_4a.png]
-[preload storage=data/image/panel_5a.png]
-[preload storage=data/image/panel_6a.png]
-[preload storage=data/image/panel_7a.png]
-[preload storage=data/image/panel_8a.png]
-[preload storage=data/image/panel_1ab.png]
-[preload storage=data/image/panel_2ab.png]
-[preload storage=data/image/panel_3ab.png]
-[preload storage=data/image/panel_4ab.png]
-[preload storage=data/image/panel_5ab.png]
-[preload storage=data/image/panel_6ab.png]
-[preload storage=data/image/panel_7ab.png]
-[preload storage=data/image/panel_8ab.png]
+[iscript]
+f.preloadImages = [
+	"data/bgimage/red_bg.png",
+	"data/fgimage/logo.png",
+	"data/fgimage/goldie.png",
+	"data/fgimage/komori.png",
+	"tyrano/images/rotation_bg.png",
+	"data/image/panel_1a.png",
+	"data/image/panel_2a.png",
+	"data/image/panel_3a.png",
+	"data/image/panel_4a.png",
+	"data/image/panel_5a.png",
+	"data/image/panel_6a.png",
+	"data/image/panel_7a.png",
+	"data/image/panel_8a.png",
+	"data/image/panel_1ab.png",
+	"data/image/panel_2ab.png",
+	"data/image/panel_3ab.png",
+	"data/image/panel_4ab.png",
+	"data/image/panel_5ab.png",
+	"data/image/panel_6ab.png",
+	"data/image/panel_7ab.png",
+	"data/image/panel_8ab.png"
+];
+[endscript]
+[preload storage=&f.preloadImages wait=false]
 [return]
-
-
 
 ;=======================================
 *Init_Iscript
@@ -169,8 +167,6 @@ f.y = a.y - 70;
 if (! sf.last_visit_version) sf.last_visit_version = 0;
 [endscript]
 
-[eval exp="console.log('マスク')"]
-
 ; 最後に訪れたバージョンが20000(2.0.0)以下ならばロゴを見せる
 ; 20000以降のバージョンに訪れたことがあれば300ミリ秒のマスク
 [if exp="sf.last_visit_version < 20000"]
@@ -178,15 +174,13 @@ if (! sf.last_visit_version) sf.last_visit_version = 0;
 	[mask graphic=masking_image.png]
 	[wait time=2000]
 [else]
-	[mask time=300]
+	[mask time=10]
 [endif]
 
 ; レイヤー設定
 [layopt layer=0 visible=true]
 [layopt layer=1 visible=true]
 [layopt layer=message0 visible=false]
-
-[eval exp="console.log('背景とロゴ')"]
 
 ; 背景とロゴ
 [bg time=0 storage=red_bg.png]
@@ -221,8 +215,6 @@ tf.version = sf.last_visit_version;
 ; リセットはまだされていない
 [eval exp="tf.reseted = false"]
 
-[eval exp="console.log('マスクオフ')"]
-
 ; ここで画面が完成したのでマスクを外したいのだが
 ; Ver.2.0.0以降に訪れたことがない人にはゆっくりタイトル画面を見せよう
 [if exp="sf.last_visit_version < 20000"]
@@ -233,8 +225,6 @@ tf.version = sf.last_visit_version;
 
 ; 最後に訪れたバージョンの保存
 [eval exp="sf.last_visit_version = window.VERSION"]
-
-[eval exp="console.log('ダイアログ')"]
 
 ; ダイアログがあれば出す
 [call target="Dialog"]

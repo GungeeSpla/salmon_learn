@@ -194,6 +194,10 @@ STタイマーをちょこっとだけ[r]
 ; プリロード
 [load_start]
 
+[call storage="live2d/live2d.ks" cond="!tf.isLoadedLive2D"]
+[iscript]
+tf.isLoadedLive2D = true;
+[endscript]
 [preload wait=true storage=data/others/live2d/assets/ikachan/ikachan.1024/texture_00.png]
 [preload wait=true storage=data/bgimage/bg.png]
 [preload wait=true storage=data/fgimage/name_hatena.png]
