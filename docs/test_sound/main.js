@@ -9,55 +9,72 @@ function init () {
 	createjs.Sound.registerSound("./test.mp3","sound2");
 	createjs.Sound.registerSound("./test.ogg","sound3");
 	
-	$("#sound_item_01").on(touchend, function(e){
+	
+	
+	
+	
+	$("#sound_item_A2").on(touchend, function(e){
 		sound.play("test");
 	});
 		
-	$("#sound_item_02").on(touchend, function(e){
+	$("#sound_item_A3").on(touchend, function(e){
 		sound.play("test.mp3");
 	});
 		
-	$("#sound_item_03").on(touchend, function(e){
+	$("#sound_item_A4").on(touchend, function(e){
 		sound.play("test.ogg");
 	});
 		
-	$("#sound_item_04").on(touchstart, function(e){
+	$("#sound_item_A5").on(touchstart, function(e){
 		sound.play("test");
 	});
 		
-	$("#sound_item_05").on(click, function(e){
-		sound.play("test");
+	$("#sound_item_A1").on(touchend, function(e){
+		sound.play("test", {isOldVer: true});
 	});
-		
-	$("#sound_item_06").on(touchend, function(e){
+	
+	
+	
+	
+	
+	$("#sound_item_B1").on(touchend, function(e){
 		sound.play("test", {doUseGainNode: false});
 	});
-		
-	$("#sound_item_07").on(touchend, function(e){
+	
+	$("#sound_item_B2").on(touchstart, function(e){
+		sound.play("test", {doUseGainNode: false});
+	});
+	
+	
+	
+	
+	
+	
+	$("#sound_item_D1").on(touchend, function(e){
 		sound.play("test", {doUseAudioContext: false});
 	});
+	
+	
+	
 		
-	$("#sound_item_08").on(touchstart, function(e){
-		sound.play("test", {doUseGainNode: false});
-	});
-	
-	$("#sound_item_09").on(touchstart, function(e){
+	$("#sound_item_C1").on(touchend, function(e){
 		var instance = createjs.Sound.play("sound");
 		instance.play();
 	});
-	
-	$("#sound_item_10").on(touchend, function(e){
+		
+	$("#sound_item_C2").on(touchstart, function(e){
 		var instance = createjs.Sound.play("sound");
 		instance.play();
 	});
-	
-	$("#sound_item_11").on(touchend, function(e){
-		var instance = createjs.Sound.play("sound2");
+		
+	$("#sound_item_C3").on(touchend, function(e){
+		var instance = createjs.Sound.play("sound");
+		instance.volume = 0.3;
 		instance.play();
 	});
-	
-	$("#sound_item_12").on(touchend, function(e){
-		var instance = createjs.Sound.play("sound2");
+		
+	$("#sound_item_C4").on(touchstart, function(e){
+		var instance = createjs.Sound.play("sound");
 		instance.volume = 0.3;
 		instance.play();
 	});
@@ -92,7 +109,7 @@ function Sound (urlBase, soundUrls, enable) {
 	// AudioContextが使用可能ならそのコンテキストを使う
 	if (this.audioContext !== undefined) {
 		this.audioCtx = new this.audioContext();
-		this.audioCtx.createGain = this.audioCtx.createGain || this.audioCtx.createGainNode;
+		this.audioCtx.createGain2 = this.audioCtx.createGain || this.audioCtx.createGainNode
 	}
 	
 	// AudioContextが使用不可ならば<audio>エレメントを使う
@@ -153,7 +170,8 @@ function Sound (urlBase, soundUrls, enable) {
 		volume: 1,
 		loop: false,
 		doUseGainNode: true,
-		doUseAudioContext: true
+		doUseAudioContext: true,
+		isOldVer: false
 	};
 	
 	//## play (index)
@@ -200,11 +218,19 @@ function Sound (urlBase, soundUrls, enable) {
 			if (! source) return;
 
 			// GainNodeを生成（音量の調節）
-			if (opt.doUseGainNode) {
+			if (opt.isOldVer) {
 				var gainNode = this.audioCtx.createGain();
 				var volume = this.volume * opt.volume;
 				if (this.isMuted) volume = 0;
 				gainNode.gain.value = volume;
+				console.log("createGain.");
+			}
+			else if (opt.doUseGainNode) {
+				var gainNode = this.audioCtx.createGain2();
+				var volume = this.volume * opt.volume;
+				if (this.isMuted) volume = 0;
+				gainNode.gain.value = volume;
+				console.log("createGainNode.");
 			}
 
 			// SourceNodeにループ設定を加える
@@ -214,8 +240,12 @@ function Sound (urlBase, soundUrls, enable) {
 			source.buffer = buffer;
 			
 			// SourceNode - GainNode - AudioContext.destinationの経路で接続する
-			if (opt.doUseGainNode) {
+			if (opt.isOldVer) {
 				source.connect(gainNode).connect(this.audioCtx.destination);
+			}
+			else if (opt.doUseGainNode) {
+				source.connect(gainNode);
+				gainNode.connect(this.audioCtx.destination);
 			} else {
 				source.connect(this.audioCtx.destination);
 			}

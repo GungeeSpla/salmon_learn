@@ -2,111 +2,105 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>サーモンランタイム・タイマー</title>
-<link rel="stylesheet" href="style.css?6">
+<title>サウンドテスト</title>
+<link rel="stylesheet" href="style.css?10">
 <script type="text/javascript" src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="main.js?6"></script>
+<script type="text/javascript" src="main.js?10"></script>
 </head>
 <body onload="init()">
 <div id="main">
-	改造中　ちょっと待ってね
-	<!--
 	<table>
 		<tr>
 			<td>
-				<div class="sound_item" id="sound_item_01">
+				<div class="sound_item" id="sound_item_A1">
 					<h1>サウンド A1</h1>
+					【サーモンラーンと同じ鳴らし方】
+				</div>
+			</td>
+			<td>
+				<div class="sound_item" id="sound_item_A2">
+					<h1>サウンド A2</h1>
 					【wav形式, touchendイベント, AudioContext, GainNodeを使用】
 				</div>
 			</td>
 			<td>
-				<div class="sound_item" id="sound_item_02">
-					<h1>サウンド A2</h1>
+				<div class="sound_item" id="sound_item_A3">
+					<h1>サウンド A3</h1>
 					【mp3形式, touchendイベント, AudioContext, GainNodeを使用】
 				</div>
 			</td>
 			<td>
-				<div class="sound_item" id="sound_item_03">
-					<h1>サウンド A3</h1>
+				<div class="sound_item" id="sound_item_A4">
+					<h1>サウンド A4</h1>
 					【ogg形式, touchendイベント, AudioContext, GainNodeを使用】
 				</div>
 			</td>
 			<td>
-				<div class="sound_item" id="sound_item_04">
-					<h1>サウンド A4</h1>
-					【wav形式, touchstartイベント, AudioContext, GainNodeを使用】
-				</div>
-			</td>
-			<td>
-				<div class="sound_item" id="sound_item_05">
+				<div class="sound_item" id="sound_item_A5">
 					<h1>サウンド A5</h1>
-					【wav形式, clickイベント, AudioContext, GainNodeを使用】
+					【wav形式, touchstartイベント, AudioContext, GainNodeを使用】
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<div class="sound_item" id="sound_item_01">
-					<h1>サウンド A1</h1>
+				<div class="sound_item" id="sound_item_B1">
+					<h1>サウンド B1</h1>
 					【wav形式, touchendイベント, AudioContext, GainNodeを使用せず】
 				</div>
 			</td>
 			<td>
-				<div class="sound_item" id="sound_item_02">
-					<h1>サウンド A2</h1>
-					【mp3形式, touchendイベント, AudioContext, GainNodeを使用】
+				<div class="sound_item" id="sound_item_B2">
+					<h1>サウンド B2</h1>
+					【wav形式, touchstartイベント, AudioContext, GainNodeを使用せず】
+				</div>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<div class="sound_item" id="sound_item_C1">
+					<h1>サウンド C1</h1>
+					【wav形式, touchendイベント, SoundJS, 音量は変更せず】
 				</div>
 			</td>
 			<td>
-				<div class="sound_item" id="sound_item_03">
-					<h1>サウンド A3</h1>
-					【ogg形式, touchendイベント, AudioContext, GainNodeを使用】
+				<div class="sound_item" id="sound_item_C2">
+					<h1>サウンド C2</h1>
+					【wav形式, touchstartイベント, SoundJS, 音量は変更せず】
 				</div>
 			</td>
 			<td>
-				<div class="sound_item" id="sound_item_04">
-					<h1>サウンド A4</h1>
-					【wav形式, touchstartイベント, AudioContext, GainNodeを使用】
+				<div class="sound_item" id="sound_item_C3">
+					<h1>サウンド C3</h1>
+					【wav形式, touchendイベント, SoundJS, 音量を小さく】
 				</div>
 			</td>
 			<td>
-				<div class="sound_item" id="sound_item_05">
-					<h1>サウンド A5</h1>
-					【wav形式, clickイベント, AudioContext, GainNodeを使用】
+				<div class="sound_item" id="sound_item_C4">
+					<h1>サウンド C4</h1>
+					【wav形式, touchstartイベント, SoundJS, 音量を小さく】
 				</div>
 			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<div class="sound_item" id="sound_item_D1" style="background: #00adff;">
+					<h1>サウンド D1</h1>
+					【wav形式, touchendイベント, audioエレメントを使用】
+				</div>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
 		</tr>
 	</table>
-	<div class="sound_item" id="sound_item_06">
-		<h1>サウンドテスト 06</h1>
-		test.wav touchend/mouseup AudioContext
-	</div>
-	<div class="sound_item" id="sound_item_07">
-		<h1>サウンドテスト 07</h1>
-		test.wav touchend/mouseup < audio > element
-	</div>
-	<div class="sound_item" id="sound_item_08">
-		<h1>サウンドテスト 08</h1>
-		test.wav touchstart/mousedown AudioContext
-	</div>
-	<div class="sound_item" id="sound_item_09">
-		<h1>サウンドテスト 09</h1>
-		test.wav touchstart/mousedown SoundJS
-	</div>
-	<div class="sound_item" id="sound_item_10">
-		<h1>サウンドテスト 10</h1>
-		test.wav touchend/mouseup SoundJS
-	</div>
-	<div class="sound_item" id="sound_item_11">
-		<h1>サウンドテスト 11</h1>
-		test.mp3 touchend/mouseup SoundJS
-	</div>
-	<div class="sound_item" id="sound_item_12">
-		<h1>サウンドテスト 12</h1>
-		test.mp3 touchend/mouseup SoundJS volume 50%
-	</div>
-	-->
+	はじめはA-Cがすべて再生されないが、Dを一度鳴らしてからだと鳴るようになった、というご報告があります。<br>
 </div>
 </body>
 </html>
