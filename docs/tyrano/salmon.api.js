@@ -1,6 +1,8 @@
 window.ROTATION_DATA        = false;                                // APIで取得したシフトデータを格納する
-window.WEAPONS_URL          = "./tyrano/weapons.csv";               // ブキの評価データシートのcsv
-window.WIKIDATA_URL         = "./tyrano/weapons_wikidata.csv";      // Wikiに基づくブキの基礎データシートのcsv
+window.GEARDATA             = false;
+window.GEARDATA_URL         = "./tyrano/reward_gear.json";          // 今回のギア のデータ
+window.WEAPONS_URL          = "./tyrano/weapons.csv?20500";         // ブキの評価データシートのcsv
+window.WIKIDATA_URL         = "./tyrano/weapons_wikidata.csv?20500";// Wikiに基づくブキの基礎データシートのcsv
 window.WEAPONS_AVERAGE      = {isCalced: false};                    // ブキの各項目の評価の平均値
 window.WEAPONS_STANDARD     = {isCalced: false};                    // ブキの各項目の評価の標準偏差
 window.WEAPONS_HENSACHI     = {};                                   // ブキの各項目の評価の偏差値
@@ -15,6 +17,7 @@ function SalmonrunAPI () {
 	// コールバックを実行します
 	this.get = function (resolve, reject) {
 		getWeaponsData()
+		.then(getGearData)
 		.then(getWeaponsWikiData)
 		.then(getSalmonAPI)
 		.then(resolve)
@@ -59,6 +62,27 @@ function SalmonrunAPI () {
 			left: x + "px"
 		}).appendTo(".0_fore");
 	};
+	//## getGearData ()
+	// ブキの基礎データを取得します
+	function getGearData(){
+		return new Promise(function(resolve, reject) {
+			if (GEARDATA) {
+				if (typeof resolve == "function") resolve();
+			}
+			// そうでなければ$.get()する
+			else {
+				$.get(GEARDATA_URL, {dataType: "text", cache: false}).done(function(data){
+					console.log("✅ ギアデータを読み込みました.");
+					if (typeof data == "string") data = JSON.parse(data);
+					GEARDATA = data;
+					if (typeof resolve == "function") resolve();
+				}).fail(function(){
+					console.error("❌ ギアデータを読み込めませんでした.");
+					if (typeof reject == "function") reject();
+				});
+			}
+		});
+	}
 	//## getWeaponsWikiData ()
 	// ブキの基礎データを取得します
 	function getWeaponsWikiData(){
@@ -110,7 +134,7 @@ function SalmonrunAPI () {
 	//## getSalmonAPI
 	// シフトデータを取得します
 	// これはテスト用のダミー関数
-	function getSalmonAPI2 () {
+	function getSalmonAPI () {
 		return new Promise(function(resolve, reject) {
 			salmonrunRater.evalSalmonHistory();
 			ROTATION_DATA = parseSalmonAPI([
@@ -122,8 +146,8 @@ function SalmonrunAPI () {
 			        "stage_ja": "シェケナダム",
 			        "w1": "60",
 			        "w2": "5000",
-			        "w3": "3030",
-			        "w4": "2060",
+			        "w3": "1000",
+			        "w4": "1110",
 			    },
 			    {
 			        "num": 397,
@@ -152,6 +176,7 @@ function SalmonrunAPI () {
 			        "end": 1563530400
 			    }
 			]);
+			ROTATION_DATA = parseSalmonAPI(ROTATION_DATA);
 			if (typeof resolve == "function") resolve(ROTATION_DATA);
 		});
 	}

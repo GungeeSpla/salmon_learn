@@ -5,7 +5,9 @@ window.stTimerApp = new StTimerApp();
 //# StTimerApp ()
 function StTimerApp () {
 	var app = this;
+	this.STFestData     = {};
 	this.specialStTitle = "";
+	this.specialStColor = "Yellow";
 	this.mode        = "timer";
 	this.isStarted   = false;
 	this.stTimer     = new StTimer();
@@ -44,7 +46,7 @@ function StTimerApp () {
 			str = "現在時刻" + friend + "は";
 		}
 		else if (this.specialStTitle) {
-			str = "<span style='color: Yellow;'>" + this.specialStTitle + "まで</span>";
+			str = "<span style='color: " + this.specialStColor + ";'>" + this.specialStTitle + "まで</span>";
 		}
 		else {
 			var friend = this.stTimer.timeOffset.enableFriendOffset ? "（フレ部屋）" : "";
@@ -681,6 +683,18 @@ function DateFormatter () {
 		d.ss = ("00" + d.getSeconds()).slice(-2);
 		var str = d.MM + "/" + d.DD + " " + d.hh + ":" + d.mm + ":" + d.ss;
 		if (d.ss != "00") str += d.ss + "秒";
+		return str;
+	};
+	
+	//## getMonthText2 (d)
+	this.getMonthText2 = function (d) {
+		d.MM = (d.getMonth() + 1);
+		d.DD = d.getDate();
+		d.hh = d.getHours();
+		d.mm = ("00" + d.getMinutes()).slice(-2);
+		d.ss = ("00" + d.getSeconds()).slice(-2);
+		d.dd = [ "日", "月", "火", "水", "木", "金", "土" ][d.getDay()];
+		var str = d.MM + "月" + d.DD + "日(" + d.dd + ") " + d.hh + "時";
 		return str;
 	};
 	

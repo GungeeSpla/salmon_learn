@@ -1091,6 +1091,34 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 }
 .st_friend_mode {
 }
+.stfest_duration {
+	position: absolute;
+	top: 640px;
+	display: none;
+	left: 0px;
+	width: 640px;
+	font-size: 16px;
+	opacity: 0.6;
+}
+.STFest {
+    color: white;
+	text-shadow: 1px 1px 1px #777,  0px  0px 3px #777,
+	            -1px 1px 1px #777,  2px  0px 3px #777,
+	             0px 1px 1px #777,  1px  0px 3px #777,
+	            -1px 0px 1px #777,  2px  1px 3px #777;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    font-family: serif;
+	/*
+	box-shadow: 3px 3px 3px #777;
+    box-sizing: border-box;
+    border-radius: 50%;
+    */
+    vertical-align: middle;
+    padding-top: 23px;
+    line-height: 90%;
+}
 .credit_emaame {
 	position: absolute;
 	top: 700px;

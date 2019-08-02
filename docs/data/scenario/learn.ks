@@ -46,6 +46,7 @@ f.preloadImages = [
 *Init_Iscript
 ;=======================================
 [iscript]
+tf.reset_count = 0;
 gusherApp.addCanvas();
 f.ikaDx = 40;
 f.ikaDy = 40;
@@ -269,6 +270,7 @@ if (isRemodal) {
 [freeimage layer=0 time=0]
 [bg time=0 storage=red_bg.png]
 [iscript]
+tf.reset_count++;
 stTimerApp.stopApp();
 smCountApp.stopApp();
 document.title = "サーモンラーン";
@@ -282,21 +284,21 @@ stTimerApp.specialStTitle = "";
 *Panel_Fix_Button
 ;=======================================
 [clearfix]
-[button fix=true graphic=panel_1a.png   x=&128*0 y=840 width=&128 target=*Panel_1 cond="sf.panel != 1"]
-[button fix=true graphic=panel_1ab.png  x=&128*0 y=840 width=&128 target=*Panel_1 cond="sf.panel == 1"]
-[button fix=true graphic=panel_2a.png   x=&128*1 y=840 width=&128 target=*Panel_2 cond="sf.panel != 2"]
-[button fix=true graphic=panel_2ab.png  x=&128*1 y=840 width=&128 target=*Panel_2 cond="sf.panel == 2"]
-[button fix=true graphic=panel_3a.png   x=&128*2 y=840 width=&128 target=*Panel_3 cond="sf.panel != 3"]
-[button fix=true graphic=panel_3ab.png  x=&128*2 y=840 width=&128 target=*Panel_3 cond="sf.panel == 3"]
-[button fix=true graphic=panel_5a.png   x=&128*3 y=840 width=&128 target=*Panel_5 cond="sf.panel != 5"]
-[button fix=true graphic=panel_5ab.png  x=&128*3 y=840 width=&128 target=*Panel_5 cond="sf.panel == 5"]
-[button fix=true graphic=panel_7a.png   x=&128*4 y=840 width=&128 target=*Panel_7 cond="sf.panel != 7" name=fix_sonota_tab]
-[button fix=true graphic=panel_4a.png   x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel != 4" name=fix_sonota_item]
-[button fix=true graphic=panel_4ab.png  x=&128*4 y=840 width=&128 target=*Panel_4 cond="sf.panel == 4" name=fix_sonota_item]
-[button fix=true graphic=panel_6a.png   x=&128*4 y=840 width=&128 target=*Panel_6 cond="sf.panel != 6" name=fix_sonota_item]
-[button fix=true graphic=panel_6ab.png  x=&128*4 y=840 width=&128 target=*Panel_6 cond="sf.panel == 6" name=fix_sonota_item]
-[button fix=true graphic=panel_10a.png   x=&128*4 y=840 width=&128 target=*Panel_10 cond="sf.panel != 10" name=fix_sonota_item]
-[button fix=true graphic=panel_10ab.png  x=&128*4 y=840 width=&128 target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
+[button fix=true graphic=panel_1a.png   x=&128*0 y=840 width=&128 storage=learn.ks target=*Panel_1 cond="sf.panel != 1"]
+[button fix=true graphic=panel_1ab.png  x=&128*0 y=840 width=&128 storage=learn.ks target=*Panel_1 cond="sf.panel == 1"]
+[button fix=true graphic=panel_2a.png   x=&128*1 y=840 width=&128 storage=learn.ks target=*Panel_2 cond="sf.panel != 2"]
+[button fix=true graphic=panel_2ab.png  x=&128*1 y=840 width=&128 storage=learn.ks target=*Panel_2 cond="sf.panel == 2"]
+[button fix=true graphic=panel_3a.png   x=&128*2 y=840 width=&128 storage=learn.ks target=*Panel_3 cond="sf.panel != 3"]
+[button fix=true graphic=panel_3ab.png  x=&128*2 y=840 width=&128 storage=learn.ks target=*Panel_3 cond="sf.panel == 3"]
+[button fix=true graphic=panel_5a.png   x=&128*3 y=840 width=&128 storage=learn.ks target=*Panel_5 cond="sf.panel != 5"]
+[button fix=true graphic=panel_5ab.png  x=&128*3 y=840 width=&128 storage=learn.ks target=*Panel_5 cond="sf.panel == 5"]
+[button fix=true graphic=panel_7a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_7 cond="sf.panel != 7" name=fix_sonota_tab]
+[button fix=true graphic=panel_4a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_4 cond="sf.panel != 4" name=fix_sonota_item]
+[button fix=true graphic=panel_4ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_4 cond="sf.panel == 4" name=fix_sonota_item]
+[button fix=true graphic=panel_6a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_6 cond="sf.panel != 6" name=fix_sonota_item]
+[button fix=true graphic=panel_6ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_6 cond="sf.panel == 6" name=fix_sonota_item]
+[button fix=true graphic=panel_10a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel != 10" name=fix_sonota_item]
+[button fix=true graphic=panel_10ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
 
 [return]
 
@@ -306,10 +308,10 @@ stTimerApp.specialStTitle = "";
 *Panel_Reload
 ;=======================================
 [iscript]
-tf.panel = "*Panel_" + sf.panel;
+tf.target = "*Panel_" + sf.panel;
 [endscript]
-[call target=Panel_Fix_Button]
-[call target=&tf.panel]
+[call storage=learn.ks target=Panel_Fix_Button]
+[call storage=learn.ks target=&tf.target]
 [clearstack]
 [s]
 
@@ -499,6 +501,7 @@ smCountApp.startApp();
 [call target=*Panel_Reset]
 [iscript]
 if (! sf.st_step) sf.st_step = 1;
+if (queries.stfest && tf.reset_count < 1) sf.st_step = 3;
 [endscript]
 [jump target=Panel_5_1 cond="sf.st_step <= 1"]
 [jump target=Panel_5_2 cond="sf.st_step <= 2"]
@@ -601,6 +604,7 @@ stTimerApp.specialStTitle = "";
 					<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
 				</div>
 			</div>
+			<div class="stfest_duration">2019/8/3 17:00 ～ 2019/8/3 25:00</div>
 			<div class="credit_emaame">@emaameさんのSTタイマー (CC 表示4.0 国際) を改変しています</div>
 		</div>
 	</div>
@@ -608,40 +612,162 @@ stTimerApp.specialStTitle = "";
 [iscript]
 stTimerApp.startApp();
 [endscript]
-;[button fix=true graphic=GT_on.png x=20 y=20 width=100 target=*Panel_5_GT_On name=GT]
+[call target=Panel_5_Check_STFest]
 [glink text=STについて x=246 width=110 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.st_step = 1"]
 [return]
 
 ;=======================================
-*Panel_5_GT_On
+*Panel_5_Check_STFest
 ;=======================================
 
-[clearfix name=GT]
 [iscript]
-stTimerApp.specialStTitle = "GT (ST+1分) ";
-stTimerApp.setStTitle();
-stTimerApp.stTimer.enableStOffset = true;
-stTimerApp.stTimer.stOffset = 1;
-stTimerApp.$checkStOffset.prop("checked", stTimerApp.stTimer.enableStOffset).trigger("change");
-$(".html_space").css({
-    "text-shadow": "5px 5px 5px black"
-});
-$("#check_st_offset").parent().hide(0);
-stTimerApp.updateStList();
+tf.isSTFest = false;
+var now = new Date();
+var STFEST_DATA = [
+	{
+		name           : "test",
+		buttonTitle    : "Test<br>ver.",
+		buttonGraphic  : "stfest_button.png",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1, 2,  22, 0, 0),
+		endDate        : new Date(2019, 8 -1, 2,  23, 0, 0),
+		isShowingButton: true,
+		bgStorage      : "GT_bg.jpg",
+		title          : "TEST (ST+3分)",
+		offset         : 3,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	},
+	{
+		name           : "tt",
+		buttonTitle    : "TT<br>ver.",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1, 3, 19, 0, 0),
+		endDate        : new Date(2019, 8 -1, 4,  1, 0, 0),
+		isShowingButton: true,
+		buttonGraphic  : "stfest_button.png",
+		bgStorage      : "GT_bg.jpg",
+		title          : "TT祭り (ST+2分) ",
+		offset         : 2,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	},
+	{
+		name           : "sz",
+		buttonTitle    : "SZ<br>ver.",
+		buttonGraphic  : "stfest_button.png",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1,  9, 19, 0, 0),
+		endDate        : new Date(2019, 8 -1,  9, 23, 0, 0),
+		isShowingButton: true,
+		bgStorage      : "GT_bg.jpg",
+		title          : "SZ祭り (ST+1分) ",
+		offset         : 1,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	},
+	{
+		name           : "sz",
+		buttonTitle    : "SZ<br>ver.",
+		buttonGraphic  : "stfest_button.png",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1, 10, 17, 0, 0),
+		endDate        : new Date(2019, 8 -1, 10, 21, 0, 0),
+		isShowingButton: true,
+		bgStorage      : "GT_bg.jpg",
+		title          : "SZ祭り (ST+1分) ",
+		offset         : 1,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	}
+];
+
+// クエリパラメータで指定されているものをピックアップ
+var isSTFest, isFiltering = false, dataArray = [], data;
+for (var i = 0; i < STFEST_DATA.length; i++) {
+	var data = STFEST_DATA[i];
+	if (queries.stfest == data.name) {
+		dataArray.push(data);
+	}
+}
+
+// ピックアップしたものがなかったら
+if (dataArray.length == 0) {
+	// データを直接dataArrayに代入して次の処理へ
+	dataArray = STFEST_DATA;
+}
+// ピックアップしたものが1つだけあったら
+else if (dataArray.length == 1) {
+	// フェスモード確定、dataにはdataArrayの要素を代入
+	isSTFest = true;
+	data = dataArray[0];
+}
+// ピックアップしたものが2つ以上あったら
+else {
+	// isFiltering を true にして次の処理へ
+	isFiltering = true;
+}
+
+// この時点でフェスモードが確定していなければ日時でチェック
+if (! isSTFest) {
+	for (var i = dataArray.length - 1; i >= 0; i--) {
+		data = dataArray[i];
+		var marginTime =  1000 * 60 * 60;
+		var time1 = data.startDate.getTime();
+		var time2 = now.getTime();
+		var time3 = data.endDate.getTime();
+		var bool1 = time1 - marginTime < time2 && time2 < time3 + marginTime;
+		var bool2 = isFiltering && i == 0;
+		if (false) {
+			var duration = (time3 - time1) / 1000 / 60 / 60;
+			var str1 = stTimerApp.dateFormatter.getMonthText2(data.startDate);
+			var str2 = stTimerApp.dateFormatter.getMonthText2(data.endDate);
+			var str = data.title + ": " + str1 + " ～ " + str2 + " (" + duration + "時間)";
+			console.log(str);
+		}
+		if (bool1 || bool2) {
+			isSTFest = true;
+			break;
+		}
+	}
+}
+
+// フェスモードが確定しているならば
+if (isSTFest && data) {
+	var str1 = stTimerApp.dateFormatter.getMonthText2(data.startDate);
+	var str2 = stTimerApp.dateFormatter.getMonthText2(data.endDate);
+	data.durationText = "開催期間: " + str1 + " ～ " + str2;
+	tf.isSTFest = true;
+	tf.STFestData = data;
+}
 [endscript]
-[bg storage=GT_bg.jpg time=1000]
+[return cond=!tf.isSTFest]
+[button cond=tf.STFestData.isShowingButton  target=Panel_5_Mode_STFest fix=true text=&tf.STFestData.buttonTitle graphic=&tf.STFestData.buttonGraphic x=20 y=20 width=100 height=100 name=STFest]
+[jump   cond=!tf.STFestData.isShowingButton target=Panel_5_Mode_STFest]
 [return]
 
 ;=======================================
-*Panel_5_GT_Off
+*Panel_5_Mode_STFest
 ;=======================================
 
-[clearfix name=GT]
+[clearfix name=STFest]
 [iscript]
-stTimerApp.specialStTitle = "";
+//$(".stfest_duration").css("color", tf.STFestData.titleColor).text(tf.STFestData.durationText).fadeIn(1000);
+stTimerApp.specialStColor = tf.STFestData.titleColor;
+stTimerApp.specialStTitle = tf.STFestData.title;
+stTimerApp.setStTitle();
+stTimerApp.stTimer.enableStOffset = true;
+stTimerApp.stTimer.stOffset = tf.STFestData.offset;
+stTimerApp.$checkStOffset.prop("checked", stTimerApp.stTimer.enableStOffset).trigger("change");
+$(".html_space").css(tf.STFestData.css);
+$("#check_st_offset").parent().hide(0);
+stTimerApp.updateStList();
 [endscript]
-[bg storage=red_bg.jpg time=1000]
-[button fix=true graphic=panel_1a.png x=40 y=40 width=128 target=*Panel_5_GT_On name=GT]
+[bg storage=&tf.STFestData.bgStorage time=1000]
 [return]
 
 
@@ -796,6 +922,14 @@ $(".eval_score"          ).css({"animation-fill-mode": "none"}).fadeOut(500, fun
 	$('<img class="eval_ika" src="./data/fgimage/eval_ika.png">').appendTo(".0_fore");
 	tf.messages = salmonrunRater.createEvalMessage(evalResult);
 	tf.messageArea = $(".eval_fukidashi");
+	/*
+	テスト用
+	tf.messages = [
+		"ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ。",
+		"ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ。",
+		"あああああああああああああああああああああああああああああああああああああああああああああああああああ。"
+	];
+	*/
 	tyranoAPI.jump("", "Panel_3_Message_Next", 300);
 });
 [endscript]
@@ -810,37 +944,62 @@ $('<div class="button_cover"></div>').appendTo(".tyrano_base");
 [iscript]
 tf.wait = false;
 var $p = tf.messageArea.find("p");
+// もし<p>要素があれば
 if ($p.size() > 0) {
+	// tf.wait に true を代入して
 	tf.wait = true;
+	// <p>要素をフェードアウトして消去する
 	$p.css({"animation-name": "none"}).fadeOut(500, function(){$(this).remove()});
 }
 [endscript]
 [wait time=500 cond=tf.wait]
 [iscript]
 var count = 0;
+var totalHeight = 40;
+// もし表示すべきメッセージがあれば
 if (tf.messages.length > 0) {
+	// 先頭から3つ取り出す
 	for (var i = 0; i < 3; i++) {
 		if (tf.messages.length > 0) {
 			var mes = tf.messages.shift();
 			var delay = i * 300;
-			tf.messageArea.append('<p style="animation-delay: ' + delay + 'ms">' + mes + '</p>');
+			var $p = $('<p style="animation-delay: ' + delay + 'ms">' + mes + '</p>')
+			tf.messageArea.append($p);
+			var height = $p.height();
+			totalHeight += height;
 			count++;
 		}
 	}
+	// フォントサイズの設定
+	var fontSize = 20;
+	if (totalHeight >= 340) {
+		fontSize = 16;
+	}
+	else if (totalHeight >= 280) {
+		fontSize = 18;
+	}
+	tf.messageArea.css("font-size", fontSize + "px");
 }
+// 先頭から3つ取り出す作業を行ってなお表示すべきメッセージがあれば
 if (tf.messages.length > 0) {
+	// "次へ"ボタンを表示するための作業を行う
 	tf.end = false;
 	tf.text = "次へ";
+	// もう一度Panel_3_Message_Nextラベルに飛びなおす
 	tf.target = "Panel_3_Message_Next";
 	tf.x = 280;
 	tf.y = 750;
 }
+// もう次に表示すべきメッセージがないならば
 else {
+	// "終わる"ボタンを表示するための作業を行う
 	tf.x = 270;
 	tf.y = 770;
 	tf.end = true;
 	tf.text = "終わる";
+	// もう用は済んだのでPanel_3_Eval_Endに飛んでしまう
 	tf.target = "Panel_3_Eval_End";
+	// オールランダムのときには特殊な処理をしていたが廃止
 	if (evalResult.randomType > 1) {
 		/*
 		tf.end = false;

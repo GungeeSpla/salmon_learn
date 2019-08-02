@@ -1,0 +1,227 @@
+[
+	{
+		"year":2017,
+		"month":7,
+		"ja":"イカテンくんポロ",
+		"en":"Squiddor Polo",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/2a9c6ad510675cdb3d3b90d39ddc7ccdee069e9e.png",
+		"kind":1,
+		"id":21000
+	},
+	{
+		"year":2017,
+		"month":8,
+		"ja":"ヘッドライトヘルム",
+		"en":"Headlamp Helmet",
+		"img":"https://app.splatoon2.nintendo.net/images/head/d5bee930432ae98aee775cde19ae7e29f8962028.png",
+		"kind":0,
+		"id":21000
+	},
+	{
+		"year":2017,
+		"month":9,
+		"ja":"アンカーベスト",
+		"en":"Anchor Life Vest",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/9fe492629930dcb73bbae993980f8670af84a816.png",
+		"kind":1,
+		"id":21001
+	},
+	{
+		"year":2017,
+		"month":10,
+		"ja":"フューエルブルゾン",
+		"en":"Juice Parka",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/2d7eb10da0ed46d129988f25b70e545f69d9b8b1.png",
+		"kind":1,
+		"id":21002
+	},
+	{
+		"year":2017,
+		"month":11,
+		"ja":"ダストブロッカー 2.5",
+		"en":"Dust Blocker 2000",
+		"img":"https://app.splatoon2.nintendo.net/images/head/f356dc3987e634e0c57d051d9a43647fd0721a3e.png",
+		"kind":0,
+		"id":21001
+	},
+	{
+		"year":2017,
+		"month":12,
+		"ja":"マッドラバー",
+		"en":"Angry Rain Boots",
+		"img":"https://app.splatoon2.nintendo.net/images/shoes/206d437ad123324371028fe277a53ad1e25c61d1.png",
+		"kind":2,
+		"id":21001
+	},
+	{
+		"year":2018,
+		"month":1,
+		"ja":"マクレGT",
+		"en":"Garden Gear",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/c04e971fc40568a1e187380d1197cca007f9a9b7.png",
+		"kind":1,
+		"id":21003
+	},
+	{
+		"year":2018,
+		"month":2,
+		"ja":"アイアンマスカレイド",
+		"en":"Welding Mask",
+		"img":"https://app.splatoon2.nintendo.net/images/head/af23a6a5a4490321254df2b12f4962e4bc499793.png",
+		"kind":0,
+		"id":21002
+	},
+	{
+		"year":2018,
+		"month":3,
+		"ja":"アゲアゲ・10・プラーXXL",
+		"en":"Crustwear XXL",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/bfb2f7128f07a5d6e4ff62e31973d2f5f84558cd.png",
+		"kind":1,
+		"id":21004
+	},
+	{
+		"year":2018,
+		"month":4,
+		"ja":"オーシャンズヘルム",
+		"en":"Oceanic Hard Hat",
+		"img":"https://app.splatoon2.nintendo.net/images/head/b2d01b7e2bbb23b2bdb0196928debdd5d64e036a.png",
+		"kind":0,
+		"id":21006
+	},
+	{
+		"year":2018,
+		"month":5,
+		"ja":"ノンスリップタクミ",
+		"en":"Non-slip Senseis",
+		"img":"https://app.splatoon2.nintendo.net/images/shoes/24bdb7a826ceb3eb3f0e58bf355fb8385736e406.png",
+		"kind":2,
+		"id":21002
+	},
+	{
+		"year":2018,
+		"month":6,
+		"ja":"レジェンドのぼうし",
+		"en":"Cap of Legend",
+		"img":"https://app.splatoon2.nintendo.net/images/head/dda09e3858519df0080eba6da78dc84d6824df14.png",
+		"kind":0,
+		"id":21005
+	},
+	{
+		"year":2018,
+		"month":7,
+		"ja":"レコヤルックEP",
+		"en":"Record Shop Look EP",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/b83887ab3f9f22a50720d731cc1d85bf6917a6e4.png",
+		"kind":1,
+		"id":21007
+	},
+	{
+		"year":2018,
+		"month":8,
+		"ja":"ゾネスティックスコープ",
+		"en":"Octoleet Goggles",
+		"img":"https://app.splatoon2.nintendo.net/images/head/69aa1cdb0135fac333b30e17ed31497ed905e2c7.png",
+		"kind":0,
+		"id":21004
+	},
+	{
+		"year":2018,
+		"month":9,
+		"ja":"ゲソバタアシスト",
+		"en":"Flipper Floppers",
+		"img":"https://app.splatoon2.nintendo.net/images/shoes/174dabaa9b4acf7886cbfe0a29905b09237446ed.png",
+		"kind":2,
+		"id":21005
+	},
+	{
+		"year":2018,
+		"month":10,
+		"ja":"デベロッパーズワークウエア",
+		"en":"Dev Uniform",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/a4e9e3285e9412f9219e79b12733c1c4704506ab.png",
+		"kind":1,
+		"id":21008
+	},
+	{
+		"year":2018,
+		"month":11,
+		"ja":"アセストップソシナ",
+		"en":"Worker's Head Towel",
+		"img":"https://app.splatoon2.nintendo.net/images/head/2fca5b8d3eb770cfbcecc26e984bad311185f8bc.png",
+		"kind":0,
+		"id":21007
+	},
+	{
+		"year":2018,
+		"month":12,
+		"ja":"フロムキタグニ87",
+		"en":"North-Country Parka",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/dce2f58724584441c97ae7ef9742ae73549ef3c9.png",
+		"kind":1,
+		"id":21005
+	},
+	{
+		"year":2019,
+		"month":1,
+		"ja":"バンカラコロン",
+		"en":"Wooden Sandals",
+		"img":"https://app.splatoon2.nintendo.net/images/shoes/995412c71614020526595d9dbc64bd593d780fcf.png",
+		"kind":2,
+		"id":21006
+	},
+	{
+		"year":2019,
+		"month":2,
+		"ja":"ガーディアンアーミーハット",
+		"en":"Beekeeper Hat",
+		"img":"https://app.splatoon2.nintendo.net/images/head/dd1f91b0cfbcbc59a91f375ab1a536d5ef057206.png",
+		"kind":0,
+		"id":21003
+	},
+	{
+		"year":2019,
+		"month":3,
+		"ja":"ジムパーソンアーマー",
+		"en":"Office Attire",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/54f2eaf027b05d66460ccae5eed852dcbb675f85.png",
+		"kind":1,
+		"id":21009
+	},
+	{
+		"year":2019,
+		"month":4,
+		"ja":"マリリンハットウィズピンズ",
+		"en":"Sailor Cap",
+		"img":"https://app.splatoon2.nintendo.net/images/head/008456cdbce96e5bbd80417104524275f59ed853.png",
+		"kind":0,
+		"id":21009
+	},
+	{
+		"year":2019,
+		"month":5,
+		"ja":"アカシックコート",
+		"en":"SRL Coat",
+		"img":"https://app.splatoon2.nintendo.net/images/clothes/450581525601824aeef86d79f643dc5e9baad734.png",
+		"kind":1,
+		"id":21010
+	},
+	{
+		"year":2019,
+		"month":6,
+		"ja":"チギリノヒモ",
+		"en":"Friendship Bracelet",
+		"img":"https://app.splatoon2.nintendo.net/images/shoes/17a0444c7c1e7fc4f4c92821d1954d79e2dfa1e0.png",
+		"kind":2,
+		"id":21004
+	},
+	{
+		"year":2019,
+		"month":7,
+		"ja":"スペボウ レプリカ",
+		"en":"Worker's Cap",
+		"img":"https://app.splatoon2.nintendo.net/images/head/e85b32672b4921cf5c00880a0c1cec89a42a1209.png",
+		"kind":0,
+		"id":21008
+	}
+]
