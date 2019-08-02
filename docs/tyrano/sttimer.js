@@ -677,7 +677,7 @@ function DateFormatter () {
 	//## getMonthText (d)
 	this.getMonthText = function (d) {
 		d.MM = (d.getMonth() + 1);
-		d.DD = ("00" + d.getDate()).slice(-2);
+		d.DD = d.getDate();
 		d.hh = d.getHours();
 		d.mm = ("00" + d.getMinutes()).slice(-2);
 		d.ss = ("00" + d.getSeconds()).slice(-2);

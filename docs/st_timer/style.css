@@ -24,7 +24,11 @@ body {
 
 
 
-.st_eta {
+/*            */
+/* STタイマー */
+/*            */
+.st_eta,
+.st_description {
 	position: absolute;
 	top: 90px;
 	left: 0px;
@@ -36,6 +40,17 @@ body {
 	font-weight: bold;
 	font-size: 18px;
 	text-align: center;
+}
+.st_description {
+	top: 200px;
+}
+.st_description h1 {
+	font-size: 40px;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+.st_description b {
+	color: Orange;
 }
 .st_eta_canvas {
 	margin-top: 50px;
@@ -50,40 +65,75 @@ body {
 }
 .st_eta_correction {
 	font-size: 16px;
+	margin: 18px 0;
 }
 .st_eta_sound_desc {
 	margin-top: 45px;
 	display: none;
 	color: Orange;
+	margin: 18px 0;
 }
 .st_eta_next {
 }
 .st_friend_mode {
+}
+.stfest_duration {
+	position: absolute;
+	top: 640px;
+	display: none;
+	left: 0px;
+	width: 640px;
+	font-size: 16px;
+	opacity: 0.6;
+}
+.STFest {
+    color: white;
+	text-shadow: 1px 1px 1px #777,  0px  0px 3px #777,
+	            -1px 1px 1px #777,  2px  0px 3px #777,
+	             0px 1px 1px #777,  1px  0px 3px #777,
+	            -1px 0px 1px #777,  2px  1px 3px #777;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    font-family: serif;
+	/*
+	box-shadow: 3px 3px 3px #777;
+    box-sizing: border-box;
+    border-radius: 50%;
+    */
+    vertical-align: middle;
+    padding-top: 23px;
+    line-height: 90%;
 }
 .credit_emaame {
 	position: absolute;
 	top: 700px;
 	left: 0px;
 	width: 640px;
-	opacity: 0.7;
+	font-size: 16px;
+	opacity: 0.6;
 }
 .credit_emaame a {
 	color: white;
 	text-decoration: none;
 }
-
-
-
+.st_glink_button {
+    color: #5f1001;
+    background: White;
+    font-weight: bold;
+    border-radius: 34px;
+}
 .input_st_wrapper {
 	position: absolute;
 	top: 400px;
 	left: 0px;
+    text-shadow: none;
 }
 .input_st_item:first-child {
 	border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 .input_st_item {
-	-ms-user-select: none; /* IE 10+ */
+	-ms-user-select: none;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
@@ -96,8 +146,6 @@ body {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 	text-align: left;
 }
-/* common style */
-
 .input_st+label .button {
   z-index: 10;
   display: block;
@@ -123,10 +171,10 @@ body {
   left: -150px;
 }
 .input_st+label .plus_button {
-  left: -170px;
+  left: -90px;
 }
 .input_st+label .minus_button {
-  left: -90px;
+  left: -170px;
 }
 .input_st+label .hidden_button {
   transform: scale(0);
@@ -190,9 +238,6 @@ body {
   left: 56px;
   background-color: #f7f7f7;
 }
-
-
-/* demo01 */
 .input_st+label {
   background-color: #eee;
 }
