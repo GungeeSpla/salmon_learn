@@ -7,7 +7,7 @@ function init () {
 	window.stTimerApp = new StTimerApp();
 	stTimerApp.stTitle = "OT"
 	stTimerApp.stTimer.firstST = 6;
-	stTimerApp.stTimer.interval = 5;	
+	stTimerApp.stTimer.interval = 6;	
 	stTimerApp.startApp();
 	$(window).bind("orientationchange resize", function () {
 		fitWindow();
@@ -758,7 +758,7 @@ function StTimer () {
 		    firstST   += stOffset;
 		var interval   = parseInt(queries.STinterval) || this.interval;
 		var a          = Math.max(0, interval - firstST);
-		var numPerHour = Math.floor((60 - firstST - a) / interval) + 1;
+		var numPerHour = Math.floor((59 - firstST - a) / interval) + 1;
 		
 		var base;
 		if (intTime) base = new Date(intTime);
