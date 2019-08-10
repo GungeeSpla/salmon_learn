@@ -12,12 +12,11 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	right: 0;
-	bottom: 0;
-	margin: 0 auto;
+	width: 640px;
+	height: 800px;
+	margin: 0;
 	padding: 0;
 	transform: scale(1);
-	box-sizing: border-box;
 }
 #main, #main p {
 	text-shadow: 3px 3px 10px black;
