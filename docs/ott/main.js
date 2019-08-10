@@ -5,7 +5,7 @@ function init () {
 		usingVoice: "bouyomichan"
 	};
 	window.stTimerApp = new StTimerApp();
-	stTimerApp.stTitle = "OTT"
+	stTimerApp.stTitle = "OT"
 	stTimerApp.stTimer.firstST = 6;
 	stTimerApp.stTimer.interval = 5;	
 	stTimerApp.startApp();
