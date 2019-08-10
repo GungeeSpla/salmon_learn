@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>OTT</title>
+<link rel="stylesheet" href="style.css">
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="main.js"></script>
+</head>
+<body onload="init()" onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()">
+<div id="background"></div>
+<div id="main">
+	<div class="st_eta">
+		<div class="st_eta_description">　</div>
+		<div class="st_eta_count">　</div>
+		<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+		<div class="st_eta_next">　</div>
+		<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため、<br>最後の5･4･3･2･1のカウントを行いません。</div>
+		<canvas class="st_eta_canvas" width="100" height="100"></canvas>
+		<div class="input_st_wrapper">
+			<div class="input_st_item" style="display: none;">
+				<input type="checkbox" class="input_st" id="check_friend"  />
+				<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
+			</div>
+			<div class="input_st_item">	
+				<input type="checkbox" class="input_st" id="check_sound"  />
+				<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
+			</div>
+			<div class="input_st_item" style="display: none;">	
+				<input type="checkbox" class="input_st" id="check_now"  />
+				<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
+			</div>
+			<div class="input_st_item" style="display: none;">	
+				<input type="checkbox" class="input_st" id="check_st_offset"  />
+				<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button ">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
+			</div>
+			<div class="smcount_setting_item">
+				<p>音量 <span class="smcount_setting_volume_span"></span></p>
+				<div class="smcount_setting_button_wrapper">
+					<!--
+					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.00"  >0</div>
+					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.25" >25</div>
+					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.50" >50</div>
+					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.75" >75</div>
+					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="1.00">100</div>
+					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_mute">Mute</div>
+					-->
+					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_minus" move="-0.1">－</div>
+					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_plus" move=" 0.1">＋</div>
+				</div>
+			</div>
+		</div>
+		<div style="display: none;" class="stfest_duration">2019/8/3 17:00 ～ 2019/8/3 25:00</div>
+		<div style="display: none;" class="credit_emaame">@emaameさんのSTタイマー (CC 表示4.0 国際) を改変しています</div>
+	</div>
+</div>
+<div id="mask"></div>
+	
+<!-- サウンド -->
+<audio src="../tyrano/sounds/switch.wav" id="sound_switch" preload="auto"></audio> 
+<audio src="../tyrano/sounds/silent.wav" id="sound_silent" preload="auto"></audio> 
+</body>
+</html>
