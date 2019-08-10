@@ -4,8 +4,19 @@
 <meta charset="UTF-8">
 <title>OTT</title>
 <link rel="stylesheet" href="style.css">
-<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="../tyrano/libs/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="main.js"></script>
+<link rel="icon" type="image/png" href="./favicon.png">
+<!-- PWA対応 -->
+<link rel="apple-touch-icon" href="./favicon.png" />
+<link rel="manifest" href="./manifest.json">
+<script type="text/javascript">
+// https://qiita.com/umamichi/items/0e2b4b1c578e7335ba20
+// service workerが有効なら、service-worker.js を登録します
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js?20101').then(function() { console.log('Service Worker Registered'); });
+}
+</script>
 </head>
 <body onload="init()" onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()">
 <div id="background"></div>
