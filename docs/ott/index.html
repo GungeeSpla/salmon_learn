@@ -3,20 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <title>OTT - オバケイドロ･タイム･タイマー</title>
+<meta name="description" content="FREE STYLE GAMES『オバケイドロ！』でスナイプしあうためのタイマーです。毎時6, 12, 18, ... , 54分にゼロになります。0分の回は休憩時間。" />
 <link rel="stylesheet" href="style.css">
 <script type="text/javascript" src="../tyrano/libs/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="main.js?2"></script>
 <link rel="icon" type="image/png" href="./favicon.png">
+
+<!-- TwitterCard対応 -->
+<meta name="twitter:card"        content="summary" />
+<meta name="twitter:site"        content="@GungeeSpla" />
+<meta name="twitter:title"       content="OTT - オバケイドロ･タイム･タイマー" />
+<meta name="twitter:description" content="みんなで『オバケイドロ！』でスナイプし合おう！" />
+<meta name="twitter:image"       content="https://gungeespla.github.io/salmon_learn/ott/favicon.png" />
+<!-- TwitterCard対応ここまで -->
+
 <!-- PWA対応 -->
 <link rel="apple-touch-icon" href="./favicon.png" />
 <link rel="manifest" href="./manifest.json">
 <script type="text/javascript">
 // https://qiita.com/umamichi/items/0e2b4b1c578e7335ba20
-// service workerが有効なら、service-worker.js を登録します
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js?20101').then(function() { console.log('Service Worker Registered'); });
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./service-worker.js")
+  .then(function() { console.log("Service Worker Registered"); });
 }
 </script>
+<!-- PWA対応ここまで -->
+
 </head>
 <body onload="init()" onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()">
 <div id="background"></div>
