@@ -1,12 +1,16 @@
+body, div, p {
+	margin: 0;
+	padding: 0;
+}
 body {
-	background-color: #000;
-	color: #666;
+	background-color: black;
+	color: white;
+	overflow: hidden;
 	-ms-user-select: none;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
-	overflow-x: hidden;
 }
 #main {
 	position: absolute;
@@ -14,24 +18,23 @@ body {
 	left: 0;
 	width: 640px;
 	height: 800px;
-	margin: 0;
-	padding: 0;
 	transform: scale(1);
 }
 #main, #main p {
-	text-shadow: 3px 3px 10px black;
+	text-shadow: 0px 0px 10px #670;
 }
 #background {
-	background-image: url(https://img-eshop.cdn.nintendo.net/i/4bbe1dbb168f060cf4d75de5ade0e291ad18db6a80b2b2e6b30f5495fb352304.jpg);
+	background-color: #444;
+	background-image: url(./img/bg.jpg);
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 200%;
 	height: 200%;
-	background-size: 200%;
+	background-size: 1000px 1000px;
 	background-position: top center;
 	background-repeat: no-repeat;
-	filter: blur(10px) brightness(30%);
+	filter: blur(8px);
 }
 #mask {
 	background-color: black;
@@ -41,123 +44,7 @@ body {
 	width: 100%;
 	height: 100%;
 }
-
-
-
-
-
-
-
-.smcount_setting_wrapper {
-    margin: 25px 0 0;
-	position: relative;
-	left: 70px;
-	top: 0px;
-	width: 500px;
-	height: 210px;
-	background: rgba(255, 255, 255, 0)
-}
-.smcount_setting_item {
-	position :relative;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-	height: 68px;
-	left: 70px;
-}
-.smcount_setting_item:first-child {
-	border-top: 1px solid rgba(255, 255, 255, 0.4);
-}
-.smcount_setting_item p {
-	position: absolute;
-	left: 0px;
-    top: 0px;
-	font-size: 20px;
-}
-.smcount_wrapper .input_st+label {
-    top: 10px;
-}
-.smcount_wrapper .input_st+label p {
-	font-size: 20px;
-    left: -400px;
-    top: -8px;
-    text-align: left;
-}
-
-.smcount_setting_button_wrapper {
-	position: absolute;
-	width: 500px;
-	text-align: right;
-}
-
-.smcount_setting_button {
-	display: inline-block;
-	margin-left: 8px;
-	width: 96px;
-	height: 48px;
-	border-radius: 24px;
-	background: #998310;
-	position: relative;
-	top: 8px;
-	line-height: 48px;
-	text-align: center;
-	-webkit-transition: all .2s;
-	transition: all .2s;
-	overflow: hidden;
-	cursor: pointer;
-	transform: scale(1);
-	opacity: 1;
-}
-.smcount_setting_button.no_select {
-	opacity: 0.5;
-	transform: scale(0.8);
-	cursor: pointer;
-}
-.smcount_setting_norma {
-	cursor: initial;
-	font-size: 20px;
-	background: #da5414;
-}
-.smcount_setting_volume {
-	transform: scale(0.8);
-}
-.smcount_setting_volume.smcount_button_active {
-	transform: scale(0.9);
-}
-.smcount_setting_volume_shitei {
-	transform: scale(1);
-	width: 66px;
-	margin-left: 8px;
-}
-.smcount_setting_volume_shitei.smcount_button_active {
-	transform: scale(1.1);
-	width: 66px;
-	margin-left: 8px;
-}
-.smcount_setting_shitei.selected {
-}
-.smcount_setting_norma_span,
-.smcount_setting_volume_span {
-	color: #998310;
-}
-/* hidden */
-.smcount_button_kasoku.prev.smcount_hidden {
-    transform: scale(0) rotate(180deg);
-}
-.smcount_button.smcount_hidden {
-	transform: scale(0);
-}
-.smcount_hidden {
-	transform: scale(0);
-}
-
-
-
-
-
-/*            */
-/* STタイマー */
-/*            */
-.st_eta,
-.st_description {
+.st_eta {
 	position: absolute;
 	top: 90px;
 	left: 0px;
@@ -170,215 +57,255 @@ body {
 	font-size: 18px;
 	text-align: center;
 }
-.st_description {
-	top: 200px;
-}
-.st_description h1 {
-	font-size: 40px;
-	margin-bottom: 20px;
-	font-weight: bold;
-}
-.st_description b {
-	color: Orange;
-}
-.st_eta_canvas {
-	margin-top: 50px;
-	display: inline-block;
-}
-.st_eta_description {
-	font-size: 20px;
-}
-.st_eta_count {
-	font-size: 50px;
-	margin-top: 10px;
-}
-.st_eta_correction {
-	font-size: 16px;
-	margin: 18px 0;
-}
-.st_eta_sound_desc {
-	margin-top: 45px;
-	display: none;
-	margin: 18px 0;
-	color: #998310;
-}
-.st_eta_next {
-}
-.st_friend_mode {
-}
-.stfest_duration {
-	position: absolute;
-	top: 640px;
-	display: none;
-	left: 0px;
-	width: 640px;
-	font-size: 16px;
-	opacity: 0.6;
-}
-.STFest {
-    color: white;
-	text-shadow: 1px 1px 1px #777,  0px  0px 3px #777,
-	            -1px 1px 1px #777,  2px  0px 3px #777,
-	             0px 1px 1px #777,  1px  0px 3px #777,
-	            -1px 0px 1px #777,  2px  1px 3px #777;
-    font-size: 30px;
-    font-weight: bold;
-    text-align: center;
-    font-family: serif;
-	/*
-	box-shadow: 3px 3px 3px #777;
-    box-sizing: border-box;
-    border-radius: 50%;
-    */
-    vertical-align: middle;
-    padding-top: 23px;
-    line-height: 90%;
-}
-.credit_emaame {
-	position: absolute;
-	top: 570px;
-	left: 0px;
-	width: 640px;
-	font-size: 16px;
-	opacity: 0.6;
-}
-.credit_emaame a {
-	color: white;
-	text-decoration: none;
-}
-.st_glink_button {
-    color: #5f1001;
-    background: White;
-    font-weight: bold;
-    border-radius: 34px;
-}
-.input_st_wrapper {
-	position: absolute;
-	top: 400px;
-	left: 0px;
-    text-shadow: none;
-}
-.input_st_item:first-child {
-	border-top: 1px solid rgba(255, 255, 255, 0.4);
-}
-.input_st_item:first-child {
-	border-top: 1px solid rgba(255, 255, 255, 0.4);
-}
-.input_st_item {
-	-ms-user-select: none;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
-	margin: 0;
-	padding: 10px 0;
-	position: relative;
-	left: 70px;
-	width: 500px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-	text-align: left;
-}
-.input_st+label .button {
-  z-index: 10;
-  display: block;
-  width: 60px;
-  height: 40px;
-  border-radius: 20px;
-  background: #998310;
-  position: absolute;
-  top: 4px;
-  line-height: 40px;
-  text-align: center;
-  -webkit-transition: all .2s;
-  transition: all .2s;
-  overflow: hidden;
-  cursor: pointer;
-	transform: scale(1);
-}
-.input_st+label .button_active {
-	transform: scale(1.1);
-}
-.input_st+label .sound_test_button {
-  width: 100px;
-  left: -150px;
-}
-.input_st+label .plus_button {
-  left: -90px;
-}
-.input_st+label .minus_button {
-  left: -170px;
-}
-.input_st+label .hidden_button {
-  transform: scale(0);
-}
+	.st_eta_canvas {
+		margin-top: 50px;
+		display: inline-block;
+	}
+	.st_eta_description {
+		font-size: 20px;
+	}
+	.st_eta_count {
+		font-size: 50px;
+		margin-top: 10px;
+	}
+	.st_eta_correction {
+		font-size: 16px;
+		margin: 18px 0;
+	}
+	.st_eta_sound_desc {
+		margin-top: 45px;
+		display: none;
+		margin: 18px 0;
+		color: #998310;
+	}
+	.credit_emaame {
+		position: absolute;
+		top: 570px;
+		left: 0px;
+		width: 640px;
+		font-size: 16px;
+		opacity: 0.6;
+	}
+		.credit_emaame a {
+			color: white;
+			text-decoration: none;
+		}
+	.input_st_wrapper {
+		position: absolute;
+		top: 400px;
+		left: 0px;
+	    text-shadow: none;
+	}
+		.input_st_item {
+			-ms-user-select: none;
+			-moz-user-select: -moz-none;
+			-khtml-user-select: none;
+			-webkit-user-select: none;
+			user-select: none;
+			margin: 0;
+			padding: 10px 0;
+			position: relative;
+			left: 70px;
+			width: 500px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+			text-align: left;
+		}
+		.input_st_item:first-child {
+			border-top: 1px solid rgba(255, 255, 255, 0.4);
+		}
+			.input_st {
+				display: none;
+				font-family: Arial, sans-serif;
+				font-size: 18px;
+			}
+			.input_st+label,
+			.input_st+label::before,
+			.input_st+label::after {
+				-webkit-transition: all .2s;
+				transition: all .2s;
+			}
+			.input_st+label {
+				display: block;
+				position: relative;
+				left: 400px;
+				width: 100px;
+				height: 48px;
+				border-radius: 24px;
+				cursor: pointer;
+			}
+			.input_st+label::before {
+				display: block;
+				content: attr(data-off-label);
+				position: absolute;
+				top: 14px;
+				right: 7px;
+				color: #fff;
+				font-family: Arial, sans-serif;
+				font-size: 18px;
+			}
+			.input_st+label::after {
+				content: '';
+				position: absolute;
+				top: 4px;
+				left: 4px;
+				width: 40px;
+				height: 40px;
+				background-color: #fff;
+				border-radius: 50%;
+			}
+			.input_st:checked+label::before {
+				content: attr(data-on-label);
+				left: 7px;
+				right: auto;
+				color: #fff;
+			}
+			.input_st:checked+label::after {
+				left: 56px;
+				background-color: #f7f7f7;
+			}
+			.input_st+label {
+				background-color: #eee;
+			}
+			.input_st+label::before {
+				color: #aaa;
+			}
+			.input_st:checked+label {
+				background-color: #998310;
+			}
+			.input_st:checked+label::before {
+			  color: #fff;
+			}
+				.input_st+label .button {
+					z-index: 10;
+					display: block;
+					width: 60px;
+					height: 40px;
+					border-radius: 20px;
+					background: #998310;
+					position: absolute;
+					top: 4px;
+					line-height: 40px;
+					text-align: center;
+					-webkit-transition: all .2s;
+					transition: all .2s;
+					overflow: hidden;
+					cursor: pointer;
+					transform: scale(1);
+				}
+				.input_st+label .button_active {
+					transform: scale(1.1);
+				}
+				.input_st+label .sound_test_button {
+					width: 100px;
+					left: -150px;
+				}
+				.input_st+label .plus_button {
+					left: -90px;
+				}
+				.input_st+label .minus_button {
+					left: -170px;
+				}
+				.input_st+label .hidden_button {
+					transform: scale(0);
+				}
+				.input_st+label p {
+					position: absolute;
+					top: -6px;
+					left: -400px;
+					width: 200px;
+					z-index: 0;
+					margin: 18px 0;
+				}
+	.st_setting_item {
+		position :relative;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+		height: 68px;
+		left: 70px;
+	}
+	.st_setting_item:first-child {
+		border-top: 1px solid rgba(255, 255, 255, 0.4);
+	}
+		.st_setting_item p {
+			position: absolute;
+			left: 0px;
+		    top: 20px;
+			font-size: 20px;
+		}
+		.st_setting_button_wrapper {
+			position: absolute;
+			width: 500px;
+			text-align: right;
+		}
+			.st_setting_button {
+				display: inline-block;
+				margin-left: 8px;
+				width: 96px;
+				height: 48px;
+				border-radius: 24px;
+				background: #998310;
+				position: relative;
+				top: 8px;
+				line-height: 48px;
+				text-align: center;
+				-webkit-transition: all .2s;
+				transition: all .2s;
+				overflow: hidden;
+				cursor: pointer;
+				transform: scale(1);
+				opacity: 1;
+			}
+			.st_setting_volume {
+				transform: scale(0.8);
+			}
+			.st_setting_volume.button_active {
+				transform: scale(0.9);
+			}
+			.st_setting_volume_span {
+				color: #998310;
+			}
+			.st_hidden {
+				transform: scale(0);
+			}
 
-.input_st {
-  display: none;
-	font-family: Arial, sans-serif;
-	font-size: 18px;
+
+#mask_wrapper {
+	pointer-events: none;
+	transition: all .5s linear;
+	opacity: 1;
 }
-.input_st+label,
-.input_st+label::before,
-.input_st+label::after {
-  -webkit-transition: all .2s;
-  transition: all .2s;
-}
-.input_st+label {
-  display: block;
-  position: relative;
-  left: 400px;
-  width: 100px;
-  height: 48px;
-  border-radius: 24px;
-  cursor: pointer;
-}
-.input_st+label p {
-  position: absolute;
-  top: -6px;
-  left: -400px;
-  width: 200px;
-  z-index: 0;
-  margin: 18px 0;
-}
-.input_st+label::before {
-  display: block;
-  content: attr(data-off-label);
-  position: absolute;
-  top: 14px;
-  right: 7px;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  font-size: 18px;
-}
-.input_st+label::after {
-  content: '';
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
-  border-radius: 50%;
-}
-.input_st:checked+label::before {
-  content: attr(data-on-label);
-  left: 7px;
-  right: auto;
-  color: #fff;
-}
-.input_st:checked+label::after {
-  left: 56px;
-  background-color: #f7f7f7;
-}
-.input_st+label {
-  background-color: #eee;
-}
-.input_st+label::before {
-  color: #aaa;
-}
-.input_st:checked+label {
-  background-color: #998310;
-}
-.input_st:checked+label::before {
-  color: #fff;
-}
+	.mask_black {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-color: black;
+		transition: all 1.5s linear;
+	}
+	#mask_obake {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		width: 800px;
+		height: 800px;
+		transition: all 1.5s linear;
+		transfrom-origin: center center;
+		transform: scale(0) rotate(0deg);
+	}
+	#mask_black_top {
+		clip-path: polygon(0% -100%, 100% -100%, 100% 50%, 0% 50%);
+	}
+
+	#mask_black_left {
+		clip-path: polygon(-100% 0%, 50% 0%, 50% 100%, 50% 100%);
+	}
+	#mask_black_right {
+		clip-path: polygon(50% 0%, 200% 0%, 200% 100%, 50% 100%);
+	}
+
+	#mask_black_bottom {
+		clip-path: polygon(0% 50%, 100% 50%, 100% 200%, 0% 200%);
+	}

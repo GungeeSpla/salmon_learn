@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <title>OTT - オバケイドロ･タイム･タイマー</title>
 <meta name="description" content="FREE STYLE GAMES『オバケイドロ！』でスナイプしあうためのタイマーです。毎時6, 12, 18, ... , 54分にゼロになります。0分の回は休憩時間。" />
-<link rel="stylesheet" href="style.css">
-<script type="text/javascript" src="../tyrano/libs/jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="main.js?2"></script>
+<link rel="stylesheet" href="style.css?3">
+<script type="text/javascript" src="./jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="main.js?3"></script>
 <link rel="icon" type="image/png" href="./favicon.png">
 
 <!-- TwitterCard対応 -->
@@ -14,7 +14,7 @@
 <meta name="twitter:site"        content="@GungeeSpla" />
 <meta name="twitter:title"       content="OTT - オバケイドロ･タイム･タイマー" />
 <meta name="twitter:description" content="みんなで『オバケイドロ！』でスナイプし合おう！" />
-<meta name="twitter:image"       content="https://gungeespla.github.io/salmon_learn/ott/favicon.png" />
+<meta name="twitter:image"       content="https://gungeespla.github.io/salmon_learn/ott/favicon.png?1" />
 <!-- TwitterCard対応ここまで -->
 
 <!-- PWA対応 -->
@@ -31,35 +31,43 @@ if ("serviceWorker" in navigator) {
 
 </head>
 <body onload="init()" onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()">
-<div id="background"></div>
-<div id="main">
-	<div class="st_eta">
-		<div class="st_eta_description">　</div>
-		<div class="st_eta_count">　</div>
-		<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
-		<div class="st_eta_next">　</div>
-		<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため、<br>最後の5･4･3･2･1のカウントを行いません。</div>
-		<canvas class="st_eta_canvas" width="100" height="100"></canvas>
-		<div class="input_st_wrapper">
-			<div class="input_st_item">	
-				<input type="checkbox" class="input_st" id="check_sound"  />
-				<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
-			</div>
-			<div class="smcount_setting_item">
-				<p>音量 <span class="smcount_setting_volume_span"></span></p>
-				<div class="smcount_setting_button_wrapper">
-					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_minus" move="-0.1">－</div>
-					<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_plus" move=" 0.1">＋</div>
+	
+	<div id="background"></div>
+	
+	<div id="main">
+		<div class="st_eta">
+			<div class="st_eta_description">　</div>
+			<div class="st_eta_count">　</div>
+			<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+			<div class="st_eta_next">　</div>
+			<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため、<br>最後の5･4･3･2･1のカウントを行いません。</div>
+			<canvas class="st_eta_canvas" width="100" height="100"></canvas>
+			<div class="input_st_wrapper">
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_sound"  />
+					<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
+				</div>
+				<div class="st_setting_item">
+					<p>音量 <span class="st_setting_volume_span"></span></p>
+					<div class="st_setting_button_wrapper">
+						<div class="st_setting_button st_setting_volume st_setting_volume_minus st_hidden" move="-0.1">－</div>
+						<div class="st_setting_button st_setting_volume st_setting_volume_plus st_hidden" move=" 0.1">＋</div>
+					</div>
 				</div>
 			</div>
+			<div style="" class="credit_emaame"><a href="https://emaame.github.io/salmonrun_time_timer/">@emaame さんのSTタイマー</a> (CC 表示4.0 国際) を改変しています</div>
 		</div>
-		<div style="" class="credit_emaame">@emaameさんのSTタイマー (CC 表示4.0 国際) を改変しています</div>
 	</div>
-</div>
-<div id="mask"></div>
-	
-<!-- サウンド -->
-<audio src="../tyrano/sounds/switch.wav" id="sound_switch" preload="auto"></audio> 
-<audio src="../tyrano/sounds/silent.wav" id="sound_silent" preload="auto"></audio> 
+	<!--
+	<div id="mask"></div>
+	-->
+	<div id="mask_wrapper">
+		<div class="mask_black" id="mask_black_top"></div>
+		<div class="mask_black" id="mask_black_right"></div>
+		<div class="mask_black" id="mask_black_bottom"></div>
+		<div class="mask_black" id="mask_black_left"></div>
+	</div>
+	<!-- サウンド -->
+	<audio src="./sounds/silent.wav" id="sound_silent" preload="auto"></audio> 
 </body>
 </html>

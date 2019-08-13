@@ -1,37 +1,63 @@
 // based on https://github.com/emaame/salmonrun_time_timer
 
 function init () {
-	window.settingApp = {
-		usingVoice: "bouyomichan"
-	};
-	window.stTimerApp = new StTimerApp();
-	stTimerApp.stTitle = "OT"
-	stTimerApp.stTimer.firstST = 6;
-	stTimerApp.stTimer.interval = 6;	
-	stTimerApp.startApp();
+	window.stTimerApp = new StTimerApp("OT", 6, 6).startApp();
+	
 	$(window).bind("orientationchange resize", function () {
 		fitWindow();
 		setTimeout(fitWindow, 250);
 		setTimeout(fitWindow, 500);
 		setTimeout(fitWindow, 1000);
-	});
-	$(window).trigger("resize");
+	}).trigger("resize");
+	
+	/*
 	$("#mask").fadeOut(1000, function () {
 		$(this).remove();
 	});
+	*/
+	
+	var image = new Image();
+	image.id = "mask_obake";
+	image.onload = function () {
+		var windowW = getWindowWidth();
+		var windowH = getWindowHeight();
+		var obakeW = 400 * 5;
+		var obakeH = 400 * 5;
+		var R = Math.floor(50 + obakeW / windowW * 50);
+		var B = Math.floor(50 + obakeH / windowH * 50);
+		var L = 100 - R;
+		var T = 100 - B;
+		setTimeout(function() {
+			$("#mask_obake").css("transform", "scale(5) rotate(720deg)");
+			$("#mask_black_left"  ).css("clip-path", "polygon(-100% 0%, "+L+"% 0%, "+L+"% 100%, -100% 100%)");
+			$("#mask_black_right" ).css("clip-path", "polygon("+R+"% 0%, 200% 0%, 200% 100%, "+R+"% 100%)");
+			$("#mask_black_top"   ).css("clip-path", "polygon(0% -100%, 100% -100%, 100% "+T+"%, 0% "+T+"%)");
+			$("#mask_black_bottom").css("clip-path", "polygon(0% "+B+"%, 100% "+B+"%, 100% 200%, 0% 200%)");
+		}, 100);
+		setTimeout(function() {
+			$("#mask_wrapper").css("opacity", "0");
+		}, 1100);
+		setTimeout(function() {
+			$("#mask_wrapper").css("display", "none");
+		}, 1600);
+	};
+	$("#mask_wrapper").append(image);
+	image.src = "./img/obake.png";
 }
 
 
 //# StTimerApp ()
-function StTimerApp () {
+function StTimerApp (stTitle, firstSt, stInterval) {
 	var app = this;
-	this.STFestData     = {};
-	this.specialStTitle = "";
-	this.specialStColor = "Yellow";
-	this.mode        = "timer";
-	this.isStarted   = false;
-	this.stTimer     = new StTimer();
+	
+	this.stTitle       = stTitle;
+	this.stTimer       = new StTimer(app, firstSt, stInterval);
+	this.sound         = new StSound(app);
+	this.dateFormatter = new DateFormatter();
+	this.isFreeSound   = false;
+	
 	this.list        = [];
+	
 	this.bEta        = 0;
 	this.eta         = 0;
 	this.nowDate     = null;
@@ -41,13 +67,7 @@ function StTimerApp () {
 	this.stageCounts = [0, 5, 10, 30, 60].map(time => time *= 1000);
 	this.lastStageIndex = this.stageCounts.length - 1;
 	this.stageIndex     = this.lastStageIndex;
-	this.sound       = new StSound();
-	this.isFreeSound = false;
-	this.enableSound = false;
 	this.isClearing  = false;
-	this.enableNowMode = false;
-	this.stTitle       = "ST";
-	this.dateFormatter = new DateFormatter();
 	this.framePerSec   = 60;
 	this.loopTimerId   = -1;
 	this.loopDuration  = 1000 / this.framePerSec;
@@ -60,22 +80,16 @@ function StTimerApp () {
 	//## setStTitle ()
 	this.setStTitle = function () {
 		var str;
-		if (this.enableNowMode) {
-			var num = app.stTimer.timeOffset.friendOffset / 1000;
-			var friend = this.stTimer.timeOffset.enableFriendOffset ? "<span style='color: Orange'>（" + num.toFixed(1) + "秒遅れ）</span>" : "";
-			str = "現在時刻" + friend + "は";
-		}
-		else if (this.specialStTitle) {
-			str = "<span style='color: " + this.specialStColor + ";'>" + this.specialStTitle + "まで</span>";
-		}
-		else {
-			var friend = this.stTimer.timeOffset.enableFriendOffset ? "（フレ部屋）" : "";
-			var sign = app.stTimer.stOffset >= 0 ? "+" : "";
-			var offset = app.stTimer.enableStOffset ? sign + app.stTimer.stOffset + "分" : "";
-			str = this.stTitle + "<span style='color: Orange'>" + offset + friend + "</span>まで";
-		}
+		// フレ部屋モード用の文字列
+		var friend = this.stTimer.timeOffset.isEnabledFriendOffset ? "（フレ部屋）" : "";
+		// STの時刻をずらしているとき用の文字列
+		var sign = app.stTimer.stOffset >= 0 ? "+" : "";
+		var offset = app.stTimer.isEnableStOffset ? sign + app.stTimer.stOffset + "分" : "";
+		// 文字列の決定
+		str = this.stTitle + "<span style='color: Orange'>" + offset + friend + "</span>まで";
+		// 文字列を放り込む
 		this.$description.html(str);
-	}
+	};
 	
 	//## getJqueryObject ()
 	this.getJqueryObject = function () {
@@ -85,326 +99,137 @@ function StTimerApp () {
 		this.$canvas      = $(".st_eta_canvas");
 		this.ctx          = this.$canvas[0].getContext("2d");
 		this.$checkSound  = $("#check_sound");
-		this.$checkFriend = $("#check_friend");
-		this.$checkNow    = $("#check_now");
-		this.$checkStOffset = $("#check_st_offset");
 		this.$stWrapper   = $(".st_eta");
 		this.$correction  = $(".st_eta_correction");
 		this.$description = $(".st_eta_description");
 		this.$soundTest   = $(".sound_test_button");
-		this.$friendPlus  = $(".friend_plus_button");
-		this.$friendMinus = $(".friend_minus_button");
-		this.$friendOffset= $(".friend_offset");
-		this.$stPlus      = $(".st_plus_button");
-		this.$stMinus     = $(".st_minus_button");
-		this.$stOffset    = $(".st_offset");
 		this.$soundDesc   = $(".st_eta_sound_desc");
-		this.$settingVolumePlus  = $(".smcount_setting_volume_plus");
-		this.$settingVolumeMinus = $(".smcount_setting_volume_minus");
-		this.$settingVolumeMute  = $(".smcount_setting_volume_mute");
-		this.$settingVolumeSpan  = $(".smcount_setting_volume_span");
-		this.$settingVolume      = $(".smcount_setting_volume_plus, .smcount_setting_volume_minus");
+		this.$settingVolumePlus  = $(".st_setting_volume_plus");
+		this.$settingVolumeMinus = $(".st_setting_volume_minus");
+		this.$settingVolumeMute  = $(".st_setting_volume_mute");
+		this.$settingVolumeSpan  = $(".st_setting_volume_span");
+		this.$settingVolume      = $(".st_setting_volume_plus, .st_setting_volume_minus");
 		var clickEvent    = "ontouchstart" in window ? "touchstart" : "click";
-		if (this.$checkSound.attr("is_set_event") != "true") {
-			this.$checkSound.attr("is_set_event", "true");
-			
-			
-			
-			
-			// 音量
-			this.$settingVolumeMute.on(clickEvent, function (e) {
-				var isMuted = app.sound.isMuted;
-				var newIsMuted = !isMuted;
-				app.sound.isMuted = newIsMuted;
+		
+		//## 音量の調節
+		this.$settingVolume.each(function(){
+			var $this = $(this);
+			var move = parseFloat($this.attr("move"));
+			$this.on(clickEvent, function (e) {
+				activeButton(this);
+				app.sound.volume = app.sound.volume + move;
+				app.sound.volume = Math.round(app.sound.volume * 10) / 10;
+				app.sound.volume = Math.max(0, Math.min(1, app.sound.volume));
 				app.$settingVolume.render();
+				app.save();
+				app.sound.play("switch");
+				return false;
 			});
-			this.$settingVolume.each(function(){
-				var $this = $(this);
-				var move = parseFloat($this.attr("move"));
-				$this.on(clickEvent, function (e) {
-					activeButton(this);
-					app.sound.volume = app.sound.volume + move;
-					app.sound.volume = Math.round(app.sound.volume * 10) / 10;
-					app.sound.volume = Math.max(0, Math.min(1, app.sound.volume));
-					app.$settingVolume.render();
-					app.save();
-					app.sound.play("switch");
-					return false;
-				});
-			});
-			this.$settingVolume.render = function () {
-				var isMuted = app.sound.isMuted;
-				if (isMuted) {
-					hide(app.$settingVolumePlus);
-					hide(app.$settingVolumeMinus);
-				}
-				else if (app.sound.volume == 0) {
-					show(app.$settingVolumePlus);
-					hide(app.$settingVolumeMinus);
-				}
-				else if (app.sound.volume == 1) {
-					hide(app.$settingVolumePlus);
-					show(app.$settingVolumeMinus);
-				}
-				else {
-					show(app.$settingVolumePlus);
-					show(app.$settingVolumeMinus);
-				}
-				var percent = (app.sound.volume * 100).toFixed(0);
-				var text = percent + "%";
-				if (isMuted) {
-					text = "Muted";
-				}
-				app.$settingVolumeSpan.text(text);
-				var muteText = "Mute";
-				if (isMuted) {
-					muteText = "Play";
-				}
-				app.$settingVolumeMute.text(muteText);
-			};
-			this.$settingVolume.render();
-			
-			
-			
-			
-			function activeButton (self) {
-				var $self = $(self);
-				$self.addClass("button_active");
-				setTimeout(function () {
-					$self.removeClass("button_active");
-				}, 100);
+		});
+		this.$settingVolume.render = function () {
+			var isMuted = app.sound.isMuted;
+			/*
+			if (isMuted) {
+				hide(app.$settingVolumePlus);
+				hide(app.$settingVolumeMinus);
 			}
+			else if (app.sound.volume == 0) {
+				show(app.$settingVolumePlus);
+				hide(app.$settingVolumeMinus);
+			}
+			else if (app.sound.volume == 1) {
+				hide(app.$settingVolumePlus);
+				show(app.$settingVolumeMinus);
+			}
+			else {
+				show(app.$settingVolumePlus);
+				show(app.$settingVolumeMinus);
+			}
+			*/
+			show(app.$settingVolumePlus);
+			show(app.$settingVolumeMinus);
+			var percent = (app.sound.volume * 100).toFixed(0);
+			var text = percent + "%";
+			if (isMuted) {
+				text = "Muted";
+			}
+			app.$settingVolumeSpan.text(text);
 			function show ($self) {
-				$self.removeClass("smcount_hidden");
+				$self.removeClass("st_hidden");
 			}
 			function hide ($self) {
-				$self.addClass("smcount_hidden");
+				$self.addClass("st_hidden");
 			}
-			//## * soundTest
-			this.$soundTest.on(clickEvent, function (e) {
-				e.preventDefault();
-				activeButton(this);
-				app.sound.play("bouyomichan/60");
-				return false;
+		};
+		this.$settingVolume.render();
+		
+		//## サウンドテスト
+		this.$soundTest.on(clickEvent, function (e) {
+			e.preventDefault();
+			activeButton(this);
+			app.sound.play("60");
+			return false;
+		});
+		
+		//## サウンドの有効化
+		if (! app.isFreeSound) {
+			this.$checkSound.on(clickEvent, function (e) {
+				if (! app.isFreeSound) {
+					//app.sound.playSilent();
+					app.sound.testPlaySilent();
+					app.isFreeSound = true;
+					console.log("✅ サウンドの再生制限を解除しました.");
+					app.$soundDesc.css("display", "block");
+					app.$canvas.css("display", "none");
+					setTimeout(function(){
+						app.$soundDesc.fadeOut(1000, function(){
+							app.$canvas.css("display", "inline-block");
+						});
+					}, 8000);
+				}
+				$(this).off(clickEvent);
 			});
-			//## * friendPlus
-			this.$friendPlus.on(clickEvent, function (e) {
-				e.preventDefault();
-				activeButton(this);
-				app.stTimer.timeOffset.friendOffset += 100;
-				app.save();
-				var num = app.stTimer.timeOffset.friendOffset / 1000;
-				app.$friendOffset.text(num.toFixed(1));
-				app.sound.play("click");
-				return false;
-			});
-			//## * friendMinus
-			this.$friendMinus.on(clickEvent, function (e) {
-				e.preventDefault();
-				activeButton(this);
-				app.stTimer.timeOffset.friendOffset -= 100;
-				app.save();
-				var num = app.stTimer.timeOffset.friendOffset / 1000;
-				app.$friendOffset.text(num.toFixed(1));
-				app.sound.play("click");
-				return false;
-			});
-			//## * stPlus
-			this.$stPlus.on(clickEvent, function (e) {
-				e.preventDefault();
-				activeButton(this);
-				app.stTimer.stOffset = Math.min(7, app.stTimer.stOffset + 1);
-				app.save();
-				var sign = app.stTimer.stOffset >= 0 ? "+" : "";
-				var str = app.stTimer.enableStOffset ? "(" + sign + app.stTimer.stOffset + "分)" : "";
-				if (app.stTimer.stOffset == 1) {
-					app.$stPlus.removeClass("hidden_button");
-					app.$stMinus.addClass("hidden_button");
-				}
-				else if (app.stTimer.stOffset == 7) {
-					app.$stPlus.addClass("hidden_button");
-					app.$stMinus.removeClass("hidden_button");
-				}
-				else {
-					app.$stPlus.removeClass("hidden_button");
-					app.$stMinus.removeClass("hidden_button");
-				}
-				app.$stOffset.text(str);
-				app.stageIndex  = null;
-				app.updateStList();
-				app.setStTitle();
-				app.sound.play("click");
-				return false;
-			});
-			//## * stMinus
-			this.$stMinus.on(clickEvent, function (e) {
-				e.preventDefault();
-				activeButton(this);
-				app.stTimer.stOffset = Math.max(1, app.stTimer.stOffset - 1);
-				app.save();
-				var sign = app.stTimer.stOffset >= 0 ? "+" : "";
-				var str = app.stTimer.enableStOffset ? "(" + sign + app.stTimer.stOffset + "分)" : "";
-				if (app.stTimer.stOffset == 1) {
-					app.$stPlus.removeClass("hidden_button");
-					app.$stMinus.addClass("hidden_button");
-				}
-				else if (app.stTimer.stOffset == 7) {
-					app.$stPlus.addClass("hidden_button");
-					app.$stMinus.removeClass("hidden_button");
-				}
-				else {
-					app.$stPlus.removeClass("hidden_button");
-					app.$stMinus.removeClass("hidden_button");
-				}
-				app.$stOffset.text(str);
-				app.stageIndex  = null;
-				app.updateStList();
-				app.setStTitle();
-				app.sound.play("click");
-				return false;
-			});
-			//## * checkSound
-			if (! app.isFreeSound) {
-				this.$checkSound.on(clickEvent, function (e) {
-					if (! app.isFreeSound) {
-						//app.sound.playSilent();
-						app.sound.testPlaySilent();
-						app.isFreeSound = true;
-						console.log("✅ サウンドの再生制限を解除しました.");
-						app.$soundDesc.css("display", "block");
-						app.$canvas.css("display", "none");
-						setTimeout(function(){
-							app.$soundDesc.fadeOut(1000, function(){
-								app.$canvas.css("display", "inline-block");
-							});
-						}, 8000);
-					}
-					$(this).off(clickEvent);
-				});
+		}
+		
+		//## サウンドのオンオフ		
+		this.$checkSound.on("change", function (e) {
+			var isChecked = $(this).prop("checked");
+			if (isChecked) {
+				app.$soundTest.removeClass("hidden_button");
+				app.sound.isEnabled = true;
+				if (! e.isTrigger) app.sound.play("switch");
 			}
-			this.$checkSound.on("change", function (e) {
-				var isChecked = $(this).prop("checked");
-				if (isChecked) {
-					app.$soundTest.removeClass("hidden_button");
-					app.sound.enable = true;
-					app.enableSound = true;
-					if (! e.isTrigger) app.sound.play("switch");
-					/*
-					setTimeout(function () {
-						app.sound.play("switch");
-					}, app.eta);
-					*/
-				}
-				else {
-					app.$soundTest.addClass("hidden_button");
-					if (! e.isTrigger) app.sound.play("switch");
-					app.enableSound = false;
-					app.sound.enable = false;
-				}
-				if (! e.isTrigger) app.save();
-				app.setStTitle();
-				return false;
-			});
-			
-			//## * checkFriend
-			this.$checkFriend.on("change", function (e) {
-				var isChecked = $(this).prop("checked");
-				if (isChecked) {
-					app.stTimer.timeOffset.enableFriendOffset = true;
-					app.$stWrapper.addClass("st_friend_mode");
-					$(".correction_friend").remove();
-					var str = "フレンド部屋用に %dif 秒の補正をしています";
-					    str = str.replace("%dif", Math.abs(app.stTimer.timeOffset.friendOffset / 1000));
-					var $p = $("<p></p>").text(str).addClass("correction_friend");
-					//app.$correction.append($p);
-					app.$friendPlus.removeClass("hidden_button");
-					app.$friendMinus.removeClass("hidden_button");
-				}
-				else {
-					app.stTimer.timeOffset.enableFriendOffset = false;
-					$(".correction_friend").remove();
-					app.$stWrapper.removeClass("st_friend_mode");
-					app.$friendPlus.addClass("hidden_button");
-					app.$friendMinus.addClass("hidden_button");
-				}
-				var num = app.stTimer.timeOffset.friendOffset / 1000;
-				app.$friendOffset.text(num.toFixed(1));
-				if (! e.isTrigger) app.save();
-				app.setStTitle();
+			else {
+				app.$soundTest.addClass("hidden_button");
 				if (! e.isTrigger) app.sound.play("switch");
-				return false;
-			});
-			
-			//## * checkStOffset
-			this.$checkStOffset.on("change", function (e) {
-				var isChecked = $(this).prop("checked");
-				if (isChecked) {
-					app.stTimer.enableStOffset = true;
-					app.$stPlus.removeClass("hidden_button");
-					app.$stMinus.removeClass("hidden_button");
-					var sign = app.stTimer.stOffset >= 0 ? "+" : "";
-					var str = app.stTimer.stOffset != -1 ? "(" + sign + app.stTimer.stOffset + "分)" : "";
-					app.$stOffset.text(str);
-					if (app.stTimer.stOffset == 1) {
-						app.$stPlus.removeClass("hidden_button");
-						app.$stMinus.addClass("hidden_button");
-					}
-					else if (app.stTimer.stOffset == 7) {
-						app.$stPlus.addClass("hidden_button");
-						app.$stMinus.removeClass("hidden_button");
-					}
-					else {
-						app.$stPlus.removeClass("hidden_button");
-						app.$stMinus.removeClass("hidden_button");
-					}
-				}
-				else {
-					app.stTimer.enableStOffset = false;
-					app.$stPlus.addClass("hidden_button");
-					app.$stMinus.addClass("hidden_button");
-					app.$stOffset.text("");
-				}
-				app.stageIndex = null;
-				if (! e.isTrigger) app.updateStList();
-				if (! e.isTrigger) app.save();
-				app.setStTitle();
-				if (! e.isTrigger) app.sound.play("switch");
-				return false;
-			});
-			
-			//## * checkNow
-			this.$checkNow.on("change", function (e) {
-				var isChecked = $(this).prop("checked");
-				if (isChecked) {
-					app.enableNowMode = true;
-					app.$next.text("現在時刻を 時:分:秒.ミリ秒 で表示しています")
-				}
-				else {
-					app.enableNowMode = false;
-					app.updateStList();
-				}
-				if (! e.isTrigger) app.save();
-				app.setStTitle();
-				if (! e.isTrigger) app.sound.play("switch");
-				return false;
-			});
-			
-			this.$checkFriend.attr("is_set_event", "true");
+				app.sound.isEnabled = false;
+			}
+			if (! e.isTrigger) app.save();
+			app.setStTitle();
+			return false;
+		});
+		
+		function activeButton (self) {
+			var $self = $(self);
+			$self.addClass("button_active");
+			setTimeout(function () {
+				$self.removeClass("button_active");
+			}, 100);
 		}
 	};
 	
 	//## calcEta ()
 	// 残りカウントを計算します
 	this.calcEta = function () {
-		var now        = this.stTimer.timeOffset.getTime();
-		var next       = this.list[0];
-		this.bEta      = this.eta;
-		this.eta       = next - now;
-		this.etaDate   = new Date(this.eta);
-		this.nowDate   = new Date(now);
-		this.etaMin    = this.etaDate.getMinutes();
-		this.etaSec    = this.etaDate.getSeconds() + 1;
-		this.etaMsec   = this.etaDate.getMilliseconds() + 1;
+		var now      = this.stTimer.timeOffset.getTime();
+		var next     = this.list[0];
+		this.bEta    = this.eta;
+		this.eta     = next - now;
+		this.etaDate = new Date(this.eta);
+		this.nowDate = new Date(now);
+		this.etaMin  = this.etaDate.getMinutes();
+		this.etaSec  = this.etaDate.getSeconds() + 1;
+		this.etaMsec = this.etaDate.getMilliseconds() + 1;
 	};
 	
 	//## updateCountStage ()
@@ -422,29 +247,26 @@ function StTimerApp () {
 		this.stageIndex = i;
 		// 直前のstageIndexと現在のstageIndexが違う＝stageIndexが変わった瞬間には
 		// 特殊な処理を行う
-		var charaName = settingApp.usingVoice + "/";
 		if (this.bStageIndex != null && this.bStageIndex != this.stageIndex) {
 			this.stageFrame = 0;
 			switch (this.stageIndex) {
 			case 0: // 残り5秒以内
-				if (! this.enableNowMode) {
-					if (document.hasFocus && document.hasFocus()) app.sound.play(charaName + "54321");
-					else app.sound.play(charaName + "5");
-				}
+				if (document.hasFocus && document.hasFocus()) app.sound.play("54321");
+				else app.sound.play("5");
 				break;
 			case 1: // 残り10秒以内
-				if (! this.enableNowMode) app.sound.play(charaName + "10");
+				app.sound.play("10");
 				break;
 			case 2: // 残り30秒以内
-				if (! this.enableNowMode) app.sound.play(charaName + "30");
+				app.sound.play("30");
 				break;
 			case 3: // 残り60秒以内
-				if (! this.enableNowMode) app.sound.play(charaName + "60");
+				app.sound.play("60");
 				break;
 			case this.lastStageIndex: // 残り60秒以上
 				this.isClearing = true;
 				this.updateStList();
-				if (! this.enableNowMode) app.sound.play("switch");
+				app.sound.play("switch");
 				break;
 			}
 		}
@@ -457,16 +279,10 @@ function StTimerApp () {
 		this.calcEta();
 		// stageIndexの更新
 		this.updateCountStage();
-		if (! this.enableNowMode) {
-			var sign = app.stTimer.stOffset >= 0 ? "+" : "";
-			var offset = app.stTimer.enableStOffset ? sign + app.stTimer.stOffset + "分" : "";
-			str = this.stTitle + offset;
-			if (this.specialStTitle) str = this.specialStTitle;
-			document.title = str + "まで " + this.dateFormatter.getMinText2(this.etaDate);
-		} else {
-			document.title = this.dateFormatter.getHourText2(this.nowDate);
-		}
-		// console.log(this.stageIndex + ": " + this.stageFrame);
+		var sign = app.stTimer.stOffset >= 0 ? "+" : "";
+		var offset = app.stTimer.isEnableStOffset ? sign + app.stTimer.stOffset + "分" : "";
+		var str = this.stTitle + offset;
+		document.title = str + "まで " + this.dateFormatter.getMinText2(this.etaDate);
 		
 	};
 	
@@ -493,45 +309,33 @@ function StTimerApp () {
 	//## render ()
 	// 画面を描画する関数です
 	this.render = function () {
-		if (this.mode != "timer") return;
-		
-		var str = this.enableNowMode ? 
-			app.dateFormatter.getHourText(this.nowDate):
-			app.dateFormatter.getMinText(this.etaDate);
+		var str = app.dateFormatter.getMinText(this.etaDate);
 		this.$eta.text(str);
-		
 		this.clearCanvas();
-		if (! this.enableNowMode) {
-			// ゼロのフェードアウトを描画
-			if (this.stageIndex == this.lastStageIndex) {
-				if (this.stageFrame < this.framePerSec && this.isClearing) {
-					this.ctx.globalAlpha = 1 - this.stageFrame / this.framePerSec;
-					this.renderCountdown(1, true, "0");
-				}
-				else this.isClearing = false;
+		// ゼロのフェードアウトを描画
+		if (this.stageIndex == this.lastStageIndex) {
+			if (this.stageFrame < this.framePerSec && this.isClearing) {
+				this.ctx.globalAlpha = 1 - this.stageFrame / this.framePerSec;
+				this.renderCountdown(1, true, "0");
 			}
-			// 残り10～0秒のカウントサークルを表示
-			else if (this.stageIndex <= 1) {
-				this.ctx.globalAlpha = 1;
-				var progress = this.etaMsec / 1000;
-				var isClockwise = (this.etaSec % 2 == 0);
-				this.renderCountdown(progress, isClockwise, this.etaSec);
-			}
+			else this.isClearing = false;
 		}
-		
+		// 残り10～0秒のカウントサークルを表示
+		else if (this.stageIndex <= 1) {
+			this.ctx.globalAlpha = 1;
+			var progress = this.etaMsec / 1000;
+			var isClockwise = (this.etaSec % 2 == 0);
+			this.renderCountdown(progress, isClockwise, this.etaSec);
+		}
 		this.stageFrame++;
 	};
 	
 	//## renderOffset (json)
 	this.renderOffset = function (json) {
 		var str = (json.dif > 0) ?
-		          "時計の %dif 秒の遅れを補正済み":
-		          "時計の %dif 秒の進みを補正済み";
+		          "端末の %dif 秒の遅れを補正済み":
+		          "端末の %dif 秒の進みを補正済み";
 		    str = str.replace("%dif", Math.abs(json.dif / 1000));
-		/*
-		var sign = json.dif ? "+" : "";
-		var str = "時刻補正 " + sign + (json.dif / 1000);
-		*/
 		var $p = $("<p></p>").text(str).addClass("correction_dif");
 		this.$correction.empty();
 		this.$correction.append($p);
@@ -570,19 +374,17 @@ function StTimerApp () {
 	//## updateStList ()
 	// STリストを更新します
 	this.updateStList = function () {
-		if (app.list.length == 0) console.log("✅ STリストを作成しました.");
-		else console.log("✅ STリストを更新しました.");
+		console.log("✅ STリストを更新しました.");
 		// 次回を予約
 		clearTimeout(app.updateSttId);
 		app.updateSttId = setTimeout(app.updateStList, app.updateSttDuration);
 		// リストを更新
 		app.list = app.stTimer.listupNextSTT();
-		if (! app.enableNowMode) {
-			var date = app.dateFormatter.getMonthText(app.list[0]);
-			var str = "%date までのカウントダウンを表示しています";
-			    str = str.replace("%date", date);
-			app.$next.text(str);
-		}
+		// 文字を更新
+		var date = app.dateFormatter.getMonthText(app.list[0]);
+		var str = "%date までのカウントダウンを表示しています";
+		    str = str.replace("%date", date);
+		app.$next.text(str);
 	};
 	
 	//## updateOffset ()
@@ -600,12 +402,12 @@ function StTimerApp () {
 	//## save ()
 	this.save = function () {
 		var saveData = {
-			enableSound       : this.enableSound,
-			volume            : this.sound.volume
+			isEnabledSound: this.sound.isEnabled,
+			volume        : this.sound.volume
 		};
 		var saveDataStr = JSON.stringify(saveData);
 		localStorage.setItem(this.storageKey, saveDataStr);
-	}
+	};
 	
 	//## load ()
 	this.load = function () {
@@ -613,34 +415,19 @@ function StTimerApp () {
 		if (saveDataStr) {
 			var saveData = JSON.parse(saveDataStr);
 			var defaultData = {
-				enableSound       : false,
-				volume            : 0.5
+				isEnabledSound: false,
+				volume        : 0.5
 			};
 			saveData = $.extend({}, defaultData, saveData);
 			this.sound.volume = saveData.volume;
-			this.enableSound = saveData.enableSound;
-			this.sound.enable = saveData.enableSound && this.isFreeSound;
+			this.sound.isEnabled = saveData.isEnabledSound;
 			this.$checkSound.prop("checked", this.sound.enable).trigger("change");
 			this.$settingVolume.render();
 		}
-	}
+	};
 	
 	//## startApp ()
 	this.startApp = function () {
-		
-		if (window.queries && window.queries.test == "1") {
-			if ($(".sttimer_test").size() < 1) {
-				this.$test = $("<div></div>").addClass("sttimer_test");
-				$("body").append(this.$test);
-				var str = "テスト用の画面";
-				this.$test.text(str);
-			}
-		}
-		
-		this.sound.disable = true;
-		setTimeout(function(){
-			app.sound.disable = false;
-		},500);
 		// jQueryオブジェクトを取得する
 		this.getJqueryObject();
 		// Canvasのcontextの設定を行う
@@ -652,11 +439,12 @@ function StTimerApp () {
 		// 音声のプリロード
 		this.sound.loadAll();
 		// NICTにアクセス
-		setTimeout(this.updateOffset, 200);
+		setTimeout(this.updateOffset, 100);
+		// ロード
 		this.load();
-		this.isStarted = true;
 		// ループスタート
 		this.loop();
+		return this;
 	};
 	
 	return this;
@@ -676,21 +464,8 @@ function DateFormatter () {
 		d.hh = d.getHours();
 		d.mm = ("00" + d.getMinutes()).slice(-2);
 		d.ss = ("00" + d.getSeconds()).slice(-2);
-		var str = d.MM + "/" + d.DD + " " + d.hh + ":" + d.mm + ":" + d.ss;
-		if (d.ss != "00") str += d.ss + "秒";
-		return str;
-	};
-	
-	//## getMonthText2 (d)
-	this.getMonthText2 = function (d) {
-		d.MM = (d.getMonth() + 1);
-		d.DD = d.getDate();
-		d.hh = d.getHours();
-		d.mm = ("00" + d.getMinutes()).slice(-2);
-		d.ss = ("00" + d.getSeconds()).slice(-2);
-		d.dd = [ "日", "月", "火", "水", "木", "金", "土" ][d.getDay()];
-		var str = d.MM + "月" + d.DD + "日(" + d.dd + ") " + d.hh + "時";
-		return str;
+		return d.MM + "/" + d.DD + " " + d.hh + ":" + d.mm + ":" + d.ss;
+		// 12/31 23:59:59
 	};
 	
 	//## getMinText (d)
@@ -699,6 +474,7 @@ function DateFormatter () {
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
 		d.SSS = ("000" + d.getMilliseconds()).slice(-3);
 		return (d.mm + ":" + d.ss + "." + d.SSS);
+		// 59:59.999
 	};
 	
 	//## getMinText2 (d)
@@ -706,31 +482,7 @@ function DateFormatter () {
 		d.mm  = ("00" + d.getMinutes()).slice(-2);
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
 		return (d.mm + ":" + d.ss);
-	};
-	
-	//## getMinText3 (d)
-	this.getMinText3 = function (d) {
-		d.mm  = ("00" + d.getMinutes()).slice(-2);
-		d.ss  = ("00" + d.getSeconds()).slice(-2);
-		d.SSS = ("000" + d.getMilliseconds()).slice(-3);
-		return (d.mm + "分" + d.ss + "秒" + d.SSS);
-	};
-	
-	//## getHourText (d)
-	this.getHourText = function (d) {
-		d.h   = d.getHours();
-		d.mm  = ("00" + d.getMinutes()).slice(-2);
-		d.ss  = ("00" + d.getSeconds()).slice(-2);
-		d.SSS = ("000" + d.getMilliseconds()).slice(-3);
-		return (d.h + ":" + d.mm + ":" + d.ss + "." + d.SSS);
-	};
-	
-	//## getHourText2 (d)
-	this.getHourText2 = function (d) {
-		d.h   = d.getHours();
-		d.mm  = ("00" + d.getMinutes()).slice(-2);
-		d.ss  = ("00" + d.getSeconds()).slice(-2);
-		return (d.h + ":" + d.mm + ":" + d.ss);
+		// 59:59
 	};
 	
 	return this;
@@ -739,26 +491,29 @@ function DateFormatter () {
 
 
 
-//# SalmonrunTimeTimer ()
-function StTimer () {
-	this.timeOffset = new TimeOffset();
-	this.firstST  = 2;
-	this.interval = 8;
-	this.stOffset = 1;
-	this.offsetSec = 0;
-	this.enableStOffset = false;
+//# StTimer ()
+function StTimer (app, firstSt, stInterval) {
+	var self = this;
+	
+	this.app              = app;
+	this.firstSt          = firstSt || 2;
+	this.interval         = stInterval || 8;
+	this.timeOffset       = new TimeOffset();
+	this.stOffset         = 1;
+	this.offsetSec        = 0;
+	this.isEnableStOffset = false;
 	
 	//## listupNextSTT (intTime)
 	this.listupNextSTT = function (intTime) {
 		var list = [];
 			
 		var queries    = window.queries || {};
-		var stOffset   = this.enableStOffset ? this.stOffset : 0;
-		var firstST    = parseInt(queries.firstST)    || this.firstST;
-		    firstST   += stOffset;
+		var stOffset   = this.isEnableStOffset ? this.stOffset : 0;
+		var firstSt    = parseInt(queries.firstSt)    || this.firstSt;
+		    firstSt   += stOffset;
 		var interval   = parseInt(queries.STinterval) || this.interval;
-		var a          = Math.max(0, interval - firstST);
-		var numPerHour = Math.floor((59 - firstST - a) / interval) + 1;
+		var a          = Math.max(0, interval - firstSt);
+		var numPerHour = Math.floor((59 - firstSt - a) / interval) + 1;
 		
 		var base;
 		if (intTime) base = new Date(intTime);
@@ -768,7 +523,7 @@ function StTimer () {
 		// いま0-1分なら第0ピリオド、いま2-9分なら第1ピリオド…となる（第8ピリオドまで）
 		// | period  |   0   |            1            | 2  ...  6 |            7            |   8   |
 		// | minutes | 00 01 | 02 03 04 05 06 07 08 09 | 10 ... 49 | 50 51 52 53 54 55 56 57 | 58 59 |
-		var period = Math.floor((base.getMinutes() - firstST) / interval) + 1;
+		var period = Math.floor((base.getMinutes() - firstSt) / interval) + 1;
 		
 		// 現在の時間を取得
 		var hours = base.getHours();
@@ -778,7 +533,7 @@ function StTimer () {
 			// 第7ピリオド以降はこのfor文は実行されない
 			// listが7件埋まっているならばこのfor文は実行されな
 			for (var i = period; i < numPerHour && list.length < numPerHour; ++i) {
-				var minutes = firstST + i * interval;
+				var minutes = firstSt + i * interval;
 				var d = new Date(base);
 				d.setHours(hours);
 				d.setMinutes(minutes);
@@ -790,7 +545,8 @@ function StTimer () {
 			period = 0;
 			hours += 1;
 		}
-		console.log(list);
+		
+		list.map(st => console.log("- " + this.app.dateFormatter.getMonthText(st)) );
 		return list;
 	};
 	
@@ -803,12 +559,12 @@ function StTimer () {
 
 //# TimeOffset
 function TimeOffset () {
-	var self              = this;
-	this.resulat          = {};
-	this.offsetJST        = 0;
-	this.enableFriendOffset = false;
-	this.friendOffset = 2500;
-	this.serverUrls = [
+	var self                   = this;
+	this.resulat               = {};
+	this.offsetJST             = 0;
+	this.isEnabledFriendOffset = false;
+	this.friendOffset          = 2500;
+	this.serverUrls            = [
 		"https://ntp-a1.nict.go.jp/cgi-bin/json",
 		"https://ntp-b1.nict.go.jp/cgi-bin/json",
 		"https://ntp-a4.nict.go.jp/cgi-bin/json"
@@ -822,38 +578,23 @@ function TimeOffset () {
 	this.getTime = function () {
 		var time = new Date().getTime();
 		var offset = this.offsetJST;
-		if (this.enableFriendOffset) offset -= this.friendOffset;
+		if (this.isEnabledFriendOffset) offset -= this.friendOffset;
 		return time + offset;
 	};
 	
 	//## consoleOffset (json)
 	this.consoleOffset = function (json) {
-		
-		var str  = "✅ NICTサーバにアクセスしました.";
-		var str1 = "RTT = %rtt ms , (JST - PC Clock) = %dif ms";
-		    str1 = str1.replace("%rtt", json.rtt).replace("%dif", json.dif);
-		
-		var str2 = (json.dif > 0) ?
-		           "あなたのコンピュータの時計は %dif秒 遅れています.":
-		           "あなたのコンピュータの時計は %dif秒 進んでいます.";
-		    str2 = str2.replace("%dif", Math.abs(json.dif / 1000));
-		
-		console.log(str);
-		console.log(str1);
-		console.log(str2);
+		console.log("✅ NICTサーバにアクセスしました.");
 	};
 	
 	//## getOffsetJST ()
 	this.getOffsetJST = function (callback) {
-		
 		var that = this;
-		
 		// アクセスするサーバーをランダムに決定し
 		// ユニークなクエリパラメータを付けてキャッシュを防ぐ
 		var randomIndex = Math.floor(Math.random() * 3); // 0, 1, 2
 		var randomServerUrl = this.serverUrls[randomIndex];
 		var uniqueQuery = "?" + ((new Date()).getTime() / 1000);
-		
 		// GET
 		$.get(randomServerUrl + uniqueQuery, function (json) {
 			// StringだったらJSONでオブジェクトにする
@@ -866,32 +607,15 @@ function TimeOffset () {
 				json.rtt = json.rt - json.it;     // 応答時間
 				json.dif = json.st - (json.it + json.rt) / 2; // JST - PC Clock
 				json.dif = Math.round(json.dif);
-		
-				if (window.queries && window.queries.test == "1" && window.stTimerApp.$test) {
-					var f = window.stTimerApp.dateFormatter.getHourText;
-					var g = window.stTimerApp.dateFormatter.getMinText3;
-					var sign = Math.sign(json.dif) > 0 ? "+" : "-";
-					var strs = [
-						"NICTサーバーへの発信時刻: " + f(new Date(json.it)),
-						"NICTサーバーからの受信時刻: " + f(new Date(json.rt)),
-						"NICTサーバーの時刻: " + f(new Date(json.st)),
-						"送信から受信までにかかった時間: " + g(new Date(json.rtt)),
-						"推定されるサーバー時刻との時差: " + sign + g(new Date(Math.abs(json.dif)))
-					];
-					var str = strs.join("<br>");
-					window.stTimerApp.$test.html(str);
-				}
-				
 				// 結果の格納
 				that.result = json;
 				that.offsetJST = json.dif;
-				
 				// 結果の表示
 				that.consoleOffset(json);
 				callback(json);
 			}
 			else {
-				console.log("✖JSTの取得でエラーが発生しました.");
+				console.log("✖ JSTの取得でエラーが発生しました.");
 			}
 		});
 	};
@@ -911,38 +635,28 @@ function TimeOffset () {
  */
 
 //# StSound ()
-function StSound (urlBase, soundUrls, enable) {
+function StSound (app) {
 	var self = this;
 	
-	// 引数を代入していく
-	this.soundUrlBase = urlBase   || "../tyrano/sounds/";
-	this.soundUrls    = soundUrls || [
-		"bouyomichan/5",
-		"bouyomichan/10",
-		"bouyomichan/30",
-		"bouyomichan/60",
-		"bouyomichan/54321",
-		"gungee/5.mp3",
-		"gungee/10.mp3",
-		"gungee/30.mp3",
-		"gungee/60.mp3",
-		"gungee/54321.mp3",
-		"akira/5.mp3",
-		"akira/10.mp3",
-		"akira/30.mp3",
-		"akira/60.mp3",
-		"akira/54321.mp3",
-		"switch", "click", "manmenmi"
+	this.app          = app;
+	this.isEnabled    = false;
+	this.soundUrlBase = "./sounds/";
+	this.soundUrls    = [
+		"5",
+		"10",
+		"30",
+		"60",
+		"54321",
+		"switch",
+		"click"
 	];
-	this.enable       = enable    || false;
-	this.disable      = false;
 	
 	// 初期化
 	this.volume  = 0.8;
 	this.isMuted = false;
 	this.sources = new Array(this.soundUrls.length);
 	this.buffers = new Array(this.soundUrls.length);
-	this.playing = new Array(this.soundUrls.length, false)
+	this.playing = new Array(this.soundUrls.length, false);
 	this.audioContext = (window.AudioContext || window.webkitAudioContext);
 	this.noAudioContext = false;
 	this.fallbackAudio = document.createElement("audio");
@@ -1035,9 +749,7 @@ function StSound (urlBase, soundUrls, enable) {
 	this.play = function (index, opt) {
 		
 		// サウンドが無効なら即return
-		if (! this.enable || this.disable) return;
-		
-		stTimerApp.isFreeSound = true;
+		if (! this.isEnabled) return;
 		
 		// オプションをデフォルトオプションに統合する
 		opt = $.extend({}, this.defaultOpt, opt);
@@ -1047,14 +759,6 @@ function StSound (urlBase, soundUrls, enable) {
 		
 		// indexが0未満ならば何もできない
 		if (index < 0) return ;
-		
-		/*
-		// 再生中だったら停止する処理を入れようと思ったが
-		// どうも動作がおかしくなるので廃止
-		if (this.playing[index]) {
-			this.stop(index);
-		}
-		*/
 		
 		// _loadを呼び出してbufferの準備ができたら
 		return this._load(index).then(buffer => {
@@ -1106,7 +810,7 @@ function StSound (urlBase, soundUrls, enable) {
 			// 再生を開始する
 			source.start(0);
 		});
-	}
+	};
 	
 	//## stop (index)
 	this.stop = function (index) {
@@ -1127,7 +831,7 @@ function StSound (urlBase, soundUrls, enable) {
 		
 		// AudioContextがなければfallbackを実行
 		if (this.noAudioContext) {
-			fallbackAudio.pause();
+			this.fallbackAudio.pause();
 		}
 	}
 	
@@ -1148,7 +852,7 @@ function StSound (urlBase, soundUrls, enable) {
 		// indexは数値でなければならない
 		var url = this.soundUrlBase + this.soundUrls[index];
 		
-		// urlに.mp3が含まれるなら
+		// urlに.mp3が含まれるなら何もしない
 		if (url.lastIndexOf(".mp3") > -1) ;
 		
 		// .mp3が含まれないなら.wavを足す
@@ -1195,26 +899,28 @@ function StSound (urlBase, soundUrls, enable) {
 			};
 			xhr.send(null);
 		});
-	}
+	};
 	
 	return this;
 }
 
 
-
-window.getWindowWidth = function() {
+//# getWindowWidth()
+function getWindowWidth() {
 	return window.innerWidth ||
 		(document.body ? document.body.clientWidth : false) ||
 		document.documentElement.clientWidth;
-};
+}
 
-window.getWindowHeight = function() {
+//# getWindowHeight()
+function getWindowHeight() {
 	return window.innerHeight ||
 		(document.body ? document.body.clientHeight : false) ||
 		document.documentElement.clientHeight;
-};
+}
 
-window.fitWindow = function () {
+//# fitWindow()
+function fitWindow() {
 	
 	var GAME_WIDTH = 640;
 	var GAME_HEIGHT = 800;
@@ -1231,6 +937,13 @@ window.fitWindow = function () {
 	var bg = document.getElementById("background");
 	bg.style.width = windowWidth + "px";
 	bg.style.height = windowHeight + "px";
+	var bgHeight = windowHeight;
+	var bgWidth = Math.floor(windowHeight * 409 / 230);
+	if (bgWidth < windowWidth) {
+		bgWidth = windowWidth;
+		bgHeight = Math.floor(windowWidth * 230 / 409);
+	}
+	bg.style.backgroundSize = bgWidth + "px " + bgHeight + "px";
 	
 	// wapperDivのスタイルにtransformを設定
 	// scaleでウィンドウにぴったりさせる translateX, Yでウィンドウ中央に置く
@@ -1248,17 +961,17 @@ window.fitWindow = function () {
 		// 幅をぴっちりさせる
 		gameScale = windowWidth /  GAME_WIDTH;
 		// 高さが余っているので縦に余白が生じる
-		var margin = (windowHeight - GAME_HEIGHT * gameScale) / 2;
+		margin = (windowHeight - GAME_HEIGHT * gameScale) / 2;
 		gameOffsetLeft = 0;
 		gameOffsetTop = Math.floor(margin);
 	}
 	setTransform(document.getElementById("main"), gameOffsetLeft, gameOffsetTop, gameScale);
 	function setTransform (elm, x, y, scale) {
-		var scale = "scale(" + scale + ")";
-		var x = "translateX(" + x + "px)";
-		var y = "translateY(" + y + "px)";
+		scale = "scale(" + scale + ")";
+		x = "translateX(" + x + "px)";
+		y = "translateY(" + y + "px)";
 		var css = [x, y, scale].join(" ");
 		elm.style.transform = css;
 		elm.style.transformOrigin = "left top";
-	};
+	}
 };
