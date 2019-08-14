@@ -28,7 +28,11 @@ function init () {
 		var L = 100 - R;
 		var T = 100 - B;
 		setTimeout(function() {
-			$("#mask_obake").css("transform", "scale(5) rotate(720deg)");
+			$("#mask_obake").css({
+				"left": Math.floor(windowW / 2 - 400) + "px",
+				"top": Math.floor(windowH / 2 - 400) + "px",
+				"transform": "scale(5) rotate(720deg)"
+			});
 			$("#mask_black_left"  ).css("clip-path", "polygon(-100% 0%, "+L+"% 0%, "+L+"% 100%, -100% 100%)");
 			$("#mask_black_right" ).css("clip-path", "polygon("+R+"% 0%, 200% 0%, 200% 100%, "+R+"% 100%)");
 			$("#mask_black_top"   ).css("clip-path", "polygon(0% -100%, 100% -100%, 100% "+T+"%, 0% "+T+"%)");
@@ -908,21 +912,23 @@ function StSound (app) {
 
 //# getWindowWidth()
 function getWindowWidth() {
-	return window.innerWidth ||
-		(document.body ? document.body.clientWidth : false) ||
-		document.documentElement.clientWidth;
+	var w1 = window ? window.innerWidth : 0;
+	var w2 = document.documentElement ? document.documentElement.clientWidth : 0;
+	var w3 = document.body ? document.body.clientWidth : 0;
+	return w1 || w2 || w3;
 }
 
 //# getWindowHeight()
 function getWindowHeight() {
-	return window.innerHeight ||
-		(document.body ? document.body.clientHeight : false) ||
-		document.documentElement.clientHeight;
+	var h1 = window ? window.innerHeight : 0;
+	var h2 = document.documentElement ? document.documentElement.clientHeight : 0;
+	var h3 = document.body ? document.body.clientHeight : 0;
+	return h1 || h2 || h3;
+		
 }
 
 //# fitWindow()
 function fitWindow() {
-	
 	var GAME_WIDTH = 640;
 	var GAME_HEIGHT = 800;
 	var GAME_ASPECT = GAME_WIDTH / GAME_HEIGHT;
@@ -935,9 +941,7 @@ function fitWindow() {
 	var windowHeight = getWindowHeight();
 	var windowAspect = windowWidth / windowHeight;
 	
-	var bg = document.getElementById("background");
-	bg.style.width = windowWidth + "px";
-	bg.style.height = windowHeight + "px";
+	var bg = document.getElementById("bg");
 	var bgHeight = windowHeight;
 	var bgWidth = Math.floor(windowHeight * 409 / 230);
 	if (bgWidth < windowWidth) {
