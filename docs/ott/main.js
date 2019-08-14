@@ -33,6 +33,7 @@ function init () {
 			$("#mask_black_right" ).css("clip-path", "polygon("+R+"% 0%, 200% 0%, 200% 100%, "+R+"% 100%)");
 			$("#mask_black_top"   ).css("clip-path", "polygon(0% -100%, 100% -100%, 100% "+T+"%, 0% "+T+"%)");
 			$("#mask_black_bottom").css("clip-path", "polygon(0% "+B+"%, 100% "+B+"%, 100% 200%, 0% 200%)");
+			$("#mask_white").css("opacity", "0");
 		}, 100);
 		setTimeout(function() {
 			$("#mask_wrapper").css("opacity", "0");
