@@ -430,6 +430,42 @@ function SmCountApp () {
 		if (this.$wrapper.attr("is_set_event") != "true") {
 			this.$wrapper.attr("is_set_event", "true");
 		
+			// キーボード操作対応
+			$(document).on("keydown.smcount", function(e) {
+				switch(e.key) {
+					case " ":          // スペースキー：Start/Stop
+						app.$buttonStart.trigger(app.clickEvent);
+						break;
+					case "ArrowLeft":  // ←キー：＜
+						app.$buttonKasoku.filter(".next1").filter(".prev").trigger(app.clickEvent);
+						break;
+					case "ArrowRight": // →キー：＞
+						app.$buttonKasoku.filter(".next1").not(".prev").trigger(app.clickEvent);
+						break;
+					case "ArrowUp":    // ↑キー：<<
+						app.$buttonKasoku.filter(".next2").filter(".prev").trigger(app.clickEvent);
+						break;
+					case "ArrowDown":  // ↓キー：>>
+						app.$buttonKasoku.filter(".next2").not(".prev").trigger(app.clickEvent);
+						break;
+					case "B":          // Shift+Bキー：<<<（隠し）
+						app.$buttonKasoku.filter(".next3").filter(".prev").trigger(app.clickEvent);
+						break;
+					case "N":          // Shift+Nキー：>>>（隠し）
+						app.$buttonKasoku.filter(".next3").not(".prev").trigger(app.clickEvent);
+						break;
+					case "l":          // Lキー：ノルマLow
+						app.$settingNorma.filter("[norma='low']").trigger(app.clickEvent);
+						break;
+					case "m":          // Mキー：ノルマMiddle
+						app.$settingNorma.filter("[norma='middle']").trigger(app.clickEvent);
+						break;
+					case "h":          // Hキー：ノルマHigh
+						app.$settingNorma.filter("[norma='high']").trigger(app.clickEvent);
+						break;
+				}
+			});
+			
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
 				var $this = $(this);
@@ -749,6 +785,7 @@ function SmCountApp () {
 		if (this.isPlaying) {
 			this.stop();
 		} else clearTimeout(this.timeoutId);
+		$(document).off("keydown.smcount"); // 重複登録（2度押し発生）を防止
 	};
 	
 	//## resetApp ()
