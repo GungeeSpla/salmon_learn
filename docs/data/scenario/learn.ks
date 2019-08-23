@@ -683,6 +683,21 @@ var STFEST_DATA = [
 		css            : {
 			                 "text-shadow": "5px 5px 5px black"
 		                 }
+	},
+	{
+		name           : "pst",
+		buttonTitle    : "PST<br>ver.",
+		buttonGraphic  : "stfest_button.png",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1, 23, 21, 0, 0),
+		endDate        : new Date(2019, 8 -1, 23, 26, 0, 0),
+		isShowingButton: true,
+		bgStorage      : "GT_bg.jpg",
+		title          : "PST祭り (ST+1分) ",
+		offset         : 1,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
 	}
 ];
 
