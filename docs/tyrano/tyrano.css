@@ -1982,3 +1982,148 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 	.alert_inner input.input_ok:focus {
 		outline: 0;
 	}
+
+
+
+
+
+
+
+
+
+
+
+/*             */
+/* Marty Sheet */
+/*             */
+.marty_sheet {
+	width: 640px;
+	position: absolute;
+	left: 0;
+	top 0;
+	color: #FFF;
+	height: 960px;
+	font-weight: bold;
+}
+	.marty_sheet .controler {
+		position: absolute;
+		top: 670px;
+		left: 0px;
+	}
+		.marty_sheet .controler .page_buttons {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 640px;
+			border-radius: 30px;
+			overflow: hidden;
+		}
+		.marty_sheet .controler .stage_buttons {
+			position: absolute;
+			left: 0;
+			top: 80px;
+			width: 640px;
+			border-radius: 30px;
+			overflow: hidden;
+		}
+			.marty_sheet .controler .page_buttons .button {
+				width: 320px;
+				font-size: 17px;
+				font-weight: bold;
+			}
+			.marty_sheet .controler .stage_buttons .button {
+				width: 128px;
+				font-size: 17px;
+			}
+			.marty_sheet .controler .button {
+				cursor: pointer;
+				display: inline-block;
+				color: #cbb;
+				background: #660f0f url(./images/ikaling_bg_pattern_03.png) 50%;
+				background-size: 80px 80px;
+				text-align: center;
+				height: 60px;
+				line-height: 60px;
+			}
+			.marty_sheet .controler .selected {
+				color: #fff;
+				background: #c42323 url(./images/ikaling_bg_pattern_03.png) 50%;
+			}
+		
+	.marty_sheet h2 {
+		padding: 10px 0;
+		width: 640px;
+		color: #39e464;
+	    background: #191919 url(./images/ikaling_bg_pattern_02.png) 50%;
+	    background-size: 80px 80px;
+		text-align: center;
+		font-weight: bold;
+    	font-size: 24px;
+	}
+
+	.marty_sheet .score_card {
+		font-weight: bold;
+		border-radius: 40px;
+		overflow: hidden;
+		font-size: 22px;
+		margin: 20px 50px;
+		width: 540px;
+		
+	}
+
+		.marty_sheet .score_card_header {
+			padding: 20px 0 5px;
+		    color: #ff7500;
+		    background: #191919 url(./images/ikaling_bg_pattern_03.png) 50%;
+		    background-size: 80px 80px;
+		    text-shadow: 1px 1px 0 #000;
+		    margin-bottom: 0;
+		    text-align: center;
+		}
+
+		.marty_sheet table {
+			border-collapse: collapse;
+			margin-top: 0;
+			width: 100%;
+			background: #d6e200 url(./images/ikaling_bg_pattern_03.png) 50%;
+		    background-size: 40px 40px;
+		    color: #000;
+			text-align: center;
+		}
+
+		.marty_sheet td,
+		.marty_sheet th {
+			padding: 4px;
+			font-weight: bold;
+			text-align: center;
+		}
+		.marty_sheet th {
+		    text-shadow: 1px 1px 1px #ff7500;
+		}
+
+		.marty_sheet tr,
+		.marty_sheet thead {
+			border-bottom: 2px dashed rgba(0,0,0,.3);
+		}
+		.marty_sheet tr:last-child {
+			border-bottom: none;
+		}
+
+
+@font-face {
+    font-family: Splatoon1;
+    src: url(./fonts/s1kanji.woff2) format("woff2"), url(./fonts/s1kanji.woff) format("woff")
+}
+@font-face {
+    font-family: Splatoon1;
+    src: url(./fonts/s1kana.woff2) format("woff2"), url(./fonts/s1kana.woff) format("woff")
+}
+@font-face {
+    font-family: Splatoon2;
+    src: url(./fonts/s2kanji.woff2) format("woff2"), url(./fonts/s2kanji.woff) format("woff")
+}
+@font-face {
+    font-family: Splatoon2;
+    src: url(./fonts/s2kana.woff2) format("woff2"), url(./fonts/s2kana.woff) format("woff")
+}
+

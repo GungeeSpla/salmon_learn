@@ -299,6 +299,8 @@ stTimerApp.specialStTitle = "";
 [button fix=true graphic=panel_6ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_6 cond="sf.panel == 6" name=fix_sonota_item]
 [button fix=true graphic=panel_10a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel != 10" name=fix_sonota_item]
 [button fix=true graphic=panel_10ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
+[button fix=true graphic=panel_11a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel != 11" name=fix_sonota_item]
+[button fix=true graphic=panel_11ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel == 11" name=fix_sonota_item]
 
 [return]
 
@@ -1247,6 +1249,157 @@ location.reload(true);
 [endhtml]
 [iscript]
 settingApp.startApp();
+[endscript]
+[return]
+
+
+
+
+;=======================================
+*Panel_11
+;=======================================
+[eval exp="sf.panel = 11"]
+[call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=0 time=0]
+[html name=html_space]
+<div class="marty_sheet">
+		<h2 class="stage_name">Salmon Run Recordsにアクセス中</h3>
+		<div class="page_1">
+			<div class="score_card">
+				<p class="score_card_header">3wave合計記録</p>
+				<table>
+					<thead>
+						<tr>
+							<th style="width: 20%">夜あり</th>
+							<th style="width: 20%">昼のみ</th>
+							<th style="width: 20%">金姫</th>
+							<th style="width: 20%">赤</th>
+							<th style="width: 20%">赤姫</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="yoruari" >　</td>
+							<td class="hirunomi">　</td>
+							<td class="hime"    >　</td>
+							<td class="aka"     >　</td>
+							<td class="aka_hime">　</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="score_card">
+				<p class="score_card_header">1wave記録</p>
+				<table>
+					<thead>
+						<tr>
+							<th style="width: 25%"></th>
+							<th style="width: 25%">通常</th>
+							<th style="width: 25%">満潮</th>
+							<th style="width: 25%">干潮</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>昼</th>
+							<td class="hiru_tsujo "></td>
+							<td class="hiru_mancho"></td>
+							<td class="hiru_kancho"></td>
+						</tr>
+						<tr>
+							<th>ラッシュ</th>
+							<td class="hikaribae_tsujo "></td>
+							<td class="hikaribae_mancho"></td>
+							<td class="hikaribae_kancho"></td>
+						</tr>
+						<tr>
+							<th>グリル</th>
+							<td class="guriru_tsujo "></td>
+							<td class="guriru_mancho"></td>
+							<td class="guriru_kancho"></td>
+						</tr>
+						<tr>
+							<th>間欠泉</th>
+							<td class="kanketsusen_tsujo "></td>
+							<td class="kanketsusen_mancho"></td>
+							<td class="kanketsusen_kancho"></td>
+						</tr>
+						<tr>
+							<th>霧</th>
+							<td class="kiri_tsujo "></td>
+							<td class="kiri_mancho"></td>
+							<td class="kiri_kancho"></td>
+						</tr>
+						<tr>
+							<th>ハコビヤ</th>
+							<td class="hakobiya_tsujo "></td>
+							<td class="hakobiya_mancho"></td>
+							<td class="hakobiya_kancho"></td>
+						</tr>
+						<tr>
+							<th>ドスコイ</th>
+							<td class="dosukoi_tsujo "></td>
+							<td class="dosukoi_mancho"></td>
+							<td class="dosukoi_kancho"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="page_2" style="display: none;">
+			<div class="score_card">
+				<p class="score_card_header">野良記録</p>
+				<table>
+					<thead>
+						<tr>
+							<th style="width: 25%">金</th>
+							<th style="width: 25%">金姫</th>
+							<th style="width: 25%">赤</th>
+							<th style="width: 25%">赤姫</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="nora"         ></td>
+							<td class="nora_hime"    ></td>
+							<td class="aka_nora"     ></td>
+							<td class="aka_nora_hime"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="score_card">
+				<p class="score_card_header">野良2記録</p>
+				<table>
+					<thead>
+						<tr>
+							<th style="width: 33%">金</th>
+							<th style="width: 33%">金姫</th>
+							<th style="width: 34%">赤</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="norani"     >195</td>
+							<td class="norani_hime">175</td>
+							<td class="aka_norani" >135</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="controler">
+			<div class="page_buttons">
+				<div class="button page_1_button" val="page_1">フレンド記録</div><div class="button page_2_button" val="page_2">野良記録</div>
+			</div>
+			<div class="stage_buttons">
+				<div class="button stage_1_button" val="damu">シェケナダム</div><div class="button stage_2_button" val="fune">ドン･ブラコ</div><div class="button stage_3_button" val="toba">シャケト場</div><div class="button stage_4_button" val="toki">トキシラズ</div><div class="button stage_5_button" val="pora">ポラリス</div>
+			</div>
+		</div>
+	</div>
+[endhtml]
+[iscript]
+martySheet.make();
 [endscript]
 [return]
 
