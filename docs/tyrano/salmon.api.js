@@ -6,8 +6,8 @@ window.WIKIDATA_URL         = "./tyrano/weapons_wikidata.csv?20500";// Wikiに�
 window.WEAPONS_AVERAGE      = {isCalced: false};                    // ブキの各項目の評価の平均値
 window.WEAPONS_STANDARD     = {isCalced: false};                    // ブキの各項目の評価の標準偏差
 window.WEAPONS_HENSACHI     = {};                                   // ブキの各項目の評価の偏差値
-window.SALMON_API_URL       = "https://splamp.info/salmon/api/now"; // APIのURL
-window.STORAGE_KEY_ROTETION = "rotation_data";                      // localStorageに保存する際のキー
+window.SALMON_API_URL       = "https://splamp.info/salmon/api/all"; // APIのURL
+window.STORAGE_KEY_ROTETION = "rotation_data_20700";                // localStorageに保存する際のキー
 window.salmonrunAPI         = new SalmonrunAPI();                   // SalmonrunAPIオブジェクト
 
 //# SalmonrunAPI ()
@@ -23,14 +23,29 @@ function SalmonrunAPI () {
 		.then(resolve)
 		.catch(reject);
 	};
-	//## .render (data)
+	//## .render (data, target)
 	// シフトデータを受け取って結果を描画します
-	this.render = function (data) {
+	this.render = function (data, target) {
 		// 現在時刻が直近のシフトの開始時刻よりも進んでいるならばオープン中である
-		var latestData = data[0];
-		var isOpening = UNIX.getTime() > latestData.start;
-		renderRotation(data[0], $(".salmon_rotation_1"));
-		renderRotation(data[1], $(".salmon_rotation_2"));
+        var isOpening = false;
+        var data1 = null;
+        var data2 = null;
+        if (target == "now") {
+			// 現在のシフトを描画する場合
+            data1 = getLatestRotation(data, 0)
+            data2 = getLatestRotation(data, 1)
+    		// 現在時刻が直近のシフトの開始時刻よりも進んでいるならばオープン中である
+    		isOpening = UNIX.getTime() > data1.start;
+        } else {
+			// 特定のシフトを描画する場合
+            data1 = data[target];
+        }
+        if (data1 != null)  {
+            renderRotation(data1, $(".salmon_rotation_1"));
+        }
+        if (data2 != null)  {
+            renderRotation(data2, $(".salmon_rotation_2"));
+        }
 		$(".salmon_rotation_cloned").removeClass("hidden");
 		// サーモンランが現在オープン中の場合はアニメーション
 		if (isOpening) {
@@ -48,6 +63,11 @@ function SalmonrunAPI () {
 		      }
 		    });
 		}
+	};
+	//## .hideRotation
+	// シフトデータの結果を非表示にします
+	this.hideRotation = function () {
+		$(".salmon_rotation_cloned").addClass("hidden");
 	};
 	//## .cloneRotationObj (name, x, y, w, h)
 	// シフト表示用のDOMをクローニングします
@@ -188,7 +208,7 @@ function SalmonrunAPI () {
 			salmonrunRater.evalSalmonHistory();
 			// シフトデータが取得済み、かつ、現在時刻が直近のシフトの終了時刻より前であるならば
 			// 更新の必要がないのでresolve
-			if (ROTATION_DATA && UNIX.getTime() < ROTATION_DATA[0].end) {
+			if (ROTATION_DATA && UNIX.getTime() < getLatestRotation(ROTATION_DATA, 0).end) {
 				if (typeof resolve == "function") resolve(ROTATION_DATA);
 			}
 			// それ以外
@@ -203,7 +223,7 @@ function SalmonrunAPI () {
 					var data = cache_data;
 					if (typeof cache_data == "string") data = JSON.parse(cache_data);
 					// 現在時刻が直近のシフトの終了時刻より前であるならば期限は切れていない
-					if (UNIX.getTime() < data[0].end) {
+					if (UNIX.getTime() < getLatestRotation(data, 0).end) {
 						// キャッシュが有効なのでisCachedをtrueにしてresolve
 						isCached = true;
 						console.log("✅ サーモンランAPIは実行しませんでした.");
@@ -219,6 +239,9 @@ function SalmonrunAPI () {
 					// $.get()する
 					$.get(SALMON_API_URL, {dataType: "text"}).done(function (data) {
 						console.log("✅ サーモンランAPIを実行してシフトデータを取得しました.");
+						if (typeof data == "string") data = JSON.parse(data);
+						// 全件取得のAPIは最新の5件取得のAPIとシフトデータの新旧の並びが逆順なので、並びを反転させる
+                        data.reverse()
 						var json_data = data;
 						if (typeof data != "string") json_data = JSON.stringify(data);
 						// localStorageに入れる
@@ -354,5 +377,10 @@ function SalmonrunAPI () {
 		});
 		return jsonObject;
 	}
+	//## getLatestRotation (data, index)
+    // 直近のシフトを示すシフトデータを取得する
+    function getLatestRotation(data, index) {
+        return data[data.length - 5 + index];
+    }
 	return this;
 }

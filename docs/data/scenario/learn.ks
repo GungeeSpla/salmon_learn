@@ -301,6 +301,8 @@ stTimerApp.specialStTitle = "";
 [button fix=true graphic=panel_10ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
 [button fix=true graphic=panel_11a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel != 11" name=fix_sonota_item]
 [button fix=true graphic=panel_11ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel == 11" name=fix_sonota_item]
+[button fix=true graphic=panel_12a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel != 12" name=fix_sonota_item]
+[button fix=true graphic=panel_12ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel == 12" name=fix_sonota_item]
 
 [return]
 
@@ -862,8 +864,8 @@ tf.y = -280;
 [ptext layer=0 page=fore text=エラーが発生しました🤔     size=24 bold=bold x=0 y=350 width=640 align=center name=error_message,hidden]
 [ptext layer=0 page=fore text=現在ご利用いただけません🙇 size=24 bold=bold x=0 y=400 width=640 align=center name=error_message,hidden]
 [ptext layer=0 page=fore text=オープン! color=0x22FF22     size=24 bold=bold x=0 y=170 width=640 align=center name=open_title,hidden]
-[glink text=»&nbsp;予報を見る x=1380 y=433 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=0; f.noselect=1"]
-[glink text=»&nbsp;予報を見る x=1380 y=743 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=1; f.noselect=0"]
+[glink text=»&nbsp;予報を見る x=1380 y=433 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=0; f.noselect=1; f.from='now'; f.rotation=0"]
+[glink text=»&nbsp;予報を見る x=1380 y=743 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=1; f.noselect=0; f.from='now'; f.rotation=1"]
 [iscript]
 tf.x = 20;
 tf.y = 120;
@@ -871,7 +873,7 @@ tf.y = 120;
 salmonrunAPI.cloneRotationObj("salmon_rotation_1", 0, 200);
 salmonrunAPI.cloneRotationObj("salmon_rotation_2", 0, 510);
 salmonrunAPI.get(function (data) {
-	salmonrunAPI.render(data);
+	salmonrunAPI.render(data, "now");
 	$(".rotation_eval_button").animate({left: "-=1000"}, 0);
 }, function () {
 	console.error("サーモンランAPIの実行に失敗しました。");
@@ -915,7 +917,11 @@ $(".html_space").appendTo(".0_fore")
 [wait time=1000]
 [iscript]
 var rater = salmonrunRater;
-window.evalData   = ROTATION_DATA[f.select];
+if (f.from == "first") {
+	window.evalData = ROTATION_DATA[f.rotation];
+} else {
+	window.evalData = ROTATION_DATA[ROTATION_DATA.length - 5 + f.rotation];
+}
 window.evalResult = rater.eval(evalData.w1, evalData.w2, evalData.w3, evalData.w4);
 rater.showScore(evalResult.score);
 rater.drawChart(evalResult.radarData);
@@ -1057,7 +1063,8 @@ $(".salmon_rotation_cloned").css({"animation-fill-mode": "none"}).fadeOut(500, f
 $(".button_cover").remove();
 [endscript]
 [jump cond="!tf.end2" target=Panel_3_Eval_Weapon]
-[call target=Panel_3]
+[call cond="f.from=='now'" target=Panel_3]
+[call cond="f.from=='first'" target=Panel_11]
 [s]
 
 ;=======================================
@@ -1170,9 +1177,18 @@ $(".live2d").click(function(){
 	<h2>STの提唱及びSMcountの着想</h2>
 	<p>鮭走情報専 (<a href="https://twitter.com/rayudne75" target="_black">@rayudne75</a>)</p>
 	
-	<h2>その他画像や情報の引用など</h2>
+	<h2>画像や情報の引用など</h2>
 	<p><a href="https://wikiwiki.jp/splatoon2mix/" target="_black">https://wikiwiki.jp/splatoon2mix/</a></p>
 	<p><a href="https://splatoonwiki.org/wiki/" target="_black">https://splatoonwiki.org/wiki/</a></p>
+	
+	<h2>Martyシート</h2>
+	<p>Marty (<a href="https://twitter.com/MartyBubbler" target="_black">@MartyBubbler</a>)</p>
+	
+	<h2>SMcountキーボード操作対応実装</h2>
+	<p>ひげ (<a href="https://twitter.com/larkspur_hige" target="_black">@larkspur_hige</a>)</p>
+	
+	<h2>過去編成の評価実装</h2>
+	<p>にるりゃ (<a href="https://twitter.com/shionitsuke" target="_black">@shionitsuke</a>)</p>
 </div>
 [endhtml]
 [jump target=Panel_4_5]
@@ -1400,6 +1416,116 @@ settingApp.startApp();
 [endhtml]
 [iscript]
 martySheet.make();
+[endscript]
+[return]
+
+
+
+
+;=======================================
+*Panel_12
+;=======================================
+[eval exp="sf.panel = 12"]
+[call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=255 time=0]
+[html name=html_space]
+<div class="st_description" style="height: 640px;">
+<h1>過去シフトの編成評価</h1>
+今までに開催されたサーモンランのシフトにおける
+<br>編成の評価を見ることができます。
+<br>
+<br><b>シフトの開催回（第○○回）</b>を入力してください。
+<form class="input_rotation_no_form">
+<p><img class="tri_left" src="./data/image/tri_left.png">第 <input type="text" class="input_text input_rotation_no" maxlength="4"></input> 回<img class="tri_right" src="./data/image/tri_right.png"></p>
+</form>
+</div>
+[endhtml]
+[glink text=»&nbsp;評価を見る x=1380 y=743 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=0; f.noselect=1; f.from='first'"]
+[iscript]
+tf.x = 20;
+tf.y = 120;
+//changeCurrentFixButton(3);
+salmonrunAPI.cloneRotationObj("salmon_rotation_1", 0, 510);
+var timer = null;
+var isRotationShown = false;
+
+salmonrunAPI.get(function () {
+	// シフトの開催回の入力が止まった後、少し間を開けてからシフトデータを描画する
+	$(".input_rotation_no").on("input", function(event) {
+		var time = 500;
+		if (event.isTrigger) time = 10;
+		if (timer != null) {
+			clearTimeout(timer);
+		}
+		timer = setTimeout(function() {
+			var rotation_no = $(event.target).val();
+			if (!$.isNumeric(rotation_no) || rotation_no <= 0) {
+				// シフトの開催回として向こうな文字列が入力された場合
+				if (isRotationShown) {
+					isRotationShown = false;
+					$(".rotation_eval_button").animate({left: "+=1000"}, 0);
+					salmonrunAPI.hideRotation();
+				}
+				return;
+			}
+			salmonrunAPI.get(function (data) {
+				if (rotation_no > data.length - 3) {
+					// データのないシフトの開催回が入力された場合
+					if (isRotationShown) {
+						isRotationShown = false;
+						$(".rotation_eval_button").animate({left: "+=1000"}, 0);
+						salmonrunAPI.hideRotation();
+					}
+					return;
+				}
+				f.rotation = rotation_no - 1;
+				salmonrunAPI.render(data, rotation_no - 1);
+				if (!isRotationShown) {
+					isRotationShown = true;
+					$(".rotation_eval_button").animate({left: "-=1000"}, 0);
+				}
+			}, function () {
+				console.error("サーモンランAPIの実行に失敗しました。");
+				$(".error_message").fadeIn(0);
+			});
+		}, time);
+	});
+	var num = ROTATION_DATA.length - 4;
+	$(".input_rotation_no").val(num).trigger("input");
+	$(".tri_right").on("click", function(){
+		var val = $(".input_rotation_no").val();
+		var num = parseInt(val);
+		if (!! num) {
+			$(".input_rotation_no").val(++num).trigger("input");
+		}
+	});
+	$(".tri_left").on("click", function(){
+		var val = $(".input_rotation_no").val();
+		var num = parseInt(val);
+		if (!! num && num > 1) {
+			$(".input_rotation_no").val(--num).trigger("input");
+		}
+	});
+    var mousewheelevent = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
+    $(".st_description").on(mousewheelevent,function(e){
+        var num = parseInt($('.wheel').text());
+        e.preventDefault();
+        var delta = e.originalEvent.deltaY ? -(e.originalEvent.deltaY) : e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -(e.originalEvent.detail);
+        if (delta > 0){
+			var val = $(".input_rotation_no").val();
+			var num = parseInt(val);
+			if (!! num && num > 1) {
+				$(".input_rotation_no").val(--num).trigger("input");
+			}
+        } else {
+			var val = $(".input_rotation_no").val();
+			var num = parseInt(val);
+			if (!! num) {
+				$(".input_rotation_no").val(++num).trigger("input");
+			}
+        }
+    });
+});
 [endscript]
 [return]
 

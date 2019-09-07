@@ -2127,3 +2127,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
     src: url(./fonts/s2kana.woff2) format("woff2"), url(./fonts/s2kana.woff) format("woff")
 }
 
+.input_rotation_no {
+    width: 100px;
+    height: 40px;
+    font-weight: bold;
+    font-size: 30px;
+    margin: 15px 5px;
+    text-align: center;
+}
+.input_rotation_no_form {
+    font-size: 30px;	
+}
+.input_rotation_no_form img {
+    width: 35px;
+    transform: translateY(20px);
+    margin: 0 24px;
+    padding: 10px 21px;
+    cursor: pointer;
+}
