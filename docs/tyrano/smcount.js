@@ -61,6 +61,11 @@ function SmCountApp () {
 		this.soundParty["bouyomichan"] = this.createSmSound("bouyomichan", false, "wav");
 		this.soundParty["gungee"]      = this.createSmSound("gungee", false, "mp3");
 		this.soundParty["akira"]       = this.createSmSound("akira", false, "mp3");
+		this.soundParty["st"]          = this.createSmSound("st", false, "mp3");
+		/*
+		this.soundParty["kenshiro"]    = this.createSmSound("kenshiro", false, "mp3");
+		this.soundParty["amane"]       = this.createSmSound("amane", false, "mp3");
+		*/
 		
 		// 使うサウンドを決定
 		this.sound = this.soundParty[settingApp.usingVoice];

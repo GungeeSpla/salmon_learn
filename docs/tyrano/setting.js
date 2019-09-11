@@ -13,6 +13,9 @@ function SettingApp () {
 		isUsableBouyomichanVoice: true,
 		isUsableAkiraVoice: false,
 		isUsableGungeeVoice: false,
+		isUsableStVoice: false,
+		isUsableKenshiroVoice: false,
+		isUsableAmaneVoice: false,
 		usingVoice: "bouyomichan"
 	};
 	
@@ -20,7 +23,10 @@ function SettingApp () {
 	this.voiceNameMap = {
 		"bouyomichan": "棒読みちゃん",
 		"akira": "あきらさん",
-		"gungee": "みどりたまごおじさん"
+		"gungee": "ガンジー",
+		"st": "STさん",
+		"kenshiro": "けんしろさん",
+		"amane": "あまねさん"
 	};
 	
 	// セーブ対象のキー
@@ -28,6 +34,9 @@ function SettingApp () {
 		"isUsableBouyomichan",
 		"isUsableAkiraVoice",
 		"isUsableGungeeVoice",
+		"isUsableStVoice",
+		"isUsableKenshiroVoice",
+		"isUsableAmaneVoice",
 		"usingVoice"
 	];
 	
@@ -65,6 +74,9 @@ function SettingApp () {
 		if (this.isUsableBouyomichanVoice) ret.push("bouyomichan");
 		if (this.isUsableAkiraVoice) ret.push("akira");
 		if (this.isUsableGungeeVoice) ret.push("gungee");
+		if (this.isUsableStVoice) ret.push("st");
+		if (this.isUsableKenshiroVoice) ret.push("kenshiro");
+		if (this.isUsableAmaneVoice) ret.push("amane");
 		return ret;
 	};
 	
@@ -156,7 +168,10 @@ function SettingApp () {
 				// 送信されたパスワードを取得
 				var value = app.$inputPassword.val();
 				// 空白の削除など
-				value = value.replace(/\s*/g, "").replace(/っ/g, "つ").replace(/ぇ/g, "え");
+				value = value.replace(/\s*/g, "")
+				             .replace(/っ/g, "つ")
+				             .replace(/ぇ/g, "え")
+				             .replace(/ぃ/g, "い");
 				// 判定
 				var str = "何も起こりませんでした。";
 				switch (value) {
@@ -167,7 +182,19 @@ function SettingApp () {
 					break;
 				case "みどりのたまご":
 					app.isUsableGungeeVoice = true;
-					str = "おめでとう！<br>「<b>みどりたまごおじさん</b>」ボイスを<br>ゲットしました！"
+					str = "おめでとう！<br>「<b>ガンジー</b>」ボイスを<br>ゲットしました！"
+					break;
+				case "まおうえすていー":
+					app.isUsableStVoice = true;
+					str = "おめでとう！<br>「<b>STさん</b>」ボイスを<br>ゲットしました！"
+					break;
+				case "ぁ":
+					app.isUsableKenshiroVoice = true;
+					str = "おめでとう！<br>「<b>けんしろさん</b>」ボイスを<br>ゲットしました！"
+					break;
+				case "ぁ":
+					app.isUsableAmaneVoice = true;
+					str = "おめでとう！<br>「<b>あまねさん</b>」ボイスを<br>ゲットしました！"
 					break;
 				}
 				// パスワード入力画面を消す
