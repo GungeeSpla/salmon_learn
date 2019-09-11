@@ -169,9 +169,12 @@ function SettingApp () {
 				var value = app.$inputPassword.val();
 				// 空白の削除など
 				value = value.replace(/\s*/g, "")
-				             .replace(/っ/g, "つ")
+				             .replace(/ぁ/g, "あ")
+				             .replace(/ぃ/g, "い")
+				             .replace(/ぅ/g, "う")
 				             .replace(/ぇ/g, "え")
-				             .replace(/ぃ/g, "い");
+				             .replace(/ぉ/g, "お")
+				             .replace(/っ/g, "つ");
 				// 判定
 				var str = "何も起こりませんでした。";
 				switch (value) {
@@ -184,7 +187,9 @@ function SettingApp () {
 					app.isUsableGungeeVoice = true;
 					str = "おめでとう！<br>「<b>ガンジー</b>」ボイスを<br>ゲットしました！"
 					break;
-				case "まおうえすていー":
+				case "まおうのくしゃみ":
+				case "サーモンランタイム":
+				case "さーもんらんたいむ":
 					app.isUsableStVoice = true;
 					str = "おめでとう！<br>「<b>STさん</b>」ボイスを<br>ゲットしました！"
 					break;
