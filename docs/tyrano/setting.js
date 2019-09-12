@@ -174,29 +174,35 @@ function SettingApp () {
 				             .replace(/ぅ/g, "う")
 				             .replace(/ぇ/g, "え")
 				             .replace(/ぉ/g, "お")
-				             .replace(/っ/g, "つ");
+				             .replace(/っ/g, "つ")
+				             .parse();
 				// 判定
 				var str = "何も起こりませんでした。";
 				switch (value) {
-				case "あきらさけがり":
-				case "くあつすまねえ":
+				
+				case "abcdMmpuonqFabctofpuonGdabcdgrpuonqtabctoL":
+				case "abcdghpuonltabcdsKpuonGkabctxmpuonJkabcdgw":
 					app.isUsableAkiraVoice = true;
 					str = "おめでとう！<br>「<b>あきらさん</b>」ボイスを<br>ゲットしました！"
 					break;
-				case "みどりのたまご":
+					
+				case "abctxfpuonJdabctoLpuonJIabcdsnpuomEtabcdzv":
 					app.isUsableGungeeVoice = true;
 					str = "おめでとう！<br>「<b>ガンジー</b>」ボイスを<br>ゲットしました！"
 					break;
-				case "まおうのくしゃみ":
-				case "サーモンランタイム":
-				case "さーもんらんたいむ":
+				
+				case "abctxmpuonqCabcdMKpuonJIabcdghpuonGFabctxrpuomEF":
+				case "abctgrpuofeDabcFxmpuofBuabcFobpuofBuabctzrpuomlCabcFxv":
+				case "abcdznpuofeDabctxKpuomBFabctofpuomBFabcdsnpuonlHabctxL":
 					app.isUsableStVoice = true;
 					str = "おめでとう！<br>「<b>STさん</b>」ボイスを<br>ゲットしました！"
 					break;
+				
 				case "ぁ":
 					app.isUsableKenshiroVoice = true;
 					str = "おめでとう！<br>「<b>けんしろさん</b>」ボイスを<br>ゲットしました！"
 					break;
+				
 				case "ぁ":
 					app.isUsableAmaneVoice = true;
 					str = "おめでとう！<br>「<b>あまねさん</b>」ボイスを<br>ゲットしました！"
