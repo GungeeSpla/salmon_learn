@@ -180,17 +180,20 @@ function SettingApp () {
 				var str = "何も起こりませんでした。";
 				switch (value) {
 				
+				// くあっ
 				case "abcdMmpuonqFabctofpuonGdabcdgrpuonqtabctoL":
 				case "abcdghpuonltabcdsKpuonGkabctxmpuonJkabcdgw":
 					app.isUsableAkiraVoice = true;
 					str = "おめでとう！<br>「<b>あきらさん</b>」ボイスを<br>ゲットしました！"
 					break;
 					
+				// たまご
 				case "abctxfpuonJdabctoLpuonJIabcdsnpuomEtabcdzv":
 					app.isUsableGungeeVoice = true;
 					str = "おめでとう！<br>「<b>ガンジー</b>」ボイスを<br>ゲットしました！"
 					break;
 				
+				// タイム
 				case "abctxmpuonqCabcdMKpuonJIabcdghpuonGFabctxrpuomEF":
 				case "abctgrpuofeDabcFxmpuofBuabcFobpuofBuabctzrpuomlCabcFxv":
 				case "abcdznpuofeDabctxKpuomBFabctofpuomBFabcdsnpuonlHabctxL":
@@ -198,12 +201,17 @@ function SettingApp () {
 					str = "おめでとう！<br>「<b>STさん</b>」ボイスを<br>ゲットしました！"
 					break;
 				
-				case "ぁ":
+				// ウッホ
+				case "abcdgrpuomBFabcdzfpuomcjabctMmpuomidabcFah":
+				case "abcdgrpuomBFabcdzfpuomcjabcdMKpuonikabctxb":
 					app.isUsableKenshiroVoice = true;
 					str = "おめでとう！<br>「<b>けんしろさん</b>」ボイスを<br>ゲットしました！"
 					break;
 				
-				case "ぁ":
+				// いくら
+				case "abcdMLpuonqkabctofpuonJjabcdMLpuonqkabctofpuonJuabctxKpuonltabctoh":
+				case "abctMvpuomqdabcFobpuonJjabcdMLpuonqkabctofpuonJuabctxKpuonltabctoh":
+				case "abctMvpuomqdabcFobpuonJjabctMvpuomqdabcFobpuonJuabctxKpuonltabctoh":
 					app.isUsableAmaneVoice = true;
 					str = "おめでとう！<br>「<b>あまねさん</b>」ボイスを<br>ゲットしました！"
 					break;

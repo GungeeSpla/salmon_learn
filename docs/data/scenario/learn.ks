@@ -416,27 +416,27 @@ if (! sf.sm_count_step) sf.sm_count_step = 1;
 		<div class="smcount_button smcount_translate translate_right" style="display: none;" target="counter">→</div>
 		<div class="smcount_button smcount_translate translate_left"  style="display: none;" target="timer">←</div>
 		<div class="smcount_wrapper">
-			<div class="smcount_button smcount_button_start">Start</div>
+			<div class="smcount_button smcount_button_start" title="Space">Start</div>
 			<canvas class="smcount_canvas" width="260" height="260" style=""></canvas>
 			<div class="smcount_wave_wrapper" style="opacity: 0;">
 				<div class="smcount_wave">Wave<span class="smcount_wave_span">1</span></div>
 				<div class="smcount_sec">100</div>
 			</div>
 			<div class="smcount_kasoku_wrapper" style="opacity: 0;">
-				<div class="smcount_button smcount_button_kasoku  next3 prev" move=" 115000"></div>
-				<div class="smcount_button smcount_button_kasoku  next2 prev" move="   1000"></div>
-				<div class="smcount_button smcount_button_kasoku  next1 prev" move="    200"></div>
-				<div class="smcount_button smcount_button_kasoku  next1"      move="   -200"></div>
-				<div class="smcount_button smcount_button_kasoku  next2"      move="  -1000"></div>
-				<div class="smcount_button smcount_button_kasoku  next3"      move="-115000"></div>
+				<div class="smcount_button smcount_button_kasoku  next3 prev" move=" 115000" title="Shift+N"></div>
+				<div class="smcount_button smcount_button_kasoku  next2 prev" move="   1000" title="↑"></div>
+				<div class="smcount_button smcount_button_kasoku  next1 prev" move="    200" title="←"></div>
+				<div class="smcount_button smcount_button_kasoku  next1"      move="   -200" title="→"></div>
+				<div class="smcount_button smcount_button_kasoku  next2"      move="  -1000" title="↓"></div>
+				<div class="smcount_button smcount_button_kasoku  next3"      move="-115000" title="Shift+B"></div>
 			</div>
 			<div class="smcount_setting_wrapper">
 				<div class="smcount_setting_item">
 					<p>ノルマ <span class="smcount_setting_norma_span">Middle</span></p>
 					<div class="smcount_setting_button_wrapper">
-						<div class="smcount_setting_button smcount_setting_norma no_select" norma="low">Low</div>
-						<div class="smcount_setting_button smcount_setting_norma" norma="middle">Middle</div>
-						<div class="smcount_setting_button smcount_setting_norma no_select" norma="high">High</div>
+						<div title="L" class="smcount_setting_button smcount_setting_norma no_select" norma="low">Low</div>
+						<div title="M" class="smcount_setting_button smcount_setting_norma" norma="middle">Middle</div>
+						<div title="H" class="smcount_setting_button smcount_setting_norma no_select" norma="high">High</div>
 					</div>
 				</div>
 				<div class="smcount_setting_item">

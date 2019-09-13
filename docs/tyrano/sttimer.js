@@ -941,7 +941,6 @@ function StSound (urlBase, soundUrls, enable) {
 		"st/30.mp3",
 		"st/60.mp3",
 		"st/54321.mp3",
-		/*
 		"kenshiro/5.mp3",
 		"kenshiro/10.mp3",
 		"kenshiro/30.mp3",
@@ -952,7 +951,6 @@ function StSound (urlBase, soundUrls, enable) {
 		"amane/30.mp3",
 		"amane/60.mp3",
 		"amane/54321.mp3",
-		*/
 		"switch", "click", "manmenmi"
 	];
 	this.enable       = enable    || false;
