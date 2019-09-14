@@ -175,6 +175,7 @@ function SettingApp () {
 				             .replace(/ぇ/g, "え")
 				             .replace(/ぉ/g, "お")
 				             .replace(/っ/g, "つ")
+				             .replace(/ッ/g, "ツ")
 				             .parse();
 				// 判定
 				var str = "何も起こりませんでした。";
@@ -202,8 +203,8 @@ function SettingApp () {
 					break;
 				
 				// ウッホ
-				case "abcdgrpuomBFabcdzfpuomcjabctMmpuomidabcFah":
-				case "abcdgrpuomBFabcdzfpuomcjabcdMKpuonikabctxb":
+				case "abcdgrpuomBFabcdzfpuomcjabcdMKpuoniIabctxb":
+				case "abcdgrpuomBFabcdzfpuomcjabctMmpuomitabcFah":
 					app.isUsableKenshiroVoice = true;
 					str = "おめでとう！<br>「<b>けんしろさん</b>」ボイスを<br>ゲットしました！"
 					break;
