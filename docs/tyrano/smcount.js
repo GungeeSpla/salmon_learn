@@ -853,7 +853,6 @@ function SmCountApp () {
 			this.margeArray(soundArray, [
 				"spcheck-0", "spcheck-1", "spcheck-2", "spcheck-3"
 			]);
-			console.log(soundArray);
 		}
 		
 		if (extension == "mp3") {
