@@ -1173,8 +1173,6 @@ function StSound (urlBase, soundUrls, enable) {
 		// .mp3が含まれないなら.wavを足す
 		else url += ".wav";
 		
-		console.log(url);
-		
 		// AudioContextがなければfallbackを実行
 		if (this.noAudioContext) {
 			this.fallbackAudio.src = url;
