@@ -2,9 +2,10 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>YouTube専用2窓視聴ツール</title>
+<title>YouTube専用2窓実況支援ツール</title>
 <script type="text/javascript" src="../tyrano/libs/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="youtube-iframe-api.js"></script>
+<script type="text/javascript" src="sound.js"></script>
 <script>
 /*
 function get_api_script () {
@@ -22,9 +23,14 @@ function get_api_script () {
 get_api_script();
 */
 // window.onYouTubeIframeAPIReady = function () {
+window.sound = new Sound();
 window.onload = function () {
 	window.storage_key = 'youtube_2_mado';
 	window.g = {
+		is_enabled_animation: true,
+		animation_time: 300,
+		sound_volume: 100,
+		is_enables_sound: true,
 		is_overlay: true,
 		is_change_mute: true,
 		video_size: {
@@ -52,21 +58,21 @@ window.onload = function () {
 		var class_sub = 'video-sub';
 		var $main = $('.' + class_main);
 		var $sub = $('.' + class_sub);
-		
 		$main.removeClass(class_main);
 		$main.addClass(class_sub);
 		set_video_size_sub($main);
 		if (player[$main.attr('id')] && g.is_change_mute) {
 			player[$main.attr('id')].mute();
 		}
-		
 		$sub.removeClass(class_sub);
 		$sub.addClass(class_main);
 		set_video_size_main($sub);
 		if (player[$sub.attr('id')] && g.is_change_mute) {
 			player[$sub.attr('id')].unMute();
 		}
-		
+		if (g.is_enabled_sound) sound.play(0, {
+			volume: g.sound_volume / 100
+		});
 		$('.video-title').text($sub.attr('title'));
 	});
 	$('#is-change-mute-check').on('change', function () {
@@ -75,7 +81,47 @@ window.onload = function () {
 	});
 	$('#is-overlay-check').on('change', function () {
 		g.is_overlay = $(this).prop('checked');
+		$('#video-size-ok-button').trigger('click');
 		save();
+	});
+	$('#is-enabled-sound-check').on('change', function () {
+		g.is_enabled_sound = $(this).prop('checked');
+		save();
+	});
+	$('#is-enabled-animation-check').on('change', function () {
+		g.is_enabled_animation = $(this).prop('checked');
+		var $video = $('.video');
+		if ($video.size() > 0) {
+			if (g.is_enabled_animation) {
+				$video.css('transition', 'transform ' + g.animation_time + 'ms ease');
+			} else {
+				$video.css('transition', 'none');
+			}
+		}
+		save();
+	});
+	$('.sound-volume-input').on('change', function () {
+		var $this = $(this);
+		if (this.timer_id) clearTimeout(this.timer_id);
+		this.timer_id = setTimeout(function () {
+			var num = parseInt($this.val());
+			if (!isNaN(num)) {
+				g.sound_volume = num;
+				save();
+			}
+		}, 200);
+	});
+	$('.animation-time-input').on('change', function () {
+		var $this = $(this);
+		if (this.timer_id) clearTimeout(this.timer_id);
+		this.timer_id = setTimeout(function () {
+			var num = parseInt($this.val());
+			if (!isNaN(num)) {
+				g.animation_time = num;
+				$('#is-enabled-animation-check').trigger('change');
+				save();
+			}
+		}, 200);
 	});
 	$('#video-size-ok-button').on('click', function () {
 		g.video_size.main.width = parseInt($('.video-width-input').val()) || 1280;
@@ -83,10 +129,17 @@ window.onload = function () {
 		g.video_size.sub.ratio = parseInt($('.video-ratio-input').val()) || 3;
 		g.video_size.sub.width = Math.floor(g.video_size.main.width / g.video_size.sub.ratio);
 		g.video_size.sub.height = Math.floor(g.video_size.main.height / g.video_size.sub.ratio);
+		add_css();
 		var class_main = 'video-main';
 		var class_sub = 'video-sub';
-		var $main = $('.' + class_main);
-		var $sub = $('.' + class_sub);
+		var $main = $('.video-main');
+		var $sub = $('.video-sub');
+		$main.removeClass('overlay');
+		$sub.removeClass('overlay');
+		if (g.is_overlay) {
+			$main.addClass('overlay');
+			$sub.addClass('overlay');
+		}
 		set_video_size_main($main);
 		set_video_size_sub($sub);
 		save();
@@ -106,20 +159,46 @@ window.onload = function () {
 		g.video_size.sub.ratio = parseInt($('.video-ratio-input').val()) || 3;
 		g.video_size.sub.width = Math.floor(g.video_size.main.width / g.video_size.sub.ratio);
 		g.video_size.sub.height = Math.floor(g.video_size.main.height / g.video_size.sub.ratio);
+		add_css();
 		var video_id_1 = get_video_id(g.url_1);
 		var video_id_2 = get_video_id(g.url_2);
 		if (video_id_1) {
 			player['video-1'] = create_iframe(video_id_1, 'video-1', function ($video) {
-				$video.addClass('video-main').addClass('video-1');
+				$video.addClass('video-main video video-1');
+				$video.css({
+					width: g.video_size.main.width + 'px',
+					height: g.video_size.main.height + 'px'
+				});
+				if (g.is_enabled_animation) {
+					$video.css('transition', 'transform ' + g.animation_time + 'ms ease');
+				} else {
+					$video.css('transition', 'none');
+				}
 				$video.attr('title', g.title_1);
+				if (g.is_overlay) {
+					$video.addClass('overlay');
+				}
 				set_video_size_main($video);
+				
 				$('.video-title').text(g.title_1)
 			});
 		}
 		if (video_id_2) {
 			player['video-2'] = create_iframe(video_id_2, 'video-2', function ($video) {
-				$video.addClass('video-sub').addClass('video-2');
+				$video.addClass('video-sub video video-2');
+				$video.css({
+					width: g.video_size.main.width + 'px',
+					height: g.video_size.main.height + 'px'
+				});
+				if (g.is_enabled_animation) {
+					$video.css('transition', 'transform ' + g.animation_time + 'ms ease');
+				} else {
+					$video.css('transition', 'none');
+				}
 				$video.attr('title', g.title_2);
+				if (g.is_overlay) {
+					$video.addClass('overlay');
+				}
 				set_video_size_sub($video);
 			});
 		}
@@ -128,6 +207,47 @@ window.onload = function () {
 	load();
 	console.log('html is ready!');
 };
+function add_css () {
+	$('.add-style').remove();
+	var $head = $('head').eq(0);
+	var css_str = '<style class="add-style">'
+	+'.video-main {'
+	+'transform: ' + create_transform(0, 0, 1)
+	/*
+	+'width: ' + g.video_size.main.width + 'px;'
+	+'height: ' + g.video_size.main.height + 'px;'
+	+'left: ' + 0 + 'px;'
+	+'top: ' + 0 + 'px;'
+	*/
+	+'} '
+	+'.video-sub.overlay {'
+	+'transform: ' + create_transform(0, 0, 1/g.video_size.sub.ratio)
+	/*
+	+'width: ' + g.video_size.sub.width + 'px;'
+	+'height: ' + g.video_size.sub.height + 'px;'
+	+'left: ' + (g.video_size.main.width - g.video_size.sub.width) + 'px;'
+	+'top: ' + (g.video_size.main.height - g.video_size.sub.height) + 'px;'
+	*/
+	+'} '
+	+'.video-sub {'
+	+'transform: ' + create_transform(g.video_size.sub.width, 0, 1/g.video_size.sub.ratio)
+	/*
+	+'width: ' + g.video_size.sub.width + 'px;'
+	+'height: ' + g.video_size.sub.height + 'px;'
+	+'left: ' + g.video_size.main.width + 'px;'
+	+'top: ' + (g.video_size.main.height - g.video_size.sub.height) + 'px;'
+	*/
+	+'} '
+	+'</style>'
+	var $css = $(css_str);
+	$head.append($css);
+	function create_transform (x, y, s) {
+		return ''
+		+ 'translateX(' + x + 'px) '
+		+ 'translateY(' + y + 'px) '
+		+ 'scale(' + s + ');'
+	}
+}
 function save () {
 	localStorage.setItem(storage_key, JSON.stringify(window.g));
 	console.log('saved!');
@@ -144,21 +264,28 @@ function load () {
 	$('.video-width-input').val(g.video_size.main.width);
 	$('.video-height-input').val(g.video_size.main.height);
 	$('.video-ratio-input').val(g.video_size.sub.ratio);
+	$('.sound-volume-input').val(g.sound_volume);
+	$('.animation-time-input').val(g.animation_time);
 	$('#is-change-mute-check').prop('checked', g.is_change_mute);
 	$('#is-overlay-check').prop('checked', g.is_overlay);
+	$('#is-enabled-sound-check').prop('checked', g.is_enabled_sound);
+	$('#is-enabled-animation-check').prop('checked', g.is_enabled_animation).trigger('change');
 	console.log('loaded!');
 }
 function set_video_size_main ($video) {
 	$('.video-title').css('width', g.video_size.main.width + 'px');
 	$('.video-area').css('height', g.video_size.main.height + 'px');
+	/*
 	$video.css({
 		width: g.video_size.main.width + 'px',
 		height: g.video_size.main.height + 'px',
 		left: '0',
 		top: '0'
 	});
+	*/
 }
 function set_video_size_sub ($video) {
+	/*
 	if (g.is_overlay) {
 		$video.css({
 			width: g.video_size.sub.width + 'px',
@@ -174,6 +301,7 @@ function set_video_size_sub ($video) {
 			top: (g.video_size.main.height - g.video_size.sub.height) + 'px'
 		});
 	}
+	*/
 }
 function get_video_id (url) {
 	var video_id = false;
@@ -188,7 +316,6 @@ function get_video_id (url) {
 		var last_url = arr.pop();
 		var params_str = last_url.split('?')[1];
 		var params = params_str.split('&');
-		console.log(params);
 		for (var i = 0; i < params.length; i++) {
 			var param = params[i].split('=');
 			var name = param[0];
@@ -200,8 +327,6 @@ function get_video_id (url) {
 	return video_id;
 }
 function create_iframe (video_id, div_id, call_back) {
-	// var iframe_html = '<iframe class="video" width="1280" height="720" src="https://www.youtube.com/embed/' + video_id + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-	//return $(iframe_html);
 	return new YT.Player(div_id, {
 		width: g.video_size.main.width,
 		height: g.video_size.main.height,
@@ -225,9 +350,6 @@ body {
     color: #FFF;
     margin: 0;
 }
-.url-input {
-	width: 440px;
-}
 .video-area {
 	background: #000;
 	position: relative;
@@ -236,60 +358,70 @@ body {
 	margin-top: 20px;
 	margin-bottom: 40px;
 }
+	.video-title {
+		position: absolute;
+		top: -10px;
+		left: 0px;
+		width: 1280px;
+		font-weight: bold;
+		text-align: center;
+		z-index: 102;
+		text-shadow: 0px 0px 8px #000;
+	}
 	.video-wrapper {
 		position: absolute;
 		top: 0;
 		left: 0;
 	}
-	.video {
-		/*transition: all 500ms ease;*/
-	}
-	.video-main {
-		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: 100;
-	}
-	.video-sub {
-		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: 101;
-	}
-.video-title {
-	position: absolute;
-	top: -10px;
-	left: 0px;
-	width: 1280px;
-	font-weight: bold;
-	text-align: center;
-	z-index: 102;
-	text-shadow: 0px 0px 8px #000;
-}
+		.video {
+			transition: transform .3s ease;
+			transform-origin: right bottom;
+		}
+		.video-main {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 100;
+		}
+		.video-sub {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 101;
+		}
 .button-wrapper {
 	left: 0px;
 	top: 0px;
 }
-.button-wrapper #change-button {
-	width: 200px;
-	height: 50px;
-}
-.number-input {
-	width: 40px;
-}
+	.button-wrapper #change-button {
+		width: 200px;
+		height: 50px;
+	}
+	.number-input {
+		width: 40px;
+	}
+	.url-input {
+		width: 440px;
+	}
 </style>
 </head>
 <body>
-<h2>YouTube専用2窓視聴ツール</h2>
+<h2>YouTube専用2窓実況支援ツール  Ver.1.0.1</h2>
 <div class="button-wrapper">
 	<p>URL1 <input class="url-input url-input-1" type="text" val="" placeholder="https://www.youtube.com/watch?v=... OR https://youtu.be/..."> TITLE1 <input class="title-input title-input-1" type="text" val="" placeholder="Aさん視点"></p>
-	<p>URL2 <input class="url-input url-input-2" type="text" val="" placeholder="https://www.youtube.com/watch?v=... OR https://youtu.be/..."> TITLE2 <input class="title-input title-input-2" type="text" val="" placeholder="Bさん視点"> <button id="url-ok-button">URLとTITLEの決定</button></p>
-	<p>メイン画面の幅 <input class="video-width-input number-input" type="text" > 高さ <input class="video-height-input number-input" type="text" > サブ画面の比率 <input class="video-ratio-input number-input" type="text" >分の1
+	<p>URL2 <input class="url-input url-input-2" type="text" val="" placeholder="https://www.youtube.com/watch?v=... OR https://youtu.be/..."> TITLE2 <input class="title-input title-input-2" type="text" val="" placeholder="Bさん視点"> <button id="url-ok-button">URLとTITLEを決定して動画を見る</button></p>
+	<p>メイン画面の幅 <input class="video-width-input number-input" type="text" > 高さ <input class="video-height-input number-input" type="text" > サブ画面の比率 <input class="video-ratio-input number-input" type="text" > 分の1 <button id="video-size-ok-button">画面設定を反映する</button>
 	<p><label for="is-overlay-check">
 	<input id="is-overlay-check" type="checkbox"> サブ画面をメイン画面の上に重ねる
-	</label> <button id="video-size-ok-button">画面設定の反映</button></p>
+	</label></p>
 	<p><label for="is-change-mute-check">
-	<input id="is-change-mute-check" type="checkbox"> 視点入れ替えと同時に音声のミュートも入れ替える
+	<input id="is-change-mute-check" type="checkbox"> 視点入れ替え時にサブ画面をミュートにしメイン画面をミュート解除する
+	</label></p>
+	<p><label for="is-enabled-sound-check">
+	<input id="is-enabled-sound-check" type="checkbox"> 視点入れ替え時に効果音を鳴らす 音量 <input class="sound-volume-input number-input" type="text" > ％
+	</label></p>
+	<p><label for="is-enabled-animation-check">
+	<input id="is-enabled-animation-check" type="checkbox"> 視点入れ替え時にアニメーションする 時間 <input class="animation-time-input number-input" type="text" > ミリ秒
 	</label></p>
 	<button id="change-button">視点入れ替え</button>
 </div>
