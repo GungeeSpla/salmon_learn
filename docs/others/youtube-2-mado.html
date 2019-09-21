@@ -134,16 +134,16 @@ function load () {
 	var g_str = localStorage.getItem(storage_key);
 	if (g_str) {
 		$.extend(true, window.g, JSON.parse(g_str));
-		$('.url-input-1').val(g.url_1);
-		$('.url-input-2').val(g.url_2);
-		$('.title-input-1').val(g.title_1);
-		$('.title-input-2').val(g.title_2);
-		$('.video-width-input').val(g.video_size.main.width);
-		$('.video-height-input').val(g.video_size.main.height);
-		$('.video-ratio-input').val(g.video_size.sub.ratio);
-		$('#is-change-mute-check').prop('checked', g.is_change_mute);
-		$('#is-overlay-check').prop('checked', g.is_overlay);
 	}
+	$('.url-input-1').val(g.url_1);
+	$('.url-input-2').val(g.url_2);
+	$('.title-input-1').val(g.title_1);
+	$('.title-input-2').val(g.title_2);
+	$('.video-width-input').val(g.video_size.main.width);
+	$('.video-height-input').val(g.video_size.main.height);
+	$('.video-ratio-input').val(g.video_size.sub.ratio);
+	$('#is-change-mute-check').prop('checked', g.is_change_mute);
+	$('#is-overlay-check').prop('checked', g.is_overlay);
 	console.log('loaded!');
 }
 function set_video_size_main ($video) {
