@@ -65,6 +65,7 @@ function SmCountApp () {
 		this.soundParty["st"]          = this.createSmSound("st", false, "mp3");
 		this.soundParty["kenshiro"]    = this.createSmSound("kenshiro", false, "mp3");
 		this.soundParty["amane"]       = this.createSmSound("amane", false, "mp3");
+		this.soundParty["micaera"]     = this.createSmSound("micaera", false, "mp3");
 		
 		// 使うサウンドを決定
 		this.sound = this.soundParty[settingApp.usingVoice];
@@ -89,7 +90,7 @@ function SmCountApp () {
 				setTimeout(function () {
 					app.isBookedStop = false;
 					app.isPlaying = true;
-					app.$buttonStart.trigger(app.clickEvent);
+					app.$buttonStart.filter(".wave_1").trigger(app.clickEvent);
 					// STタイマーと併用する場合
 					// STタイマーの画面に遷移する
 					if (app.isUseStTimer) {
@@ -1007,7 +1008,7 @@ function SmCountApp () {
 				"55": "",
 				"54": "norma",
 				"53": "",
-				"52": "3",
+				"52": "",
 				"51": "2",
 				"50": "1",
 				"49": "49b",

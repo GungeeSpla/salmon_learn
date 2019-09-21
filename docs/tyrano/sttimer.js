@@ -951,6 +951,11 @@ function StSound (urlBase, soundUrls, enable) {
 		"amane/30.mp3",
 		"amane/60.mp3",
 		"amane/54321.mp3",
+		"micaera/5.mp3",
+		"micaera/10.mp3",
+		"micaera/30.mp3",
+		"micaera/60.mp3",
+		"micaera/54321.mp3",
 		"switch", "click", "manmenmi"
 	];
 	this.enable       = enable    || false;

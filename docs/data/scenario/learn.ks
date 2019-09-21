@@ -1248,7 +1248,7 @@ location.reload(true);
 				<input type="button" class="input_ok" value="OK"></input>
 			</div>
 		</div>
-		<h2>SMcount</h2>
+		<h2>SMcount/STタイマー</h2>
 		<div class="learn_setting_item">
 			<div class="learn_setting_item_title">読み上げ</div>
 			<div class="learn_setting_item_prof">棒読みちゃん</div>

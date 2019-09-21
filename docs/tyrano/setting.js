@@ -16,6 +16,7 @@ function SettingApp () {
 		isUsableStVoice: false,
 		isUsableKenshiroVoice: false,
 		isUsableAmaneVoice: false,
+		isUsableMicaeraVoice: false,
 		usingVoice: "bouyomichan"
 	};
 	
@@ -26,7 +27,8 @@ function SettingApp () {
 		"gungee": "ガンジー",
 		"st": "STさん",
 		"kenshiro": "けんしろさん",
-		"amane": "あまねさん"
+		"amane": "あまねさん",
+		"micaera": "ミカエラさん",
 	};
 	
 	// セーブ対象のキー
@@ -37,6 +39,7 @@ function SettingApp () {
 		"isUsableStVoice",
 		"isUsableKenshiroVoice",
 		"isUsableAmaneVoice",
+		"isUsableMicaeraVoice",
 		"usingVoice"
 	];
 	
@@ -77,6 +80,7 @@ function SettingApp () {
 		if (this.isUsableStVoice) ret.push("st");
 		if (this.isUsableKenshiroVoice) ret.push("kenshiro");
 		if (this.isUsableAmaneVoice) ret.push("amane");
+		if (this.isUsableMicaeraVoice) ret.push("micaera");
 		return ret;
 	};
 	
@@ -216,6 +220,13 @@ function SettingApp () {
 					app.isUsableAmaneVoice = true;
 					str = "おめでとう！<br>「<b>あまねさん</b>」ボイスを<br>ゲットしました！"
 					break;
+				
+				// かんな
+				case "abcdNrpuonGFabctxKpuonJCabcdgnpuomBFabcdNm":
+					app.isUsableMicaeraVoice = true;
+					str = "おめでとう！<br>「<b>ミカエラさん</b>」ボイスを<br>ゲットしました！"
+					break;
+				
 				}
 				// パスワード入力画面を消す
 				app.$passwordWrapper.addClass("setting_hidden");
