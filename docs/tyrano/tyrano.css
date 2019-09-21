@@ -1374,8 +1374,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 .smcount_button_kasoku.next2 {
 	transform: scale(0.8) translate(-10px);
 }
+.smcount_button_kasoku.next2.smcount_button_active {
+	transform: scale(0.9) translate(-10px);
+}
 .smcount_button_kasoku.next2.prev {
 	transform: scale(0.8) translate(10px) rotate(180deg);
+}
+.smcount_button_kasoku.next2.prev.smcount_button_active {
+	transform: scale(0.9) translate(10px) rotate(180deg);
 }
 .smcount_button_kasoku.next3 {
 	transform: scale(0.6) translate(-55px);
@@ -1415,6 +1421,36 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
     line-height: 260px;
     border-radius: 50%;
     background: #da5414;
+}
+.smcount_button_start.wave_2 {
+    position: absolute;
+    left: 70px;
+    top: 410px;
+    text-align: center;
+    width: 120px;
+    height: 120px;
+    font-size: 24px;
+    line-height: 120px;
+    border-radius: 50%;
+    background: #9b3c0f;
+}
+.smcount_button_start.wave_2.started {
+	display: none;
+}
+.smcount_button_start.wave_3.started {
+	display: none;
+}
+.smcount_button_start.wave_3 {
+    position: absolute;
+    left: 450px;
+    top: 410px;
+    text-align: center;
+    width: 120px;
+    height: 120px;
+    font-size: 24px;
+    line-height: 120px;
+    border-radius: 50%;
+    background: #9b3c0f;
 }
 .smcount_button_start.started {
 	position: absolute;

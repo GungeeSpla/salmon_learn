@@ -416,7 +416,9 @@ if (! sf.sm_count_step) sf.sm_count_step = 1;
 		<div class="smcount_button smcount_translate translate_right" style="display: none;" target="counter">→</div>
 		<div class="smcount_button smcount_translate translate_left"  style="display: none;" target="timer">←</div>
 		<div class="smcount_wrapper">
-			<div class="smcount_button smcount_button_start" title="Space">Start</div>
+			<div class="smcount_button smcount_button_start wave_1" wave_num="1" title="Space">Start</div>
+			<div class="smcount_button smcount_button_start wave_2" wave_num="2" title="Space">Wave2</div>
+			<div class="smcount_button smcount_button_start wave_3" wave_num="3" title="Space">Wave3</div>
 			<canvas class="smcount_canvas" width="260" height="260" style=""></canvas>
 			<div class="smcount_wave_wrapper" style="opacity: 0;">
 				<div class="smcount_wave">Wave<span class="smcount_wave_span">1</span></div>

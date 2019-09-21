@@ -7,6 +7,7 @@ function SmCountApp () {
 	
 	var app = this;
 	
+	this.startWave       = 1;
 	this.uniqueSoundNames = [];
 	this.noSoundName_    = "bgmtest.mp3";
 	this.noSoundName     = "nosound.mp3";
@@ -414,6 +415,8 @@ function SmCountApp () {
 		this.$wave          = $(".smcount_wave").find(".smcount_wave_span");
 		this.$sec           = $(".smcount_sec");
 		this.$buttonStart        = $(".smcount_button_start");
+		this.$buttonStart2       = $(".smcount_button_start.wave_2");
+		this.$buttonStart3       = $(".smcount_button_start.wave_3");
 		this.$buttonKasoku       = $(".smcount_button_kasoku");
 		this.$settingNormaSpan   = $(".smcount_setting_norma_span");
 		this.$settingNorma       = $(".smcount_setting_norma");
@@ -440,7 +443,7 @@ function SmCountApp () {
 			$(document).on("keydown.smcount", function(e) {
 				switch(e.key) {
 					case " ":          // スペースキー：Start/Stop
-						app.$buttonStart.trigger(app.clickEvent);
+						app.$buttonStart.filter(".wave_1").trigger(app.clickEvent);
 						break;
 					case "ArrowLeft":  // ←キー：＜
 						app.$buttonKasoku.filter(".next1").filter(".prev").trigger(app.clickEvent);
@@ -475,6 +478,9 @@ function SmCountApp () {
 			// スタートボタン
 			this.$buttonStart.on(this.clickEvent, function (e) {
 				var $this = $(this);
+				
+				var waveNum = $this.attr("wave_num");
+				app.startWave = parseInt(waveNum);
 				
 				// stopが予約されている場合何もしない
 				if (app.isBookedStop) return;
@@ -518,7 +524,7 @@ function SmCountApp () {
 					className = "started";
 				}
 				
-				app.$buttonStart.text(text);
+				app.$buttonStart.filter(".wave_1").text(text);
 				app.$buttonStart.removeClass("started").addClass(className);
 			};
 			
@@ -731,11 +737,19 @@ function SmCountApp () {
 			this.useDefine = this.SMCOUNT_DEFINE_AMANE[this.normaType];
 		}
 		
-		/*
-		this.startDate     = new Date(new Date().getTime() - this.waveTimes[1] + this.waveTimes[0] - 500);
-		this.startDate     = new Date(new Date().getTime() - this.waveTimes[2] + this.waveTimes[0] - 500);
-		*/
-		this.startDate     = new Date();
+		
+		switch (this.startWave) {
+		default:
+		case 1:
+			this.startDate = new Date();
+			break;
+		case 2:
+			this.startDate = new Date(new Date().getTime() - this.waveTimes[1] + this.waveTimes[0] - 500);
+			break;
+		case 3:
+			this.startDate = new Date(new Date().getTime() - this.waveTimes[2] + this.waveTimes[0] - 500);
+			break;
+		}
 		this.startTime     = this.startDate.getTime();
 		this.wave1Date     = new Date(this.startTime + this.waveTimes[0]);
 		this.wave2Date     = new Date(this.startTime + this.waveTimes[1]);
