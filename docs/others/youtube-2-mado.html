@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>YouTube専用2窓視聴ツール</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+
+function get_api_script () {
+	$.ajax({
+		url: 'http://www.youtube.com/player_api/',
+		dataType: 'script',
+		success: function (data) {
+			console.log('youtube iframe api is ready!');
+		},
+		error: function (xhr, status, thrown) {
+			console.log(xhr);
+			get_api_script();
+		}
+	}); 
+}
+get_api_script();
+window.onYouTubeIframeAPIReady = function () {
+	window.storage_key = 'youtube_2_mado';
+	window.g = {
+		is_overlay: true,
+		is_change_mute: true,
+		video_size: {
+			main: {
+				width: 1280,
+				height: 720
+			},
+			sub: {
+				ratio: 3,
+				width: 426,
+				height: 240
+			}
+		},
+		url_1: '',
+		url_2: '',
+		title_1: '',
+		title_2: ''
+	};
+	window.player = {
+		'video-1': null,
+		'video-2': null
+	};
+	$('#change-button').on('click', function () {
+		var class_main = 'video-main';
+		var class_sub = 'video-sub';
+		var $main = $('.' + class_main);
+		var $sub = $('.' + class_sub);
+		
+		$main.removeClass(class_main);
+		$main.addClass(class_sub);
+		set_video_size_sub($main);
+		if (player[$main.attr('id')] && g.is_change_mute) {
+			player[$main.attr('id')].mute();
+		}
+		
+		$sub.removeClass(class_sub);
+		$sub.addClass(class_main);
+		set_video_size_main($sub);
+		if (player[$sub.attr('id')] && g.is_change_mute) {
+			player[$sub.attr('id')].unMute();
+		}
+		
+		$('.video-title').text($sub.attr('title'));
+	});
+	$('#is-change-mute-check').on('change', function () {
+		g.is_change_mute = $(this).prop('checked');
+		save();
+	});
+	$('#is-overlay-check').on('change', function () {
+		g.is_overlay = $(this).prop('checked');
+		save();
+	});
+	$('#video-size-ok-button').on('click', function () {
+		g.video_size.main.width = parseInt($('.video-width-input').val()) || 1280;
+		g.video_size.main.height = parseInt($('.video-height-input').val()) || 720;
+		g.video_size.sub.ratio = parseInt($('.video-ratio-input').val()) || 3;
+		g.video_size.sub.width = Math.floor(g.video_size.main.width / g.video_size.sub.ratio);
+		g.video_size.sub.height = Math.floor(g.video_size.main.height / g.video_size.sub.ratio);
+		var class_main = 'video-main';
+		var class_sub = 'video-sub';
+		var $main = $('.' + class_main);
+		var $sub = $('.' + class_sub);
+		set_video_size_main($main);
+		set_video_size_sub($sub);
+		save();
+	});
+	$('#url-ok-button').on('click', function () {
+		$('.video-wrapper').empty();
+		$('<div></div>').attr('id', 'video-1').appendTo('.video-wrapper');
+		$('<div></div>').attr('id', 'video-2').appendTo('.video-wrapper');
+		player['video-1'] = null;
+		player['video-2'] = null;
+		g.url_1 = $('.url-input-1').val();
+		g.url_2 = $('.url-input-2').val();
+		g.title_1 = $('.title-input-1').val();
+		g.title_2 = $('.title-input-2').val();
+		g.video_size.main.width = parseInt($('.video-width-input').val()) || 1280;
+		g.video_size.main.height = parseInt($('.video-height-input').val()) || 720;
+		g.video_size.sub.ratio = parseInt($('.video-ratio-input').val()) || 3;
+		g.video_size.sub.width = Math.floor(g.video_size.main.width / g.video_size.sub.ratio);
+		g.video_size.sub.height = Math.floor(g.video_size.main.height / g.video_size.sub.ratio);
+		var video_id_1 = get_video_id(g.url_1);
+		var video_id_2 = get_video_id(g.url_2);
+		if (video_id_1) {
+			player['video-1'] = create_iframe(video_id_1, 'video-1', function ($video) {
+				$video.addClass('video-main').addClass('video-1');
+				$video.attr('title', g.title_1);
+				set_video_size_main($video);
+				$('.video-title').text(g.title_1)
+			});
+		}
+		if (video_id_2) {
+			player['video-2'] = create_iframe(video_id_2, 'video-2', function ($video) {
+				$video.addClass('video-sub').addClass('video-2');
+				$video.attr('title', g.title_2);
+				set_video_size_sub($video);
+			});
+		}
+		save();
+	});
+	load();
+	console.log('html is ready!');
+};
+function save () {
+	localStorage.setItem(storage_key, JSON.stringify(window.g));
+	console.log('saved!');
+}
+function load () {
+	var g_str = localStorage.getItem(storage_key);
+	if (g_str) {
+		$.extend(true, window.g, JSON.parse(g_str));
+		$('.url-input-1').val(g.url_1);
+		$('.url-input-2').val(g.url_2);
+		$('.title-input-1').val(g.title_1);
+		$('.title-input-2').val(g.title_2);
+		$('.video-width-input').val(g.video_size.main.width);
+		$('.video-height-input').val(g.video_size.main.height);
+		$('.video-ratio-input').val(g.video_size.sub.ratio);
+		$('#is-change-mute-check').prop('checked', g.is_change_mute);
+		$('#is-overlay-check').prop('checked', g.is_overlay);
+	}
+	console.log('loaded!');
+}
+function set_video_size_main ($video) {
+	$('.video-title').css('width', g.video_size.main.width + 'px');
+	$video.css({
+		width: g.video_size.main.width + 'px',
+		height: g.video_size.main.height + 'px',
+		left: '0',
+		top: '0'
+	});
+}
+function set_video_size_sub ($video) {
+	if (g.is_overlay) {
+		$video.css({
+			width: g.video_size.sub.width + 'px',
+			height: g.video_size.sub.height + 'px',
+			left: (g.video_size.main.width - g.video_size.sub.width) + 'px',
+			top: (g.video_size.main.height - g.video_size.sub.height) + 'px'
+		});
+	} else {
+		$video.css({
+			width: g.video_size.sub.width + 'px',
+			height: g.video_size.sub.height + 'px',
+			left: (g.video_size.main.width) + 'px',
+			top: (g.video_size.main.height - g.video_size.sub.height) + 'px'
+		});
+	}
+}
+function get_video_id (url) {
+	var video_id = false;
+	if (typeof url !== 'string') return false;
+	if (url.indexOf('youtu.be/') > -1) {
+		var arr = url.split('/');
+		var last_url = arr.pop();
+		return last_url.split('?')[0];
+	}
+	else if (url.indexOf('youtube.com/') > -1) {
+		var arr = url.split('/');
+		var last_url = arr.pop();
+		var params_str = last_url.split('?')[1];
+		var params = params_str.split('&');
+		console.log(params);
+		for (var i = 0; i < params.length; i++) {
+			var param = params[i].split('=');
+			var name = param[0];
+			var value = param[1];
+			if (name === 'v') video_id = value;
+		}
+		return video_id;
+	}
+	return video_id;
+}
+function create_iframe (video_id, div_id, call_back) {
+	// var iframe_html = '<iframe class="video" width="1280" height="720" src="https://www.youtube.com/embed/' + video_id + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+	//return $(iframe_html);
+	return new YT.Player(div_id, {
+		width: g.video_size.main.width,
+		height: g.video_size.main.height,
+		videoId: video_id,
+		events: {
+			'onReady': function () {
+				call_back($('#' + div_id));
+			}
+		},
+		playerVars: {
+		   "rel": 0,
+		   "showinfo": 0,
+		   "controls": 1
+		}
+	});
+}
+</script>
+<style>
+body {
+    background: #222;
+    color: #FFF;
+    margin: 0;
+}
+.url-input {
+	width: 500px;
+}
+.video-area {
+	background: #000;
+	position: relative;
+	width: 100%;
+	height: 720px;
+	margin-top: 20px;
+}
+	.video-wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	.video {
+		/*transition: all 500ms ease;*/
+	}
+	.video-main {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 100;
+	}
+	.video-sub {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 101;
+	}
+.video-title {
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	width: 1280px;
+	font-weight: bold;
+	text-align: center;
+	z-index: 102;
+	text-shadow: 0px 0px 8px #000;
+}
+.button-wrapper {
+	left: 0px;
+	top: 0px;
+}
+.button-wrapper #change-button {
+	width: 200px;
+	height: 50px;
+}
+.number-input {
+	width: 40px;
+}
+</style>
+</head>
+<body>
+<h2>YouTube専用2窓視聴ツール</h2>
+<div class="button-wrapper">
+	<p>URL1 <input class="url-input url-input-1" type="text" val="" placeholder="https://www.youtube.com/watch?v=... OR https://youtu.be/..."> TITLE1 <input class="title-input title-input-1" type="text" val="" placeholder="Aさん視点"></p>
+	<p>URL2 <input class="url-input url-input-2" type="text" val="" placeholder="https://www.youtube.com/watch?v=... OR https://youtu.be/..."> TITLE2 <input class="title-input title-input-2" type="text" val="" placeholder="Bさん視点"> <button id="url-ok-button">URLとTITLEの決定</button></p>
+	<p>メイン画面の幅 <input class="video-width-input number-input" type="text" > 高さ <input class="video-height-input number-input" type="text" > サブ画面の比率 <input class="video-ratio-input number-input" type="text" >分の1
+	<p><label for="is-overlay-check">
+	<input id="is-overlay-check" type="checkbox"> メイン画面とサブ画面を重ねる
+	</label> <button id="video-size-ok-button">画面設定の反映</button></p>
+	<p><label for="is-change-mute-check">
+	<input id="is-change-mute-check" type="checkbox"> 視点入れ替えと同時に音声のミュートも入れ替える
+	</label></p>
+	<button id="change-button">視点入れ替え</button>
+</div>
+<div class="video-area">
+	<h2 class="video-title"></h2>
+	<div class="video-wrapper">
+		<div id="video-1"></div>
+		<div id="video-2"></div>
+		<!--
+		<iframe title="高床さん" class="video video-1 video-main" width="1280" height="720" src="https://www.youtube.com/embed/EDGiz53SVWs"   frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		<iframe title="シアロアさん" class="video video-2 video-sub"  width="1280" height="720" src="https://www.youtube.com/embed/zunGo8kXQlg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		-->
+	</div>
+</div>
+</body>
+</html>
