@@ -270,9 +270,9 @@ for (var i = 0; i < 100; i++) {
 			"smalls",
 			"fats"
 		];
-		var line = 46;
+		var line = 45;
 		arr2.forEach(function(key){
-			if (ret.hensachi[key] < line) arr.push(b(EVAL_LANG[key]));
+			if (ret.hensachi[key] <= line) arr.push(b(EVAL_LANG[key]));
 		});
 		if (arr.length > 0) {
 			mes = "またこの編成は、%enemy%に弱いようです。"

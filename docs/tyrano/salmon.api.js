@@ -1,7 +1,7 @@
 window.ROTATION_DATA        = false;                                // APIで取得したシフトデータを格納する
 window.GEARDATA             = false;
 window.GEARDATA_URL         = "./tyrano/reward_gear.json";          // 今回のギア のデータ
-window.WEAPONS_URL          = "./tyrano/weapons.csv?21000";         // ブキの評価データシートのcsv
+window.WEAPONS_URL          = "./tyrano/weapons.csv?21000a";         // ブキの評価データシートのcsv
 window.WIKIDATA_URL         = "./tyrano/weapons_wikidata.csv?21000";// Wikiに基づくブキの基礎データシートのcsv
 window.WEAPONS_AVERAGE      = {isCalced: false};                    // ブキの各項目の評価の平均値
 window.WEAPONS_STANDARD     = {isCalced: false};                    // ブキの各項目の評価の標準偏差
