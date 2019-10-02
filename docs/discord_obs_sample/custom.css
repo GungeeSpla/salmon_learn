@@ -1,0 +1,205 @@
+
+body {
+}
+.header {
+  margin: 20px;
+}
+h3 {
+  padding-left: 7px;
+  border-left: 5px #000 solid;
+  margin-left: 20px;
+  margin-top: 100px;
+}
+pre {
+  border: 1px solid #333;
+  color: #333;
+  padding: 10px;
+  margin-left: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-height: 80px;
+  width: 800px;
+  overflow: scroll;
+}
+h4 {
+  background: #333;
+  color: #fff;
+  margin: 0;
+  margin-left: 20px;
+  width: 90px;
+  text-align: center;
+  font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+}
+h5 {
+  background: #333;
+  color: #fff;
+  margin: 0;
+  margin-left: 20px;
+  width: 170px;
+  text-align: center;
+  font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+  cursor: pointer;
+}
+h5:hover {
+  background: #666;
+}
+h5:active {
+  background: #ccc;
+}
+
+
+
+
+
+.sample-2 .voice-container .voice-states * {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.sample-2 .voice-container .voice-states li.voice-state { 	
+  width: 70px;
+  height: 90px;
+} 
+.sample-2 .voice-container .voice-states .voice-state .avatar {
+  left: 7px;
+}
+.sample-2 .voice-container .voice-states .voice-state .avatar.speaking {
+}
+.sample-2 .voice-container .voice-states .voice-state .user {
+  left: 2px;
+  top: 2px;
+  background: rgba(0,0,0,.7);
+  padding: 4px 5px 0px;
+  border-radius: 4px;
+}
+.sample-2 .voice-container .voice-states .voice-state .name {
+  width: 55px;
+  height: 17px;
+  white-space: nowrap;
+  text-overflow: clip;
+  text-align: center;
+  background-color: rgba(0,0,0,0) !important;
+  padding: 0 !important;
+}
+
+
+
+.sample-3 .voice-container .voice-states * {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.sample-3 .voice-container .voice-states li.voice-state {
+  padding-right: 6px;
+  height: 70px;
+} 
+.sample-3 .voice-container .voice-states .voice-state .avatar {
+  left: 7px;
+}
+.sample-3 .voice-container .voice-states .voice-state .avatar.speaking {
+}
+.sample-3 .voice-container .voice-states .voice-state .user {
+  top: 14px;
+  left: 2px;
+  background: rgba(0,0,0,.7);
+  padding: 4px 5px 0px;
+  border-radius: 4px;
+}
+.sample-3 .voice-container .voice-states .voice-state .name {
+  min-width: 55px;
+  height: 17px;
+  white-space: nowrap;
+  text-overflow: clip;
+  text-align: center;
+  background-color: rgba(0,0,0,0) !important;
+  padding: 0 !important;
+}
+
+
+
+.sample-4 .voice-container .voice-states * {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.sample-4 .voice-container .voice-states li.voice-state {
+  width: 200px;
+  height: 70px;
+} 
+.sample-4 .voice-container .voice-states .voice-state .avatar {
+  left: 7px;
+}
+.sample-4 .voice-container .voice-states .voice-state .avatar.speaking {
+}
+.sample-4 .voice-container .voice-states .voice-state .user {
+  top: 14px;
+  left: 2px;
+  background: rgba(0,0,0,.7);
+  padding: 4px 5px 0px;
+  border-radius: 4px;
+}
+.sample-4 .voice-container .voice-states .voice-state .name {
+  min-width: 55px;
+  height: 17px;
+  white-space: nowrap;
+  text-overflow: clip;
+  text-align: center;
+  background-color: rgba(0,0,0,0) !important;
+  padding: 0 !important;
+}
+
+
+
+.sample-5 .voice-container .voice-states * {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.sample-5 .voice-container .voice-states li.voice-state {
+  display: block;
+  width: 200px;
+  height: 55px;
+} 
+.sample-5 .voice-container .voice-states .voice-state .avatar {
+  position: absolute;
+  top: 10px;
+  left: 17px;
+  transition: all 500ms ease;
+  border-width: 0px;
+  border-color: rgba(0,0,0,0);
+}
+.sample-5 .voice-container .voice-states .voice-state .avatar.speaking {
+  top: 0px;
+  left: 7px;
+  border-width: 10px;
+  border-color: rgba(50, 200, 130, 0.7);
+}
+.sample-5 .voice-container .voice-states .voice-state .user {
+  position: absolute;
+  top: 22px;
+  left: 80px;
+  background: rgba(0,0,0,.7);
+  padding: 4px 5px 0px;
+  border-radius: 4px;
+}
+.sample-5 .voice-container .voice-states .voice-state .name {
+  min-width: 55px;
+  height: 17px;
+  white-space: nowrap;
+  text-overflow: clip;
+  text-align: center;
+  background-color: rgba(0,0,0,0) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}

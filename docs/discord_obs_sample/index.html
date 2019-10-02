@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Discord StreamKit Overlay Sample</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="custom.css">
+	<script type="text/javascript" src="jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+</head>
+<body style="margin: 0;">
+	
+	<div class="header">
+	<a href="https://streamkit.discordapp.com/overlay">https://streamkit.discordapp.com/overlay</a><br>
+	ストリーミングソフトウェア『OBS』でDiscordのボイスチャットオーバーレイを表示する際の<br>
+	<b>カスタムCSS</b>の例を以下に示します。
+	</div>
+	
+	<h3>Sample-1　デフォルト</h3>
+	<div class="sample-1">
+		<div id="app-mount"><div style="font-family:Whitney, sans-serif;background-color:transparent;" class=" " ><div class="voice-container" ><ul class="voice-states" ><li class="voice-state" ><img class="avatar" src="icon1.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >たろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon2.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >ももたろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon3.png"><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >うらしまたろう</span></div></li></ul></div></div></div>
+	</div><h4>カスタムCSS</h4><pre>body {
+  overflow: hidden;
+}</pre>
+　　
+	<h3>Sample-2　アイコン横並び＋名前は下＋ひらがな4文字まで切り詰め</h3>
+	<div class="sample-2">
+		<div id="app-mount"><div style="font-family:Whitney, sans-serif;background-color:transparent;" class=" " ><div class="voice-container" ><ul class="voice-states" ><li class="voice-state" ><img class="avatar" src="icon1.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >たろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon2.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >ももたろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon3.png"><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >うらしまたろう</span></div></li></ul></div></div></div>
+	</div><h4>カスタムCSS</h4><pre id="sample-2">body {
+  overflow: hidden;
+}
+.voice-container .voice-states * {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.voice-container .voice-states li.voice-state { 	
+  width: 70px;
+  height: 90px;
+} 
+.voice-container .voice-states .voice-state .avatar {
+  left: 7px;
+}
+.voice-container .voice-states .voice-state .avatar.speaking {
+}
+.voice-container .voice-states .voice-state .user {
+  left: 2px;
+  top: 2px;
+  background: rgba(0,0,0,.7);
+  padding: 4px 5px 0px;
+  border-radius: 4px;
+}
+.voice-container .voice-states .voice-state .name {
+  width: 55px;
+  height: 17px;
+  white-space: nowrap;
+  text-overflow: clip;
+  text-align: center;
+  background-color: rgba(0,0,0,0) !important;
+  padding: 0 !important;
+}
+</pre><h5 class="copy-button" target="sample-2">クリップボードにコピーする</h5>
+	
+	<h3>Sample-3　アイコン横並び＋名前も横</h3>
+	<div class="sample-3">
+		<div id="app-mount"><div style="font-family:Whitney, sans-serif;background-color:transparent;" class=" " ><div class="voice-container" ><ul class="voice-states" ><li class="voice-state" ><img class="avatar" src="icon1.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >たろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon2.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >ももたろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon3.png"><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >うらしまたろう</span></div></li></ul></div></div></div>
+	</div><h4>カスタムCSS</h4><pre id="sample-3">body {
+  overflow: hidden;
+}
+.voice-container .voice-states * {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.voice-container .voice-states li.voice-state {
+  padding-right: 6px;
+  height: 70px;
+} 
+.voice-container .voice-states .voice-state .avatar {
+  left: 7px;
+}
+.voice-container .voice-states .voice-state .avatar.speaking {
+}
+.voice-container .voice-states .voice-state .user {
+  top: 14px;
+  left: 2px;
+  background: rgba(0,0,0,.7);
+  padding: 4px 5px 0px;
+  border-radius: 4px;
+}
+.voice-container .voice-states .voice-state .name {
+  min-width: 55px;
+  height: 17px;
+  white-space: nowrap;
+  text-overflow: clip;
+  text-align: center;
+  background-color: rgba(0,0,0,0) !important;
+  padding: 0 !important;
+}
+</pre><h5 class="copy-button" target="sample-3">クリップボードにコピーする</h5>
+	
+	<h3>Sample-4　アイコン横並び＋名前も横＋ひとりあたり幅200px固定</h3>
+	<div class="sample-4">
+		<div id="app-mount"><div style="font-family:Whitney, sans-serif;background-color:transparent;" class=" " ><div class="voice-container" ><ul class="voice-states" ><li class="voice-state" ><img class="avatar" src="icon1.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >たろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon2.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >ももたろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon3.png"><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >うらしまたろう</span></div></li></ul></div></div></div>
+	</div><h4>カスタムCSS</h4><pre id="sample-4">body {
+  overflow: hidden;
+}
+.voice-container .voice-states * {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.voice-container .voice-states li.voice-state {
+  width: 200px;
+  height: 70px;
+} 
+.voice-container .voice-states .voice-state .avatar {
+  left: 7px;
+}
+.voice-container .voice-states .voice-state .avatar.speaking {
+}
+.voice-container .voice-states .voice-state .user {
+  top: 14px;
+  left: 2px;
+  background: rgba(0,0,0,.7);
+  padding: 4px 5px 0px;
+  border-radius: 4px;
+}
+.voice-container .voice-states .voice-state .name {
+  min-width: 55px;
+  height: 17px;
+  white-space: nowrap;
+  text-overflow: clip;
+  text-align: center;
+  background-color: rgba(0,0,0,0) !important;
+  padding: 0 !important;
+}
+</pre><h5 class="copy-button" target="sample-4">クリップボードにコピーする</h5>
+	
+	<h3>Sample-5　アニメーション</h3>
+	<div class="sample-5">
+		<div id="app-mount"><div style="font-family:Whitney, sans-serif;background-color:transparent;" class=" " ><div class="voice-container" ><ul class="voice-states" ><li class="voice-state" ><img class="avatar" src="icon1.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >たろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon2.png" ><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >ももたろう</span></div></li><li class="voice-state" ><img class="avatar" src="icon3.png"><div class="user" ><span class=" name" style="color:#ffffff;font-size:14px;background-color:rgba(30, 33, 36, 0.7);" >うらしまたろう</span></div></li></ul></div></div></div>
+	</div><h4>カスタムCSS</h4><pre id="sample-5">body {
+  overflow: hidden;
+}
+.voice-container .voice-states * {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.voice-container .voice-states li.voice-state {
+  display: block;
+  width: 200px;
+  height: 55px;
+} 
+.voice-container .voice-states .voice-state .avatar {
+  position: absolute;
+  top: 10px;
+  left: 17px;
+  transition: all 500ms ease;
+  border-width: 0px;
+  border-color: rgba(0,0,0,0);
+}
+.voice-container .voice-states .voice-state .avatar.speaking {
+  top: 0px;
+  left: 7px;
+  border-width: 10px;
+  border-color: rgba(50, 200, 130, 0.7);
+}
+.voice-container .voice-states .voice-state .user {
+  position: absolute;
+  top: 22px;
+  left: 80px;
+  background: rgba(0,0,0,.7);
+  padding: 4px 5px 0px;
+  border-radius: 4px;
+}
+.voice-container .voice-states .voice-state .name {
+  min-width: 55px;
+  height: 17px;
+  white-space: nowrap;
+  text-overflow: clip;
+  text-align: center;
+  background-color: rgba(0,0,0,0) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+</pre><h5 class="copy-button" target="sample-5">クリップボードにコピーする</h5>
+</body>
