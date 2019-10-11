@@ -48,8 +48,13 @@ function GusherApp () {
 		var $canvas = $("<canvas width='640' height='960' style='position: absolute; z-index: 10;' class='canvas'></canvas>");
 		var $root = $("#root_layer_game");
 		$root.append($canvas);
+		this.$canvas = $canvas;
 		this.canvas = $canvas[0];
 		this.ctx = this.canvas.getContext("2d");
+
+		this.ctx.clear = function () {
+			app.ctx.clearRect(0, 0, 640, 960);
+		};
 
 		//# fillArrow (x1, y1, x2, y2)
 		this.ctx.fillArrow = function (x1, y1, x2, y2) {

@@ -1552,7 +1552,7 @@ gusherApp.copyDefineData(f.target);
 
 [bg storage=&f.bg x=0 y=0 time=0]
 ;[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
-[ptext layer=0 color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。黒の矢印はコウモリがいったん攻撃態勢に入り雨弾を2回射出してからその方向へ飛ぶことを、青の矢印はコウモリが攻撃態勢に入らず速やかに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
+[ptext layer=0 name=setsumei color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。黒の矢印はコウモリがいったん攻撃態勢に入り雨弾を2回射出してからその方向へ飛ぶことを、青の矢印はコウモリが攻撃態勢に入らず速やかに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
 [foreach name=f.item array=f.kanketsusen]
 [image layer=0 x=&f.item.x-f.radius-2 y=&f.item.y-f.radius-2 width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
 [image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2 name=park]
@@ -1566,13 +1566,15 @@ f.kPos = gusherApp.getKomoriPos(f.komoriLabel);
 [image layer=1 zindex=200 x=250 y=400 storage=ika.png?2 width=&f.ikaDx*2 name=ika]
 [image layer=1 zindex=200 x=80 y=80 storage=ika.png?2 width=&f.ikaDx*2 name=ika2]
 [image layer=1 zindex=150 x=0 y=0 storage=bakudan_circle.png width=&f.bakudanWidth name=bakudan]
+;[image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=&f.komoriDx*2 name=komori,komori2]
 [image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=&f.komoriDx*2 name=komori]
-[button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
-[button fix=true graphic=keiro.png   x=40  y=800 target=*Suimyaku     name=fixbutton]
-[button fix=true graphic=modoru2.png x=440 y=800 target=*KomoriTitle  name=fixbutton]
-[button fix=true graphic=bakudan.png x=40 y=880  target=*ToggleBakudan name=fixbutton]
-[button fix=true graphic=komori.png  x=260 y=880 target=*ToggleKomori  name=fixbutton]
-[button fix=true graphic=ika2.png  x=484 y=880   target=*ToggleIka     name=fixbutton]
+;[button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
+[button fix=true graphic=keiro.png   x=40  y=880 target=*Suimyaku     name=fixbutton]
+[button fix=true graphic=modoru2.png x=450 y=880 target=*KomoriTitle  name=fixbutton]
+;[button fix=true graphic=modoru2.png   x=450 y=870 storage=learn.ks target=*Retitle   name=fixbutton]
+[button fix=true graphic=bakudan.png x=40  y=800  target=*ToggleBakudan name=fixbutton]
+[button fix=true graphic=komori.png  x=245 y=800 target=*ToggleKomori  name=fixbutton]
+[button fix=true graphic=ika2.png    x=450 y=800   target=*ToggleIka     name=fixbutton]
 [mask_off time=300]
 ;[call target=Set_Kotae]
 ;[jump target=Start]
@@ -1612,7 +1614,15 @@ $(".komori").appendTo("#tyrano_base").draggable({
     }
 });
 $(".komori_circle." + f.komoriLabel).fadeIn(300);
+gusherApp.$canvas.show(0);
+gusherApp.ctx.clear();
 gusherApp.updateKomoriArrow(f);
+clearTimeout(f.koumoriSetsumeiTimer);
+f.koumoriSetsumeiTimer = setTimeout(function(){
+	$(".setsumei").fadeOut(800, function(){
+		$(this).remove();
+	});
+}, 5000);
 [endscript]
 [s]
 
