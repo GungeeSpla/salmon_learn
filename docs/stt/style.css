@@ -63,7 +63,7 @@ body#overlay .st_eta {
 	color: #000000;
 }
 body#overlay .st_eta.shadow_fff {
-	text-shadow: 7px 7px 0px #000;
+	text-shadow: 5px 5px 0px #000;
 }
 body#overlay .st_eta.border_fff {
 	text-shadow:
@@ -77,7 +77,7 @@ body#overlay .st_eta.border_fff {
 	 0px  2px 0 #000;
 }
 body#overlay .st_eta.shadow_000 {
-	text-shadow: 7px 7px 0px #fff;
+	text-shadow: 5px 5px 0px #fff;
 }
 body#overlay .st_eta.border_000 {
 	text-shadow:
