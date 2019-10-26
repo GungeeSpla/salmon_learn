@@ -73,17 +73,17 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 	this.setStTitle = function () {
 		var str;
 		// フレ部屋モード用の文字列
-		var friend = this.stTimer.timeOffset.isEnabledFriendOffset ? "（フレ部屋）" : "";
+		var friend = this.stTimer.timeOffset.enableFriendOffset ? "（フレ部屋）" : "";
 		// STの時刻をずらしているとき用の文字列
 		var sign = app.stTimer.stOffset >= 0 ? "+" : "";
 		var offset = app.stTimer.stOffset ? sign + app.stTimer.stOffset + "分" : "";
 		// 文字列の決定
-		str = this.stTitle + "<span style='color: Orange'>" + offset + friend + "</span>まで";
+		if (this.stTitle !== "ST") {
+			offset = "";
+		}
+		str = this.stTitle + "<span style='color: #2aba1c'>" + offset + friend + "</span>まで";
 		if (window.queries.overlay) {
 			str = this.stTitle + offset + friend + "まで";
-		}
-		if (this.stTitle !== "ST") {
-			str = this.stTitle + "まで";
 		}
 		// 文字列を放り込む
 		this.$description.html(str);
@@ -97,6 +97,10 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		this.$canvas      = $(".st_eta_canvas");
 		this.ctx          = this.$canvas[0].getContext("2d");
 		this.$checkSound  = $("#check_sound");
+		this.$checkFriend = $("#check_friend");
+		this.$friendPlus  = $(".friend_plus_button");
+		this.$friendMinus = $(".friend_minus_button");
+		this.$friendOffset= $(".friend_offset");
 		this.$stWrapper   = $(".st_eta");
 		this.$correction  = $(".st_eta_correction");
 		this.$description = $(".st_eta_description");
@@ -165,7 +169,7 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		this.$soundTest.on(clickEvent, function (e) {
 			e.preventDefault();
 			activeButton(this);
-			app.sound.play("60");
+			app.sound.play("manmenmi");
 			return false;
 		});
 		
@@ -195,15 +199,70 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 			if (isChecked) {
 				app.$soundTest.removeClass("hidden_button");
 				app.sound.isEnabled = true;
+				app.$settingVolumePlus.removeClass("hidden_button");
+				app.$settingVolumeMinus.removeClass("hidden_button");
 				if (! e.isTrigger) app.sound.play("switch");
 			}
 			else {
 				app.$soundTest.addClass("hidden_button");
 				if (! e.isTrigger) app.sound.play("switch");
 				app.sound.isEnabled = false;
+				app.$settingVolumePlus.addClass("hidden_button");
+				app.$settingVolumeMinus.addClass("hidden_button");
 			}
 			if (! e.isTrigger) app.save();
 			app.setStTitle();
+			return false;
+		});
+		
+		//## * checkFriend
+		this.$checkFriend.on("change", function (e) {
+			var isChecked = $(this).prop("checked");
+			if (isChecked) {
+				app.stTimer.timeOffset.enableFriendOffset = true;
+				app.$stWrapper.addClass("st_friend_mode");
+				$(".correction_friend").remove();
+				var str = "フレンド部屋用に %dif 秒の補正をしています";
+				    str = str.replace("%dif", Math.abs(app.stTimer.timeOffset.friendOffset / 1000));
+				var $p = $("<p></p>").text(str).addClass("correction_friend");
+				//app.$correction.append($p);
+				app.$friendPlus.removeClass("hidden_button");
+				app.$friendMinus.removeClass("hidden_button");
+			}
+			else {
+				app.stTimer.timeOffset.enableFriendOffset = false;
+				$(".correction_friend").remove();
+				app.$stWrapper.removeClass("st_friend_mode");
+				app.$friendPlus.addClass("hidden_button");
+				app.$friendMinus.addClass("hidden_button");
+			}
+			var num = app.stTimer.timeOffset.friendOffset / 1000;
+			app.$friendOffset.text(num.toFixed(1));
+			if (! e.isTrigger) app.save();
+			app.setStTitle();
+			if (! e.isTrigger) app.sound.play("switch");
+			return false;
+		});
+		//## * friendPlus
+		this.$friendPlus.on(clickEvent, function (e) {
+			e.preventDefault();
+			activeButton(this);
+			app.stTimer.timeOffset.friendOffset += 100;
+			app.save();
+			var num = app.stTimer.timeOffset.friendOffset / 1000;
+			app.$friendOffset.text(num.toFixed(1));
+			app.sound.play("click");
+			return false;
+		});
+		//## * friendMinus
+		this.$friendMinus.on(clickEvent, function (e) {
+			e.preventDefault();
+			activeButton(this);
+			app.stTimer.timeOffset.friendOffset -= 100;
+			app.save();
+			var num = app.stTimer.timeOffset.friendOffset / 1000;
+			app.$friendOffset.text(num.toFixed(1));
+			app.sound.play("click");
 			return false;
 		});
 		
@@ -264,7 +323,7 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 			case this.lastStageIndex: // 残り60秒以上
 				this.isClearing = true;
 				this.updateStList();
-				app.sound.play("switch");
+				app.sound.play("manmenmi");
 				break;
 			}
 		}
@@ -406,7 +465,8 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 	this.save = function () {
 		var saveData = {
 			isEnabledSound: this.sound.isEnabled,
-			volume        : this.sound.volume
+			volume        : this.sound.volume,
+			friendOffset  : this.stTimer.timeOffset.friendOffset
 		};
 		var saveDataStr = JSON.stringify(saveData);
 		localStorage.setItem(this.storageKey, saveDataStr);
@@ -419,12 +479,15 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 			var saveData = JSON.parse(saveDataStr);
 			var defaultData = {
 				isEnabledSound: false,
-				volume        : 0.5
+				volume        : 0.5,
+				friendOffset  : 2500
 			};
 			saveData = $.extend({}, defaultData, saveData);
 			this.sound.volume = saveData.volume;
 			this.sound.isEnabled = saveData.isEnabledSound;
+			this.stTimer.timeOffset.friendOffset = saveData.friendOffset;
 			this.$checkSound.prop("checked", this.sound.enable).trigger("change");
+			this.$checkFriend.trigger("change");
 			this.$settingVolume.render();
 		}
 	};
@@ -565,8 +628,8 @@ function TimeOffset () {
 	var self                   = this;
 	this.resulat               = {};
 	this.offsetJST             = 0;
-	this.isEnabledFriendOffset = false;
-	this.friendOffset          = 2500;
+	this.enableFriendOffset = false;
+	this.friendOffset = 2500;
 	this.serverUrls            = [
 		"https://ntp-a1.nict.go.jp/cgi-bin/json",
 		"https://ntp-b1.nict.go.jp/cgi-bin/json",
@@ -581,7 +644,7 @@ function TimeOffset () {
 	this.getTime = function () {
 		var time = new Date().getTime();
 		var offset = this.offsetJST;
-		if (this.isEnabledFriendOffset) offset -= this.friendOffset;
+		if (this.enableFriendOffset) offset -= this.friendOffset;
 		return time + offset;
 	};
 	
@@ -651,6 +714,7 @@ function StSound (app) {
 		"60",
 		"54321",
 		"switch",
+		"manmenmi",
 		"click"
 	];
 	
