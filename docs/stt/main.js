@@ -259,7 +259,7 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		// stageIndexの更新
 		this.updateCountStage();
 		var sign = app.stTimer.stOffset >= 0 ? "+" : "";
-		var offset = app.stTimer.isEnableStOffset ? sign + app.stTimer.stOffset + "分" : "";
+		var offset = app.stTimer.stOffset ? sign + app.stTimer.stOffset + "分" : "";
 		var str = this.stTitle + offset;
 		document.title = str + "まで " + this.dateFormatter.getMinText2(this.etaDate);
 		
@@ -362,6 +362,9 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		// 文字を更新
 		var date = app.dateFormatter.getMonthText(app.list[0]);
 		var str = "%date までのカウントダウンを表示しています";
+		if (window.queries.overlay) {
+			str = "Next: %date";
+		}
 		    str = str.replace("%date", date);
 		app.$next.text(str);
 	};

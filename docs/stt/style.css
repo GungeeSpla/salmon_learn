@@ -54,19 +54,29 @@ body#overlay .bg {
 }
 body#overlay div {
 	margin: 0; 	padding: 0; top: 0; left: 0;
-	text-align: left;
 }
 body#overlay #main {
+	width: 700px;
 }
 body#overlay .st_eta {
-	margin: 0;
-	padding: 0;
+	width: 700px;
+	color: #000000;
 }
 body#overlay .st_eta div {
 	display: none;
 }
 body#overlay .st_eta div.st_eta_count {
 	display: block;
+	font-size: 100px;
+    line-height: 120px;
+}
+body#overlay .st_eta div.st_eta_description {
+	display: block;
+	font-size: 40px;
+}
+body#overlay .st_eta div.st_eta_next {
+	display: block;
+	font-size: 40px;
 }
 
 .st_eta {
