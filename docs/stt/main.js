@@ -530,7 +530,7 @@ function DateFormatter () {
 		d.hh = d.getHours();
 		d.mm = ("00" + d.getMinutes()).slice(-2);
 		d.ss = ("00" + d.getSeconds()).slice(-2);
-		return d.MM + "/" + d.DD + " " + d.hh + ":" + d.mm + ":" + d.ss;
+		return d.MM + "/" + d.DD + " " + d.hh + ":" + d.mm;
 		// 12/31 23:59:59
 	};
 	
