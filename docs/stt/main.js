@@ -81,7 +81,7 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		if (this.stTitle !== "ST") {
 			offset = "";
 		}
-		str = this.stTitle + "<span style='color: #2aba1c'>" + offset + friend + "</span>まで";
+		str = this.stTitle + "<span style=''>" + offset + friend + "</span>まで";
 		if (window.queries.overlay) {
 			str = this.stTitle + offset + friend + "まで";
 		}
