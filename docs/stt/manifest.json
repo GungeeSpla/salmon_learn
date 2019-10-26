@@ -1,0 +1,28 @@
+{
+  "name": "OTT - オバケイドロ･タイム･タイマー",
+  "short_name": "OTT",
+  "icons": [{
+      "src": "./favicon.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }, {
+      "src": "./favicon.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }, {
+      "src": "./favicon.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    }, {
+      "src": "./favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }, {
+      "src": "./favicon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }],
+  "start_url": "./index.html?utm_source=homescreen",
+  "display": "standalone",
+  "orientation": "any"
+}
