@@ -62,6 +62,34 @@ body#overlay .st_eta {
 	width: 700px;
 	color: #000000;
 }
+body#overlay .st_eta.shadow_fff {
+	text-shadow: 7px 7px 0px #000;
+}
+body#overlay .st_eta.border_fff {
+	text-shadow:
+	 2px  2px 0 #000,
+	-2px  2px 0 #000,
+	 2px -2px 0 #000,
+	-2px -2px 0 #000,
+	 2px  0px 0 #000,
+	-2px  0px 0 #000,
+	 0px -2px 0 #000,
+	 0px  2px 0 #000;
+}
+body#overlay .st_eta.shadow_000 {
+	text-shadow: 7px 7px 0px #fff;
+}
+body#overlay .st_eta.border_000 {
+	text-shadow:
+	 2px  2px 0 #fff,
+	-2px  2px 0 #fff,
+	 2px -2px 0 #fff,
+	-2px -2px 0 #fff,
+	 2px  0px 0 #fff,
+	-2px  0px 0 #fff,
+	 0px -2px 0 #fff,
+	 0px  2px 0 #fff;
+}
 body#overlay .st_eta div {
 	display: none;
 }

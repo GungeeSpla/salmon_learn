@@ -4,7 +4,7 @@ function init () {
 	
 	window.queries = getUrlQueries();
 	
-	window.stTimerApp = new StTimerApp("ST").startApp();
+	window.stTimerApp = new StTimerApp().startApp();
 	
 	if (! window.queries.overlay) {
 		$(window).bind("orientationchange resize", function () {
@@ -20,6 +20,19 @@ function init () {
 	} else {
 		$("body").attr("id", "overlay");
 		$("#mask").remove();
+		var color = window.queries.textcolor ? "#" + window.queries.textcolor : "#000";
+		$(".st_eta").css("color", color);
+		if (window.queries.countonly) {
+			$(".st_eta_description").hide();
+			$(".st_eta_next").hide();
+		}
+		if (window.queries.textdeco === "shadow") {
+			$(".st_eta").addClass("shadow_" + window.queries.textcolor);
+		}
+		if (window.queries.textdeco === "border") {
+			$(".st_eta").addClass("border_" + window.queries.textcolor);
+		}
+		
 	}
 	
 }
@@ -29,7 +42,7 @@ function init () {
 function StTimerApp (stTitle, firstSt, stInterval) {
 	var app = this;
 	
-	this.stTitle       = stTitle;
+	this.stTitle       = window.queries.title ? decodeURIComponent(window.queries.title) : "ST";
 	this.stTimer       = new StTimer(app, firstSt, stInterval);
 	this.sound         = new StSound(app);
 	this.dateFormatter = new DateFormatter();
@@ -66,6 +79,12 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		var offset = app.stTimer.stOffset ? sign + app.stTimer.stOffset + "分" : "";
 		// 文字列の決定
 		str = this.stTitle + "<span style='color: Orange'>" + offset + friend + "</span>まで";
+		if (window.queries.overlay) {
+			str = this.stTitle + offset + friend + "まで";
+		}
+		if (this.stTitle !== "ST") {
+			str = this.stTitle + "まで";
+		}
 		// 文字列を放り込む
 		this.$description.html(str);
 	};
@@ -288,7 +307,9 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 	//## render ()
 	// 画面を描画する関数です
 	this.render = function () {
-		var str = app.dateFormatter.getMinText(this.etaDate);
+		if (window.queries.seconly) var getMinText = app.dateFormatter.getMinText2;
+		else getMinText = app.dateFormatter.getMinText;
+		var str = getMinText(this.etaDate);
 		this.$eta.text(str);
 		this.clearCanvas();
 		// ゼロのフェードアウトを描画

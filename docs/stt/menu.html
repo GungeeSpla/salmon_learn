@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>STT - サーモンラン･タイム･タイマー</title>
+<script type="text/javascript" src="./jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+function init() {
+  $(".st_title").val("ST");
+  $(".st_title").on("input", function (e) {
+    createUrl();
+    createOverlayUrl();
+  });
+  $("input").on("change", function (e) {
+    createUrl();
+    createOverlayUrl();
+  });
+  $(".copy_button").click(function(){
+    var target_id = $(this).attr("target");
+    copy(target_id);
+  });
+  createUrl();
+  createOverlayUrl();
+}
+function createUrl () {
+  var title = $(".st_title").val();
+  var offset;
+  $(".st_offset").each(function(){
+    if ($(this).prop("checked")) {
+      offset = $(this).val();
+    }
+  });
+  var url = "https://gungeespla.github.io/salmon_learn/stt/?title=" + encodeURIComponent(title) + "&offset=" + offset;
+  $(".timer_url").text(url);
+}
+function createOverlayUrl () {
+  var title = $(".st_title").val();
+  var offset;
+  $(".st_offset").each(function(){
+    if ($(this).prop("checked")) {
+      offset = $(this).val();
+    }
+  });
+  var color;
+  $(".text_color").each(function(){
+    if ($(this).prop("checked")) {
+      color = $(this).val();
+    }
+  });
+  var deco;
+  $(".text_deco").each(function(){
+    if ($(this).prop("checked")) {
+      deco = $(this).val();
+    }
+  });
+  var seconly = $(".seconly").prop("checked");
+  var countonly = $(".countonly").prop("checked");
+  var url = "https://gungeespla.github.io/salmon_learn/stt/?overlay=1";
+  url += "&title=" + encodeURIComponent(title);
+  url += "&offset=" + offset;
+  url += "&textcolor=" + color;
+  url += "&textdeco=" + deco;
+  if (seconly) url += "&seconly=1";
+  if (countonly) url += "&countonly=1";
+  $(".overlay_url").text(url);
+}
+function copy (id) {
+  var pre = document.getElementById(id);
+  pre.style.webkitUserSelect = "auto";
+  pre.style.userSelect = "auto";
+  document.getSelection().selectAllChildren(pre);
+  return document.execCommand("copy");
+}
+</script>
+<style>
+body {
+  padding: 20px;
+}
+h2 {
+  width: 620px;
+  color: #fff;
+  background-color: #333;
+  line-height: 40px;
+  height: 40px;
+  padding: 5px;
+}
+.copy_button {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  background: #333;
+  color: #fff;
+  margin: 0;
+  margin-left: 522px;
+  width: 100px;
+  text-align: center;
+  font-size: 14px;
+  height: 26px;
+  line-height: 26px;
+  cursor: pointer;
+}
+.copy_button:hover {
+  background: #666;
+}
+.copy_button:active {
+  background: #ccc;
+}
+.url {
+  border: 1px solid #333;
+  color: #333;
+  padding: 10px;
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-height: 80px;
+  width: 600px;
+  overflow-x: scroll;
+}
+</style>
+<link rel="icon" type="image/png" href="./favicon.png">
+</head>
+<body onload="init()">
+	<h2>タイマーへのリンクを作成する</h2>
+	
+	<h3>カスタマイズ</h3>
+	イベント名: <input class="st_title" type="text"><br>
+	ST+N分: 
+	<label target="st_offset_0"><input type="radio" id="st_offset_0" class="st_offset" name="st_offset" value="0">+0分</label>
+	<label target="st_offset_1"><input type="radio" id="st_offset_1" class="st_offset" name="st_offset" value="1" checked="checked">+1分</label>
+	<label target="st_offset_2"><input type="radio" id="st_offset_2" class="st_offset" name="st_offset" value="2">+2分</label>
+	<label target="st_offset_3"><input type="radio" id="st_offset_3" class="st_offset" name="st_offset" value="3">+3分</label>
+	<label target="st_offset_4"><input type="radio" id="st_offset_4" class="st_offset" name="st_offset" value="4">+4分</label>
+	<label target="st_offset_5"><input type="radio" id="st_offset_5" class="st_offset" name="st_offset" value="5">+5分</label>
+	<label target="st_offset_6"><input type="radio" id="st_offset_6" class="st_offset" name="st_offset" value="6">+6分</label>
+	<label target="st_offset_7"><input type="radio" id="st_offset_7" class="st_offset" name="st_offset" value="7">+7分</label>
+	
+	<h3>リンク</h3>
+	<pre class="url timer_url" id="timer_url"></pre>
+	<div class="copy_button" target="timer_url">コピーする</div>
+	
+	
+	
+	
+	<h2 style="margin-top:100px;">（配信者向け）OBS用のブラウザリンクを作成する</h2>
+	配信画面にタイマーを出したい人用。<br>
+	イベント名とSTずらし量は、上でカスタマイズしてくださいませ。<br>
+	
+	<h3>カスタマイズ</h3>
+	テキスト色: 
+	<label target="text_color_0"><input type="radio" id="text_color_0" class="text_color" name="text_color" value="000" checked="checked">黒字</label>
+	<label target="text_color_1"><input type="radio" id="text_color_1" class="text_color" name="text_color" value="fff">白字</label><br>
+	テキスト装飾: 
+	<label target="text_deco_0"><input type="radio" id="text_deco_0" class="text_deco" name="text_deco" value="none" checked="checked">装飾なし</label>
+	<label target="text_deco_1"><input type="radio" id="text_deco_1" class="text_deco" name="text_deco" value="shadow">影付き</label>
+	<label target="text_deco_2"><input type="radio" id="text_deco_2" class="text_deco" name="text_deco" value="border">縁取り</label><br>
+	<label target="seconly"><input type="checkbox" id="seconly" class="seconly">残り時間の小数部分を表示しない</label><br>
+	<label target="countonly"><input type="checkbox" id="countonly" class="countonly">カウントダウン以外を表示しない</label><br>
+	
+	<h3>リンク</h3>
+	<pre class="url overlay_url" id="overlay_url"></pre>
+	<div class="copy_button" target="overlay_url">コピーする</div>
+</body>
+</html>
