@@ -1,11 +1,7 @@
 // based on https://github.com/emaame/salmonrun_time_timer
 
 function init () {
-	
-	window.queries = getUrlQueries();
-	
 	window.stTimerApp = new StTimerApp().startApp();
-	
 	if (! window.queries.overlay) {
 		$(window).bind("orientationchange resize", function () {
 			fitWindow();
@@ -13,12 +9,13 @@ function init () {
 			setTimeout(fitWindow, 500);
 			setTimeout(fitWindow, 1000);
 		}).trigger("resize");
-		$("#mask").css("opacity", "0");
+		setTimeout(function(){
+			$("#mask").css("opacity", "0");
+		},200);
 		setTimeout(function(){
 			$("#mask").remove();
-		},800);
+		},1000);
 	} else {
-		$("body").attr("id", "overlay");
 		$("#mask").remove();
 		var color = window.queries.textcolor ? "#" + window.queries.textcolor : "#000";
 		$(".st_eta").css("color", color);
@@ -32,9 +29,8 @@ function init () {
 		if (window.queries.textdeco === "border") {
 			$(".st_eta").addClass("border_" + window.queries.textcolor);
 		}
-		
 	}
-	
+	$("body").css("display", "block");
 }
 
 

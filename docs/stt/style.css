@@ -12,6 +12,12 @@ body {
 	-webkit-user-select: none;
 	user-select: none;
 }
+#overlay #bg,
+#overlay #mask,
+#overlay .ink1,
+#overlay .ink2 {
+	display: none;
+}
 #main {
 	position: absolute;
 	z-index: 0;
@@ -24,6 +30,28 @@ body {
 #main, #main p {
 	/*text-shadow: 0px 0px 10px #670;*/
 }
+.ink1 {
+	position: absolute;
+	left: -100px;
+	top: -100px;
+	opacity: 0.4;
+    width: 348px;
+    height: 434px;
+    background: #39e464;
+    -webkit-mask-image: url(./img/ink1.svg);
+    mask-image: url(./img/ink1.svg);
+}
+.ink2 {
+	position: absolute;
+	left: 400px;
+	top: 50px;
+	opacity: 0.4;
+    width: 310px;
+    height: 276px;
+    background: #ff7500;
+    -webkit-mask-image: url(./img/ink2.svg);
+    mask-image: url(./img/ink2.svg);
+}
 .bg {
     background: #9b1e09 url(./img/bg.png) top;
     background-size: 510px 254px;
@@ -35,6 +63,7 @@ body {
 	height: 100%;
 }
 #mask {
+    background: #9b1e09;
 	transition: all 800ms ease;
 	z-index: 999;
 	opacity: 1;

@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <title>STT - サーモンラン･タイム･タイマー</title>
 <meta name="description" content="Splatoon2の『サーモンラン』でスナイプしあうためのタイマーです。" />
-<link rel="stylesheet" href="style.css?12">
+<link rel="stylesheet" href="style.css?13">
 <script type="text/javascript" src="./jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="main.js?12"></script>
+<script type="text/javascript" src="main.js?13"></script>
 <link rel="icon" type="image/png" href="./favicon.png">
 
 <!-- TwitterCard対応 -->
@@ -31,8 +31,39 @@ if ("serviceWorker" in navigator) {
 
 </head>
 <body onload="init()" onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()">
-	<div id="bg" class="bg"></div>
+	<script type="text/javascript">
+	window.queries = getUrlQueries();
+	function getUrlQueries() {
+		var queryStr = window.location.search.slice(1);
+				queries = {};
+		if (!queryStr) {
+			return queries;
+		}
+		queryStr.split('&').forEach(function(queryStr) {
+			var queryArr = queryStr.split('=');
+			if (queryArr[1]) {
+				queries[queryArr[0]] = queryArr[1];
+			}
+			else {
+				queries[queryArr[0]] = '';
+			}
+		});
+		return queries;
+	}
+	if (window.queries.overlay) {
+		document.body.id = "overlay";
+		document.body.style.background = "";
+		document.body.style.display = "none";
+	} else {
+		document.body.style.background = "#9b1e09";
+		document.body.style.display = "block";
+	}
+	</script>
+	<div id="bg" class="bg">
+	</div>
 	<div id="main">
+		<div class="ink1"></div>
+		<div class="ink2"></div>
 		<div class="st_eta">
 			<div class="st_eta_description">　</div>
 			<div class="st_eta_count">　</div>
