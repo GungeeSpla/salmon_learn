@@ -333,7 +333,7 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		// stageIndexの更新
 		this.updateCountStage();
 		var sign = app.stTimer.stOffset >= 0 ? "+" : "";
-		var offset = app.stTimer.stOffset ? sign + app.stTimer.stOffset + "分" : "";
+		var offset = (this.stTitle === "ST" && app.stTimer.stOffset) ? sign + app.stTimer.stOffset + "分" : "";
 		var str = this.stTitle + offset;
 		document.title = str + "まで " + this.dateFormatter.getMinText2(this.etaDate);
 		
