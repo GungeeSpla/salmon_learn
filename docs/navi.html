@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>サーモンラン関連で作ったものまとめ by ガンジー（@GungeeSpla）</title>
+<meta name="twitter:card"        content="summary" />
+<meta name="twitter:site"        content="@GungeeSpla" />
+<meta name="twitter:title"       content="サーモンラン関連で作ったものまとめ by ガンジー（@GungeeSpla）" />
+<meta name="twitter:description" content="Splatoon2のサーモンラン関連で作ったWebアプリ、Wepページ、素材などをまとめました。" />
+<meta name="twitter:image"       content="https://gungeespla.github.io/salmon_learn/tyrano/images/gungee_dot.png" />
+<script type="text/javascript">
+  window.onload = function () {
+    addListItems('ul-01', [
+      ['Salmon Learn - サーモンラーン', 'https://gungeespla.github.io/salmon_learn/', 'いろいろ便利な鮭お役立ちWebアプリです。'],
+      ['鮭ブキランキングメーカー', 'https://tiermaker.com/create/splatoon-2-salmon-run-weapons', '鮭ブキランキングを作ることができます。'],
+      ['STタイマー', 'https://gungeespla.github.io/salmon_learn/stt/', 'サーモンラーンから独立したSTタイマーです。'],
+      ['ST+1分タイマー', 'https://gungeespla.github.io/salmon_learn/stt/?offset=1', 'ST+1分タイマー。'],
+      ['ST+N分タイマーへのリンク生成ツール', 'https://gungeespla.github.io/salmon_learn/stt/menu.html', '任意のST+N分タイマーへのリンクを生成できます。'],
+      ['YouTube2窓実況支援ツール', 'https://gungeespla.github.io/salmon_learn/others/youtube-2-mado.html', 'YouTubeの野良2配信などを2窓実況するためのツールです。'],
+      ['Discord Overlay カスタムCSS参考ページ', 'https://gungeespla.github.io/salmon_learn/discord_obs_sample/', 'OBSにDiscordの通話アイコンを表示するときのカスタムCSS例を載せています。']
+    ]);
+    addListItems('ul-02', [
+      ['バイト服のイカちゃんのLive2Dモデル（zip）', 'https://gungeespla.github.io/salmon_learn/data/others/live2d/assets/ikachan.zip', 'Live2Dでバイト服のイカちゃんが動くぞ！'],
+      ['金イクラを納品してくれるキャプテン・オリマー（透過gif）', 'https://gungeespla.github.io/salmon_learn/materials/golden_egg_oilmar.gif', ''],
+      ['失敗したバイトをクリアさせてくれるキャプテン・オリマーBB（mp4）', 'https://gungeespla.github.io/salmon_learn/materials/golden_egg_oilmar.mp4', '']
+    ]);
+  };
+  function addListItems (id, arr) {
+    var ul = document.getElementById(id);
+    arr.map(item => {
+      var li = createListItem(item[0], item[1], item[2]);
+      ul.appendChild(li);
+    });
+  }
+  function createListItem (title, url, desc) {
+    var li = document.createElement('li');
+    var b = document.createElement('b');
+    b.appendChild(document.createTextNode(title));
+    li.appendChild(b);
+    li.appendChild(document.createElement('br'));
+    var a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.appendChild(document.createTextNode(url));
+    li.appendChild(a);
+    li.appendChild(document.createElement('br'));
+    li.appendChild(document.createTextNode(desc));
+    return li;
+  }
+</script>
+<style>
+  body {
+    color: #222;
+  }
+  li {
+    margin-bottom: 18px;
+  }
+</style>
+</head>
+<body>
+  <h2>サーモンラン関連で作ったものまとめ by ガンジー（@GungeeSpla）</h2>
+	<h3>Webアプリ（Webサイト）</h3>
+	<ul id="ul-01">
+	</ul>
+	<h3>素材</h3>
+	<ul id="ul-02">
+	</ul>
+</body>
+</html>
