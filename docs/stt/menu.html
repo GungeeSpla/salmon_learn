@@ -7,7 +7,8 @@
 <script type="text/javascript">
 function init() {
   $(".st_title").val("ST");
-  $(".st_title").on("input", function (e) {
+  $(".stream_offset").val("0");
+  $(".st_title,.stream_offset").on("input", function (e) {
     createUrl();
     createOverlayUrl();
   });
@@ -30,11 +31,13 @@ function createUrl () {
       offset = $(this).val();
     }
   });
-  var url = "https://gungeespla.github.io/salmon_learn/stt/?title=" + encodeURIComponent(title) + "&offset=" + offset;
+  var baseUrl = location.href.replace('menu.html', '');
+  var url = baseUrl + "?title=" + encodeURIComponent(title) + "&offset=" + offset;
   $(".timer_url").text(url);
 }
 function createOverlayUrl () {
   var title = $(".st_title").val();
+  var streamOffset = $(".stream_offset").val();
   var offset;
   $(".st_offset").each(function(){
     if ($(this).prop("checked")) {
@@ -53,15 +56,36 @@ function createOverlayUrl () {
       deco = $(this).val();
     }
   });
-  var seconly = $(".seconly").prop("checked");
-  var countonly = $(".countonly").prop("checked");
-  var url = "https://gungeespla.github.io/salmon_learn/stt/?overlay=1";
+  var align;
+  $(".text_align").each(function(){
+    if ($(this).prop("checked")) {
+      align = $(this).val();
+    }
+  });
+  var ketasu;
+  $(".ketasu").each(function(){
+    if ($(this).prop("checked")) {
+      ketasu = $(this).val();
+    }
+  });
+  var hunbyo;
+  $(".hunbyo").each(function(){
+    if ($(this).prop("checked")) {
+      hunbyo = $(this).val();
+    }
+  });
+  var countonly = $(".countonly").prop("checked") ? "1" : "0";
+  var baseUrl = location.href.replace('menu.html', '');
+  var url = baseUrl + "?overlay=1";
   url += "&title=" + encodeURIComponent(title);
   url += "&offset=" + offset;
   url += "&textcolor=" + color;
   url += "&textdeco=" + deco;
-  if (seconly) url += "&seconly=1";
-  if (countonly) url += "&countonly=1";
+  url += "&textalign=" + align;
+  url += "&streamoffset=" + streamOffset;
+  url += "&ketasu=" + ketasu;
+  url += "&countonly=" + countonly;
+  url += "&hunbyo=" + hunbyo;
   $(".overlay_url").text(url);
 }
 function copy (id) {
@@ -107,6 +131,12 @@ h2 {
 .copy_button:active {
   background: #ccc;
 }
+label {
+  cursor: pointer;
+}
+input:checked+label {
+  background: #ff9;
+}
 .url {
   border: 1px solid #333;
   color: #333;
@@ -125,18 +155,18 @@ h2 {
 	<h2>タイマーへのリンクを作成する</h2>
 	
 	<h3>カスタマイズ</h3>
-	イベント名: <input class="st_title" type="text"><br>
-	ST+N分: 
-	<label target="st_offset_0"><input type="radio" id="st_offset_0" class="st_offset" name="st_offset" value="0">+0分</label>
-	<label target="st_offset_1"><input type="radio" id="st_offset_1" class="st_offset" name="st_offset" value="1" checked="checked">+1分</label>
-	<label target="st_offset_2"><input type="radio" id="st_offset_2" class="st_offset" name="st_offset" value="2">+2分</label>
-	<label target="st_offset_3"><input type="radio" id="st_offset_3" class="st_offset" name="st_offset" value="3">+3分</label>
-	<label target="st_offset_4"><input type="radio" id="st_offset_4" class="st_offset" name="st_offset" value="4">+4分</label>
-	<label target="st_offset_5"><input type="radio" id="st_offset_5" class="st_offset" name="st_offset" value="5">+5分</label>
-	<label target="st_offset_6"><input type="radio" id="st_offset_6" class="st_offset" name="st_offset" value="6">+6分</label>
-	<label target="st_offset_7"><input type="radio" id="st_offset_7" class="st_offset" name="st_offset" value="7">+7分</label>
+	<b>イベント名</b>: <input class="st_title" type="text"><br>
+	<b>ST+N分</b>: 
+	<input type="radio" id="st_offset_0" class="st_offset" name="st_offset" value="0"><label for="st_offset_0">+0分</label>
+	<input type="radio" id="st_offset_1" class="st_offset" name="st_offset" value="1" checked="checked"><label for="st_offset_1">+1分</label>
+	<input type="radio" id="st_offset_2" class="st_offset" name="st_offset" value="2"><label for="st_offset_2">+2分</label>
+	<input type="radio" id="st_offset_3" class="st_offset" name="st_offset" value="3"><label for="st_offset_3">+3分</label>
+	<input type="radio" id="st_offset_4" class="st_offset" name="st_offset" value="4"><label for="st_offset_4">+4分</label>
+	<input type="radio" id="st_offset_5" class="st_offset" name="st_offset" value="5"><label for="st_offset_5">+5分</label>
+	<input type="radio" id="st_offset_6" class="st_offset" name="st_offset" value="6"><label for="st_offset_6">+6分</label>
+	<input type="radio" id="st_offset_7" class="st_offset" name="st_offset" value="7"><label for="st_offset_7">+7分</label>
+	<br><br>
 	
-	<h3>リンク</h3>
 	<pre class="url timer_url" id="timer_url"></pre>
 	<div class="copy_button" target="timer_url">コピーする</div>
 	
@@ -149,17 +179,30 @@ h2 {
 	イベント名とST+N分については上でカスタマイズしてくださいませ。<br>
 	
 	<h3>カスタマイズ</h3>
-	テキスト色: 
-	<label target="text_color_0"><input type="radio" id="text_color_0" class="text_color" name="text_color" value="000" checked="checked">黒字</label>
-	<label target="text_color_1"><input type="radio" id="text_color_1" class="text_color" name="text_color" value="fff">白字</label><br>
-	テキスト装飾: 
-	<label target="text_deco_0"><input type="radio" id="text_deco_0" class="text_deco" name="text_deco" value="none" checked="checked">装飾なし</label>
-	<label target="text_deco_1"><input type="radio" id="text_deco_1" class="text_deco" name="text_deco" value="shadow">影付き</label>
-	<label target="text_deco_2"><input type="radio" id="text_deco_2" class="text_deco" name="text_deco" value="border">縁取り</label><br>
-	<label target="seconly"><input type="checkbox" id="seconly" class="seconly">残り時間の小数部分を表示しない</label><br>
-	<label target="countonly"><input type="checkbox" id="countonly" class="countonly">残り時間以外を表示しない</label><br>
+	<b>テキスト色</b>: 
+	<input type="radio" id="text_color_0" class="text_color" name="text_color" value="000" checked="checked"><label for="text_color_0">黒字</label>
+	<input type="radio" id="text_color_1" class="text_color" name="text_color" value="fff"><label for="text_color_1">白字</label><br>
+	<b>テキスト装飾</b>: 
+	<input type="radio" id="text_deco_0" class="text_deco" name="text_deco" value="none" checked="checked"><label for="text_deco_0">装飾なし</label>
+	<input type="radio" id="text_deco_1" class="text_deco" name="text_deco" value="shadow"><label for="text_deco_1">影付き</label>
+	<input type="radio" id="text_deco_2" class="text_deco" name="text_deco" value="border"><label for="text_deco_2">縁取り</label><br>
+	<b>テキスト位置</b>: 
+	<input type="radio" id="text_align_0" class="text_align" name="text_align" value="left"><label for="text_align_0">左揃え</label>
+	<input type="radio" id="text_align_1" class="text_align" name="text_align" value="center" checked="checked"><label for="text_align_1">中央寄せ</label>
+	<input type="radio" id="text_align_2" class="text_align" name="text_align" value="right"><label for="text_align_2">右揃え</label><br>
+	<b>時間の表示形式</b>: 
+	<input type="radio" id="hunbyo_0" class="hunbyo" name="hunbyo" value="0" checked="checked"> <label for="hunbyo_0">12/31 23:59:59.999</label>
+	<input type="radio" id="hunbyo_1" class="hunbyo" name="hunbyo" value="1"><label for="hunbyo_1">12月31日 23時59分59.999秒</label><br>
+	<b>残り時間の小数部分の桁数</b>: 
+	<input type="radio" id="ketasu_0" class="ketasu" name="ketasu" value="0"><label for="ketasu_0">0桁（表示しない）</label>
+	<input type="radio" id="ketasu_1" class="ketasu" name="ketasu" value="1"><label for="ketasu_1">1桁</label>
+	<input type="radio" id="ketasu_2" class="ketasu" name="ketasu" value="2"><label for="ketasu_2">2桁</label>
+	<input type="radio" id="ketasu_3" class="ketasu" name="ketasu" value="3" checked="checked"><label for="ketasu_3">3桁</label><br>
+  <b>カウントをN秒早める</b>: <input class="stream_offset" type="text"><br>
+	<span style="font-size: 80%">「配信のラグを考慮し、視聴者が見たタイミングでちょうどよくなるように調整したいとき」に使えるかもしれない。</span><br>
 	
-	<h3>リンク</h3>
+	<input type="checkbox" id="countonly" class="countonly"><label for="countonly">残り時間だけを表示する</label><br><br>
+	
 	<pre class="url overlay_url" id="overlay_url"></pre>
 	<div class="copy_button" target="overlay_url">コピーする</div>
 	

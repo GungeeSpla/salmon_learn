@@ -125,7 +125,8 @@ body#overlay .st_eta div {
 body#overlay .st_eta div.st_eta_count {
 	display: block;
 	font-size: 100px;
-    line-height: 120px;
+	line-height: 110px;
+	margin-top: -15px;
 }
 body#overlay .st_eta div.st_eta_description {
 	display: block;
@@ -134,6 +135,34 @@ body#overlay .st_eta div.st_eta_description {
 body#overlay .st_eta div.st_eta_next {
 	display: block;
 	font-size: 40px;
+}
+
+body#overlay .st_eta div.st_eta_count .hunbyo {
+  display: inline-block;
+  transform: translateY(-3px);
+  font-size: 65%;
+  margin-right: 10px;
+  margin-left: 2px;
+}
+body#overlay .st_eta div.st_eta_count .hunbyo:last-child {
+  margin-right: 0;
+}
+body#overlay .st_eta div.st_eta_count .hunbyo2 {
+  font-size: 80%;
+}
+body#overlay .st_eta div.st_eta_next {
+  margin-top: -16px;
+}
+
+body#overlay .st_eta div.st_eta_next .hunbyo {
+  display: inline-block;
+  font-size: 95%;
+  margin-right: 5px;
+  margin-left: 1px;
+}
+
+body#overlay .st_eta div.st_eta_next .hunbyo:last-child {
+  margin-right: 0;
 }
 
 .st_eta {
@@ -361,6 +390,15 @@ body#overlay .st_eta div.st_eta_next {
 			.st_hidden {
 				transform: scale(0);
 			}
+/*
+.st_eta_next .hunbyo {
+  display: inline-block;
+  transform: translateY(-1px);
+  font-size: 70%;
+  margin-right: 8px;
+}
+*/
+
 
 
 #mask_wrapper {

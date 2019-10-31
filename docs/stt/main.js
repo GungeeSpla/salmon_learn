@@ -17,9 +17,11 @@ function init () {
 		},1000);
 	} else {
 		$("#mask").remove();
+		var align = window.queries.textalign ? window.queries.textalign : "center";
+		$(".st_eta").css("text-align", align);
 		var color = window.queries.textcolor ? "#" + window.queries.textcolor : "#000";
 		$(".st_eta").css("color", color);
-		if (window.queries.countonly) {
+		if (window.queries.countonly === "1") {
 			$(".st_eta_description").hide();
 			$(".st_eta_next").hide();
 		}
@@ -79,7 +81,7 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		}
 		str = this.stTitle + "<span style=''>" + offset + friend + "</span>まで";
 		if (window.queries.overlay) {
-			str = this.stTitle + offset + friend + "まで";
+			str = this.stTitle + offset + friend + "まで残り";
 		}
 		// 文字列を放り込む
 		this.$description.html(str);
@@ -362,10 +364,10 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 	//## render ()
 	// 画面を描画する関数です
 	this.render = function () {
-		if (window.queries.seconly) var getMinText = app.dateFormatter.getMinText2;
-		else getMinText = app.dateFormatter.getMinText;
-		var str = getMinText(this.etaDate);
-		this.$eta.text(str);
+		//if (window.queries.seconly) var getMinText = app.dateFormatter.getMinText2;
+		//else getMinText = app.dateFormatter.getMinText;
+		var str = app.dateFormatter.getMinText(this.etaDate);
+		this.$eta.html(str);
 		this.clearCanvas();
 		// ゼロのフェードアウトを描画
 		if (this.stageIndex == this.lastStageIndex) {
@@ -439,10 +441,10 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		var date = app.dateFormatter.getMonthText(app.list[0]);
 		var str = "%date までのカウントダウンを表示しています";
 		if (window.queries.overlay) {
-			str = "Next: %date";
+			str = "<span class='hunbyo'>次は</span>%date";
 		}
 		    str = str.replace("%date", date);
-		app.$next.text(str);
+		app.$next.html(str);
 	};
 	
 	//## updateOffset ()
@@ -519,6 +521,18 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 //# DateFormatter ()
 function DateFormatter () {
 	
+	this.ketasu = window.queries.ketasu ? parseInt(window.queries.ketasu) : 3;
+	this.hunbyo = window.queries.hunbyo ? (window.queries.hunbyo === "1") : false; 
+	
+	this.wrap = function (str) {
+	  return '<span class="hunbyo">'+str+'</span>';
+	};
+	this.g = this.wrap("月");
+	this.n = this.wrap("日");
+	this.j = this.wrap("時");
+	this.h = this.wrap("分");
+	this.b = this.wrap("秒");
+	
 	//## getMonthText (d)
 	this.getMonthText = function (d) {
 		d.MM = (d.getMonth() + 1);
@@ -526,16 +540,37 @@ function DateFormatter () {
 		d.hh = d.getHours();
 		d.mm = ("00" + d.getMinutes()).slice(-2);
 		d.ss = ("00" + d.getSeconds()).slice(-2);
-		return d.MM + "/" + d.DD + " " + d.hh + ":" + d.mm;
+		if (this.hunbyo) {
+		  return d.hh + this.j + d.mm + this.h;
+		} else {
+		  return d.hh + ":" + d.mm;
+		}
 		// 12/31 23:59:59
 	};
 	
 	//## getMinText (d)
 	this.getMinText = function (d) {
-		d.mm  = ("00" + d.getMinutes()).slice(-2);
+		d.mm  = d.getMinutes();
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
-		d.SSS = ("000" + d.getMilliseconds()).slice(-3);
-		return (d.mm + ":" + d.ss + "." + d.SSS);
+		switch (this.ketasu) {
+		case 3:
+			d.SSS = "." + ("000" + Math.floor(d.getMilliseconds()/  1)).slice(-3);
+			break;
+		case 2:
+			d.SSS = "." + ("00"  + Math.floor(d.getMilliseconds()/ 10)).slice(-2);
+			break;
+		case 1:
+			d.SSS = "." + ("0"   + Math.floor(d.getMilliseconds()/100)).slice(-1);
+			break;
+		default:
+			d.SSS = "";
+		  break;
+		}
+		if (this.hunbyo) {
+		  return (d.mm + this.h + d.ss + "<span class='hunbyo2'>" + d.SSS + "</span>" + this.b);
+		} else {
+		  return (d.mm + ":" + d.ss + "<span class='hunbyo2'>" + d.SSS + "</span>");
+		}
 		// 59:59.999
 	};
 	
@@ -543,7 +578,11 @@ function DateFormatter () {
 	this.getMinText2 = function (d) {
 		d.mm  = ("00" + d.getMinutes()).slice(-2);
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
-		return (d.mm + ":" + d.ss);
+		if (this.hunbyo) {
+		  return (d.mm + this.h + d.ss + this.b);
+		} else {
+		  return (d.mm + ":" + d.ss);
+		}
 		// 59:59
 	};
 	
@@ -621,9 +660,10 @@ function StTimer (app, firstSt, stInterval) {
 
 //# TimeOffset
 function TimeOffset () {
-	var self                   = this;
-	this.resulat               = {};
-	this.offsetJST             = 0;
+	var self = this;
+	this.resulat = {};
+	this.offsetJST = 0;
+	this.streamOffset = window.queries.streamoffset ? parseFloat(window.queries.streamoffset) * 1000 : 0;
 	this.enableFriendOffset = false;
 	this.friendOffset = 2500;
 	this.serverUrls            = [
@@ -640,6 +680,9 @@ function TimeOffset () {
 	this.getTime = function () {
 		var time = new Date().getTime();
 		var offset = this.offsetJST;
+		// 配信のラグを考慮して、視聴者が見たときちょうどよくなるようにするために、時間を早くする
+		if (this.streamOffset) offset += this.streamOffset;
+		// フレンド部屋はマッチングが早く行われるので、時間を遅くする
 		if (this.enableFriendOffset) offset -= this.friendOffset;
 		return time + offset;
 	};
