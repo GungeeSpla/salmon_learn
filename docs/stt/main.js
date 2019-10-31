@@ -441,7 +441,7 @@ function StTimerApp (stTitle, firstSt, stInterval) {
 		var date = app.dateFormatter.getMonthText(app.list[0]);
 		var str = "%date までのカウントダウンを表示しています";
 		if (window.queries.overlay) {
-			str = "<span class='hunbyo'>次は</span>%date";
+			str = "<span class='hunbyo'>次は</span>%dateに出発!";
 		}
 		    str = str.replace("%date", date);
 		app.$next.html(str);
