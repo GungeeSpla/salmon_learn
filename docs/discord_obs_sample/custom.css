@@ -205,3 +205,14 @@ h5:active {
   padding: 0 !important;
   overflow: hidden;
 }
+
+
+
+.sample-6 .voice-container .voice-states .voice-state .avatar {
+  border-width: 4px ! important;
+  border-color: rgba(0,0,0,0) ! important;
+  filter: brightness(60%);
+}
+.sample-6 .voice-container .voice-states .voice-state .avatar.speaking {
+  filter: brightness(100%);
+}
