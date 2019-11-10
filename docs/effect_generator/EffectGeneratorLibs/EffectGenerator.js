@@ -531,7 +531,7 @@ window.init = function() {
         } else {
           flushComment(effect.word);
         }
-        readComment(effect.word, effect);
+        readComment(effect.word);
       })
       .appendTo($buttons);
       addedIds.push(effect.id);
