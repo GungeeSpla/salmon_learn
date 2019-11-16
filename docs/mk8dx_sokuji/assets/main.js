@@ -128,6 +128,9 @@ function initConfigElements() {
     }
   });
   updatePassRank();
+  document.getElementById('copy-button').addEventListener('click', function(e) {
+    execCopyResult();
+  });
 }
 
 /*
@@ -1263,7 +1266,6 @@ window.logger = {
 ** https://qiita.com/simiraaaa/items/2e7478d72f365aa48356
  */
 function execCopy(str) {
-  notifyFooter('コピーしました: ' + str);
   
   var tmp = document.createElement('div');
   var pre = document.createElement('pre');
@@ -1277,7 +1279,53 @@ function execCopy(str) {
   document.getSelection().selectAllChildren(tmp);
   var result = document.execCommand('copy');
   document.body.removeChild(tmp);
+  if (result) {
+    notifyFooter('コピーしました: ' + str);
+  }
   return result;
+}
+
+/*
+ * execCopy(str)
+** https://mamewaza.com/support/blog/javascript-copy.html
+ */
+/*
+function execCopy(str) {
+  if(!str || typeof(str) != "string") {
+  return "";
+  }
+  $(document.body).append("<textarea id=\"tmp_copy\" style=\"position:fixed;right:100vw;font-size:16px;\" readonly=\"readonly\">" + str + "</textarea>");
+  var elm = $("#tmp_copy")[0];
+  elm.select();
+  var range = document.createRange();
+  range.selectNodeContents(elm);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  elm.setSelectionRange(0, 999999);
+  document.execCommand("copy");
+  $(elm).remove();
+}
+*/
+
+/*
+ * execCopyResult()
+** https://naoyu.net/js-clipboard-copy/
+ */
+function execCopyResult() {
+  var copyText = document.querySelector('#result');
+  var range = document.createRange();
+  range.selectNode(copyText);
+  window.getSelection().addRange(range);
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('copy command was ' + msg);
+    notifyFooter('コピーしました: ' + copyText.textContent);
+  } catch(err) {
+    console.log('unable to copy');
+  }
+  window.getSelection().removeAllRanges();
 }
 
 /*

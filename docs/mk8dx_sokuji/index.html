@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="sokuji_ocr/assets/style.css">
   <script type="text/javascript" src='assets/jquery.js'></script>
   <script type="text/javascript" src='assets/jquery.mysuggest.js'></script>
-  <script type="text/javascript" src='assets/main.js'></script>
+  <script type="text/javascript" src='assets/main.js?1'></script>
   <script type="text/javascript" src='tesseract/tesseract.min.js'></script>
   <script type="text/javascript" src='sokuji_ocr/assets/main.js'></script>
   <script type="text/javascript" src='sokuji_ocr/assets/trim.js'></script>
@@ -119,8 +119,10 @@
       </div>
     </div>
     
-    <h2>3. 即時集計結果が表示されます。（結果は自動でコピーされます）</h2>
-    <pre id="result">　</pre>
+    <h2>3. 即時集計結果が表示されます。</h2>
+    <p>結果は自動でコピーされますが、Edge等の一部のブラウザでは機能しないようです。<br>
+    その場合は手動でコピーしてみてください。</p>
+    <pre id="result"></pre><br><button id="copy-button">コピー</button>
     
     <h2>詳細設定</h2>
     <div id="cfg-area">
