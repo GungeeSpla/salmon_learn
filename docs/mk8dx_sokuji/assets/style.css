@@ -1,0 +1,365 @@
+body, h1, h2, h3, h4, h5, div, p, pre, table, tr, td, input {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-size: 1em;
+  font-family: sans-serif;
+  padding: 4em 0em;
+  color: #333;
+  background-color: #f6f6f6;
+  --team-bgcolor-0: #e91e63;
+  --team-bgcolor-1: #03a9f4;
+  --team-bgcolor-2: #ffeb3b;
+  --team-bgcolor-3: #4caf50;
+  --team-bgcolor-4: #ff9800;
+  --team-bgcolor-5: #673ab7;
+  --team-textcolor-0: #fff;
+  --team-textcolor-1: #fff;
+  --team-textcolor-2: #000;
+  --team-textcolor-3: #fff;
+  --team-textcolor-4: #fff;
+  --team-textcolor-5: #fff;
+}
+pre {
+  font-family: sans-serif;
+}
+h1 {
+  font-size: 2.6em;
+  margin: 0.25em 0em 0.25em;
+}
+h2 {
+  font-size: 1.6em;
+  margin: 2.5em 0 1.5em;
+  border-bottom: 1px solid #ccc;
+}
+h3 {
+  font-size: 1.2em;
+  margin: 2em 0 0.5em;
+}
+h4 {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1em;
+  margin-right: 1em;
+  min-width: 9em;
+  margin-bottom: 1em;
+}
+h5 {
+  font-size: 1em;
+  color: #999;
+  text-align: right;
+}
+h5 a {
+  color: #999;
+  display: inline-block;
+  border-radius: 4px;
+  padding: 0em 0.4em 0em 0.2em;
+  text-decoration: none;
+  transition: all .5s ease;
+}
+h5 a:hover {
+  background-color: #03a9f4;
+  text-decoration: none;
+  color: #fff;
+}
+.page-tag {
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 0.2em 0.6em;
+  margin: 0em 0.2em 0.4em 0;
+  border-radius: 2px;
+  color: #666;
+  background-color: #eee;
+}
+a {
+  color: #4aac00;
+  cursor: pointer;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+p {
+  line-height: 1.5em;
+  margin-bottom: 1.5em;
+}
+td {
+  text-align: center;
+  padding: 2px;
+}
+ul {
+
+}
+li {
+  margin-bottom: 1.2em;
+}
+li p {
+  margin-bottom: 0.7em;
+}
+.mini-text {
+  font-size: 0.8em;
+}
+.kome-jirushi {
+  margin-left: 1em;
+}
+.kome-jirushi:before {
+  content: "※";
+  margin-left: -1em;
+}
+.margin {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+  
+  #main-content {
+    width: 80%;
+    max-width: 70em;
+    margin: 0 auto;
+    padding: 4em;
+    background-color: #fff;
+    overflow: hidden;
+  }
+    #input-team-area {
+    }
+      #input-team-area .radio-wrapper input[type=radio] {
+        cursor: pointer;
+        margin-right: 0.5em;
+        margin-left: 1.5em;
+      }
+      #input-team-area .radio-wrapper input[type=radio]:first-child {
+        margin-left: 0.6em;
+      }
+      #input-team-area input[type=radio] + label {
+        cursor: pointer;
+      }
+      #input-team-area input[type=radio]:checked + label {
+        font-weight: bold;
+      }
+      #input-team-area #table-sc-key,
+      #input-team-area #table-team-name {
+        display: inline-table;
+        vertical-align: middle;
+        transform: translateY(-2px);
+      }
+    
+    #input-rank-area {
+      overflow-x: auto;
+    }
+      .mouse-chase {
+        font-size: 0.9em;
+        width: 3.7em;
+        line-height: 1.3em;
+        height: 1.3em;
+        border-radius: 0.3em;
+        pointer-events: none;
+        user-select: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1;
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+        border: 1px solid #888;
+        box-shadow: 3px 3px 5px rgba(0,0,0,.1);
+      }
+      .mouse-chase.team-6 {
+        color: #fff;
+      }
+      .mouse-chase.hidden {
+        opacity: 0;
+      }
+      
+      #input-rank-palette {
+        text-align: center;
+        display: inline-block;
+        vertical-align: middle;
+      }
+        #input-rank-table .paste-input,
+        #input-rank-palette div {
+          display: inline-block;
+          font-size: 1em;
+          line-height: 1.6em;
+          text-align: center;
+          width: 4em;
+          height: 1.6em;
+          border-radius: 0.3em;
+          border: 1px solid #ccc;
+          margin: 3px;
+          cursor: pointer;
+          user-select: none;
+          transition: all .2s ease;
+          position: relative;
+          white-space: nowrap;
+          vertical-align: bottom;
+        }
+        #input-rank-palette div p {
+          overflow: hidden;
+        }
+        #input-rank-palette div.selected::after {
+          content: '　';
+          width: 100%;
+          height: 4px;
+          position: absolute;
+          left: 0;
+          bottom: -8px;
+          background-color: #666;
+        }
+        #input-rank-palette div.team--1 {
+          border: 1px dashed #999;
+          color: #666;
+        }
+        #input-rank-palette div:hover {
+          filter: brightness(1.2);
+        }
+
+      #input-rank-table {
+        max-width: 60em;
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+        #input-rank-table td.error {
+          background-color: #ffced0;
+        }
+        #input-rank-table hr {
+          background-color: #ddd;
+          height: 1px;
+          border: none;
+        }
+        #input-rank-table .paste-input {
+          cursor: text;
+          font-weight: normal;
+          color: #999;
+          cursor: text;
+        }
+        #input-rank-table td:first-child {
+          min-width: 4em;
+        }
+        #input-rank-table td.label {
+          user-select: none;
+          font-weight: bold;
+        }
+        #input-rank-table .scanable-state {
+          color: #4aac00;
+        }
+        #input-rank-table .lock-cell,
+        #input-rank-table .state-cell {
+          padding: 6px 0;
+          color: #4aac00;
+          padding: 0em;
+        }
+        #input-rank-table .lock-cell {
+          padding: 0em;
+          cursor: pointer;
+        }
+        #input-rank-table .lock-cell img {
+          width: 1.3em;
+          vertical-align: middle;
+        }
+        #input-rank-table .state-cell img {
+          width: 1.3em;
+          vertical-align: middle;
+        }
+        #input-rank-table td.locked {
+          user-select: none;
+          pointer-events: none;
+          opacity: 0.5;
+          cursor: default;
+        }
+        #input-rank-table .paste-input.locked,
+        #input-rank-table .course-cell.locked,
+        #input-rank-table input.locked[team='-1'] {
+          background-color: #f3f3f3;
+        }
+        #input-rank-table  .lock-cell.locked {
+          user-select: initial;
+          pointer-events: initial;
+          opacity: 1;
+          cursor: pointer;
+        }
+        #input-rank-table td.pasted-image-cell img {
+          display; none;
+          width: 100%;
+          border-radius: 4px;
+          transition: filter .3s ease;
+        }
+        #input-rank-table td.pasted-image-cell img:hover {
+          filter: brightness(120%);
+        }
+        #input-rank-table.pen-mode td,
+        #input-rank-table.pen-mode td input {
+          user-select: none;
+        }
+        
+          input[type=text] {
+            font-size: 1em;
+            line-height: 1.6em;
+            text-align: center;
+            width: 4em;
+            margin: 0em 0.3em;
+            border-radius: 0.3em;
+            border: 1px solid #ccc;
+            overflow: hidden;
+          }
+          input[type=text]::placeholder {
+            color: #ccc;
+          }
+          input[type=text]::-webkit-input-placeholder {
+            color: #ccc;
+          }
+          .pen-mode input[type=text] {
+            cursor: pointer;
+          }
+    
+    .team-0 {
+      background-color: var(--team-bgcolor-0);
+      color: var(--team-textcolor-0);
+    }
+    .team-1 {
+      background-color: var(--team-bgcolor-1);
+      color: var(--team-textcolor-1);
+    }
+    .team-2 {
+      background-color: var(--team-bgcolor-2);
+      color: var(--team-textcolor-2);
+    }
+    .team-3 {
+      background-color: var(--team-bgcolor-3);
+      color: var(--team-textcolor-3);
+    }
+    .team-4 {
+      background-color: var(--team-bgcolor-4);
+      color: var(--team-textcolor-4);
+    }
+    .team-5 {
+      background-color: var(--team-bgcolor-5);
+      color: var(--team-textcolor-5);
+    }
+    .team-6 {
+      background-color: #fff;
+      color: #666;
+    }
+    #input-team-area {
+    }
+  #cfg-area p {
+    margin: 0.5em 0em 0.5em 0em;
+  }
+  #cfg-area input[type=checkbox] {
+    margin-right: 0.5em;
+  }
+  #cfg-area input[type=radio] {
+    cursor: pointer;
+    margin-right: 0.5em;
+    margin-left: 1.5em;
+  }
+  #cfg-area input[type=radio]:first-child {
+    margin-left: 0.6em;
+  }
+  #cfg-area input[type=checkbox] + label,
+  #cfg-area input[type=radio] + label {
+    cursor: pointer;
+  }
+  #cfg-area input[type=radio]:checked + label {
+    font-weight: bold;
+  }
