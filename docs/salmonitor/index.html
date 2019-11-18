@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Salmonitor - サーモニター</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="text/javascript" src='assets/main.js'></script>
+  <script type="text/javascript" src='assets/canvas.js'></script>
+  <script type="text/javascript" src='assets/sound.js'></script>
+</head>
+<body>
+  <div id="sync-video-wrapper">
+    <video id="sync-video" width="1280" height="720" controls></video>
+    <div id="debug-variable">
+      バイト中か: <span id="is-wave-now"></span><br>
+      <!--安定しているか: <span id="is-stable"></span><br>-->
+      Wave: <span id="wave-num"></span><br>
+      <!--Wave予告: <span id="wave-notice-num"></span><br>-->
+      <!--金イクラアイコン: <span id="golden-ikura-icon"></span><br>-->
+      残り時間: <span id="left-time"></span><br>
+      納品数: <span id="nouhin-num"></span><br>
+      ノルマ: <span id="norma-num"></span><br>
+      1番目のイカ: <span id="state-ika-0"></span><br>
+      2番目のイカ: <span id="state-ika-1"></span><br>
+      3番目のイカ: <span id="state-ika-2"></span><br>
+      4番目のイカ: <span id="state-ika-3"></span><br>
+      スペシャル: <span id="special-kind"></span><br>
+      スペシャル残り: <span id="special-num"></span><br>
+    </div>
+  </div>
+  <div id="option-wrapper">
+    <div id="video-input-select-wrapper">
+      <span class="input-title">映像入力デバイス: </span>
+      <select id="video-input-select" name="video-input-select"></select>
+      <span class="input-id-title">デバイスID: <span id="video-input-id"></span></span>
+    </div>
+    <div id="audio-input-select-wrapper" style="display: none;">
+      <span class="input-title">音声入力デバイス: </span>
+      <select id="audio-input-select" name="audio-input-select"></select>
+      <span class="input-id-title">デバイスID: <span id="audio-input-id"></span></span>
+    </div>
+  </div>
+  <div id="debug">
+    <canvas id="canvas" width="640" height="360"></canvas><br>
+    <img id="debug-img">
+  </div>
+  <div id="materials">
+    <video src="assets/sample-video-1.mp4"></video>
+    <video src="assets/sample-video-2.mp4"></video>
+    <video src="assets/sample-video-3.mp4"></video>
+    <img id="img-ika-icon-bw"    src="assets/ika-icon-bw-2.png" >
+    <img id="img-ika-icon-bw-x"  src="assets/ika-icon-bw-x.png" >
+    <img id="img-wave-num-1"     src="assets/wave-num-1.png"    >
+    <img id="img-wave-num-2"     src="assets/wave-num-2.png"    >
+    <img id="img-wave-num-3"     src="assets/wave-num-3.png"    >
+    <img id="img-notice-num-1"   src="assets/wave-notice-1.png" >
+    <img id="img-notice-num-2"   src="assets/wave-notice-2.png" >
+    <img id="img-notice-num-3"   src="assets/wave-notice-3.png" >
+    <img id="img-notice-num-4"   src="assets/wave-notice-4.png" >
+    <img id="img-golden-ikura"   src="assets/golden-ikura.png"  >
+    <img id="img-special-icon-1" src="assets/special-icon-1.png">
+    <img id="img-special-icon-2" src="assets/special-icon-2.png">
+    <img id="img-special-icon-3" src="assets/special-icon-3.png">
+    <img id="img-special-icon-4" src="assets/special-icon-4.png">
+    <img id="img-special-pouch"  src="assets/special-pouch.png" >
+    <img id="img-center-count-8" src="assets/center-count-8.png">
+    <img id="img-norma-num-0"    src="assets/norma-num-0.png"   >
+    <img id="img-norma-num-1"    src="assets/norma-num-1.png"   >
+    <img id="img-norma-num-2"    src="assets/norma-num-2.png"   >
+    <img id="img-norma-num-3"    src="assets/norma-num-3.png"   >
+    <img id="img-norma-num-4"    src="assets/norma-num-4.png"   >
+    <img id="img-norma-num-5"    src="assets/norma-num-5.png"   >
+    <img id="img-norma-num-6"    src="assets/norma-num-6.png"   >
+    <img id="img-norma-num-7"    src="assets/norma-num-7.png"   >
+    <img id="img-norma-num-8"    src="assets/norma-num-8.png"   >
+    <img id="img-norma-num-9"    src="assets/norma-num-9.png"   >
+  </div>
+</body>
+</html>

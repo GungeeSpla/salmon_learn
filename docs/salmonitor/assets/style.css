@@ -1,0 +1,70 @@
+/* リセット */
+body, div, p, select, canvas, video {
+  margin: 0;
+  padding: 0;
+}
+body {
+  color: #fff;
+  background-color: #222;
+}
+select {
+  color: #fff;
+  width: 20em;
+  height: 1.7em;
+  display: inline-blcok;
+  background-color: #444;
+}
+canvas,
+video {
+  border: none;
+  background-color: #111;
+}
+video {
+  filter: contrast(1.15);
+}
+
+
+
+#sync-video-wrapper {
+  margin-bottom: 1em;
+  position: relative;
+}
+  #sync-video-wrapper #sync-video {
+  }
+  #sync-video-wrapper #debug-variable {
+    right: 0;
+    top: 240px;
+    display: inline-block;
+    position: absolute;
+    background: rgba(0, 0, 0, .6);
+    color: rgba(255, 255, 255, .8);
+    pointer-events: none;
+    padding: 1em;
+  }
+
+
+
+#option-wrapper {
+}
+  #option-wrapper .input-title {
+  }
+  #option-wrapper .input-id-title {
+    color: #aaa;
+    font-size: 0.8em;
+  }
+
+
+
+#debug {
+}
+  #canvas {
+    width: 640px;
+    height: 360px;
+  }
+
+
+
+#materials,
+#materials * {
+  display: none;
+}
