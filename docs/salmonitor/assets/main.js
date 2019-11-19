@@ -155,7 +155,7 @@ function createOption(label, value) {
  * サンプル動画を<select>に追加する
  */
 function addSampleVideos() {
-  if (window.debugMode > 0) {
+  if (window.debugMode >= 2) {
     var videoSelect = document.querySelector('#video-input-select');
     var sampleVideos = document.querySelectorAll('#materials video');
     if (sampleVideos) {
