@@ -11,6 +11,7 @@ function Sound (base, urls) {
 	// 初期化
 	this.volume  = 1;
 	this.isMuted = false;
+	this.isLoaded = false;
 	this.sources = new Array(this.soundUrls.length);
 	this.buffers = new Array(this.soundUrls.length);
 	this.playing = new Array(this.soundUrls.length, false);
@@ -39,7 +40,9 @@ function Sound (base, urls) {
 					this.buffers[index] = buffer;
 				}))).then(function () {
 					console.log("preloaded all sounds");
+	        self.isLoaded = true;
 				  if (callback) callback();
+				  if (self.onload) self.onload();
 				});
 	};
 	

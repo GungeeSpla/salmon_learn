@@ -1,15 +1,19 @@
-window.useVideoInputId = localStorage.getItem('use-video-input-id') || 'none';
-window.useAudioInputId = localStorage.getItem('use-audio-input-id') || 'none';
+window.useVideoInputId = 'none';
+window.useAudioInputId = 'none';
+window.soundVolume     = '100';
+window.videoContrast   = '100';
+window.debugMode       = 0;
 //window.useVideoInputId = '378be3040bee297c25559a0f83b26dbdaa4e50843ef7f8b102b99540661ede93';
-//window.useVideoInputId = 'none';
 //window.useAudioInputId = '760fd3d81dc40653a491b92a8827f5bda396581f8320a863421cc897c8fde642';
-//window.useAudioInputId = 'none';
 window.videoWidth     = 1280;
 window.videoHeight    = 720;
 window.updateRate     = 2;
 window.updateInterval = 1000 / window.updateRate;
-window.DEBUG_MODE     = 1;
-
+window.queries        = getUrlQueries();
+window.storageKey     = 'salmonitor';
+window.saveVariables  = [
+  'useVideoInputId', 'useAudioInputId', 'soundVolume', 'videoContrast', 'debugMode',
+];
 /*
  * onload()
  */
@@ -17,19 +21,24 @@ window.onload = () => {
   console.log('hello!');
   console.log('initializing');
   
+  loadStorage();
+  //window.debugMode = 2;
+  
+  //if (useVideoInputId !== 'none') {
+  //  synchronizeVideo(window.video);
+  //}
   
   window.sound = new Sound('./assets/', [
     'silent', 'death-num-1', 'death-num-2', 'death-num-3', 'death-me',
     'wave-start', 'norma-ok',
   ]);
+  
   window.video = document.querySelector("#sync-video");
   window.videoWrapper = document.querySelector("#sync-video-wrapper");
   window.videoWrapper.style.width = window.videoWidth + 'px';
   window.videoWrapper.style.height = window.videoHeight + 'px';
   window.video.setAttribute('width', window.videoWidth);
   window.video.setAttribute('height', window.videoHeight);
-  document.querySelector('#video-input-id').textContent = window.useVideoInputId;
-  document.querySelector('#audio-input-id').textContent = window.useAudioInputId;
   window.canvas = document.querySelector("#canvas");
   window.canvas.ctx = window.canvas.getContext("2d");
   window.debugCanvas = document.createElement('canvas');
@@ -43,23 +52,17 @@ window.onload = () => {
   
   getCaptureDevices();
   setSelectEvent();
+  setVolumeSelect();
+  setContrastSelect();
+  setDebugSelect();
   initBWData();
   
-  //if (useVideoInputId !== 'none') {
-  //  synchronizeVideo(window.video);
-  //}
-  
-  switch (DEBUG_MODE) {
-  case 0:
-    document.querySelector('#debug').style.display = 'none';
-    document.querySelector('#debug-variable').style.display = 'none';
-    break;
-  case 1:
-    document.querySelector('#debug').style.display = 'none';
-    break;
-  case 2:
-    break;
-  }
+  var cover = document.querySelector('#cover');
+  cover.style.opacity = '0';
+  setTimeout(() => {
+    cover.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }, 300);
   
   console.log('initialized!');
 };
@@ -136,7 +139,6 @@ function getCaptureDevices() {
   });
 }
 
-
 /* 
  * createOption(label, value)
  * <option>を作成する
@@ -153,7 +155,7 @@ function createOption(label, value) {
  * サンプル動画を<select>に追加する
  */
 function addSampleVideos() {
-  if (DEBUG_MODE > 0) {
+  if (window.debugMode > 0) {
     var videoSelect = document.querySelector('#video-input-select');
     var sampleVideos = document.querySelectorAll('#materials video');
     if (sampleVideos) {
@@ -181,6 +183,106 @@ function setSampleVideo(src) {
 }
 
 /* 
+ * setDebugSelect()
+ * デバッグモード変更用の<select>を準備する
+ */
+function setDebugSelect() {
+  var debugSelect = document.querySelector('#debug-mode-select');
+  debugSelect.appendChild(createOption('OFF', 0));
+  debugSelect.appendChild(createOption('ON', 1));
+  debugSelect.selectedIndex = window.debugMode;
+  debugSelect.addEventListener('change', function(e) {
+    var index = this.selectedIndex;
+    var option = this.options[index];
+    var value = option.getAttribute('value');
+    window.debugMode = parseInt(value);
+    saveStorage();
+    apply();
+  });
+  apply();
+  function apply() {
+    switch (window.debugMode) {
+    case 0:
+      document.querySelector('#debug').style.display = 'none';
+      document.querySelector('#debug-variable').style.display = 'none';
+      break;
+    case 1:
+      document.querySelector('#debug').style.display = 'none';
+      document.querySelector('#debug-variable').style.display = 'inline-block';
+      break;
+    case 2:
+      document.querySelector('#debug').style.display = 'block';
+      document.querySelector('#debug-variable').style.display = 'inline-block';
+    }
+  }
+}
+
+/* 
+ * setContrastSelect()
+ * コントラスト調節用の<select>を準備する
+ */
+function setContrastSelect() {
+  var contrastSelect = document.querySelector('#video-contrast-select');
+  var defaultIndex = 0;
+  for (var i = 0; i < 5; i++) {
+    var p = (i + 8) * 10;
+    var option = createOption(p + '%', p);
+    contrastSelect.appendChild(option);
+    if (p === parseInt(window.videoContrast)) {
+      defaultIndex = i;
+    }
+  }
+  contrastSelect.selectedIndex = defaultIndex;
+  contrastSelect.addEventListener('change', function(e) {
+    var index = this.selectedIndex;
+    var option = this.options[index];
+    var value = option.getAttribute('value');
+    window.videoContrast = value;
+    document.querySelector('#sync-video').style.filter =
+      'contrast(' + (parseInt(window.videoContrast)/100) + ')';
+    saveStorage();
+  });
+  document.querySelector('#sync-video').style.filter =
+    'contrast(' + (parseInt(window.videoContrast)/100) + ')';
+}
+
+/* 
+ * setVolumeSelect()
+ * 音量調節用の<select>を準備する
+ */
+function setVolumeSelect() {
+  var volumeSelect = document.querySelector('#sound-volume-select');
+  var defaultIndex = 0;
+  for (var i = 0; i < 11; i++) {
+    var p = i * 10;
+    var option = createOption(p + '%', p);
+    volumeSelect.appendChild(option);
+    if (p === parseInt(window.soundVolume)) {
+      defaultIndex = i;
+    }
+  }
+  volumeSelect.selectedIndex = defaultIndex;
+  volumeSelect.addEventListener('change', function(e) {
+    var index = this.selectedIndex;
+    var option = this.options[index];
+    var value = option.getAttribute('value');
+    window.soundVolume = value;
+    window.sound.volume = parseInt(window.soundVolume) / 100;
+    saveStorage();
+  });
+  document.querySelector('#sound-test').addEventListener('click', function(e) {
+    if (window.sound.isLoaded) {
+      window.sound.play('death-num-1');
+    } else {
+      window.sound.onload = () => {
+        window.sound.play('death-num-1');
+      };
+    }
+  });
+  window.sound.volume = parseInt(window.soundVolume) / 100;
+}
+
+/* 
  * setSelectEvent()
  * <select>にイベントをセットする
 ** 値が変更されたら<video>の同期を更新する
@@ -196,10 +298,9 @@ function setSelectEvent() {
       setSampleVideo(value.replace('sample: ', ''));
     } else {
       useVideoInputId = value;
-      localStorage.setItem('use-video-input-id', value);
-      document.querySelector('#video-input-id').textContent = value;
       synchronizeVideo(window.video);
       synchronizeCanvas(window.video);
+      saveStorage();
     }
   });
   audioSelect.addEventListener('change', function(e) {
@@ -207,9 +308,8 @@ function setSelectEvent() {
     var option = this.options[index];
     var value = option.getAttribute('value');
     useAudioInputId = value;
-    localStorage.setItem('use-audio-input-id', value);
-    document.querySelector('#audio-input-id').textContent = value;
     synchronizeVideo();
+    saveStorage();
   });
 }
 
@@ -257,10 +357,62 @@ function synchronizeVideo(video) {
 
 /* 
  * logger
- * ロガー
  */
 window.logger = {
   log (str) {
-    if (false && DEBUG_MODE) console.log(str);
+    if (false && window.debugMode) console.log(str);
   }
 };
+
+/*
+ * saveStorage()
+ */
+function saveStorage() {
+  var saveDataObj = {};
+  window.saveVariables.map(varName => {
+    saveDataObj[varName] = window[varName];
+  });
+  var jsonStr = JSON.stringify(saveDataObj);
+  //console.log(jsonStr);
+  localStorage.setItem(window.storageKey, jsonStr);
+  console.log('set storage data');
+}
+
+/*
+ * loadStorage()
+ */
+function loadStorage() {
+  var jsonStr = localStorage.getItem(window.storageKey);
+  if (jsonStr !== null) {
+    console.log('storage data exist');
+    console.log('merging variables to window');
+    //console.log(jsonStr);
+    var saveDataObj = JSON.parse(jsonStr);
+    window.saveVariables.map(varName => {
+      window[varName] = saveDataObj[varName];
+    });
+  } else {
+    console.log('storage data doesn\'t exist');
+  }
+}
+
+/*
+ * getUrlQueries()
+ */
+function getUrlQueries() {
+	var queryStr = window.location.search.slice(1);
+			queries = {};
+	if (!queryStr) {
+		return queries;
+	}
+	queryStr.split('&').forEach(function(queryStr) {
+		var queryArr = queryStr.split('=');
+		if (queryArr[1]) {
+			queries[queryArr[0]] = queryArr[1];
+		}
+		else {
+			queries[queryArr[0]] = '';
+		}
+	});
+	return queries;
+}

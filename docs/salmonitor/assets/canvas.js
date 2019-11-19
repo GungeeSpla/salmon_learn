@@ -39,12 +39,12 @@ window.COLOR = {
   SPECIAL_BG   : [  0,   0,  40], // SP部分の背景
   CENTER_COUNT : [ 70, 160,  90], // Wave開始前の画面中央のカウント
   NORMA_NUM    : [255, 255, 240], // ノルマ
-  NORMA_NUM_BG : [ 20,  20,  10], // ノルマ
+  NORMA_NUM_BG : [ 30,  30,  20], // ノルマ
 };
 window.BORDER = {
   NOUHIN_NUM   : 10000, // difがこれ以下なら納品数が表示されている
-  WAVE_NOTICE  : 20000, // difがこれ以下ならWave予告が表示されている
-  WAVE_NUM     :  2000, // difがこれ以下ならWaveが表示されている
+  WAVE_NOTICE  : 40000, // difがこれ以下ならWave予告が表示されている
+  WAVE_NUM     :  4000, // difがこれ以下ならWaveが表示されている
   SPECIAL_POUCH:  1500, // difがこれ以下ならSPがある
   PLAYER       :  8000, // difがこれ以下ならイカアイコンである
   PLAYER_DC    :   700, // difがこれ以下なら回線落ちである
@@ -86,6 +86,7 @@ window.myData = {
   soundKeys: [
     'wave-start', 'norma-ok',
   ],
+  normaBGColor: [0, 0, 0],
   isPlayed: {},
   leftTime: 0,
   centerCount8Time: 0,
@@ -201,7 +202,7 @@ function initBWData() {
   window.BW.NORMA_NUM[9]    = createBWObject('#img-norma-num-9');
   
   // デバッグ用のイメージデータを作成する
-  if (DEBUG_MODE) {
+  if (window.debugMode) {
     createDebugImageData();
   }
   
@@ -386,6 +387,11 @@ function updateCanvas() {
   window.canvas.ctx.drawImage(window.syncVideo,
     rect.x, rect.y, rect.w, rect.h, rect.dx, rect.dy, rect.dw, rect.dh);
   
+  var imagedata = window.canvas.ctx.getImageData(0, 100, 1, 1);
+  myData.normaBGColor[0] = imagedata.data[0];
+  myData.normaBGColor[1] = imagedata.data[1];
+  myData.normaBGColor[2] = imagedata.data[2];
+  
   // 現在のフレームの各情報を取得する
   var d = {};
   d.player0         = checkPlayerAlive(0);
@@ -401,10 +407,10 @@ function updateCanvas() {
   // いまウェーブが始まっているか
   var isWaveNow =
    (d.wave    !== 0 &&
-    d.player0 !== 0 &&
-    d.player1 !== 0 &&
-    d.player2 !== 0 &&
-    d.player3 !== 0 &&
+    //d.player0 !== 0 &&
+    //d.player1 !== 0 &&
+    //d.player2 !== 0 &&
+    //d.player3 !== 0 &&
     d.goldenIkuraIcon !== 0);
   unshiftBuffer('isWaveNow', isWaveNow);
   // バッファがすべて一致したら更新する
@@ -412,6 +418,11 @@ function updateCanvas() {
   if (isEqualBuffer('isWaveNow', myData.bufferLength)) {
     myData.isWaveNow = isWaveNow;
     isStable = true;
+  }
+  
+  // いまウェーブ中ではないならば
+  if (!myData.isWaveNow) {
+    initWaveData();
   }
   
   // デス数の計算
@@ -438,17 +449,17 @@ function updateCanvas() {
     // 納品数について
     d.nouhinNum = checkNouhinNum();
     // 納品数が前回バッファと異なる場合はバッファに放り込む前にチェックする
-    if (myData.leftTime > 0) {
+    if (0 <= myData.leftTime && 0 < myData.nouhinNum) {
       // 納品数が前回バッファよりも2以上低下している場合は明らかにエラーである
       // (ハコビヤに吸われても1個減るだけなので)
-      // また前回バッファよりも8以上増加している場合もエラーである
+      // また前回バッファよりも10以上増加している場合もエラーである
       if (d.nouhinNum < myData.buffer.nouhinNum[0] - 2) {
-      } else if (d.nouhinNum > myData.buffer.nouhinNum[0] + 8) {
+      } else if (d.nouhinNum > myData.buffer.nouhinNum[0] + 10) {
       } else {
         unshiftBuffer('nouhinNum', d.nouhinNum);
-      }
-      if (isEqualBuffer('nouhinNum')) {
-        myData.nouhinNum = myData.buffer.nouhinNum[0];
+        if (isEqualBuffer('nouhinNum')) {
+          myData.nouhinNum = myData.buffer.nouhinNum[0];
+        }
       }
     } else {
       unshiftBuffer('nouhinNum', d.nouhinNum);
@@ -478,14 +489,10 @@ function updateCanvas() {
   // センターカウント8を取得する＋一部のプロパティを初期化する
   // (＝画面中央のカウントダウンに8が最も明瞭に表示された時刻）
   if (!myData.centerCount8Flag && myData.waveNotice !== 0 &&
-      myData.centerCount8Time === 0) {
+      myData.prev.waveNotice === 0) {
     myData.centerCount8Flag = true;
     
-    myData.soundKeys.map(key => {
-      myData.isPlayed[key] = false;
-    });
-    myData.normaNum = 0;
-    myData.buffer.nouhinNum[0] = 0;
+    initWaveData();
     
     myData.buffer.centerCount8 = [];
     updateCenterCount8();
@@ -517,7 +524,7 @@ function updateCanvas() {
     if (myData.leftTime === 100) {
       sound = 'wave-start';
     }
-    if (myData.nouhinNum === myData.normaNum &&
+    if (myData.nouhinNum >= myData.normaNum &&
         0 <= myData.leftTime && myData.leftTime < 100 && myData.normaNum > 0) {
       sound = 'norma-ok';
     }
@@ -532,20 +539,21 @@ function updateCanvas() {
       window.sound.play('death-num-1');
     }
     if (myData.deathNum === 2 && myData.prev.deathNum < 2) {
-      window.sound.play('death-num-1');
+      window.sound.play('death-num-2');
     }
     if (myData.deathNum === 3 && myData.prev.deathNum < 3) {
-      window.sound.play('death-num-1');
+      window.sound.play('death-num-3');
     }
   }
   
   // デバッグモードなら
-  if (DEBUG_MODE > 0) {
+  if (window.debugMode > 0) {
     function setText(slc, val, flag) {
       if (flag) val = '-';
       document.querySelector(slc).textContent = val;
     }
     var flag = !myData.isWaveNow;
+    if (window.debugMode === 2) flag = false;
     setText('#is-wave-now',  myData.isWaveNow ? 'yes' : 'no');
     //setText('#is-stable',    isStable ? 'yes' : 'no');
     setText('#state-ika-0',  LANG.PLAYER[myData.player0], flag);
@@ -572,6 +580,23 @@ function updateCanvas() {
   });
   myData.prev.leftTime  = myData.leftTime;
   myData.prev.deathNum  = myData.deathNum;
+}
+
+/* 
+ * initWaveData()
+ */
+function initWaveData() {
+  console.log('init wave data');
+  myData.waveNotice = 0;
+  myData.prev.waveNotice = 0;
+  myData.soundKeys.map(key => {
+    myData.isPlayed[key] = false;
+  });
+  myData.normaNum = 0;
+  myData.buffer.normaNum[0] = 0;
+  myData.nouhinNum = 0;
+  myData.buffer.nouhinNum[0] = 0;
+  myData.centerCount8Time = 0;
 }
 
 /* 
@@ -676,15 +701,17 @@ function checkNouhinNumOne(x, y) {
             b = imagedata.data[k + 2];
           }
           if (bw === 1) {
-            difs[j].sum += 
+            difs[j].sum += Math.max(0, -80 + 
               Math.abs(COLOR.NORMA_NUM[0] - r) + 
               Math.abs(COLOR.NORMA_NUM[1] - g) + 
-              Math.abs(COLOR.NORMA_NUM[2] - b);
+              Math.abs(COLOR.NORMA_NUM[2] - b)
+            );
           } else if (bw === 2) {
-            difs[j].sum +=
-              Math.abs(COLOR.NORMA_NUM_BG[0] - r) + 
-              Math.abs(COLOR.NORMA_NUM_BG[1] - g) + 
-              Math.abs(COLOR.NORMA_NUM_BG[2] - b);
+            difs[j].sum += Math.max(0, -80 + 
+              Math.abs(myData.normaBGColor[0] - r) + 
+              Math.abs(myData.normaBGColor[1] - g) + 
+              Math.abs(myData.normaBGColor[2] - b)
+            );
           }
         }
       });
@@ -757,15 +784,17 @@ function checkNormaNumOne(x, y) {
             b = imagedata.data[k + 2];
           }
           if (bw === 1) {
-            difs[j].sum += 
+            difs[j].sum += Math.max(0, -80 + 
               Math.abs(COLOR.NORMA_NUM[0] - r) + 
               Math.abs(COLOR.NORMA_NUM[1] - g) + 
-              Math.abs(COLOR.NORMA_NUM[2] - b);
+              Math.abs(COLOR.NORMA_NUM[2] - b)
+            );
           } else if (bw === 2) {
-            difs[j].sum +=
-              Math.abs(COLOR.NORMA_NUM_BG[0] - r) + 
-              Math.abs(COLOR.NORMA_NUM_BG[1] - g) + 
-              Math.abs(COLOR.NORMA_NUM_BG[2] - b);
+            difs[j].sum += Math.max(0, -80 + 
+              Math.abs(myData.normaBGColor[0] - r) + 
+              Math.abs(myData.normaBGColor[1] - g) + 
+              Math.abs(myData.normaBGColor[2] - b)
+            );
           }
         }
         r = -1;
