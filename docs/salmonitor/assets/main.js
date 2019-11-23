@@ -2,18 +2,26 @@ window.useVideoInputId = 'none';
 window.useAudioInputId = 'none';
 window.soundVolume     = '100';
 window.videoContrast   = '100';
+window.voiceChara      = 'bouyomi';
 window.debugMode       = 0;
 //window.useVideoInputId = '378be3040bee297c25559a0f83b26dbdaa4e50843ef7f8b102b99540661ede93';
 //window.useAudioInputId = '760fd3d81dc40653a491b92a8827f5bda396581f8320a863421cc897c8fde642';
 window.videoWidth     = 1280;
 window.videoHeight    = 720;
 window.updateRate     = 2;
-window.updateInterval = 1000 / window.updateRate;
+window.updateDelay    = 1000 / window.updateRate;
 window.queries        = getUrlQueries();
 window.storageKey     = 'salmonitor';
 window.saveVariables  = [
-  'useVideoInputId', 'useAudioInputId', 'soundVolume', 'videoContrast', 'debugMode',
+  'useVideoInputId', 'useAudioInputId', 'soundVolume', 'videoContrast', 'debugMode', 'voiceChara',
 ];
+window.charaNames = [
+  {id: 'bouyomi', jp: '棒読みちゃん'},
+  {id: 'gungee', jp: '男性'},
+]
+
+
+
 /*
  * onload()
  */
@@ -21,18 +29,16 @@ window.onload = () => {
   console.log('hello!');
   console.log('initializing');
   
+  // ローカルストレージの読み込み
   loadStorage();
+  
+  // デバッグモードの上書き
   //window.debugMode = 2;
   
-  //if (useVideoInputId !== 'none') {
-  //  synchronizeVideo(window.video);
-  //}
+  // Soundの生成
+  window.sound = new Sound();
   
-  window.sound = new Sound('./assets/', [
-    'silent', 'death-num-1', 'death-num-2', 'death-num-3', 'death-me',
-    'wave-start', 'norma-ok',
-  ]);
-  
+  // DOMの取得など
   window.video = document.querySelector("#sync-video");
   window.videoWrapper = document.querySelector("#sync-video-wrapper");
   window.videoWrapper.style.width = window.videoWidth + 'px';
@@ -43,20 +49,27 @@ window.onload = () => {
   window.canvas.ctx = window.canvas.getContext("2d");
   window.debugCanvas = document.createElement('canvas');
   window.debugCanvas.ctx = window.debugCanvas.getContext("2d");
+  if (window.debugMode >= 2) {
+    window.video.setAttribute('controls', 'controls');
+  }
   
+  // windowをクリックしたら音声ファイルを再生できるようにする
   window.addEventListener('click', () => {
     window.sound.loadAll(() => {
       window.sound.testPlay();
     });
   }, {once: true});
   
+  // いろいろやる
   getCaptureDevices();
   setSelectEvent();
+  setCharaSelect();
   setVolumeSelect();
   setContrastSelect();
   setDebugSelect();
   initBWData();
   
+  // カバー要素の削除
   var cover = document.querySelector('#cover');
   cover.style.opacity = '0';
   setTimeout(() => {
@@ -66,6 +79,8 @@ window.onload = () => {
   
   console.log('initialized!');
 };
+
+
 
 /* 
  * getCaptureDevices()
@@ -124,6 +139,8 @@ function getCaptureDevices() {
       if (targetSelect && label.toLowerCase().indexOf('webcam') < 0) {
         var option = createOption(label, device.deviceId);
         targetSelect.appendChild(option);
+      } else {
+        videoInputIndex--;
       }
     });
     videoSelect.selectedIndex = defaultVideoInputIndex;
@@ -247,6 +264,33 @@ function setContrastSelect() {
 }
 
 /* 
+ * setCharaSelect()
+ * 読み上げキャラ用の<select>を準備する
+ */
+function setCharaSelect() {
+  var charaSelect = document.querySelector('#voice-chara-select');
+  var defaultIndex = 0;
+  for (var i = 0; i < window.charaNames.length; i++) {
+    var name1 = window.charaNames[i].jp;
+    var name2 = window.charaNames[i].id;
+    var option = createOption(name1, name2);
+    charaSelect.appendChild(option);
+    if (name2 === window.voiceChara) {
+      defaultIndex = i;
+    }
+  }
+  charaSelect.selectedIndex = defaultIndex;
+  charaSelect.addEventListener('change', function(e) {
+    var index = this.selectedIndex;
+    var option = this.options[index];
+    var value = option.getAttribute('value');
+    window.voiceChara = value;
+    window.sound.charaName = value;
+    saveStorage();
+  });
+}
+
+/* 
  * setVolumeSelect()
  * 音量調節用の<select>を準備する
  */
@@ -272,10 +316,10 @@ function setVolumeSelect() {
   });
   document.querySelector('#sound-test').addEventListener('click', function(e) {
     if (window.sound.isLoaded) {
-      window.sound.play('death-num-1');
+      window.sound.voice('death-num-1');
     } else {
       window.sound.onload = () => {
-        window.sound.play('death-num-1');
+        window.sound.voice('death-num-1');
       };
     }
   });

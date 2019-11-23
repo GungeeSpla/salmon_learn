@@ -1,12 +1,63 @@
 //# Sound
 // STタイマーのものをそのまま流用
-function Sound (base, urls) {
+function Sound () {
 	console.log('initializing sound');
 	
 	var self = this;
 	
-	this.soundUrlBase = base;
-	this.soundUrls    = urls;
+	this.soundUrlBase = './assets/';
+	this.soundUrls =  [
+    'silent', 'cursor.mp3',
+  ];
+	this.charaName = 'gungee';
+	this.charaNames = [
+	  'bouyomi',
+	  'gungee',
+	];
+	this.voiceNames = [
+	  'death-num-1',
+	  'death-num-2',
+	  'death-num-3',
+	  'wave-start',
+	  'norma-ok',
+	  'works-over',
+	  'wave-1-clear',
+	  'wave-3-clear',
+	];
+	this.voicePattern = {
+	  'bouyomi': {
+	  },
+	  'gungee': {
+  	  'death-num-1': 3,
+  	  'death-num-2': 3,
+  	  'death-num-3': 3,
+  	  'norma-ok': 4,
+  	  'wave-1-clear': 3,
+  	  'wave-3-clear': 3,
+  	  'wave-start': 2,
+  	  'works-over': 2,
+	  },
+	};
+	this.charaNames.map(charaName => {
+	  this.voiceNames.map(voiceName => {
+	    var pattern = this.voicePattern[charaName][voiceName];
+	    if (typeof pattern === 'undefined') {
+	      this.soundUrls.push(charaName + '/' + voiceName + '.mp3');
+	    } else {
+	      for (var i = 1; i <= pattern; i++) {
+	        this.soundUrls.push(charaName + '/' + voiceName + '-' + i + '.mp3');
+	      }
+	    }
+	  });
+	});
+	
+	this.voice = function (index, _opt) {
+    var pattern = this.voicePattern[this.charaName][index];
+    if (typeof pattern !== 'undefined') {
+      index = index + '-' + (1 + Math.floor(Math.random() * pattern));
+    }
+	  this.play(this.charaName + '/' + index, _opt);
+	};
 	
 	// 初期化
 	this.volume  = 1;
@@ -19,6 +70,7 @@ function Sound (base, urls) {
 	this.noAudioContext = false;
 	this.fallbackAudio = document.createElement("audio");
 	this.isTested = false;
+  this.playingIndex = -1;
 	
 	// AudioContextが使用可能ならそのコンテキストを使う
 	if (this.audioContext !== undefined) {
@@ -125,6 +177,10 @@ function Sound (base, urls) {
 				return;
 			}
 			
+			if (this.playingIndex > -1) {
+			  this.sources[this.playingIndex].stop(0);
+			}
+			
 			// AudioContextを再開する
 			this.audioCtx.resume();
 			
@@ -160,6 +216,7 @@ function Sound (base, urls) {
 			// フラグを立てる
 			this.sources[index] = source;
 			this.playing[index] = true;
+			this.playingIndex = index;
 			
 			// 再生を開始する
 			source.start(0);

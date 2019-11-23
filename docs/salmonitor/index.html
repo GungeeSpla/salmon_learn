@@ -17,21 +17,20 @@
     navigator.serviceWorker.register('service-worker.js').then(function() { console.log('Service Worker Registered'); });
   }
   </script>
-  <link rel="stylesheet"        href="assets/style.css?3">
-  <script type="text/javascript"   src='assets/main.js?3'></script>
-  <script type="text/javascript" src='assets/canvas.js?3'></script>
-  <script type="text/javascript"  src='assets/sound.js?3'></script>
+  <link rel="stylesheet"        href="assets/style.css?5">
+  <script type="text/javascript"   src='assets/main.js?5'></script>
+  <script type="text/javascript" src='assets/canvas.js?5'></script>
+  <script type="text/javascript"  src='assets/sound.js?5'></script>
 </head>
 <body>
-  <div id="cover"></div>
+  <div id="cover"><div class="loader">Loading...</div></div>
   <div id="sync-video-wrapper">
-    <video id="sync-video" width="1280" height="720" controls></video>
+    <video id="sync-video" width="1280" height="720"></video>
     <div id="debug-variable">
-      バイト中か: <span id="is-wave-now"></span><br>
-      <!--安定しているか: <span id="is-stable"></span><br>-->
+      <span style="display: none;">安定しているか: <span id="is-stable"></span><br></span>
       Wave: <span id="wave-num"></span><br>
-      <!--Wave予告: <span id="wave-notice-num"></span><br>-->
-      <!--金イクラアイコン: <span id="golden-ikura-icon"></span><br>-->
+      <span style="display: none;">Wave予告: <span id="wave-notice-num"></span><br></span>
+      <span style="display: none;">金イクラアイコン: <span id="golden-ikura-icon"></span><br></span>
       残り時間: <span id="left-time"></span><br>
       納品数: <span id="nouhin-num"></span><br>
       ノルマ: <span id="norma-num"></span><br>
@@ -41,6 +40,9 @@
       4番目のイカ: <span id="state-ika-3"></span><br>
       スペシャル: <span id="special-kind"></span><br>
       スペシャル残り: <span id="special-num"></span><br>
+      Wave中か: <span id="is-wave-now"></span><br>
+      Wave clear: <span id="wave-clear"></span><br>
+      Work's over: <span id="works-over"></span><br>
     </div>
   </div>
   <div id="option-wrapper">
@@ -51,20 +53,22 @@
       <select style="width: 5em;" id="video-contrast-select" name="video-contrast-select"></select>
       <span style="display: none;" class="input-title">音声入力デバイス: </span>
       <select style="display: none;" id="audio-input-select" name="audio-input-select"></select>
-      <span class="input-title">読み上げ音量: </span>
+      <span class="input-title">読上人物: </span>
+      <select style="width: 8em;" id="voice-chara-select" name="voice-chara-select"></select>
+      <span class="input-title">読上音量: </span>
       <select style="width: 5em;" id="sound-volume-select" name="sound-volume-select"></select>
-      <button id="sound-test">テスト</button>
+      <button id="sound-test">再生テスト</button>
       <span class="input-title">デバッグモード: </span>
       <select style="width: 5em;" id="debug-mode-select" name="debug-mode-select"></select>
     </div>
     <ul class="env">
       <li>当ツール「Salmonitor - サーモニター」は、PCに接続された映像入力デバイスからサーモンランのプレイ映像を取得し、<br>
       各種情報を認識して味方が死んだりノルマが達成されたりしたことを読み上げてくれるツールです。</li>
-      <li>タブが非アクティブの場合、映像の認識にタイムラグが生じます。ご注意ください。</li>
-      <li>作者は動作確認時の映像入力デバイスに「Live Gamer Portable 2」を使用しています。<br>
-      その他の映像入力デバイスでは、認識の精度が著しく落ちる可能性が考えられます。</li>
+      <li>作者の動作確認環境は、OS = Windows 10、ブラウザ = Google Chrome、映像入力デバイス = Live Gamer Portable 2、Splatoon2 = 日本語版です。<br>
+      その他の環境では、デバイスが取得できない・動作しない・認識の精度が著しく落ちるなどの可能性が考えられます。<br>
+      ｢動作はしているが認識の精度が著しく低い｣という場合は、そのスクリーンショットを撮影してお送りくださると修正の参考になります。</li>
+      <li>タブが非アクティブの場合、ブラウザの仕様で映像の認識にタイムラグが生じます。ご注意ください。</li>
       <li>コントラスト調整は見た目を変えるだけのもので、認識の精度には影響がありません。</li>
-      <li>英語版のSplatoon2では、文字の形状や配置の違いから、一部の情報を認識できません。</li>
     </ul>
   </div>
   <div id="debug">
@@ -75,6 +79,10 @@
     <video src="assets/sample-video-1.mp4"></video>
     <video src="assets/sample-video-2.mp4"></video>
     <video src="assets/sample-video-3.mp4"></video>
+    <video src="assets/sample-video-4.mp4"></video>
+    <!--
+    <video src="assets/sample-video-5.mp4"></video>
+    -->
     <img id="img-ika-icon-bw"    src="assets/ika-icon-bw-2.png" >
     <img id="img-ika-icon-bw-x"  src="assets/ika-icon-bw-x.png" >
     <img id="img-wave-num-1"     src="assets/wave-num-1.png"    >
@@ -101,6 +109,9 @@
     <img id="img-norma-num-7"    src="assets/norma-num-7.png"   >
     <img id="img-norma-num-8"    src="assets/norma-num-8.png"   >
     <img id="img-norma-num-9"    src="assets/norma-num-9.png"   >
+    <img id="img-works-over"     src="assets/works-over.png"    >
+    <img id="img-left-time-8"    src="assets/left-time-8.png"   >
+    <img id="img-left-time-0"    src="assets/left-time-0.png"   >
   </div>
 </body>
 </html>
