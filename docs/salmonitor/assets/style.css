@@ -37,6 +37,12 @@ button:active {
   background-color: #333;
   color: #ddd;
 }
+a {
+  color: #ccc;
+}
+li {
+  margin-bottom: 1em;
+}
 
 
 

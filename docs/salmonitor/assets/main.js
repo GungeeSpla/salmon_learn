@@ -100,8 +100,8 @@ function getCaptureDevices() {
     var defaultAudioInputIndex = 0;
     var videoInputIndex = 1;
     var audioInputIndex = 1;
-    var defaultVideoOption = createOption('未使用', 'none');
-    var defaultAudioOption = createOption('未使用', 'none');
+    var defaultVideoOption = createOption('デバイスを選択する', 'none');
+    var defaultAudioOption = createOption('デバイスを選択する', 'none');
     videoSelect.appendChild(defaultVideoOption);
     audioSelect.appendChild(defaultAudioOption);
     devices.map(device => {
@@ -118,13 +118,18 @@ function getCaptureDevices() {
         break;
       // 映像入力デバイス
       case 'videoinput':
-        targetSelect = videoSelect;
-        //if (device.deviceId === useVideoInputId) {
-        //  console.log('found use-video-input-id');
-        //  defaultVideoInputIndex = videoInputIndex;
-        //}
-        label = videoInputIndex + ': ' + label;
-        videoInputIndex++;
+        if (label.toLowerCase().indexOf('webcam') < 0) {
+          if (label === '') {
+            label = '無名の映像入力デバイス';
+          }
+          targetSelect = videoSelect;
+          //if (device.deviceId === useVideoInputId) {
+          //  console.log('found use-video-input-id');
+          //  defaultVideoInputIndex = videoInputIndex;
+          //}
+          label = videoInputIndex + ': ' + label;
+          videoInputIndex++;
+        }
         break;
       // 音声入力デバイス
       case 'audioinput':
@@ -137,11 +142,9 @@ function getCaptureDevices() {
         audioInputIndex++;
         break;
       }
-      if (targetSelect && label.toLowerCase().indexOf('webcam') < 0) {
+      if (targetSelect) {
         var option = createOption(label, device.deviceId);
         targetSelect.appendChild(option);
-      } else {
-        videoInputIndex--;
       }
     });
     videoSelect.selectedIndex = defaultVideoInputIndex;
