@@ -114,6 +114,7 @@ window.myData = {
   bufferLength: 3 * window.updateRate,
   checkBufferLength: 2,
   leftTimeSlip: 100,
+  debugNouhinImageData: null,
 };
 
 /* 
@@ -223,8 +224,46 @@ function initBWData() {
   window.BW.LEFT_TIME[1]    = createBWObject('#img-left-time-8');
   
   // デバッグ用のイメージデータを作成する
-  if (window.debugMode) {
+  if (window.debugMode >= 2) {
     createDebugImageData();
+    
+    var w = BW.NORMA_NUM[0].width;
+    var h = BW.NORMA_NUM[0].height;
+    window.nouhinCanvases[0].width = w * 11;
+    window.nouhinCanvases[0].height = h;
+    window.nouhinCanvases[1].width = w * 11;
+    window.nouhinCanvases[1].height = h;
+    window.nouhinCanvases[0].ctx.fillStyle = '#000';
+    window.nouhinCanvases[0].ctx.fillRect(0, 0, w, h);
+    for (var i = 0; i < 10; i++) {
+      var img = document.querySelector('#img-norma-num-' + i);
+      window.nouhinCanvases[0].ctx.drawImage(img, w * (i + 1), 0);
+    }
+    var imagedata = window.nouhinCanvases[0].ctx.getImageData(0, 0, 
+      window.nouhinCanvases[0].width, window.nouhinCanvases[0].height);
+    for (var k, r, g, b, i = 0, y = 0; y < imagedata.height; y++) {
+      for (x = 0; x < imagedata.width; x++) {
+        k = i << 2;
+        r = imagedata.data[k + 0];
+        g = imagedata.data[k + 1];
+        b = imagedata.data[k + 2];
+        if (r < 200) {
+          imagedata.data[k + 0] = 0;
+          imagedata.data[k + 1] = 0;
+          imagedata.data[k + 2] = 0;
+          imagedata.data[k + 3] = 255;
+        } else {
+          imagedata.data[k + 0] = 0;
+          imagedata.data[k + 1] = 0;
+          imagedata.data[k + 2] = 0;
+          imagedata.data[k + 3] = 0;
+        }
+        i++;
+      }
+    }
+    myData.debugNouhinImageData = imagedata;
+    window.nouhinCanvases[0].ctx.putImageData(myData.debugNouhinImageData, 0, 0);
+    window.nouhinCanvases[1].ctx.putImageData(myData.debugNouhinImageData, 0, 0);
   }
   
   // myDataのバッファを確保する
@@ -549,6 +588,10 @@ function updateCanvas() {
         myData.nouhinNum = d.nouhinNum;
       }
     } else {
+      // 前回バッファとの差が-1～+9以内ならdをバッファに放り込む
+      // →前回バッファとの差が-1～+1以内ならそれでmyDataを更新する
+      // →前回バッファとの差が+2～ならmyDataの更新は保留、落ち着いたときに更新しよう
+      // 前回バッファとの差が～-2、+10～ならバッファにすら入れない（認識エラーとみなす）
       var dif = d.nouhinNum - myData.buffer.nouhinNum[0];
       if (-1 <= dif && dif <= 9) {
         unshiftBuffer('nouhinNum', d.nouhinNum);
@@ -865,7 +908,7 @@ function checkNouhinNum() {
   // 1桁目をチェックする
   var x = POS.NOUHIN_DIGIT_1.x;
   var y = POS.NOUHIN_DIGIT_1.y;
-  var n1 = checkNouhinNumOne(x, y);
+  var n1 = checkNouhinNumOne(x, y, 1);
   
   // -1が返ってきたら終了
   if (n1 < 0) return 0;
@@ -878,7 +921,7 @@ function checkNouhinNum() {
   // 2桁目をチェックする
   x = POS.NOUHIN_DIGIT_2.x;
   y = POS.NOUHIN_DIGIT_2.y;
-  var n2 = checkNouhinNumOne(x + m, y);
+  var n2 = checkNouhinNumOne(x + m, y, 0);
   
   if (n2 < 0) return n1;
   return n2 * 10 + n1;
@@ -887,11 +930,11 @@ function checkNouhinNum() {
 /* 
  * checkNouhinNumOne()
  */
-function checkNouhinNumOne(x, y) {
+function checkNouhinNumOne(_x, _y, n) {
   var w = BW.NORMA_NUM[0].width;
   var h = BW.NORMA_NUM[0].height;
-  var imagedata = window.canvas.ctx.getImageData(x, y, w, h);
-  var i, k, r = -1, g, b, d, bw, difs = [];
+  var imagedata = window.canvas.ctx.getImageData(_x, _y, w, h);
+  var x, y, i, k, r = -1, g, b, d, bw, difs = [];
   for (i = 0; i < 10; i++) {
     difs.push({index: i, sum: 0});
   }
@@ -911,15 +954,15 @@ function checkNouhinNumOne(x, y) {
               Math.abs(COLOR.NORMA_NUM[0] - r) + 
               Math.abs(COLOR.NORMA_NUM[1] - g) + 
               Math.abs(COLOR.NORMA_NUM[2] - b);
-            if (d < 60) d = 0;
+            if (d < 110) d = 0;
             difs[j].sum += d;
           } else if (bw === 2) {
             d = 
               Math.abs(myData.normaBGColor[0] - r) + 
               Math.abs(myData.normaBGColor[1] - g) + 
               Math.abs(myData.normaBGColor[2] - b);
-            if (d < 60) d = 0;
-            difs[j].sum += (d << 1);
+            if (d < 110) d = 0;
+            difs[j].sum += d;
           }
         }
       });
@@ -927,8 +970,17 @@ function checkNouhinNumOne(x, y) {
       r = -1;
     }
   }
-  
   var minDif = getMinimam(difs, 'sum');
+  if (window.debugMode >= 2) {
+    window.nouhinCanvases[n].ctx.putImageData(myData.debugNouhinImageData, 0, 0);
+    window.nouhinCanvases[n].ctx.globalCompositeOperation = 'source-atop';
+    for (var i = 0; i < 11; i++) {
+      window.nouhinCanvases[n].ctx.drawImage(window.canvas, _x, _y, w, h, w * i, 0, w, h);
+    }
+    if (n === 1) {
+      //console.log(difs);
+    }
+  }
   if (minDif.sum < BORDER.NOUHIN_NUM) {
     return minDif.index;
   } else {
@@ -997,14 +1049,14 @@ function checkNormaNumOne(x, y) {
               Math.abs(COLOR.NORMA_NUM[0] - r) + 
               Math.abs(COLOR.NORMA_NUM[1] - g) + 
               Math.abs(COLOR.NORMA_NUM[2] - b);
-            if (d < 60) d = 0;
+            if (d < 110) d = 0;
             difs[j].sum += d;
           } else if (bw === 2) {
             d = 
               Math.abs(myData.normaBGColor[0] - r) + 
               Math.abs(myData.normaBGColor[1] - g) + 
               Math.abs(myData.normaBGColor[2] - b);
-            if (d < 60) d = 0;
+            if (d < 110) d = 0;
             difs[j].sum += d;
           }
         }

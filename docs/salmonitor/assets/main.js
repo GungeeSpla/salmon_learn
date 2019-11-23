@@ -52,6 +52,14 @@ window.onload = () => {
   window.debugCanvas.ctx = window.debugCanvas.getContext("2d");
   if (window.debugMode >= 2) {
     window.video.setAttribute('controls', 'controls');
+    window.nouhinCanvases = [
+      document.createElement('canvas'),
+      document.createElement('canvas'),
+    ];
+    window.nouhinCanvases[0].ctx = window.nouhinCanvases[0].getContext("2d");
+    window.nouhinCanvases[1].ctx = window.nouhinCanvases[1].getContext("2d");
+    document.body.appendChild(window.nouhinCanvases[0]);
+    document.body.appendChild(window.nouhinCanvases[1]);
   }
   
   // windowをクリックしたら音声ファイルを再生できるようにする

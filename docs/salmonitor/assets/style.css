@@ -21,6 +21,10 @@ video {
   border: none;
   background-color: #111;
 }
+canvas {
+  display: block;
+  background-color: #0f0;
+}
 video {
   filter: contrast(1.2);
   width: 1280px;
