@@ -37,6 +37,7 @@ window.onload = () => {
   
   // Soundの生成
   window.sound = new Sound();
+  window.sound.charaName = window.voiceChara;
   
   // DOMの取得など
   window.video = document.querySelector("#sync-video");
