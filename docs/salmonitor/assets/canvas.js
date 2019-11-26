@@ -53,7 +53,7 @@ window.COLOR = {
   WORKS_OVER_BG  : [10, 10, 0],   // Work's Overの背景色
 };
 window.BORDER = {
-  NOUHIN_NUM   : 10000, // difがこれ以下なら納品数が表示されている
+  NOUHIN_NUM   :  8000, // difがこれ以下なら納品数が表示されている
   WAVE_NOTICE  : 40000, // difがこれ以下ならWave予告が表示されている
   WAVE_NUM     :  4000, // difがこれ以下ならWaveが表示されている
   SPECIAL_POUCH:  2000, // difがこれ以下ならSPがある
@@ -978,6 +978,8 @@ function checkNouhinNumOne(_x, _y, n) {
       window.nouhinCanvases[n].ctx.drawImage(window.canvas, _x, _y, w, h, w * i, 0, w, h);
     }
     if (n === 1) {
+      //console.log(difs);
+    } else {
       //console.log(difs);
     }
   }
