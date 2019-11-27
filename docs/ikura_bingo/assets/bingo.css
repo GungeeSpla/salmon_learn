@@ -170,6 +170,9 @@ body {
     .stream .description {
       display: none;
     }
+      .description li {
+        margin-bottom: 1em;
+      }
   .stream-mode-button {
     display: none;
     width: 100px;
