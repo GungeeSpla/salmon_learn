@@ -96,7 +96,7 @@ body {
     }
       .bingo-card-inner {
         background-color: #f25135;
-        background-image: url('bingo-card-bg.png');
+        background-image: url('bingo-card-bg.jpg');
         background-size: auto 100%;
         background-position: center center;
         border-radius: .2em;
@@ -178,18 +178,22 @@ body {
     bottom: 0;
     right: 0;
   }
+/*
 @font-face {
     font-family: Splatoon1;
     src: url('s1kanji.woff2') format('woff2'), url('s1kanji.woff') format('woff');
 }
+*/
 @font-face {
     font-family: Splatoon1;
     src: url('s1kana.woff2') format('woff2'), url('s1kana.woff') format('woff');
 }
+/*
 @font-face {
     font-family: Splatoon2;
     src: url('s2kanji.woff2') format('woff2'), url('s2kanji.woff') format('woff');
 }
+*/
 @font-face {
     font-family: Splatoon2;
     src: url('s2kana.woff2') format('woff2'), url('s2kana.woff') format('woff');
