@@ -3,7 +3,7 @@ body, div {
   padding: 0;
 }
 body {
-  font-size: 1em;
+  font-size: 1.3em;
   font-family: sans-serif;
 }
 .stream {
@@ -13,7 +13,7 @@ body {
   .contents-wrapper {
     width: 30em;
     margin: 0 auto;
-    text-align: left;
+    text-align: center;
     padding: 2em 0;
   }
   .stream .contents-wrapper {
@@ -42,16 +42,15 @@ body {
       }
     .create-card-button {
       user-select: none;
-      margin: 1em 0 2em 0;
+      margin: 1em 0 1em 0;
     }
     .border-button {
       display: inline-block;
-      width: 30em;
+      width: 25.4em;
       box-sizing: border-box;
       text-align: center;
       border: 2px solid #f25135;
       border-radius: 4px;
-      font-size: 16px;
       color: #f25135;
       text-decoration: none;
       font-weight: bold;
@@ -74,12 +73,15 @@ body {
     .stream .create-card-button {
       display: none;
     }
+    .stream .create-card-daily-button {
+      display: none;
+    }
     .bingo-card-outer {
       box-sizing: border-box;
       width: 30em;
       padding: 1em;
       display: inline-block;
-      margin: 1em 0 3em 0;
+      margin: 4em 0 4em 0;
       border-radius: 1em;
       border: 1px solid rgba(0, 0, 0, .1);
       box-shadow: .5em .5em 1em rgba(0, 0, 0, .3);
@@ -93,6 +95,9 @@ body {
     }
     .stream .bingo-card-outer.hidden {
       transform: translateY(720px);
+    }
+    .stream .bingo-card-outer.hidden {
+      transform: translateX(540px) scale(0.25);
     }
       .bingo-card-inner {
         background-color: #f25135;
@@ -143,6 +148,7 @@ body {
           }
             .bingo-card-table-wrapper table td {
               user-select: none;
+              position: relative;
               cursor: pointer;
               font-family: Splatoon2;
               font-size: 2.4em;
@@ -167,6 +173,21 @@ body {
               font-size: 2em;
               background-image: url('bingo-cell-bg.png');
             }
+            .bingo-card-table-wrapper table td.reach::after {
+              content: '';
+              width: 1.6em;
+              height: 1.6em;
+              top: 0.25em;
+              left: 0.25em;
+              background-color: #b2dfdb;
+              position: absolute;
+              display: inline-block;
+              border-radius: 50%;
+              mix-blend-mode: multiply;
+            }
+    .description {
+      text-align: left;
+    }
     .stream .description {
       display: none;
     }
@@ -271,7 +292,7 @@ body {
           user-select: none;
         }
         .alert-button:hover {
-          background-color: #eee;
+          background-color: #e9e9e9;
         }
         .alert-button:active {
           transition: 0s;

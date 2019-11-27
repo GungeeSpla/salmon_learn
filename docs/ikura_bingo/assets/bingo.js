@@ -10,18 +10,50 @@ window.bingo_num_max = 99;
 window.queries = get_queries();
 window.card = [];
 window.card_holes = [];
+window.card_bingo_num = 0;
+window.card_reach_num = 0;
+window.card_reach_indexes = 0;
 window.player_name = '';
 window.player_code = 0;
 window.balls = [];
 window.card_step = 0;
-window.hole_str = 'FREE';
+window.is_daily = true;
+window.free_str = 'FREE';
 window.bingo_clear_steps = [];
 window.dom = {};
 window.is_created_card = false;
 window.is_enabled_alert = true;
+window.is_enabled_stream_mode = false;
+window.hidden_card_timer = 0;
 window.storage_key = 'ikura-bingo';
 window.save_variables = [
   'card', 'card_holes', 'player_name', 'player_code',
+];
+window.check_bingo_configs = [
+  {
+    line_num: bingo_card_width,
+    start: (i) => {return i},
+    step: bingo_card_width,
+    len: bingo_card_height,
+  },
+  {
+    line_num: bingo_card_height,
+    start: (i) => {return i * bingo_card_width},
+    step: 1,
+    len: bingo_card_width,
+  },
+  {
+    line_num: 1,
+    start: (i) => {return 0},
+    step: bingo_card_width + 1,
+    len: bingo_card_width,
+  },
+  {
+    line_num: 1,
+    start: (i) => {return bingo_card_width - 1},
+    step: bingo_card_width - 1,
+    len: bingo_card_width,
+  },
 ];
 
 /* 
@@ -47,44 +79,18 @@ window.onload = () => {
   dom.alert_only_ok_wrapper = document.querySelector('.alert-button-wrapper-only-ok');
   dom.bingo_card_cells = dom.bingo_card_table.querySelectorAll('td');
   dom.stream_mode_button = document.querySelector('.stream-mode-button');
+  dom.create_card_button = document.querySelector('.create-card-button');
+  dom.create_card_daily_button = document.querySelector('.create-card-daily-button');
   for (var i = 0; i < bingo_card_cell_num; i++) {
     dom.bingo_card_cells[i].setAttribute('cell-index', i);
-    dom.bingo_card_cells[i].onclick = function() {
-      if (!is_created_card) {
-        return;
-      }
-      var cell_index = parseInt(this.getAttribute('cell-index'));
-      if (cell_index === bingo_card_center_index) {
-        return;
-      }
-      var is_hole = card_holes[cell_index];
-      if (!is_hole) {
-        card_holes[cell_index] = true;
-        this.classList.add('hole');
-        save_storage();
-        if (check(card_holes)) {
-          my_alert({
-            title: 'BINGO!',
-          });
-        }
-      } else {
-        card_holes[cell_index] = false;
-        this.classList.remove('hole');
-        save_storage();
-      }
-    }
+    dom.bingo_card_cells[i].onclick = cell_click;
   }
   dom.bingo_card_cells[bingo_card_center_index].classList.add('free');
-  dom.bingo_card_cells[bingo_card_center_index].textContent = hole_str;
+  dom.bingo_card_cells[bingo_card_center_index].textContent = free_str;
   dom.player_name_input.value = player_name;
+  dom.create_card_button.onclick = create_card_button_click;
+  dom.create_card_daily_button.onclick = create_card_button_click;
   
-  document.querySelector('.create-card-button').onclick = () => {
-    my_alert({
-      title: 'ビンゴカードの初期化',
-      message: 'ビンゴカードを初期化します。よろしいですか？',
-      ok: init_bingo,
-    });
-  };
   if (player_code !== 0) {
     init_bingo(true);
     for (var i = 0; i < bingo_card_cell_num; i++) {
@@ -93,12 +99,95 @@ window.onload = () => {
       }
     }
   }
+  
   if (window.queries.stream === '1') {
     dom.stream_mode_button.style.display = 'block';
     dom.stream_mode_button.onclick = enable_stream_mode;
   }
 }
 
+/* 
+ * create_card_button_click()
+ */
+function create_card_button_click() {
+  is_daily = this.getAttribute('daily') === 'true';
+  
+  var _player_name = dom.player_name_input.value;
+  var _player_code = str_2_int(_player_name);
+  if (_player_code === 0) {
+    _player_code = new Date().getTime();
+  }
+  if (is_daily) {
+    _player_code += get_date_code();
+  }
+  if (player_code === _player_code) {
+    my_alert({
+      title: 'ビンゴカードの初期化',
+      message: 'ビンゴカードが初期化されます。<br>よろしいですか？',
+      ok: init_bingo,
+    });
+  } else {
+    my_alert({
+      title: 'ビンゴカードの新規作成',
+      message: 'ビンゴカードが新しく作られます。<br>数字の並びが変化しますが<br>よろしいですか？',
+      ok: init_bingo,
+    });
+  }
+  
+}
+
+/* 
+ * cell_click()
+ */
+function cell_click() {
+  if (!is_created_card) {
+    return;
+  }
+  var cell_index = parseInt(this.getAttribute('cell-index'));
+  if (cell_index === bingo_card_center_index) {
+    return;
+  }
+  var is_hole = card_holes[cell_index];
+  if (!is_hole) {
+    card_holes[cell_index] = true;
+    this.classList.add('hole');
+    update(true);
+  } else {
+    card_holes[cell_index] = false;
+    this.classList.remove('hole');
+    update(false);
+  }
+  function update(is_create_hole) {
+    save_storage();
+    var [bingo_num, reach_num, reach_indexes] = check_bingo(card_holes);
+    if (is_create_hole && bingo_num > 0 && card_bingo_num < bingo_num) {
+      var message = bingo_num + 'ビンゴです！';
+      if (bingo_num === 1) message = 'おめでとうございます！';
+      my_alert({
+        title: 'BINGO!',
+        message: message,
+      });
+    } else if (is_create_hole && reach_num > 0 && card_reach_num < reach_num) {
+      my_alert({
+        title: 'REACH!',
+        message: reach_num + 'リーチになりました！'
+      });
+    }
+    for (var i = 0; i < bingo_card_cell_num; i++) {
+      dom.bingo_card_cells[i].classList.remove('reach');
+      if (reach_indexes.indexOf(i) > -1) {
+        dom.bingo_card_cells[i].classList.add('reach');
+      }
+    }
+    card_bingo_num = bingo_num;
+    card_reach_num = reach_num;
+    card_reach_indexes = reach_indexes;
+    if (is_enabled_stream_mode) {
+      clearTimeout(hidden_card_timer);
+      hidden_card_timer = setTimeout(hide_card, 10000);
+    }
+  }
+}
 
 /* 
  * enable_stream_mode(e)
@@ -110,6 +199,8 @@ function enable_stream_mode(e) {
   document.body.onclick = (e) => {
     if (dom.bingo_card_outer.classList.contains('hidden')) {
       dom.bingo_card_outer.classList.remove('hidden');
+      clearTimeout(hidden_card_timer);
+      hidden_card_timer = setTimeout(hide_card, 10000);
     } else {
       dom.bingo_card_outer.classList.add('hidden');
     }
@@ -119,8 +210,16 @@ function enable_stream_mode(e) {
     e.stopPropagation();
     return false;
   };
+  is_enabled_stream_mode = true;
   is_enabled_alert = false;
 };
+
+/* 
+ * hide_card()
+ */
+function hide_card() {
+  dom.bingo_card_outer.classList.add('hidden');
+}
 
 /* 
  * Xors(n)
@@ -154,12 +253,18 @@ function init_bingo(is_load) {
     if (player_code === 0) {
       player_code = new Date().getTime();
     }
+    if (is_daily) {
+      player_code += get_date_code();
+    }
   }
   console.log('player_name: ' + player_name);
   console.log('player_code: ' + player_code);
   var xors = new Xors(player_code);
   init_card(xors, is_load);
   is_created_card = true;
+  card_bingo_num = 0;
+  card_reach_num = 0;
+  card_reach_indexes = 0;
   save_storage();
 }
 
@@ -169,7 +274,8 @@ function init_bingo(is_load) {
 function N_test(N) {
   bingo_clear_steps = [];
   for (var i = 0; i < N; i++) {
-    one_play();
+    var step = one_play();
+    bingo_clear_steps.push(step);
   }
   var sum = 0;
   for (var i = 0; i < N; i++) {
@@ -177,13 +283,6 @@ function N_test(N) {
   }
   console.log(sum / N);
   console.log(bingo_clear_steps);
-}
-
-/* 
- * rand()
- */
-function rand() {
-  return bingo_num_min + Math.floor(Math.random() * (bingo_num_max - bingo_num_min + 1));
 }
 
 /* 
@@ -200,7 +299,7 @@ function render_card(_card) {
  * one_play()
  */
 function one_play() {
-  init_card();
+  init_card(Math);
   while (true) {
     card_step++;
     drill(card, card_holes, open_ball(balls));
@@ -208,12 +307,12 @@ function one_play() {
     drill(card, card_holes, open_ball(balls));
     drill(card, card_holes, open_ball(balls));
     render_card(card);
-    if (check(card_holes)) {
-      //console.log(card_step);
-      bingo_clear_steps.push(card_step);
+    var [bingo_num, reach_num, reach_indexes] = check_bingo(card_holes);
+    if (bingo_num > 0) {
       break;
     }
   }
+  return card_step;
 }
 
 /* 
@@ -228,6 +327,7 @@ function init_card(xors, is_load) {
   card_step = 0;
   for (var i = 0; i < bingo_card_cell_num; i++) {
     dom.bingo_card_cells[i].classList.remove('hole');
+    dom.bingo_card_cells[i].classList.remove('reach');
   }
   render_card(card);
 }
@@ -247,12 +347,13 @@ function create_balls() {
  * open_ball(_balls)
  */
 function open_ball(_balls) {
-  return rand();
+  return bingo_num_min + Math.floor(Math.random() * (bingo_num_max - bingo_num_min + 1));
+  /*
   var r = Math.floor(Math.random() * _balls.length);
   var num = _balls[r];
   _balls.splice(r, 1);
-  //console.log(num);
   return num;
+  */
 }
 
 /* 
@@ -278,7 +379,7 @@ function create_card(xors) {
       new_card[j * bingo_card_width + i] = num;
     }
   }
-  new_card[bingo_card_center_index] = hole_str;
+  new_card[bingo_card_center_index] = free_str;
   return new_card;
 }
 
@@ -302,7 +403,6 @@ function create_card_holes() {
 function drill(_card, _card_holes, _num) {
   for (var i = 0; i < _card.length; i++) {
     if (_card[i] === _num) {
-      //_card[i] = hole_str;
       _card_holes[i] = true;
       dom.bingo_card_cells[i].classList.add('hole');
     }
@@ -310,51 +410,36 @@ function drill(_card, _card_holes, _num) {
 }
 
 /* 
- * check(_card_holes)
+ * check_bingo(_card_holes)
  */
-function check(_card_holes) {
-  // 縦
-  for (var i = 0; i < bingo_card_width; i++) {
-    var flag = true; start = i, step = bingo_card_width;
-    for (var j = 0; j < bingo_card_height; j++) {
-      if (!_card_holes[start + j * step]) {
-        flag = false;
-        break;
+function check_bingo(_card_holes) {
+  var bingo_num = 0;
+  var reach_num = 0;
+  var reach_indexes = [];
+  for (var i_cfg = 0; i_cfg < check_bingo_configs.length; i_cfg++) {
+    var cfg = check_bingo_configs[i_cfg];
+    for (var i = 0; i < cfg.line_num; i++) {
+      var flag = true;
+      var hole_num = 0;
+      var not_hole_index = -1;
+      for (var j = 0; j < cfg.len; j++) {
+        var index = cfg.start(i) + j * cfg.step;
+        if (!_card_holes[index]) {
+          not_hole_index = index;
+        } else {
+          hole_num++;
+        }
+      }
+      if (hole_num === cfg.len) {
+        bingo_num++;
+      } else if (hole_num === cfg.len - 1) {
+        reach_indexes.push(not_hole_index);
+        reach_num++;
       }
     }
-    if (flag) return true;
   }
-  // 横
-  for (var i = 0; i < bingo_card_height; i++) {
-    var flag = true; start = i * bingo_card_width, step = 1;
-    for (var j = 0; j < bingo_card_width; j++) {
-      if (!_card_holes[start + j * step]) {
-        flag = false;
-        break;
-      }
-    }
-    if (flag) return true;
-  }
-  // 斜め 左上から右下
-  var flag = true; start = 0, step = bingo_card_width + 1;
-  for (var j = 0; j < bingo_card_width; j++) {
-    if (!_card_holes[start + j * step]) {
-      flag = false;
-      break;
-    }
-  }
-  if (flag) return true;
-  // 斜め 右上から左下
-  var flag = true; start = bingo_card_width - 1, step = bingo_card_width - 1;
-  for (var j = 0; j < bingo_card_width; j++) {
-    if (!_card_holes[start + j * step]) {
-      flag = false;
-      break;
-    }
-  }
-  if (flag) return true;
   // ビンゴせず
-  return false;
+  return [bingo_num, reach_num, reach_indexes];
 }
 
 /* 
@@ -399,6 +484,19 @@ function str_2_int(str) {
     ret += c * (i << 10);
   }
   return ret;
+}
+
+/* 
+ * get_date_code()
+ */
+function get_date_code() {
+  var offset_time = new Date().getTime() - 3 * 60 * 60 * 1000;
+  var offset_date = new Date(offset_time);
+  var str = '' +
+    offset_date.getFullYear() + 
+    (offset_date.getMonth() + 1) + 
+    offset_date.getDate();
+  return parseInt(str);
 }
 
 /* 
@@ -451,7 +549,7 @@ function my_alert(opt) {
     setTimeout(() => {
       dom.alert_inner.style.transform = 'scale(1)';
       dom.alert_wrapper.style.opacity = 1;
-    },1);
+    },10);
   };
   var cancel = () => {
     hide();
@@ -473,8 +571,8 @@ function my_alert(opt) {
     dom.alert_ok_cancel_wrapper.style.display = 'flex';
   
   }
-  dom.alert_title.textContent = opt.title;
-  dom.alert_message.textContent = opt.message;
+  dom.alert_title.innerHTML = opt.title;
+  dom.alert_message.innerHTML = opt.message;
   dom.alert_outer.onclick = cancel;
   dom.alert_inner.onclick = return_false;
   dom.alert_ok.onclick = ok;

@@ -17,13 +17,14 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js').then(function() { console.log('Service Worker Registered'); });
 }
 </script>
-<link rel="stylesheet"        href="assets/bingo.css?2">
-<script type="text/javascript"  src="assets/bingo.js?2"></script>
+<link rel="stylesheet"        href="assets/bingo.css?3">
+<script type="text/javascript"  src="assets/bingo.js?3"></script>
 </head>
 <body>
 <div class="contents-wrapper">
   <div class="name-input-wrapper">お名前　<input type="text" class="name-input" maxlength="10"></div>
-  <div class="create-card-button border-button">ビンゴカードを作る</div>
+  <div class="create-card-button border-button" daily="false">ビンゴカードを作る</div>
+  <div class="create-card-daily-button border-button" daily="true">ビンゴカードを作る（日替わり）</div>
   <div class="bingo-card-outer">
     <div class="bingo-card-inner">
       <div class="bingo-card-title">
@@ -44,8 +45,9 @@ if ('serviceWorker' in navigator) {
   </div>
   <div class="description">
     <ul>
-      <li>ビンゴカードを作成してからサーモンランを遊び、自分や味方の稼いだ個人赤イクラ数の下2桁に一致するマス目をタップしていってください。縦･横･斜めいずれかの方向で1列揃えばビンゴ！</li>
-      <li>同じお名前で作成されたカードは、常に同じ番号の並びになります。（ただし、お名前が空欄の場合は番号の並びが毎回ランダムに変化します。）</li>
+      <li>ビンゴカードを作成してからサーモンランを遊び、自分や味方の稼いだ<b>個人赤イクラ数の下2桁</b>に一致するマス目をタップしていってください。縦･横･斜めいずれかの方向で1列揃えばビンゴ！</li>
+      <li>「ビンゴカードを作る」で作ったカードは、<b>お名前が同じなら、常に同じ数字の並び</b>になります。（ただし、お名前が空欄の場合はランダムに変化します）</li>
+      <li>「ビンゴカードを作る（日替わり）」で作ったカードは、<b>お名前が同じでも、日ごとに違った数字の並び</b>になります。（午前3時に更新）</li>
     </ul>
   </div>
 </div>
@@ -54,7 +56,7 @@ if ('serviceWorker' in navigator) {
     <div class="alert-inner">
       <div class="alert-text">
         <div class="alert-title">Title</div>
-        <div class="alert-message">MessageMessageMessageMessageMessage</div>
+        <div class="alert-message">Message.</div>
       </div>
       <div class="alert-button-wrapper alert-button-wrapper-ok-cancel">
         <div class="alert-button alert-button-cancel">Cancel</div>
