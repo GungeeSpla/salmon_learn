@@ -22,7 +22,7 @@
       "sizes": "256x256",
       "type": "image/png"
     }],
-  "start_url": "./index.html?utm_source=homescreen",
+  "start_url": "./index.html?stream=1",
   "display": "standalone",
   "orientation": "any"
 }
