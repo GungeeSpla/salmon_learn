@@ -1,0 +1,275 @@
+body, div {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-size: 1em;
+  font-family: sans-serif;
+}
+.stream {
+  overflow: hidden;
+  background-color: #0f0;
+}
+  .contents-wrapper {
+    width: 30em;
+    margin: 0 auto;
+    text-align: left;
+    padding: 2em 0;
+  }
+  .stream .contents-wrapper {
+    width: 1280px;
+    height: 720px;
+    background-color: #0f0;
+    margin: 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+    .name-input-wrapper {
+      margin: 1em 0 1em 0;
+      text-align: center;
+    }
+    .stream .name-input-wrapper {
+      display: none;
+    }
+      .name-input {
+        width: 20em;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        padding: .5em;
+        font-size: 1em;
+      }
+    .create-card-button {
+      user-select: none;
+      margin: 1em 0 2em 0;
+    }
+    .border-button {
+      display: inline-block;
+      width: 30em;
+      box-sizing: border-box;
+      text-align: center;
+      border: 2px solid #f25135;
+      border-radius: 4px;
+      font-size: 16px;
+      color: #f25135;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 16px;
+      transition: .2s;
+      cursor: pointer;
+    }
+    .border-button:hover {
+      transition: .2s;
+      background-color: #f25135;
+      border-color: #f25135;
+      color: #fff;
+    }
+    .border-button:active {
+      transition: 0s;
+      background-color: #cd3920;
+      border-color: #cd3920;
+      color: #fff;
+    }
+    .stream .create-card-button {
+      display: none;
+    }
+    .bingo-card-outer {
+      box-sizing: border-box;
+      width: 30em;
+      padding: 1em;
+      display: inline-block;
+      margin: 1em 0 3em 0;
+      border-radius: 1em;
+      border: 1px solid rgba(0, 0, 0, .1);
+      box-shadow: .5em .5em 1em rgba(0, 0, 0, .3);
+      background-color: #fff;
+      overflow: hidden;
+    }
+    .stream .bingo-card-outer {
+      box-shadow: none;
+      transform: translateY(0px);
+      transition: .8s;
+    }
+    .stream .bingo-card-outer.hidden {
+      transform: translateY(720px);
+    }
+      .bingo-card-inner {
+        background-color: #f25135;
+        background-image: url('bingo-card-bg.png');
+        background-size: auto 100%;
+        background-position: center center;
+        border-radius: .2em;
+      }
+        .bingo-card-title {
+          user-select: none;
+          font-family: Splatoon1;
+          font-size: 4em;
+          line-height: 1.4em;
+          display: block;
+          text-align: center;
+          color: #ffeb3b;
+          font-weight: bold;
+          text-shadow:
+            -2px -2px 0px #000,
+             2px  2px 0px #000,
+            -2px  2px 0px #000,
+             2px -2px 0px #000;
+        }
+          .bingo-card-title table {
+            border-collapse: separate;
+            border-spacing: .1em;
+            margin: 0;
+            padding: 0;
+            table-layout: fixed;
+            width: 96%;
+            margin-left: 2%;
+          }
+            .bingo-card-title table td {
+              line-height: 1em;
+            }
+        .bingo-card-table-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+          .bingo-card-table-wrapper table {
+            border-collapse: separate;
+            border-spacing: .4em;
+            margin-bottom: .4em;
+            table-layout: fixed;
+            width: 96%;
+            margin-left: 2%;
+          }
+            .bingo-card-table-wrapper table td {
+              user-select: none;
+              cursor: pointer;
+              font-family: Splatoon2;
+              font-size: 2.4em;
+              height: 2em;
+              text-align: center;
+              vertical-align: middle;
+              background-color: rgba(255, 255, 255, .9);
+              background-size: 100% auto;
+              background-position: center center;
+              background-repeat: no-repeat;
+              text-shadow:
+                -1px -1px 0px #fff,
+                 1px  1px 0px #fff,
+                -1px  1px 0px #fff,
+                 1px -1px 0px #fff;
+              border-radius: .1em;
+            }
+            .bingo-card-table-wrapper table td.hole {
+              background-image: url('bingo-cell-bg.png');
+            }
+            .bingo-card-table-wrapper table td.free {
+              font-size: 2em;
+              background-image: url('bingo-cell-bg.png');
+            }
+    .stream .description {
+      display: none;
+    }
+  .stream-mode-button {
+    display: none;
+    width: 100px;
+    height: 30px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
+@font-face {
+    font-family: Splatoon1;
+    src: url('s1kanji.woff2') format('woff2'), url('s1kanji.woff') format('woff');
+}
+@font-face {
+    font-family: Splatoon1;
+    src: url('s1kana.woff2') format('woff2'), url('s1kana.woff') format('woff');
+}
+@font-face {
+    font-family: Splatoon2;
+    src: url('s2kanji.woff2') format('woff2'), url('s2kanji.woff') format('woff');
+}
+@font-face {
+    font-family: Splatoon2;
+    src: url('s2kana.woff2') format('woff2'), url('s2kana.woff') format('woff');
+}
+.alert-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  transition: .2s;
+  display: none;
+  opacity: 0;
+}
+  .alert-outer {
+    background-color: rgba(30, 30, 30, .6);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+    .alert-inner {
+      border-radius: 2em;
+      position: relative;
+      background-color: #f2f2f2;
+      display: inline-block;
+      width: 30em;
+      box-sizing: border-box;
+      overflow: hidden;
+      transition: .2s;
+      transform: scale(0.95);
+    }
+      .alert-text {
+        padding: 2em;
+        text-align: center;
+      }
+        .alert-title {
+          font-weight: bold;
+          font-size: 2em;
+          word-break: break-word;
+        }
+        .alert-message {
+          font-size: 1.5em;
+          word-break: break-word;
+        }
+      .alert-button-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: 2px solid #ddd;
+      }
+        .alert-button-wrapper-only-ok .alert-button {
+          width: 100%;
+        }
+        .alert-button {
+          font-size: 1.5em;
+          font-weight: bold;
+          cursor: pointer;
+          color: #258bfb;
+          width: 50%;
+          display: inline-block;
+          border-left: 2px solid #ddd;
+          padding: 1em 0;
+          transition: .2s;
+          text-align: center;
+          background-color: #f2f2f2;
+          user-select: none;
+        }
+        .alert-button:hover {
+          background-color: #eee;
+        }
+        .alert-button:active {
+          transition: 0s;
+          background-color: #ddd;
+        }
+        .alert-button:first-child {
+          border: none;
+        }

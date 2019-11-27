@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>赤いくらビンゴ</title>
+<meta name="description" content="「赤いくらビンゴ」は、「サーモンランの赤いくらのリザルト下2桁でビンゴをしようぜ！」という試みです。" />
+<meta name="twitter:card"        content="summary" />
+<meta name="twitter:site"        content="@GungeeSpla" />
+<meta name="twitter:title"       content="赤いくらビンゴ" />
+<meta name="twitter:description" content="「赤いくらビンゴ」は、「サーモンランの赤いくらのリザルト下2桁でビンゴをしようぜ！」という試みです。" />
+<meta name="twitter:image"       content="https://gungeespla.github.io/salmon_learn/ikura_bingo/favicon.png" />
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png" />
+<link rel="manifest" href="manifest.json">
+<script type="text/javascript">
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js').then(function() { console.log('Service Worker Registered'); });
+}
+</script>
+<link rel="stylesheet"        href="assets/bingo.css?">
+<script type="text/javascript"   src='assets/bingo.js?'></script>
+</head>
+<body>
+<div class="contents-wrapper">
+  <div class="name-input-wrapper">お名前　<input type="text" class="name-input" maxlength="10"></div>
+  <div class="create-card-button border-button">ビンゴカードを作る</div>
+  <div class="bingo-card-outer">
+    <div class="bingo-card-inner">
+      <div class="bingo-card-title">
+        <table>
+          <tr><td>B</td><td>I</td><td>N</td><td>G</td><td>O</td></tr>
+        </table>
+      </div>
+      <div class="bingo-card-table-wrapper">
+        <table>
+        <tr><td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><td></td><td></td><td></td><td></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="description">
+    <ul>
+      <li>同じお名前で作成されたカードは、常に同じ番号の並びになります。（ただし、お名前が空欄の場合は番号の並びが毎回ランダムに変化します。）</li>
+    </ul>
+  </div>
+</div>
+<div class="alert-wrapper">
+  <div class="alert-outer">
+    <div class="alert-inner">
+      <div class="alert-text">
+        <div class="alert-title">Title</div>
+        <div class="alert-message">MessageMessageMessageMessageMessage</div>
+      </div>
+      <div class="alert-button-wrapper alert-button-wrapper-ok-cancel">
+        <div class="alert-button alert-button-cancel">Cancel</div>
+        <div class="alert-button alert-button-ok">OK</div>
+      </div>
+      <div class="alert-button-wrapper alert-button-wrapper-only-ok">
+        <div class="alert-button alert-button-ok">OK</div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="stream-mode-button">配信用</button>
+</body>
+</html>
