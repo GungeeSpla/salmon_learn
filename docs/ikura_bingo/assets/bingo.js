@@ -73,6 +73,7 @@ window.onload = () => {
   dom.controler_2 = document.querySelector('.controler-2');
   dom.bingo_card_table = document.querySelector('.bingo-card-table-wrapper table');
   dom.bingo_card_outer = document.querySelector('.bingo-card-outer');
+  dom.bingo_card_name = document.querySelector('.bingo-card-name');
   dom.alert_wrapper = document.querySelector('.alert-wrapper');
   dom.alert_outer = document.querySelector('.alert-outer');
   dom.alert_inner = document.querySelector('.alert-inner');
@@ -292,6 +293,7 @@ function init_bingo(is_load) {
   }
   console.log('player_name: ' + player_name);
   console.log('player_code: ' + player_code);
+  dom.bingo_card_name.textContent = player_name;
   var xors = new Xors(player_code);
   init_card(xors, is_load);
   is_created_card = true;
