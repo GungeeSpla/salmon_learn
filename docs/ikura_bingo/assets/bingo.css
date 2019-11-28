@@ -157,7 +157,7 @@ body {
           max-width: 21.5em;
           display: inline-block;
           white-space: nowrap;
-          padding: .1em 1.5em 0 3em;
+          padding: .1em 1em 0 3em;
           overflow: hidden;
           position: relative;
           text-overflow: ellipsis;
@@ -167,15 +167,16 @@ body {
           color: #000;
         }
         .bingo-card-name::before {
-          content: 'お名前';
+          content: 'NAME';
           font-size: .7em;
           position: absolute;
           left: .5em;
-          bottom: .2em;
+          bottom: .1em;
           line-height: 1.6em;
           font-weight: normal;
           color: #444;
         }
+        /*
         .bingo-card-name::after {
           content: '様';
           font-size: .7em;
@@ -186,6 +187,7 @@ body {
           font-weight: normal;
           color: #444;
         }
+        */
         .bingo-card-title {
           user-select: none;
           font-family: Splatoon1;
