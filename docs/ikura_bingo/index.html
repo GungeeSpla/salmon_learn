@@ -17,11 +17,15 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js').then(function() { console.log('Service Worker Registered'); });
 }
 </script>
-<link rel="stylesheet"        href="assets/bingo.css?7">
-<script type="text/javascript"  src="assets/bingo.js?7"></script>
+<link rel="stylesheet"        href="assets/bingo.css?8">
+<script type="text/javascript"  src="assets/bingo.js?8"></script>
 </head>
 <body>
 <div class="contents-wrapper">
+  <div class="controler-wrapper">
+    <div class="controler controler-1"></div>
+    <div class="controler controler-2"></div>
+  </div>
   <div class="name-input-wrapper">お名前　<input type="text" class="name-input" maxlength="10"></div>
   <div class="create-card-button border-button" daily="false">ビンゴカードを作る</div>
   <div class="create-card-daily-button border-button" daily="true">ビンゴカードを作る（日替わり）</div>

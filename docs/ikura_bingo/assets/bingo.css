@@ -10,6 +10,7 @@ body {
 .stream {
   overflow: hidden;
   background-color: #0f0;
+  font-size: 1.1em;
 }
   .contents-wrapper {
     width: 30em;
@@ -26,7 +27,37 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
+    .controler {
+      display: none;
+    }
+    .stream .controler-wrapper {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+      .stream .controler {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        cursor: pointer;
+        display: block;
+      }
+      .stream .controler-1 {
+        left: 0;
+      }
+      .stream .controler-2 {
+        left: 50%;
+      }
     .name-input-wrapper {
       margin: 1em 0 1em 0;
       text-align: center;
@@ -89,7 +120,7 @@ body {
       box-shadow: .5em .5em 1em rgba(0, 0, 0, .3);
       background-color: #fff;
       overflow: hidden;
-      background-color: #fe2200;
+      background-color: #971400;
       background-image: url('bingo-card-bg.jpg?6');
       background-size: auto 100%;
       background-position: center center;
@@ -100,10 +131,10 @@ body {
       transform: translateY(0px);
       transition: .8s;
     }
-    .stream .bingo-card-outer.hidden {
+    .stream .bingo-card-outer.hidden-1 {
       transform: translateY(720px);
     }
-    .stream .bingo-card-outer.hidden {
+    .stream .bingo-card-outer.hidden-2 {
       transform: translateX(540px) scale(0.25);
     }
       .bingo-card-inner {

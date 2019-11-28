@@ -25,6 +25,8 @@ window.is_created_card = false;
 window.is_enabled_alert = true;
 window.is_enabled_stream_mode = false;
 window.hidden_card_timer = 0;
+window.hidden_card_delay = 8000;
+window.last_hide_type = 'hidden-1';
 window.storage_key = 'ikura-bingo';
 window.save_variables = [
   'card', 'card_holes', 'player_name', 'player_code',
@@ -65,6 +67,8 @@ window.onload = () => {
   load_storage();
   
   dom.player_name_input = document.querySelector('.name-input');
+  dom.controler_1 = document.querySelector('.controler-1');
+  dom.controler_2 = document.querySelector('.controler-2');
   dom.bingo_card_table = document.querySelector('.bingo-card-table-wrapper table');
   dom.bingo_card_outer = document.querySelector('.bingo-card-outer');
   dom.alert_wrapper = document.querySelector('.alert-wrapper');
@@ -184,7 +188,7 @@ function cell_click() {
     card_reach_indexes = reach_indexes;
     if (is_enabled_stream_mode) {
       clearTimeout(hidden_card_timer);
-      hidden_card_timer = setTimeout(hide_card, 10000);
+      hidden_card_timer = setTimeout(hide_card, hidden_card_delay);
     }
   }
 }
@@ -196,13 +200,30 @@ function enable_stream_mode(e) {
   e.stopPropagation();
   dom.stream_mode_button.style.display = 'none';
   document.body.classList.add('stream');
-  document.body.onclick = (e) => {
+  dom.controler_1.onclick = (e) => {
     if (dom.bingo_card_outer.classList.contains('hidden')) {
       dom.bingo_card_outer.classList.remove('hidden');
+      dom.bingo_card_outer.classList.remove('hidden-1');
+      dom.bingo_card_outer.classList.remove('hidden-2');
+      clearTimeout(hidden_card_timer);
+      hidden_card_timer = setTimeout(hide_card, hidden_card_delay);
+    } else {
+      dom.bingo_card_outer.classList.add('hidden');
+      dom.bingo_card_outer.classList.add('hidden-1');
+      last_hide_type = 'hidden-1';
+    }
+  };
+  dom.controler_2.onclick = (e) => {
+    if (dom.bingo_card_outer.classList.contains('hidden')) {
+      dom.bingo_card_outer.classList.remove('hidden');
+      dom.bingo_card_outer.classList.remove('hidden-1');
+      dom.bingo_card_outer.classList.remove('hidden-2');
       clearTimeout(hidden_card_timer);
       hidden_card_timer = setTimeout(hide_card, 10000);
     } else {
       dom.bingo_card_outer.classList.add('hidden');
+      dom.bingo_card_outer.classList.add('hidden-2');
+      last_hide_type = 'hidden-2';
     }
   };
   dom.bingo_card_outer.onclick = (e) => {
@@ -218,7 +239,7 @@ function enable_stream_mode(e) {
  * hide_card()
  */
 function hide_card() {
-  dom.bingo_card_outer.classList.add('hidden');
+  dom.bingo_card_outer.classList.add(last_hide_type);
 }
 
 /* 
