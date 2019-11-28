@@ -5,6 +5,7 @@ body, div {
 body {
   font-size: 1.3em;
   font-family: sans-serif;
+  color: #444;
 }
 .stream {
   overflow: hidden;
@@ -49,9 +50,9 @@ body {
       width: 25.4em;
       box-sizing: border-box;
       text-align: center;
-      border: 2px solid #f25135;
+      border: 2px solid #fe2200;
       border-radius: 4px;
-      color: #f25135;
+      color: #fe2200;
       text-decoration: none;
       font-weight: bold;
       padding: 8px 16px;
@@ -60,8 +61,8 @@ body {
     }
     .border-button:hover {
       transition: .2s;
-      background-color: #f25135;
-      border-color: #f25135;
+      background-color: #fe2200;
+      border-color: #fe2200;
       color: #fff;
     }
     .border-button:active {
@@ -78,6 +79,7 @@ body {
     }
     .bingo-card-outer {
       box-sizing: border-box;
+      color: #000;
       width: 30em;
       padding: 1em;
       display: inline-block;
@@ -87,7 +89,7 @@ body {
       box-shadow: .5em .5em 1em rgba(0, 0, 0, .3);
       background-color: #fff;
       overflow: hidden;
-      background-color: #f25135;
+      background-color: #fe2200;
       background-image: url('bingo-card-bg.jpg?6');
       background-size: auto 100%;
       background-position: center center;
@@ -179,8 +181,8 @@ body {
               width: 1.6em;
               height: 1.6em;
               top: 0.25em;
-              left: 0.25em;
-              background-color: #b2dfdb;
+              left: 0.22em;
+              background-color: #ebff9c;
               position: absolute;
               display: inline-block;
               border-radius: 50%;
