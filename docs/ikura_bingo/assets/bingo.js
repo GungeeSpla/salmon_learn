@@ -27,6 +27,7 @@ window.is_enabled_center_free = true;
 window.is_enabled_stream_mode = false;
 window.hidden_card_timer = 0;
 window.hidden_card_delay = 8000;
+window.click_event = 'ontouchend' in window ? 'ontouchend' : 'onclick';
 window.last_hide_type = 'hidden-1';
 window.storage_key = 'ikura-bingo';
 window.save_variables = [
@@ -88,16 +89,16 @@ window.onload = () => {
   dom.create_card_daily_button = document.querySelector('.create-card-daily-button');
   for (var i = 0; i < bingo_card_cell_num; i++) {
     dom.bingo_card_cells[i].setAttribute('cell-index', i);
-    dom.bingo_card_cells[i].onclick = cell_click;
+    dom.bingo_card_cells[i][click_event] = cell_click;
   }
   dom.player_name_input.value = player_name;
-  dom.create_card_button.onclick = create_card_button_click;
-  dom.create_card_daily_button.onclick = create_card_button_click;
+  dom.create_card_button[click_event] = create_card_button_click;
+  dom.create_card_daily_button[click_event] = create_card_button_click;
   
   if (queries) {
     if (queries.stream === '1') {
       dom.stream_mode_button.style.display = 'block';
-      dom.stream_mode_button.onclick = enable_stream_mode;
+      dom.stream_mode_button[click_event] = enable_stream_mode;
     }
     if (queries.free === '0') {
       is_enabled_center_free = false;
@@ -210,7 +211,7 @@ function enable_stream_mode(e) {
   e.stopPropagation();
   dom.stream_mode_button.style.display = 'none';
   document.body.classList.add('stream');
-  dom.controler_1.onclick = (e) => {
+  dom.controler_1[click_event] = (e) => {
     if (dom.bingo_card_outer.classList.contains('hidden')) {
       dom.bingo_card_outer.classList.remove('hidden');
       dom.bingo_card_outer.classList.remove('hidden-1');
@@ -223,7 +224,7 @@ function enable_stream_mode(e) {
       last_hide_type = 'hidden-1';
     }
   };
-  dom.controler_2.onclick = (e) => {
+  dom.controler_2[click_event] = (e) => {
     if (dom.bingo_card_outer.classList.contains('hidden')) {
       dom.bingo_card_outer.classList.remove('hidden');
       dom.bingo_card_outer.classList.remove('hidden-1');
@@ -236,7 +237,7 @@ function enable_stream_mode(e) {
       last_hide_type = 'hidden-2';
     }
   };
-  dom.bingo_card_outer.onclick = (e) => {
+  dom.bingo_card_outer[click_event] = (e) => {
     e.preventDefault();
     e.stopPropagation();
     return false;
@@ -611,10 +612,10 @@ function my_alert(opt) {
   }
   dom.alert_title.innerHTML = opt.title;
   dom.alert_message.innerHTML = opt.message;
-  dom.alert_outer.onclick = cancel;
-  dom.alert_inner.onclick = return_false;
-  dom.alert_ok.onclick = ok;
-  dom.alert_cancel.onclick = cancel;
-  dom.alert_only_ok.onclick = cancel;
+  dom.alert_outer[click_event] = cancel;
+  dom.alert_inner[click_event] = return_false;
+  dom.alert_ok[click_event] = ok;
+  dom.alert_cancel[click_event] = cancel;
+  dom.alert_only_ok[click_event] = cancel;
   show();
 }
