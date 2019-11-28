@@ -69,7 +69,7 @@ body {
     }
       .name-input {
         width: 20em;
-        border: 2px solid #ccc;
+        border: .1em solid #ccc;
         border-radius: .3em;
         padding: .5em;
         font-size: 1em;
@@ -87,7 +87,7 @@ body {
       width: 25.4em;
       box-sizing: border-box;
       text-align: center;
-      border: 2px solid #fe2200;
+      border: .1em solid #fe2200;
       border-radius: .3em;
       color: #fe2200;
       text-decoration: none;
@@ -196,10 +196,10 @@ body {
           color: #ffeb3b;
           font-weight: bold;
           text-shadow:
-            -2px -2px 0px #000,
-             2px  2px 0px #000,
-            -2px  2px 0px #000,
-             2px -2px 0px #000;
+            -.013em -.013em 0 #000,
+             .013em  .013em 0 #000,
+            -.013em  .013em 0 #000,
+             .013em -.013em 0 #000;
         }
           .bingo-card-title table {
             border-collapse: separate;
@@ -241,10 +241,10 @@ body {
               background-position: center center;
               background-repeat: no-repeat;
               text-shadow:
-                -1px -1px 0px #fff,
-                 1px  1px 0px #fff,
-                -1px  1px 0px #fff,
-                 1px -1px 0px #fff;
+                -.013em -.013em 0 #fff,
+                 .013em  .013em 0 #fff,
+                -.013em  .013em 0 #fff,
+                 .013em -.013em 0 #fff;
               border-radius: .1em;
             }
             .bingo-card-table-wrapper table td.hole {
@@ -356,7 +356,7 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        border-top: 2px solid #ddd;
+        border-top: .1em solid #ddd;
       }
         .alert-button-wrapper-only-ok .alert-button {
           width: 100%;
@@ -368,7 +368,7 @@ body {
           color: #258bfb;
           width: 50%;
           display: inline-block;
-          border-left: 2px solid #ddd;
+          border-left: .06em solid #ddd;
           padding: 1em 0;
           transition: .2s;
           text-align: center;
