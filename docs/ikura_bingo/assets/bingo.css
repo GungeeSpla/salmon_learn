@@ -6,10 +6,12 @@ body {
   font-size: 1.3em;
   font-family: sans-serif;
   color: #444;
+  background: #fff url('body-bg.png');
+  background-size: 20em 20em;
 }
 .stream {
   overflow: hidden;
-  background-color: #0f0;
+  background: #0f0;
   font-size: 1.1em;
 }
   .contents-wrapper {
@@ -76,6 +78,10 @@ body {
       user-select: none;
       margin: 1em 0 1em 0;
     }
+    .create-card-daily-button {
+      user-select: none;
+      margin: 1em 0 0;
+    }
     .border-button {
       display: inline-block;
       width: 25.4em;
@@ -116,8 +122,10 @@ body {
       display: inline-block;
       margin: 4em 0 4em 0;
       border-radius: 1em;
-      border: 1px solid rgba(0, 0, 0, .1);
-      box-shadow: .5em .5em 1em rgba(0, 0, 0, .3);
+      box-shadow:
+        .12em .12em .12em rgba(255, 255, 255, .4) inset,
+        -.12em -.12em .12em rgba(0, 0, 0, .4) inset,
+        .5em .5em 1em rgba(0, 0, 0, .3);
       background-color: #fff;
       overflow: hidden;
       background-color: #971400;
@@ -127,7 +135,9 @@ body {
       background-repeat: no-repeat;
     }
     .stream .bingo-card-outer {
-      box-shadow: none;
+      box-shadow:
+        .12em .12em .12em rgba(255, 255, 255, .4) inset,
+        -.12em -.12em .12em rgba(0, 0, 0, .4) inset;
       transform: translateY(0px);
       transition: .8s;
     }
@@ -161,7 +171,7 @@ body {
           font-size: .7em;
           position: absolute;
           left: .5em;
-          bottom: .3em;
+          bottom: .2em;
           line-height: 1.6em;
           font-weight: normal;
           color: #444;
@@ -171,7 +181,7 @@ body {
           font-size: .7em;
           position: absolute;
           right: .5em;
-          bottom: .3em;
+          bottom: .2em;
           line-height: 1.6em;
           font-weight: normal;
           color: #444;
