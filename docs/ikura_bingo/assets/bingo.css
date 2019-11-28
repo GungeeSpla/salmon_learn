@@ -289,6 +289,9 @@ body {
       transition: .2s;
       transform: scale(0.95);
     }
+    .stream .alert-inner {
+      width: 28em;
+    }
       .alert-text {
         padding: 2em;
         text-align: center;

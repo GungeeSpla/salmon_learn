@@ -5,9 +5,9 @@ window.bingo_card_cell_num = bingo_card_width * bingo_card_height;
 window.bingo_card_center_y = Math.floor(bingo_card_height / 2) * bingo_card_width; 
 window.bingo_card_center_x = Math.floor(bingo_card_width / 2);
 window.bingo_card_center_index = bingo_card_center_y + bingo_card_center_x;
+window.queries = get_queries();
 window.bingo_num_min = 0;
 window.bingo_num_max = 99;
-window.queries = get_queries();
 window.card = [];
 window.card_holes = [];
 window.card_bingo_num = 0;
@@ -23,6 +23,7 @@ window.bingo_clear_steps = [];
 window.dom = {};
 window.is_created_card = false;
 window.is_enabled_alert = true;
+window.is_enabled_center_free = true;
 window.is_enabled_stream_mode = false;
 window.hidden_card_timer = 0;
 window.hidden_card_delay = 8000;
@@ -89,11 +90,25 @@ window.onload = () => {
     dom.bingo_card_cells[i].setAttribute('cell-index', i);
     dom.bingo_card_cells[i].onclick = cell_click;
   }
-  dom.bingo_card_cells[bingo_card_center_index].classList.add('free');
-  dom.bingo_card_cells[bingo_card_center_index].textContent = free_str;
   dom.player_name_input.value = player_name;
   dom.create_card_button.onclick = create_card_button_click;
   dom.create_card_daily_button.onclick = create_card_button_click;
+  
+  if (queries) {
+    if (queries.stream === '1') {
+      dom.stream_mode_button.style.display = 'block';
+      dom.stream_mode_button.onclick = enable_stream_mode;
+    }
+    if (queries.free === '0') {
+      is_enabled_center_free = false;
+    }
+    if (queries.max) {
+      bingo_num_max = parseInt(queries.max);
+    }
+    if (queries.min) {
+      bingo_num_min = parseInt(queries.min);
+    }
+  }
   
   if (player_code !== 0) {
     init_bingo(true);
@@ -102,11 +117,6 @@ window.onload = () => {
         dom.bingo_card_cells[i].classList.add('hole');
       }
     }
-  }
-  
-  if (window.queries.stream === '1') {
-    dom.stream_mode_button.style.display = 'block';
-    dom.stream_mode_button.onclick = enable_stream_mode;
   }
 }
 
@@ -148,7 +158,7 @@ function cell_click() {
     return;
   }
   var cell_index = parseInt(this.getAttribute('cell-index'));
-  if (cell_index === bingo_card_center_index) {
+  if (is_enabled_center_free && cell_index === bingo_card_center_index) {
     return;
   }
   var is_hole = card_holes[cell_index];
@@ -231,8 +241,9 @@ function enable_stream_mode(e) {
     e.stopPropagation();
     return false;
   };
+  dom.bingo_card_outer.appendChild(dom.alert_wrapper);
   is_enabled_stream_mode = true;
-  is_enabled_alert = false;
+  //is_enabled_alert = false;
 };
 
 /* 
@@ -344,6 +355,9 @@ function init_card(xors, is_load) {
   if (!is_load) {
     card_holes = create_card_holes();
   }
+  if (is_enabled_center_free) {
+    card_holes[bingo_card_center_index] = true;
+  }
   balls = create_balls();
   card_step = 0;
   for (var i = 0; i < bingo_card_cell_num; i++) {
@@ -400,7 +414,11 @@ function create_card(xors) {
       new_card[j * bingo_card_width + i] = num;
     }
   }
-  new_card[bingo_card_center_index] = free_str;
+  dom.bingo_card_cells[bingo_card_center_index].classList.remove('free');
+  if (is_enabled_center_free) {
+    dom.bingo_card_cells[bingo_card_center_index].classList.add('free');
+    new_card[bingo_card_center_index] = free_str;
+  }
   return new_card;
 }
 
@@ -414,7 +432,6 @@ function create_card_holes() {
       new_card_holes[i * bingo_card_width + j] = false;
     }
   }
-  new_card_holes[bingo_card_center_index] = true;
   return new_card_holes;
 }
 
