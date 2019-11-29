@@ -222,7 +222,7 @@ function cell_click() {
     return;
   }
   var cell_index = parseInt(this.getAttribute('cell-index'));
-  if (is_enabled_center_free && cell_index === bingo_card_center_index) {
+  if (this.textContent === free_str) {
     return;
   }
   var is_hole = card_holes[cell_index];
