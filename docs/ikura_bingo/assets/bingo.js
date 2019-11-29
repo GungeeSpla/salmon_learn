@@ -408,7 +408,11 @@ function N_test(N) {
 function render_card(_card) {
   var html = '';
   for (var i = 0; i < _card.length; i++) {
-    dom.bingo_card_cells[i].textContent = _card[i];
+    var str = _card[i];
+    if (bingo_num_min === 0 && bingo_num_max === 99) {
+      str = ('00' + str).slice(-2);
+    }
+    dom.bingo_card_cells[i].textContent = str;
   }
 }
 
