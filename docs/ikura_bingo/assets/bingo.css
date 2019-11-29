@@ -1,4 +1,4 @@
-body, div {
+body, div, h1, h2, h3, ul, li, p {
   margin: 0;
   padding: 0;
 }
@@ -13,6 +13,21 @@ body {
   overflow: hidden;
   background: #0f0;
   font-size: 1.1em;
+}
+h3 {
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 2em 0 1.5em;
+  padding: 0;
+}
+h3::after {
+  content: '';
+  display: block;
+  border-bottom: .05em solid #aaa;
+  box-shadow: 0 .05em .05em #fff;
+  width: 100%;
+  height: 1px;
 }
   .contents-wrapper {
     width: 30em;
@@ -120,7 +135,7 @@ body {
       width: 30em;
       padding: .5em 1em 1em;
       display: inline-block;
-      margin: 4em 0 4em 0;
+      margin: 4em 0 2em 0;
       border-radius: 1em;
       box-shadow:
         .12em .12em .12em rgba(255, 255, 255, .4) inset,
@@ -145,7 +160,7 @@ body {
       transform: translateY(720px);
     }
     .stream .bingo-card-outer.hidden-2 {
-      transform: translateX(540px) scale(0.25);
+      transform: translate(530px, 210px) scale(0.35);
     }
       .bingo-card-inner {
         border-radius: .2em;
@@ -250,11 +265,11 @@ body {
               border-radius: .1em;
             }
             .bingo-card-table-wrapper table td.hole {
-              background-image: url('bingo-cell-bg.png');
+              background-image: url('bingo-cell-bg.png?6');
             }
             .bingo-card-table-wrapper table td.free {
               font-size: 2em;
-              background-image: url('bingo-cell-bg.png');
+              background-image: url('bingo-cell-bg.png?6');
             }
             .bingo-card-table-wrapper table td.reach::after {
               content: '';
@@ -270,12 +285,37 @@ body {
             }
     .description {
       text-align: left;
+      margin-bottom: 1em;
     }
     .stream .description {
       display: none;
     }
       .description li {
         margin-bottom: 1em;
+        margin-left: 1.5em;
+      }
+    .config {
+      /*display: none;*/
+    }
+    .stream .config {
+      display: none;
+    }
+      .config p {
+        margin-bottom: 1em;
+      }
+      .config input[type=text] {
+        width: 4em;
+        border: .1em solid #ccc;
+        border-radius: .3em;
+        padding: .5em;
+        font-size: 1em;
+        text-align: center;
+      }
+      .config input[type=checkbox] {
+        cursor: pointer;
+      }
+      .config input[type=checkbox] + label {
+        cursor: pointer;
       }
   .stream-mode-button {
     display: none;
@@ -283,6 +323,14 @@ body {
     height: 3em;
     position: fixed;
     bottom: 0;
+    right: 0;
+  }
+  .n-test-button {
+    display: none;
+    width: 10em;
+    height: 3em;
+    position: fixed;
+    bottom: 3em;
     right: 0;
   }
 /*

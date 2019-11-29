@@ -17,6 +17,8 @@ window.player_name = '';
 window.player_code = 0;
 window.balls = [];
 window.card_step = 0;
+window.card_step_max = 999;
+window.with_replacement = true;
 window.is_daily = true;
 window.free_str = 'FREE';
 window.bingo_clear_steps = [];
@@ -32,6 +34,7 @@ window.last_hide_type = 'hidden-1';
 window.storage_key = 'ikura-bingo';
 window.save_variables = [
   'card', 'card_holes', 'player_name', 'player_code',
+  'is_enabled_center_free', 'bingo_num_min', 'bingo_num_max',
 ];
 window.check_bingo_configs = [
   {
@@ -69,6 +72,12 @@ window.onload = () => {
   load_storage();
   
   dom.player_name_input = document.querySelector('.name-input');
+  dom.config = document.querySelector('.config');
+  dom.config_max_num = document.querySelector('.config-max-num');
+  dom.config_min_num = document.querySelector('.config-min-num');
+  dom.config_free = document.querySelector('.config-free');
+  dom.controler_1 = document.querySelector('.controler-1');
+  dom.controler_1 = document.querySelector('.controler-1');
   dom.controler_1 = document.querySelector('.controler-1');
   dom.controler_2 = document.querySelector('.controler-2');
   dom.bingo_card_table = document.querySelector('.bingo-card-table-wrapper table');
@@ -86,6 +95,7 @@ window.onload = () => {
   dom.alert_only_ok_wrapper = document.querySelector('.alert-button-wrapper-only-ok');
   dom.bingo_card_cells = dom.bingo_card_table.querySelectorAll('td');
   dom.stream_mode_button = document.querySelector('.stream-mode-button');
+  dom.n_test_button = document.querySelector('.n-test-button');
   dom.create_card_button = document.querySelector('.create-card-button');
   dom.create_card_daily_button = document.querySelector('.create-card-daily-button');
   for (var i = 0; i < bingo_card_cell_num; i++) {
@@ -100,9 +110,13 @@ window.onload = () => {
     if (queries.stream === '1') {
       dom.stream_mode_button.style.display = 'block';
       dom.stream_mode_button[click_event] = enable_stream_mode;
+      dom.n_test_button.style.display = 'block';
+      dom.n_test_button[click_event] = () => {
+        N_test(300);
+      };
     }
-    if (queries.free === '0') {
-      is_enabled_center_free = false;
+    if (queries.free) {
+      is_enabled_center_free = (queries.free !== '0');
     }
     if (queries.max) {
       bingo_num_max = parseInt(queries.max);
@@ -110,7 +124,47 @@ window.onload = () => {
     if (queries.min) {
       bingo_num_min = parseInt(queries.min);
     }
+    if (queries.config === '1') {
+      dom.config.style.display = 'block';
+    }
   }
+  
+  dom.config_free.checked = is_enabled_center_free;
+  dom.config_max_num.value = bingo_num_max;
+  dom.config_min_num.value = bingo_num_min;
+  dom.config_free.onchange = function(e) {
+    is_enabled_center_free = this.checked;
+    console.log('is_enabled_center_free: ' + is_enabled_center_free);
+    save_storage();
+  };
+  dom.config_max_num.onchange = function(e) {
+    var val = this.value;
+    if (typeof val === 'string') {
+      val = val.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) => {
+        return String.fromCharCode(s.charCodeAt(0) - 65248);
+      });
+      val = parseInt(val);
+      if (typeof val === 'number') {
+        bingo_num_max = val;
+        console.log('bingo_num_max: ' + bingo_num_max);
+        save_storage();
+      }
+    }
+  };
+  dom.config_min_num.onchange = function(e) {
+    var val = this.value;
+    if (typeof val === 'string') {
+      val = val.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) => {
+        return String.fromCharCode(s.charCodeAt(0) - 65248);
+      });
+      val = parseInt(val);
+      if (typeof val === 'number') {
+        bingo_num_min = val;
+        console.log('bingo_num_min: ' + bingo_num_min);
+        save_storage();
+      }
+    }
+  };
   
   if (player_code !== 0) {
     init_bingo(true);
@@ -126,6 +180,14 @@ window.onload = () => {
  * create_card_button_click()
  */
 function create_card_button_click() {
+  if (bingo_num_max - bingo_num_min + 1 < 25) {
+    my_alert({
+      title: 'エラー',
+      message: 'ビンゴカードの数字は<br>25個通り以上必要です。',
+    });
+    return;
+  }
+  
   is_daily = this.getAttribute('daily') === 'true';
   
   var _player_name = dom.player_name_input.value;
@@ -210,6 +272,7 @@ function cell_click() {
  */
 function enable_stream_mode(e) {
   e.stopPropagation();
+  dom.n_test_button.style.display = 'none';
   dom.stream_mode_button.style.display = 'none';
   document.body.classList.add('stream');
   dom.controler_1[click_event] = (e) => {
@@ -281,6 +344,13 @@ function Xors(n) {
  */
 function init_bingo(is_load) {
   console.log('init bingo');
+  if (bingo_num_max - bingo_num_min + 1 < 25) {
+    my_alert({
+      title: 'エラー',
+      message: 'ビンゴカードの数字は<br>25個通り以上必要です。',
+    });
+    return;
+  }
   player_name = dom.player_name_input.value;
   if (!is_load) {
     player_code = str_2_int(player_name);
@@ -307,17 +377,29 @@ function init_bingo(is_load) {
  * N_test(N)
  */
 function N_test(N) {
+  init_bingo();
   bingo_clear_steps = [];
   for (var i = 0; i < N; i++) {
     var step = one_play();
     bingo_clear_steps.push(step);
   }
   var sum = 0;
+  var min = 9999;
+  var max = 0;
   for (var i = 0; i < N; i++) {
-    sum += bingo_clear_steps[i];
+    var num = bingo_clear_steps[i];
+    sum += num;
+    if (num < min) min = num;
+    if (num > max) max = num;
   }
-  console.log(sum / N);
-  console.log(bingo_clear_steps);
+  my_alert({
+    title: 'シミュレーション結果',
+    message: 'ビンゴするまでの抽選回数は<br>' +
+      '平均値: ' + (sum/N).toFixed(0) + '<br>'+
+      '最小値: ' + (min) + '<br>'+
+      '最大値: ' + (max) + '<br>'+
+      '(' + N + '人中)',
+  });
 }
 
 /* 
@@ -338,15 +420,12 @@ function one_play() {
   while (true) {
     card_step++;
     drill(card, card_holes, open_ball(balls));
-    drill(card, card_holes, open_ball(balls));
-    drill(card, card_holes, open_ball(balls));
-    drill(card, card_holes, open_ball(balls));
-    render_card(card);
     var [bingo_num, reach_num, reach_indexes] = check_bingo(card_holes);
-    if (bingo_num > 0) {
+    if (bingo_num > 0 || card_step > card_step_max) {
       break;
     }
   }
+  render_card(card);
   return card_step;
 }
 
@@ -385,13 +464,14 @@ function create_balls() {
  * open_ball(_balls)
  */
 function open_ball(_balls) {
-  return bingo_num_min + Math.floor(Math.random() * (bingo_num_max - bingo_num_min + 1));
-  /*
-  var r = Math.floor(Math.random() * _balls.length);
-  var num = _balls[r];
-  _balls.splice(r, 1);
-  return num;
-  */
+  if (with_replacement) {
+    return bingo_num_min + Math.floor(Math.random() * (bingo_num_max - bingo_num_min + 1));
+  } else {
+    var r = Math.floor(Math.random() * _balls.length);
+    var num = _balls[r];
+    _balls.splice(r, 1);
+    return num;
+  }
 }
 
 /* 
@@ -508,7 +588,9 @@ function load_storage() {
     //console.log(json_str);
     var save_data_obj = JSON.parse(json_str);
     window.save_variables.map(var_name => {
-      window[var_name] = save_data_obj[var_name];
+      if (typeof save_data_obj[var_name] !== 'undefined') {
+        window[var_name] = save_data_obj[var_name];
+      }
     });
   } else {
     console.log('-- storage data doesn\'t exist');

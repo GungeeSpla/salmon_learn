@@ -17,8 +17,8 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js').then(function() { console.log('Service Worker Registered'); });
 }
 </script>
-<link rel="stylesheet"        href="assets/bingo.css?14">
-<script type="text/javascript"  src="assets/bingo.js?14"></script>
+<link rel="stylesheet"        href="assets/bingo.css?15">
+<script type="text/javascript"  src="assets/bingo.js?15"></script>
 </head>
 <body>
 <div class="contents-wrapper">
@@ -49,11 +49,18 @@ if ('serviceWorker' in navigator) {
     </div>
   </div>
   <div class="description">
+    <h3>説明</h3>
     <ul>
       <li>ビンゴカードを作成してからサーモンランを遊び、自分や味方の稼いだ<b>個人赤イクラ数の下2桁</b>に一致するマス目をタップしていってください。縦･横･斜めいずれかの方向で1列揃えばビンゴ！</li>
       <li>「ビンゴカードを作る」で作ったカードは、<b>お名前が同じなら、常に同じ数字の並び</b>になります。（ただし、お名前が空欄の場合はランダムに変化します）</li>
       <li>「ビンゴカードを作る（日替わり）」で作ったカードは、<b>お名前が同じでも、日ごとに違った数字の並び</b>になります。（午前3時に更新）</li>
     </ul>
+  </div>
+  <div class="config">
+    <h3>設定</h3>
+    <p style="display: none;">最小値　<input type="text" class="config-min-num"></p>
+    <p style="display: none;">最大値　<input type="text" class="config-max-num"></p>
+    <p><input type="checkbox" class="config-free" id="config-free"><label for="config-free">FREEマスを有効にする</label></p>
   </div>
 </div>
 <div class="alert-wrapper">
@@ -73,6 +80,7 @@ if ('serviceWorker' in navigator) {
     </div>
   </div>
 </div>
+<button class="n-test-button">シミュレーション</button>
 <button class="stream-mode-button">配信モード</button>
 </body>
 </html>
