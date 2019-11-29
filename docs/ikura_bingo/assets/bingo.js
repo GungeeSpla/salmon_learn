@@ -409,7 +409,7 @@ function render_card(_card) {
   var html = '';
   for (var i = 0; i < _card.length; i++) {
     var str = _card[i];
-    if (bingo_num_min === 0 && bingo_num_max === 99) {
+    if (bingo_num_min === 0 && bingo_num_max === 99 && str !== free_str) {
       str = ('00' + str).slice(-2);
     }
     dom.bingo_card_cells[i].textContent = str;
