@@ -306,6 +306,13 @@ function enable_stream_mode(e) {
     e.stopPropagation();
     return false;
   };
+  dom.bingo_card_name.style.cursor = 'crosshair';
+  dom.bingo_card_name[click_event] = (e) => {
+    dom.bingo_card_outer.classList.remove('hidden');
+    dom.bingo_card_outer.classList.remove('hidden-1');
+    dom.bingo_card_outer.classList.remove('hidden-2');
+    clearTimeout(hidden_card_timer);
+  };
   dom.bingo_card_outer.appendChild(dom.alert_wrapper);
   is_enabled_stream_mode = true;
   //is_enabled_alert = false;

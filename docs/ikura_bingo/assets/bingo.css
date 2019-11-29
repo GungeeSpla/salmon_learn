@@ -11,7 +11,7 @@ body {
 }
 .stream {
   overflow: hidden;
-  background: #0f0;
+  background: #0000f5;
   font-size: 1.1em;
 }
 h3 {
@@ -38,7 +38,7 @@ h3::after {
   .stream .contents-wrapper {
     width: 1280px;
     height: 720px;
-    background-color: #0f0;
+    background-color: #00f;
     margin: 0;
     position: relative;
     display: flex;
@@ -71,9 +71,11 @@ h3::after {
       }
       .stream .controler-1 {
         left: 0;
+        cursor: n-resize;
       }
       .stream .controler-2 {
         left: 50%;
+        cursor: nw-resize;
       }
     .name-input-wrapper {
       margin: 1em 0 1em 0;
@@ -166,6 +168,7 @@ h3::after {
         border-radius: .2em;
       }
         .bingo-card-name {
+          user-select: none;
           background-color: #fff;
           border-radius: .1em;
           min-width: 4em;
