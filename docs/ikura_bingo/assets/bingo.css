@@ -216,10 +216,10 @@ h3::after {
           color: #ffeb3b;
           font-weight: bold;
           text-shadow:
-            -.013em -.013em 0 #000,
-             .013em  .013em 0 #000,
-            -.013em  .013em 0 #000,
-             .013em -.013em 0 #000;
+            -0.013em -0.013em 0 #000,
+             0.013em  0.013em 0 #000,
+            -0.013em  0.013em 0 #000,
+             0.013em -0.013em 0 #000;
         }
           .bingo-card-title table {
             border-collapse: separate;
@@ -261,10 +261,10 @@ h3::after {
               background-position: center center;
               background-repeat: no-repeat;
               text-shadow:
-                -.013em -.013em 0 #fff,
-                 .013em  .013em 0 #fff,
-                -.013em  .013em 0 #fff,
-                 .013em -.013em 0 #fff;
+                -0.025em -0.025em 0 #fff,
+                 0.025em  0.025em 0 #fff,
+                -0.025em  0.025em 0 #fff,
+                 0.025em -0.025em 0 #fff;
               border-radius: .1em;
             }
             .bingo-card-table-wrapper table td.hole {
