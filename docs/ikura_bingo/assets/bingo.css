@@ -12,7 +12,7 @@ body {
 .stream {
   overflow: hidden;
   background: #0000f5;
-  font-size: 1.1em;
+  font-size: 18px;
 }
 h3 {
   text-align: center;
@@ -162,7 +162,7 @@ h3::after {
       transform: translateY(720px);
     }
     .stream .bingo-card-outer.hidden-2 {
-      transform: translate(530px, 220px) scale(0.35);
+      transform: translate(530px, 215px) scale(0.35);
     }
       .bingo-card-inner {
         border-radius: .2em;
