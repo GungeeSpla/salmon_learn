@@ -261,10 +261,10 @@ h3::after {
               background-position: center center;
               background-repeat: no-repeat;
               text-shadow:
-                -0.025em -0.025em 0 #fff,
-                 0.025em  0.025em 0 #fff,
-                -0.025em  0.025em 0 #fff,
-                 0.025em -0.025em 0 #fff;
+                -0.028em -0.028em 0 #fff,
+                 0.028em  0.028em 0 #fff,
+                -0.028em  0.028em 0 #fff,
+                 0.028em -0.028em 0 #fff;
               border-radius: .1em;
             }
             .bingo-card-table-wrapper table td.hole {
