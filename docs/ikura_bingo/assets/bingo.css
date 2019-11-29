@@ -155,14 +155,14 @@ h3::after {
       box-shadow:
         .12em .12em .12em rgba(255, 255, 255, .4) inset,
         -.12em -.12em .12em rgba(0, 0, 0, .4) inset;
-      transform: translateY(0px);
+      transform: translateY(-15px);
       transition: .8s;
     }
     .stream .bingo-card-outer.hidden-1 {
       transform: translateY(720px);
     }
     .stream .bingo-card-outer.hidden-2 {
-      transform: translate(530px, 210px) scale(0.35);
+      transform: translate(530px, 220px) scale(0.35);
     }
       .bingo-card-inner {
         border-radius: .2em;
