@@ -1,0 +1,210 @@
+body {
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	font-family: Splatoon2, sans-serif;
+	background-color: transparent;
+}
+.stream {
+	position: relative;
+	width: 1280px;
+	height: 720px;
+}
+	.stream .game {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 1024px;
+		height: 576px;
+	}
+	.stream .footer {
+		position: absolute;
+		left: 0;
+		top: 576px;
+		width: 1280px;
+		height: calc(720px - 576px);
+    background: #9b1e09 url(../img/bg_pattern_02.png) top;
+    background-size: 510px 254px;
+	}
+	.stream .right_column {
+		color: #888;
+		background: #000;
+		position: absolute;
+		left: 1024px;
+		top: 0;
+		width: calc(1280px - 1024px);
+		height: 576px;
+		text-shadow: 1px 1px 0 #000;
+		font-size: 24px;
+		box-sizing: border-box;
+		padding: 25px;
+		line-height: 1.5em;
+	}
+		.grade_point {
+			cursor: pointer;
+			-ms-user-select: none; /* IE 10+ */
+			-moz-user-select: -moz-none;
+			-khtml-user-select: none;
+			-webkit-user-select: none;
+			user-select: none;
+			position: absolute;
+	    color: #fff;
+	    text-shadow: 1px 1px 0 #000;
+	    font-size: 26px;
+	    width: 100px;
+	    height: 100px;
+	    background: rgba(0,0,0,.5);
+	    border-radius: 50%;
+	    top: 22px;
+	    left: 22px;
+		}
+		.grade_point p {
+			margin: 0;
+			padding: 0;
+		}
+		.grade_point .before {
+			position: absolute;
+			left: 28px;
+			top: 14px;
+			font-size: 66%;
+		}
+		.grade_point .after {
+			position: absolute;
+			left: 28px;
+			top: 30px;
+		}
+		.grade_point .before::after{
+			content: "→";
+			padding-left: 2px;
+		}
+		
+		.result_line {
+			font-size: 20px;
+		    color: #fff;
+		    padding: 27px 10px 10px;
+		    text-shadow: 1px 1px 0 #000;
+		    position: relative;
+		    left: 180px;
+		    margin-top: 4px;
+		    margin-bottom: 20px;
+		}
+		.result_line .player_name {
+			position: absolute;
+			top: 0;
+			left: -10px;
+		}
+		.result_line .point {
+			position: absolute;
+			top: -16px;
+			left: 840px;
+		}
+		.result_line .point .sum{
+			font-size: 160%;
+		}
+		.result_line ol,
+		.result_line ul {
+	    	list-style-type: none;
+			position: absolute;
+			top: 0;
+			left: 140px;
+			width: 680px;
+		}
+		.result_line li {
+			position: relative;
+		}
+		.result_line ul {
+			width: 680px;
+			height: 44px;
+			display: flex;
+			-ms-flex-pack: distribute;
+			justify-content: space-around;
+			background: rgba(0,0,0,.5);
+			color: #ccc;
+			line-height: 1;
+			border-radius: 22px;
+			padding: 0 10px;
+			box-sizing: border-box;
+			-ms-flex-align: center;
+			align-items: center;
+		}
+		.result_line .golden_ikura {
+			padding-left: 32px;
+		}
+		.result_line .golden_ikura::before {
+		    background-image: url(../img/icon_golden_ikura.png);
+		    background-size: 28px 28px;
+		    width: 28px;
+		}
+		.result_line .ikura {
+			padding-left: 32px;
+		}
+		.result_line .ikura::before {
+		    background-image: url(../img/icon_ikura.png);
+		    background-size: 28px 20px;
+		    width: 28px;
+		}
+		.result_line .help {
+			padding-left: 72px;
+		}
+		.result_line .help::before {
+		    background-image: url(../img/icon_help.png);
+		    background-size: 68px 28px;
+		    width: 68px;
+		}
+		.result_line .dead {
+			padding-left: 72px;
+		}
+		.result_line .dead::before {
+		    background-image: url(../img/icon_dead.png);
+		    background-size: 68px 28px;
+		    width: 68px;
+		}
+		.result_line .kill {
+			padding-left: 74px;
+		}
+		.result_line .kill::before {
+		    background-image: url(../img/icon_kill.png);
+		    background-size: 70px 28px;
+		    width: 70px;
+		}
+		.result_line .num:before {
+			content: "X";
+			font-size: 15px;
+			padding-right: 2px;
+		}
+		.result_line .golden_ikura::before,
+		.result_line .ikura::before,
+		.result_line .help::before,
+		.result_line .dead::before,
+		.result_line .kill::before
+		{
+		    position: absolute;
+		    top: 50%;
+		    left: 0;
+		    -webkit-transform: translateY(-50%);
+		    transform: translateY(-50%);
+		    content: "";
+		    background-repeat: no-repeat;
+		    background-position: 50%;
+		    height: 30px;
+		}
+
+		.refresh_button {	
+		    position: absolute;
+		    bottom: 53px;
+		    right: 27px;
+		    height: 44px;
+		    width: 44px;
+		    border-radius: 22px;
+		    border: none;
+		    cursor: pointer;
+		    background: rgba(50,50,50,.9);
+		    box-shadow: 1px 1px 0 rgba(0,0,0,.8);
+		}
+		.refresh_button_container {
+		    display: block;
+		    background: url(../img/icon_refresh.png) 50% no-repeat;
+		    background-size: 18px 18px;
+		    width: 100%;
+		    height: 100%;
+		}

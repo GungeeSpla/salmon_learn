@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>OBSブラウザ用 時刻表示HTML</title>
+<link rel="stylesheet" href="assets/css/font.css">
+<style>
+body {
+	margin: 0;
+	overflow: none;
+	/*background-color: #0A0;*/
+}
+#date {
+	font-family: Splatoon2;
+	color: #FFF;
+	text-shadow:
+		-1px -1px 0px #000,
+		 1px  1px 0px #000,
+		-1px  1px 0px #000,
+ 		 1px -1px 0px #000,
+		 3px  3px 0px #000;
+	font-size: 32px;
+	margin: 10px;
+	box-sizing: border-box;
+	line-height: 100%;
+}
+#date .sec {
+	display: inline-block;
+	font-size: 70%;
+	margin-left: 7px;
+	transform: translateY(0px);
+}
+</style>
+</head>
+<body>
+<p id="date"></p>
+<script language="JavaScript">
+function update() {
+	var date = new Date();
+	var yyyy = date.getFullYear();
+	var mm = to_double_digits(date.getMonth() + 1);
+	var dd = to_double_digits(date.getDate());
+	var h  = date.getHours();
+	var mi = to_double_digits(date.getMinutes());
+	var ss = to_double_digits(date.getSeconds())
+	var element = document.getElementById("date");
+	element.innerHTML = h + ':' + mi + '<span class="sec">' + ss + '</span>';
+};
+function to_double_digits (num) {
+	num += "";
+	if (num.length === 1) {
+		num = "0" + num;
+	}
+	return num;
+};
+setInterval(update, 1000);
+</script>
+</body>
+</html>
