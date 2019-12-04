@@ -196,17 +196,17 @@ function get_json_all(first_job_id, final_job_id, call_back) {
   var job_id = first_job_id;
   // エラーが発生したら即座にcall_backを実行
   var error = function(){
-    if (typeof call_back === 'function') call_back(json_data_array);
+    if (call_back) call_back(json_data_array);
   };
   // 取得に成功したらjob_idをインクリメントして次のjsonを取得しようとする
-  var success = function(res){
+  var success = function(res) {
     json_data_array.push(res);
     latest_id = job_id;
     job_id++;
     if (job_id <= final_job_id) {
       get_json(job_id, success, error);
     } else {
-      if (typeof call_back === 'function') call_back(json_data_array);
+      if (call_back) call_back(json_data_array);
     }
   };
   // スタート
@@ -219,7 +219,8 @@ function get_json_all(first_job_id, final_job_id, call_back) {
 function get_first_id(call_back) {
   if (window.first_id !== 0) {
     console.log('latest id is ' + window.first_id);
-    return call_back();
+    if (call_back) call_back();
+    return;
   }
   ajax({
     url: config_url,
@@ -227,8 +228,7 @@ function get_first_id(call_back) {
       console.log('get config.json');
       window.first_id = res.latest;
       console.log('latest id is ' + res.latest);
-      call_back();
-      
+      if (call_back) call_back();
     },
     error: function () {
       console.error('can\'t get config.json');
@@ -251,11 +251,11 @@ function get_json(job_id, success, error) {
     success: function (res) {
       console.log('get ' + job_id);
       json_cache[job_id] = res;
-      success(res);
+      if (success) success(res);
     },
     error: function () {
       console.error('can\'t get ' + job_id);
-      error();
+      if (error) error();
     }
   });
 }

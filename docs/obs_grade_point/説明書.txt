@@ -38,7 +38,7 @@ https://www.youtube.com/watch?v=fdTkbI2MsaQ&feature=youtu.be
 
 
 * -------------------
-*本ツールの導入方法
+* 本ツールの導入方法
 * -------------------
 
 『Salmonia』が導入できていることを前提にします。
@@ -52,7 +52,7 @@ https://www.youtube.com/watch?v=fdTkbI2MsaQ&feature=youtu.be
 
 
 * -------------------
-*本ツールの使用方法
+* 本ツールの使用方法
 * -------------------
 
 本ツールを使用する間は『Salmonia-win64.exe』を起動しておいてください。
@@ -68,7 +68,7 @@ https://www.youtube.com/watch?v=fdTkbI2MsaQ&feature=youtu.be
 
 
 * -------------------
-*本ツールの設定変更方法
+* 本ツールの設定変更方法
 * -------------------
 
 取得するjsonの初期idや、勝ち星の表示の有無などを変更することができます。
@@ -83,7 +83,7 @@ https://www.youtube.com/watch?v=fdTkbI2MsaQ&feature=youtu.be
 
 
 * -------------------
-*おまけ
+* おまけ
 * -------------------
 
 『nora2buttle.html』...野良2リザルトバトル用のhtmlです。幅1280x高さ720でご利用ください。
