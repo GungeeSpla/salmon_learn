@@ -50,7 +50,9 @@
     var as = document.getElementsByTagName('a');
     for (var i = 0; i < as.length; i++) {
       var a = as[i];
-      a.innerText = a.href;
+      if (a.getAttribute('autotext') !== 'no') {
+        a.innerText = a.href;
+      }
     }
   }
 </script>
@@ -74,7 +76,7 @@
   </ul>
   <h2>ツール</h2>
   <ul id="ul-02">
-    <li><h3>OBSの配信画面に現在の評価値を出すやつ＋おまけ Ver.0.0.0</h3><br><a href="https://gungeespla.github.io/salmon_learn/materials/obs-grade-point-0.0.0.zip" target="_blank"></a><br>『Salmonia』が必須です。詳しくは同梱の説明書にて。</li>
+    <li><h3>OBSの配信画面に現在の評価値を出すやつ＋おまけ Ver.0.0.1</h3><br><a href="https://gungeespla.github.io/salmon_learn/materials/obs-grade-point-0.0.1-win.zip" target="_blank"></a>（<a autotext="no" href="https://gungeespla.github.io/salmon_learn/materials/obs-grade-point-0.0.1-mac.zip" target="_blank">MacOSで解凍時にファイル名が文字化けする場合はこちら</a>）<br>『Salmonia』が必須です。詳しくは同梱の説明書にて。</li>
     <li><h3>HTML5エフェクトジェネレーター Ver.0.0.5</h3><br><a href="https://gungeespla.github.io/salmon_learn/materials/Effect-Generator-0.0.5.zip" target="_blank"></a><br>コメントに反応してOBSの配信画面に自動で画像や動画エフェクトを表示することができるツールです。</li>
     <li><h3>HTML5エフェクトジェネレーター Ver.0.0.5（アップデート用）</h3><br><a href="https://gungeespla.github.io/salmon_learn/materials/Effect-Generator-0.0.5-for-update.zip" target="_blank"></a><br>アップデート用。アップデートの際にはこれで既存のファイルを上書きしてください。</li>
   </ul>
