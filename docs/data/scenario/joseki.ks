@@ -13,25 +13,24 @@ f.joseki = "BaMK_Joseki_A"
 
 *BaMK_Joseki_A_1
 [k_check][jump cond=f.atari target=*Atari][cm]
-[if exp="gusherApp.isBrother('C', f.answer)"]
-    [yajirushi_move k=B]
-    [k_button       k=B target=*BaMK_Joseki_A_2]
-[else]
-    [yajirushi_move k=H]
-    [k_button       k=H target=*BaMK_Joseki_A_3]
-[endif]
+[yajirushi_move k=H]
+[k_button       k=H target=*BaMK_Joseki_A_2]
 [s]
 
 *BaMK_Joseki_A_2
 [k_check][jump cond=f.atari target=*Atari][cm]
-[yajirushi_move k=E]
-[k_button       k=E target=*Kakutei]
-[s]
-
-*BaMK_Joseki_A_3
-[k_check][jump cond=f.atari target=*Atari][cm]
-[yajirushi_move k=I]
-[k_button       k=I target=*Kakutei]
+[if exp="gusherApp.isBrother('C', f.answer)"]
+  [if exp="gusherApp.isBrother('H', f.answer)"]
+      [yajirushi_move k=E]
+      [k_button       k=E target=*Kakutei]
+  [else]
+      [yajirushi_move k=B]
+      [k_button       k=B target=*Kakutei]
+  [endif]
+[else]
+      [yajirushi_move k=I]
+      [k_button       k=I target=*Kakutei]
+[endif]
 [s]
 
 ;=======================================
