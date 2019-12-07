@@ -7,30 +7,66 @@
 f.joseki = "BaMK_Joseki_A"
 [endscript]
 
-[k_button  k=C target=*BaMK_Joseki_A_1]
 [yajirushi k=C]
+[k_button  k=C target=*BaMK_Joseki_A_1]
 [s]
 
 *BaMK_Joseki_A_1
 [k_check][jump cond=f.atari target=*Atari][cm]
-[yajirushi_move k=H]
-[k_button       k=H target=*BaMK_Joseki_A_2]
+[if exp="gusherApp.isBrother('C', f.answer)"]
+    [yajirushi_move k=E]
+    [k_button       k=E target=*BaMK_Joseki_A_2]
+[else]
+    [yajirushi_move k=H]
+    [k_button       k=H target=*BaMK_Joseki_A_3]
+[endif]
 [s]
 
 *BaMK_Joseki_A_2
 [k_check][jump cond=f.atari target=*Atari][cm]
-[if exp="gusherApp.isBrother('C', f.answer)"]
-  [if exp="gusherApp.isBrother('H', f.answer)"]
-      [yajirushi_move k=E]
-      [k_button       k=E target=*Kakutei]
-  [else]
-      [yajirushi_move k=B]
-      [k_button       k=B target=*Kakutei]
-  [endif]
+[yajirushi_move k=B]
+[k_button       k=B target=*Kakutei]
+[s]
+
+*BaMK_Joseki_A_3
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=I]
+[k_button       k=I target=*Kakutei]
+[s]
+
+;=======================================
+*BaMK_Joseki_B
+;=======================================
+[cm]
+[iscript]
+f.joseki = "BaMK_Joseki_B"
+[endscript]
+
+[yajirushi k=H]
+[k_button  k=H target=*BaMK_Joseki_B_1]
+[s]
+
+*BaMK_Joseki_B_1
+[k_check][jump cond=f.atari target=*Atari][cm]
+[if exp="gusherApp.isBrother('H', f.answer)"]
+    [yajirushi_move k=E]
+    [k_button       k=E target=*BaMK_Joseki_B_2]
 [else]
-      [yajirushi_move k=I]
-      [k_button       k=I target=*Kakutei]
+    [yajirushi_move k=C]
+    [k_button       k=C target=*BaMK_Joseki_B_3]
 [endif]
+[s]
+
+*BaMK_Joseki_B_2
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=I]
+[k_button       k=I target=*Kakutei]
+[s]
+
+*BaMK_Joseki_B_3
+[k_check][jump cond=f.atari target=*Atari][cm]
+[yajirushi_move k=B]
+[k_button       k=B target=*Kakutei]
 [s]
 
 ;=======================================

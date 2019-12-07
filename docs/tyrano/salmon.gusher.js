@@ -587,6 +587,7 @@ function GusherApp () {
 		Define_Toba_Mancho_Kanketsu: {
 			josekidata: [
 				["Cから開けるやつ", "f.random = false; f.joseki='BaMK_Joseki_A'"],
+				["Hから開けるやつ", "f.random = false; f.joseki='BaMK_Joseki_B'"],
 			],
 			suimyaku: "toba_suimyaku_m.png",
 			bg: "../fgimage/toba_kanketsu.png",
