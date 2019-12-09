@@ -266,6 +266,7 @@ h3::after {
                 -0.028em  0.028em 0 #fff,
                  0.028em -0.028em 0 #fff;
               border-radius: .1em;
+              z-index: 0;
             }
             .bingo-card-table-wrapper table td.hole {
               background-image: url('bingo-cell-bg.png?6');
@@ -284,7 +285,7 @@ h3::after {
               position: absolute;
               display: inline-block;
               border-radius: 50%;
-              mix-blend-mode: multiply;
+              z-index: -1;
             }
     .description {
       text-align: left;
