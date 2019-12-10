@@ -66,7 +66,13 @@
         }
       };
       window.clearMessages = () => {
-        firebase.database().ref('/sample-messages').remove();
+        if (window.confirm('データをすべて消去します。よろしいですか？')) {
+          firebase.database().ref('/sample-messages').remove()
+          .then(() => {
+            window.alert('消去しました。');
+          });
+        } else {
+        }
       };
       window.sendMessage = () => {
         let $input = document.querySelector('input');
@@ -87,20 +93,25 @@
         let $name = document.querySelector('.auth-state .name');
         let $state = document.querySelector('.auth-state .state');
         let $icon = document.querySelector('.auth-state .icon');
+        let $clear = document.querySelector('.clear');
         if (user) {
           $state.textContent = 'ログイン中';
           $name.textContent = user.displayName;
           $icon.src = user.photoURL;
+          if (user.providerData[0].uid === '2855669875') {
+            $clear.style.display = 'inline';
+          }
         } else {
           $state.textContent = 'ログインしていません';
           $name.textContent = '名無しさん';
           $icon.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==';
+          $clear.style.display = 'none';
         }
       };
       const electron = window.require && window.require('electron');
       window.signIn = () => {
         if (!!electron) {
-          const ipc = require("electron").ipcRenderer;
+          const ipc = require('electron').ipcRenderer;
           ipc.send('oauth', 'ping');
           ipc.on('oauth-reply', (event, isSucceed, result) => {
             if (isSucceed) {
@@ -170,6 +181,9 @@
       .time {
         font-size: .7em;
       }
+      .clear {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -185,7 +199,7 @@
       <p>
         <input type="text">
         <button onclick="sendMessage()">書き込む</button>
-        <button onclick="clearMessages()">全消去</button>
+        <button onclick="clearMessages()" class="clear">全消去</button>
       </p>
       <div class="messages">
       </div>
