@@ -29,18 +29,28 @@
         firebase.auth().onAuthStateChanged(updateAuthState);
         messagesRef.on('value', function(snapshot) {
           $messages.innerHTML = '';
-          let count = 1;
-          snapshot.forEach((child, num) => {
-            console.log(arguments);
-            let val = child.val();
-            let date = timestamp2str(val.timestamp);
-            let html = `${count} <span class="text">${val.name}<img class="icon" src="${val.face}">：${val.text}</span><span class="time">${date}</span>`;
-            let $p = document.createElement('p');
-            $p.innerHTML = html;
-            $messages.appendChild($p);
-            count++;
+          let i = 1;
+          let length = snapshot.numChildren();
+          snapshot.forEach((child) => {
+            if (i > length - 10) {
+              let val = child.val();
+              let date = timestamp2str(val.timestamp);
+              let html = `${i} <span class="text">${val.name}<img class="icon" src="${val.face}">：${val.text}</span><span class="time">${date}</span>`;
+              let $p = document.createElement('p');
+              $p.innerHTML = html;
+              $messages.insertBefore($p, $messages.firstElementChild);
+            }
+            i++;
           });
         });
+        document.querySelector('input').onkeydown = (e) => {
+          if (e.keyCode === 13) {
+            sendMessage();
+            e.stopPropagation();
+            e.preventDefault();
+            return;
+          }
+        };
       };
       window.timestamp2str = (timestamp) => {
         let date = new Date(timestamp);
@@ -87,7 +97,7 @@
           $icon.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==';
         }
       };
-      const electron = require && require('electron');
+      const electron = window.require && window.require('electron');
       window.signIn = () => {
         if (!!electron) {
           const ipc = require("electron").ipcRenderer;
@@ -113,7 +123,7 @@
           })
         } else {
           let provider = new firebase.auth.TwitterAuthProvider();
-          if (false) {
+          if (true) {
             firebase.auth().signInWithRedirect(provider);
           } else {
             firebase.auth().signInWithPopup(provider)
@@ -138,6 +148,7 @@
     </script>
     <style>
       body {
+        font-family: sans-serif;
         font-size: 20px;
         line-height: 1.2em;
       }
