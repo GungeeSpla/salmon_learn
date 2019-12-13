@@ -866,8 +866,10 @@ tf.y = -280;
 [ptext layer=0 page=fore text=エラーが発生しました🤔     size=24 bold=bold x=0 y=350 width=640 align=center name=error_message,hidden]
 [ptext layer=0 page=fore text=現在ご利用いただけません🙇 size=24 bold=bold x=0 y=400 width=640 align=center name=error_message,hidden]
 [ptext layer=0 page=fore text=オープン! color=0x22FF22     size=24 bold=bold x=0 y=170 width=640 align=center name=open_title,hidden]
-[glink text=»&nbsp;予報を見る x=1380 y=433 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=0; f.noselect=1; f.from='now'; f.rotation=0"]
-[glink text=»&nbsp;予報を見る x=1380 y=743 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=1; f.noselect=0; f.from='now'; f.rotation=1"]
+[glink text=»&nbsp;予報を見る x=1290 y=433 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=0; f.noselect=1; f.from='now'; f.rotation=0"]
+[glink text=»&nbsp;予報を見る x=1290 y=743 size=18 color=rotation_eval_button name=link target=Panel_3_Eval exp="f.select=1; f.noselect=0; f.from='now'; f.rotation=1"]
+[glink text=»&nbsp;パラメータ x=1450 y=433 size=18 color=rotation_eval_button name=link target=Panel_3_Eval_Weapon_Jump exp="f.select=0; f.noselect=1; f.from='now'; f.rotation=0"]
+[glink text=»&nbsp;パラメータ x=1450 y=743 size=18 color=rotation_eval_button name=link target=Panel_3_Eval_Weapon_Jump exp="f.select=1; f.noselect=0; f.from='now'; f.rotation=1"]
 [iscript]
 tf.x = 20;
 tf.y = 120;
@@ -1068,6 +1070,37 @@ $(".button_cover").remove();
 [call cond="f.from=='now'" target=Panel_3]
 [call cond="f.from=='first'" target=Panel_11]
 [s]
+
+;=======================================
+*Panel_3_Eval_Weapon_Jump
+;=======================================
+[iscript]
+$(".error_message").remove();
+$(".open_title").remove();
+$logo     = $(".logo");
+$select   = $(".salmon_rotation_" + (f.select + 1));
+$noselect = $(".salmon_rotation_" + (f.noselect + 1));
+var time = 300;
+var ease = "easeInOutCubic";
+$logo.animate({"opacity": "0"}, time, ease);
+$select.fadeOut(time, ease);
+$noselect.fadeOut(time, ease);
+[endscript]
+[wait time=300]
+[html name=html_space]
+<div class="canvas_chart_wrapper">
+	<canvas class="canvas_chart" id="canvas_chart" width="400" height="400"></canvas>
+</div>
+[endhtml]
+[iscript]
+var rater = salmonrunRater;
+if (f.from == "first") {
+	window.evalData = ROTATION_DATA[f.rotation];
+} else {
+	window.evalData = ROTATION_DATA[ROTATION_DATA.length - 5 + f.rotation];
+}
+window.evalResult = rater.eval(evalData.w1, evalData.w2, evalData.w3, evalData.w4);
+[endscript]
 
 ;=======================================
 *Panel_3_Eval_Weapon

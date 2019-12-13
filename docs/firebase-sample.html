@@ -67,7 +67,7 @@
       };
       window.clearMessages = () => {
         if (window.confirm('データをすべて消去します。よろしいですか？')) {
-          firebase.database().ref('/sample-messages').remove()
+          messagesRef.remove()
           .then(() => {
             window.alert('消去しました。');
           });
@@ -117,7 +117,7 @@
             if (isSucceed) {
               console.log('succeeded in use electron-oauth-twitter');
               console.log(result);
-              var credential = firebase.auth.TwitterAuthProvider.credential(
+              let credential = firebase.auth.TwitterAuthProvider.credential(
                 result.oauth_access_token, result.oauth_access_token_secret);
               firebase.auth().signInWithCredential(credential)
               .then((ret) => {
