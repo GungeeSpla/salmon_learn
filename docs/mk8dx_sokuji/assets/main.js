@@ -1,4 +1,7 @@
+//window.localStorage.clear();
+//window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+var version = '0.1.0';
 var playerNum = 12;
 var teamTableIndex = 10;
 var scKeyIndex     = 20;
@@ -16,11 +19,12 @@ var scanedNameData;
 var sampleTeamData = null;
 var storageKey = 'mk8dx-sokuji';
 var saveTargetVariables = [
-  'teamNum', 'raceNum', 'teamNames', 'shortCutKeys', 'tallyConfig'
+  'teamNum', 'raceNum', 'teamNames', 'shortCutKeys', 'tallyConfig', 'inputRankData'
 ];
-
 var teamNum = 2;
 var raceNum = 12;
+var maxRaceNum = 12;
+var maxPlayerNum = 12;
 var teamNames = ['AAA', 'BBB', 'CCC', 'DDD', 'EEE', 'FFF'];
 var shortCutKeys = ['a', 'b', 'c', 'd', 'e', 'f'];
 var tallyConfig = {
@@ -29,6 +33,7 @@ var tallyConfig = {
   latestScore: true,     // 最新レースの得点
   latestScoreDif: true,  // 最新レースの点差
   latestCource: true,    // 最新レースのコース
+  totalScore: true,      // 合計得点
   totalScoreDif: true,   // 合計得点の点差
   leftRaceNum: true,     // 残りレース数
   currentRank: true,     // 現在の順位
@@ -47,9 +52,10 @@ var tallyConfig = {
 window.addEventListener('load', function(){
   logger.log('document loaded');
   logger.log('initializing mk8dx-sokuji');
-  loadStorage();
   
   initInputDataVariable();  // inputData変数
+  loadStorage();            // ロード
+  
   setEventShowMore();       // 説明を見るボタン  
   makeRadioButtons();       // ラジオボタン
   makeInputTeamNameTable(); // チームタグ/ショートカットキー入力
@@ -59,9 +65,17 @@ window.addEventListener('load', function(){
   makeMouseChaser();        // マウスチェイサー
   
   makeZoomImage();          // 通知関数や画像ズーム関数
-  //makeTesseract('#test-tesseract-image', function(){});
+  //makeTesseract();
   
   initConfigElements();
+  
+  document.getElementById('reset-button').onclick = () => {
+    var ret = window.confirm('順位テーブルをリセットします。よろしいですか？');
+    if (ret) {
+      initInputDataVariable();
+      updateInputTeamNameTable();
+    }
+  };
   
   logger.log('initialized mk8dx-sokuji');
   isInitialized = true;
@@ -75,7 +89,7 @@ function initConfigElements() {
     {key: 'isEnabledComplement', id: 'cfg-auto-complement'},
     {key: 'latestScore',         id: 'cfg-latest-score'},
     {key: 'latestScoreDif',      id: 'cfg-latest-score-dif'},
-    {key: 'latestCource',        id: 'cfg-total-score'},
+    {key: 'totalScore',          id: 'cfg-total-score'},
     {key: 'totalScoreDif',       id: 'cfg-total-score-dif'},
     {key: 'latestCource',        id: 'cfg-latest-course'},
     {key: 'leftRaceNum',         id: 'cfg-left-race-num'},
@@ -139,10 +153,10 @@ function initConfigElements() {
 function initInputDataVariable() {
   inputRankData = [];
   scanedNameData = [];
-  for (var i = 0; i < raceNum; i++) {
+  for (var i = 0; i < maxRaceNum; i++) {
     inputRankData[i] = [];
     scanedNameData[i] = [];
-    for (var j = 0; j < playerNum; j++) {
+    for (var j = 0; j < maxPlayerNum; j++) {
       inputRankData[i][j] = '-1';
       scanedNameData[i][j] = null;
     }
@@ -499,6 +513,10 @@ function makeInputRankTable() {
   td.appendChild(hr);
   tr.appendChild(td);
   rankEndTr.parentNode.insertBefore(tr, rankEndTr); 
+  for (var i = 1; i <= raceNum; i++) {
+    updateRace(i);
+  }
+  tallyForScores();
   return;
   /*
    * makeState(td, rank, race, num)
@@ -578,6 +596,7 @@ function makeInputRankTable() {
                   var input = document.querySelector(slc);
                   input.setAttribute('value', teamArr[rank - 1]);
                   resetRankInputClass(input);
+                  updateRace(race);
                   tallyForScores();
                 }
               } else {
@@ -637,6 +656,10 @@ function makeInputRankTable() {
   function makeRank(td, rank, race, num) {
     setEventEnablePen(td);
     input = createRankInput(rank, race, num);
+    if (inputRankData[race - 1][rank - 1] !== '-1') {
+      input.value = teamNames[inputRankData[race - 1][rank - 1]];
+      resetRankInputClass(input);
+    }
     td.appendChild(input);
     // セルクリック時の挙動
     var onmousedown = function (e) {
@@ -878,10 +901,11 @@ function resetRankInputClass(elm) {
     elm.setAttribute('team', idx);
   }
   var race = elm.getAttribute('race');
-  var rank = parseInt(elm.getAttribute('rank')) - 1;
-  var rankStr = rankStrs[rank];
+  var rank = parseInt(elm.getAttribute('rank'));
+  var rankStr = rankStrs[rank - 1];
   logger.log('inputed team [race ' + race + '][' +
     rankStr + '][' + elm.value + ']', 'gray');
+  setSaveStorage();
   return isMatched;
 }
   
@@ -1085,6 +1109,8 @@ function tallyForScores(callback) {
     
     if (callback) callback();
     
+    setSaveStorage();    
+    
   }, tallyForScoresDelay);
 }
 
@@ -1169,40 +1195,61 @@ function createTallyText(sortedScoreObjects, lastCourseStr, leftRace) {
   var totalScoreStr = '';
   if (teamNum === 2) {
     // 66(交流戦)の場合
-    totalScoreStr += '合計: ';
-    for (i = 0; i < teamNum; i++) {
-      //var scoreObj = sortedScoreObjects[i];
-      var scoreObj = getScoreObject(sortedScoreObjects, i);
-      var name = scoreObj.teamName;
-      //if (scoreObj.teamIndex === 0) name = '【' + name + '】';
-      //else name = name + ' ';
-      var score = scoreObj.totalScore;
-      var scoreStr = name + ' ' + score;
-      if (i > 0) totalScoreStr += '-';
-      if (i > 0) scoreStr = score + ' ' + name;
-      totalScoreStr += scoreStr;
+    if (cfg.totalScore) {
+      totalScoreStr += '合計: ';
+      for (i = 0; i < teamNum; i++) {
+        //var scoreObj = sortedScoreObjects[i];
+        var scoreObj = getScoreObject(sortedScoreObjects, i);
+        var name = scoreObj.teamName;
+        //if (scoreObj.teamIndex === 0) name = '【' + name + '】';
+        //else name = name + ' ';
+        var score = scoreObj.totalScore;
+        var scoreStr = name + ' ' + score;
+        if (i > 0) totalScoreStr += '-';
+        if (i > 0) scoreStr = score + ' ' + name;
+        totalScoreStr += scoreStr;
+      }
     }
   } else {
-    // タッグ/トリプルス/フォーマンの場合
-    for (i = 0; i < teamNum; i++) {
-      var scoreObj = sortedScoreObjects[i];
-      //var scoreObj = getScoreObject(sortedScoreObjects, i);
-      var name = scoreObj.teamName;
-      if (scoreObj.teamIndex === 0) {
-        name = cfg.emphasisStart + name + cfg.emphasisEnd;
-        if (i > 0 && cfg.emphasisStart !== '【' && cfg.teamSplitStr !== '／') name = ' ' + name;
-        if (cfg.emphasisEnd !== '】') name += ' ';
-      } else {
-        if (i > 0 && cfg.splitStr !== '／') name = ' ' + name;
-        name += ' ';
+    if (cfg.totalScore || cfg.totalScoreDif) {
+      // タッグ/トリプルス/フォーマンの場合
+      for (i = 0; i < teamNum; i++) {
+        var scoreObj = sortedScoreObjects[i];
+        //var scoreObj = getScoreObject(sortedScoreObjects, i);
+        var name = scoreObj.teamName;
+        if (scoreObj.teamIndex === 0) {
+          name = cfg.emphasisStart + name + cfg.emphasisEnd;
+          if (i > 0 && cfg.emphasisStart !== '【' && cfg.teamSplitStr !== '／') name = ' ' + name;
+          if (cfg.emphasisEnd !== '】') name += ' ';
+        } else {
+          if (i > 0 && cfg.teamSplitStr !== '／') name = ' ' + name;
+          name += ' ';
+        }
+        var score = scoreObj.totalScore;
+        var difScore = myScoreObj.totalScore - scoreObj.totalScore;
+        difScore = (difScore > 0) ? '+' + difScore : (difScore === 0) ? '±0' : '' + difScore;
+        if (cfg.totalScore) {
+          if (cfg.totalScoreDif) {
+            if (myScoreObj !== scoreObj) {
+              score = score + ' (' + difScore + ')';
+            }
+          }
+        } else {
+          if (cfg.totalScoreDif) {
+            if (myScoreObj !== scoreObj) {
+              score = difScore;
+            }
+          }
+        }
+        var scoreStr = name + score;
+        if (i > 0) totalScoreStr += cfg.teamSplitStr;
+        totalScoreStr += scoreStr;
       }
-      var score = scoreObj.totalScore;
-      var scoreStr = name + score;
-      if (i > 0) totalScoreStr += cfg.teamSplitStr;
-      totalScoreStr += scoreStr;
     }
   }
-  tallyStrs.push(totalScoreStr);
+  if (totalScoreStr) {
+    tallyStrs.push(totalScoreStr);
+  }
   
   if (teamNum === 2) {
     // 点差 66(交流戦)のみ
@@ -1231,6 +1278,9 @@ function createTallyText(sortedScoreObjects, lastCourseStr, leftRace) {
   if (leftRaceStr) tallyStrs.push(leftRaceStr);
   
   // join
+  if (cfg.splitStr === ' /') {
+    cfg.splitStr = ' / ';
+  }
   var tallyText = tallyStrs.join(cfg.splitStr);
   return tallyText;
 }
@@ -1338,6 +1388,17 @@ function trigger(element, eventType) {
 }
 
 /*
+ * setSaveStorage()
+ */
+var saveStorageTimer = null;
+function setSaveStorage() {
+  clearTimeout(saveStorageTimer);
+  saveStorageTimer = setTimeout(function(){
+    saveStorage();
+  }, 2000);
+}
+
+/*
  * saveStorage()
  */
 function saveStorage() {
@@ -1362,7 +1423,15 @@ function loadStorage() {
     //console.log(jsonStr);
     var saveDataObj = JSON.parse(jsonStr);
     saveTargetVariables.map(varName => {
-      window[varName] = saveDataObj[varName];
+      if (saveDataObj[varName] !== undefined) {
+        if (varName === 'tallyConfig') {
+          Object.keys(saveDataObj[varName]).forEach(key => {
+            window[varName][key] = saveDataObj[varName][key];
+          });
+        } else {
+          window[varName] = saveDataObj[varName];
+        }
+      }
     });
   } else {
     console.log('storage data doesn\'t exist');
@@ -1389,9 +1458,13 @@ function makeSampleTeamData() {
     }
     if (isScanedNamesRace1) {
       var teams = inputRankData[0];
-      sampleTeamData = {};
+      sampleTeamData = [];
       names.forEach((name, i) => {
-        sampleTeamData[name] = teamNames[teams[i]];
+        sampleTeamData.push({
+          id: i,
+          name: name,
+          teamName: teamNames[teams[i]]
+        });
       });
       logger.log('スクショ読取用のサンプルデータを作成しました.');
       logger.log(sampleTeamData);

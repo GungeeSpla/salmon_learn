@@ -14,18 +14,21 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/jquery.mysuggest.css">
-  <link rel="stylesheet" href="sokuji_ocr/assets/style.css">
+  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.1.0">
   <script type="text/javascript" src='assets/jquery.js'></script>
   <script type="text/javascript" src='assets/jquery.mysuggest.js'></script>
-  <script type="text/javascript" src='assets/main.js?1'></script>
+  <script type="text/javascript" src='assets/main.js?Ver.0.1.0'></script>
+  <script type="text/javascript" src='assets/ocr.js?Ver.0.1.0'></script>
+  <!--
   <script type="text/javascript" src='tesseract/tesseract.min.js'></script>
   <script type="text/javascript" src='sokuji_ocr/assets/main.js'></script>
   <script type="text/javascript" src='sokuji_ocr/assets/trim.js'></script>
+  -->
 </head>
 <body>
   <div id="main-content">
     <h5>© 2019 <a href="https://twitter.com/GungeeSpla" target="_blank">@GungeeSpla</a></h5>
-    <h1>マリオカート8DX 即時集計機 Ver.0.0.0</h1>
+    <h1>マリオカート8DX 即時集計機 Ver.0.1.0</h1>
     <div id="tag-area">
       <p class="page-tag">マリオカート</p>
       <p class="page-tag">マリオカート8デラックス</p>
@@ -118,6 +121,7 @@
         <table id="input-rank-table"></table>
       </div>
     </div>
+    <button id="reset-button" style="margin-top: 20px;">順位テーブルをリセットする</button>
     
     <h2>3. 即時集計結果が表示されます。</h2>
     <p>結果は自動でコピーされますが、Edge等の一部のブラウザでは機能しないようです。<br>
@@ -150,7 +154,8 @@
         <span class="radio-wrapper">
         	<input type="radio" id="cfg-emphasis-1" class="cfg-radio" name="cfg-emphasis" value="【】"><label for="cfg-emphasis-1">【】</label>
         	<input type="radio" id="cfg-emphasis-2" class="cfg-radio" name="cfg-emphasis" value="[]"><label for="cfg-emphasis-2">[]</label>
-        	<input type="radio" id="cfg-emphasis-3" class="cfg-radio" name="cfg-emphasis" value=""><label for="cfg-emphasis-3">強調しない</label>
+        	<input type="radio" id="cfg-emphasis-3" class="cfg-radio" name="cfg-emphasis" value="**"><label for="cfg-emphasis-3">**</label>
+        	<input type="radio" id="cfg-emphasis-4" class="cfg-radio" name="cfg-emphasis" value=""><label for="cfg-emphasis-4">強調しない</label>
         </span>
       </p>
       <p>
@@ -172,8 +177,22 @@
     	<p><input type="checkbox" id="cfg-auto-complement"  class="cfg-check"><label for="cfg-auto-complement">自動補完を有効にする</span></label></p>
     	<p><input type="checkbox" id="cfg-on-before-unload" class="cfg-check"><label for="cfg-on-before-unload">ページを離れるときに警告する</span></label></p>
     </div>
+    
+    <h2>アップデート履歴</h2>
+    <table id="update-rireki">
+      <tr>
+        <td><b>0.1.0</b></td>
+        <td><ul>
+          <li>レース数を増やした際に、増やす前のレース数しか集計が行われない問題を修正しました。</li>
+          <li>順位テーブルの入力内容が自動でセーブされるようにしました。</li>
+          <li>それに伴って「順位テーブルをリセットする」ボタンを順位テーブル下部に追加しました。</li>
+          <li>点差のみを表示できるようにしました。</li>
+          <li>自チームの強調文字を追加しました。</li>
+        </ul></td>
+      </tr>
+    </table>
+        
   </div>
-  
   <img src="sokuji_ocr/assets/rank-image-mono.png" id="rank-image-mono" style="display: none;">
   <img src="sokuji_ocr/assets/sample-name.png" id="test-tesseract-image" style="display: none;">
   <div id="image-viewer-wrapper">

@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * makeDebugArea(elm)
  */
@@ -22,42 +24,7 @@ function makeTesseract(img, callback) {
   window.canvas4 = createCanvas(isVisibleCanvas,  54 * 2, 25 * 2 * 12);
   window.canvas5 = createCanvas(isVisibleCanvas, 100, 100);
   window.canvas6 = createCanvas(isVisibleCanvas, 66, 623);
-  return runTesseract(img, callback);
-
-  /*
-   * runTesseract()
-   * https://github.com/naptha/tesseract.js/blob/master/docs/api.md#worker-set-parameters
-   */
-  function runTesseract(img, callback) {
-    var hrefSplit = window.location.href.split('/');
-    hrefSplit.pop();
-    var parentDir = hrefSplit.join('/');
-    window.tesseract = Tesseract.createWorker({
-      corePath  : parentDir + '/tesseract/tesseract-core.wasm.js',
-      workerPath: parentDir + '/tesseract/worker.min.js',
-      langPath  : parentDir + '/tesseract/',
-      logger: (mes) => {
-        if (isEnabledTesseractLog) {
-          var p = (mes.progress * 100).toFixed(0);
-          console.log(mes.status + ' ' + p + '%');
-        }
-      }
-    });
-    (async () => {
-      await tesseract.load();
-      await tesseract.loadLanguage('jpn');
-      await tesseract.initialize('jpn');
-      var ret = await tesseract.recognize(img);
-      console.log(img.src + ' is recognized as ' + ret.data.text.replace(/\n/g, ''));
-      console.log('tesseract is ready!');
-      if (callback) callback();
-    })();
-    /*
-    tesseract.setParameters({
-      tessedit_char_whitelist: '0123456789',
-    });
-    */
-  }
+  return;
 }
 
 /* 
@@ -67,10 +34,16 @@ function scanGameScreen(img, callback) {
   console.log('recognizing 1st - 12th player names');
   canvas1.ctx.burnImage(img, 0, 0, canvas1.width, canvas1.height);
   canvas1.debugImage('焼き付け結果');
-  var i, imagedata;
+  var i, j, len, imagedata, scanedNameArray = [];
   for (i = 0; i < 12; i++) {
     canvas2.width = canvas3.width;
     imagedata = parseNameImage(canvas1, canvas2, i, 678, 62+i*52, 230, 25);
+    len = imagedata.width * imagedata.height;
+    var rs = new Uint8Array(new ArrayBuffer(len));;
+    for (j = 0; j < len; j++) {
+      rs[j] = imagedata.data[j * 4];
+    }
+    scanedNameArray.push(rs);
     canvas3.ctx.putImageData(imagedata, 0, i * 25 * 2);
   }
   for (i = 0; i < 12; i++) {
@@ -85,37 +58,7 @@ function scanGameScreen(img, callback) {
       top: 50 * i, left: 0, width: 460, height: 50
     });
   }
-  console.time('scan');
-  canvas3.tesseract(function(ret) {
-    var scanedNameArray = ret.data.text
-    .replace(/\n+/g, '\n')  // 複数の改行を1個の改行に
-    .replace(/( |　)/g, '') // 半角または全角のスペースを削除
-    .replace(/^\n/g, '')    // 行頭および行末の改行を削除
-    .replace(/\n$/g, '')
-    .split('\n');           // 改行でsplit
-    for (var i = 0; i < scanedNameArray.length; i++) {
-      console.log((i + 1) + ': ' + scanedNameArray[i]);
-    }
-    console.timeEnd('scan');
-    if (typeof callback === 'function') callback(scanedNameArray);
-  });
-  /*
-  (async () => {
-    var scanedNameArray = [];
-    isEnabledTesseractLog = false;
-    for (var i = 0; i < 12; i++) {
-      var ret = await tesseract.recognize(canvas3, {rectangles: [
-        {left: 0, top: i * 50, width: 459, height: 50}
-      ]});
-      var text = ret.data.text
-      .replace(/\s+/g, '');
-      scanedNameArray[i] = text;
-      console.log((i + 1) + ': ' + text);
-    }
-    console.timeEnd('scan');
-    if (typeof callback === 'function') callback(scanedNameArray);
-  })();
-  */
+  if (typeof callback === 'function') callback(scanedNameArray);
   return;
   
   // 順位imgから文字の部分を切り抜いてcanvasに写す
@@ -173,17 +116,17 @@ function scanGameScreen(img, callback) {
  * getTeamRankArray(scanedNameArr)
  */
 function getTeamRankArray(scanedNameArr, sampleTeamData) {
-  var sampleArray = Object.keys(sampleTeamData);
   var arr = [];
   // 名前の配列要素それぞれについて
   scanedNameArr.forEach((name, i) => {
     // 見本を一周して似ている順位に並べて候補配列を作る
     // 候補配列は類似度が高い順
     var candidates = [];
-    sampleArray.forEach(sampleName => {
-      var score = getNameSimilarity(name, sampleName);
+    sampleTeamData.forEach(sampleData => {
+      var score = getNameSimilarity(name, sampleData.name);
       candidates.push({
-        name: sampleName,
+        id: sampleData.id,
+        team: sampleData.teamName,
         score: score
       });
     });
@@ -194,7 +137,7 @@ function getTeamRankArray(scanedNameArr, sampleTeamData) {
     arr.push({
       name: name,
       rank: i + 1,
-      topName: candidates[0].name,
+      topId: candidates[0].id,
       topScore: candidates[0].score,
       candidates: candidates,
     });
@@ -210,11 +153,11 @@ function getTeamRankArray(scanedNameArr, sampleTeamData) {
   arr.forEach(obj => {
     for (var i = 0; i < obj.candidates.length; i++) {
       var cnd = obj.candidates[i];
-      if (determinedNames.indexOf(cnd.name) < 0) {
-        obj.topName = cnd.name;
+      if (determinedNames.indexOf(cnd.id) < 0) {
+        obj.topId = cnd.id;
         obj.topScore = cnd.score;
-        obj.team = sampleTeamData[cnd.name];
-        determinedNames.push(cnd.name);
+        obj.team = cnd.team;
+        determinedNames.push(cnd.id);
         break;
       }
     };
@@ -235,75 +178,9 @@ function getTeamRankArray(scanedNameArr, sampleTeamData) {
    * getNameSimilarity(_name, _sampleName)
    */
   function getNameSimilarity(_name, _sampleName) {
-    var score = 0;
-    
-    //「あ→ぁ」のように文字を小さくする
-    var name = parseSmallerStr(_name);
-    var sampleName = parseSmallerStr(_sampleName);
-    
-    // 字数の差が少ないほうが似ている
-    var lengthScore = 10 - Math.abs(name.length - sampleName.length);
-    
-    // 名前を構成する各文字がサンプルに含まれていれば加点する
-    // しかも文字の位置も似ているならさらに加点する
-    var charScore = 0;
-    var chars = name.split('');
-    chars.forEach((c, i) => {
-      var j = sampleName.indexOf(c);
-      if (j > -1) {
-        charScore += 1;
-        if (Math.abs(i - j) < 3) {
-          charScore += 1;
-        }
-      }
-    });
-    
-    // lengthScoreとcharScoreの和が得点になる
-    return lengthScore + charScore;
-    
-    // 文字を小さくする関数
-    function parseSmallerStr(str) {
-      var arr = [
-        [/あ/g, 'ぁ'],
-        [/い/g, 'ぃ'],
-        [/う/g, 'ぅ'],
-        [/え/g, 'ぇ'],
-        [/お/g, 'ぉ'],
-        [/か/g, 'ゕ'],
-        [/く/g,  '<'],
-        [/つ/g, 'っ'],
-        [/や/g, 'ゃ'],
-        [/ゆ/g, 'ゅ'],
-        [/よ/g, 'ょ'],
-        [/わ/g, 'ゎ'],
-        [/ぱ/g, 'ば'],
-        [/ぴ/g, 'び'],
-        [/ぷ/g, 'ぶ'],
-        [/ぺ/g, 'べ'],
-        [/ぽ/g, 'ぼ'],
-        [/パ/g, 'バ'],
-        [/ピ/g, 'ビ'],
-        [/プ/g, 'ブ'],
-        [/ペ/g, 'ベ'],
-        [/ポ/g, 'ボ'],
-        [/わ/g, 'ゎ'],
-        [/「/g,  'r'],
-        [ /C/g,  'c'],
-        [ /K/g,  'k'],
-        [ /S/g,  's'],
-        [ /U/g,  'u'],
-        [ /V/g,  'v'],
-        [ /W/g,  'w'],
-        [ /X/g,  'x'],
-        [ /Z/g,  'z'],
-        [ /O/g,  'o'],
-        [ /0/g,  'o'],
-        [/。/g,  'o']
-      ];
-      arr.forEach(item => {
-        str = str.replace(item[0], item[1]);
-      });
-      return str;
+    var i = 0, score = 0, len = _name.length;
+    for (var i = 0; i < len; i++) {
+      score -= Math.abs(_name[i] - _sampleName[i]);
     }
   }
 }
@@ -626,10 +503,6 @@ function createCanvas(flag, w, h) {
     this.ctx.clear();
     this.ctx.drawImage(img, 0, 0, w, h);
   };
-  canvas.tesseract = function(callback) {
-    tesseract.recognize(canvas)
-    .then(callback);
-  };
   canvas.debugImage = function(str, imageData) {
     if (!isDebugMode) return;
     if (imageData) this.ctx.putImageData(imageData, 0, 0);
@@ -682,4 +555,387 @@ function getRatio(a, b) {
   var big   = isBigA ? a : b;
   var small = isBigA ? b : a;
   return (small * max < big) ? max : big / small;
+}
+
+/* 
+** trimGameScreenByRect(ssImage, success, error)
+** 
+*/
+function trimGameScreenByRect(ssImage, success, error) {
+  if (typeof ssImage === 'string')
+    ssImage = document.querySelector(ssImage);
+  
+  console.log('trimming the game screen');
+  var canvas = canvas5;
+  var w = ssImage.naturalWidth;
+  var h = ssImage.naturalHeight;
+  console.info('the image is (w, h) = (' + w + ', ' + h + ')');
+  canvas.init(w, h, ssImage);
+  
+  var recordNum = 2;
+  var linePropertiesNum = 2;
+  var horizontalStraightLines = getStraightLines('horizontal');
+  var verticalStraightLines = getStraightLines('vertical');
+  if (isDebugMode) {
+    canvas.fill('#000');
+    drawStraightLines('horizontal', horizontalStraightLines);
+    canvas.debugImage('ピクセルが無変化な直線部を白色化(横)');
+    canvas.fill('#000');
+    drawStraightLines('vertical', verticalStraightLines);
+    canvas.debugImage('ピクセルが無変化な直線部を白色化(縦)');
+    canvas.fill('#000');
+    drawStraightLines('vertical', verticalStraightLines);
+    canvas.debugImage('ピクセルが無変化な直線部を白色化(縦+横)');
+  }
+  
+  var slipValueRate = 15;
+  var slipValueW = Math.floor(w * slipValueRate / 100);
+  var slipValueH = Math.floor(h * slipValueRate / 100);
+  var [doubtfulXs, doubtfulStartXs, doubtfulEndXs] = 
+    getDoubtfulPoints('vertical', verticalStraightLines, slipValueW);
+  var [doubtfulYs, doubtfulStartYs, doubtfulEndYs] = 
+    getDoubtfulPoints('horizontal', horizontalStraightLines, slipValueH);
+  if (isDebugMode) {
+    drawDoubtfulPoints('vertical', doubtfulStartXs, '#f0f');
+    drawDoubtfulPoints('horizontal', doubtfulStartYs, '#f0f');
+    drawDoubtfulPoints('vertical', doubtfulEndXs, '#f00');
+    drawDoubtfulPoints('horizontal', doubtfulEndYs, '#f00');
+    canvas.debugImage('怪しい輪郭部を赤色の直線で表示');
+  }
+    
+  var doubtfulRects = getDoubtfulRects(doubtfulXs, doubtfulYs);
+  if (isDebugMode) {
+    drawDoubtfulRects(doubtfulRects);
+    canvas.debugImage('怪しい矩形を表示（青色）');
+  }
+  
+  var narrowDownNum = 3;
+  var narrowDownedRects = narrowDownDoubtfulRects(doubtfulRects);
+  if (isDebugMode) {
+    drawDoubtfulRects(narrowDownedRects, 'hsl(120, 100%, 70%)');
+    canvas.debugImage('怪しい矩形を絞り込む（緑色）');
+    console.log(narrowDownedRects);
+  }
+  
+  var widenedRects = widenDoubtfulRects(doubtfulRects, doubtfulStartXs,
+    doubtfulEndXs, doubtfulStartYs, doubtfulEndYs);
+  var bestRect = widenedRects[0];
+    
+  if (isDebugMode) {
+    canvas.ctx.globalAlpha = '0.8';
+    canvas.ctx.fillStyle = '#ff0';
+    canvas.ctx.fillRect(bestRect.x, bestRect.y, bestRect.w, bestRect.h);
+    canvas.ctx.globalAlpha = '1';
+    canvas.debugImage('ゲーム画面と思われる領域（黄色）');
+    
+    canvas.ctx.drawImage(ssImage, 0, 0, w, h);
+    canvas.ctx.globalAlpha = '0.4';
+    canvas.ctx.fillStyle = '#ff0';
+    canvas.ctx.fillRect(bestRect.x, bestRect.y, bestRect.w, bestRect.h);
+    canvas.ctx.globalAlpha = '1';
+    canvas.debugImage('元画像に重ねる');
+  }
+  
+  if (bestRect) {
+    canvas6.width = 1280;
+    canvas6.height = 720;
+    canvas6.ctx.drawImage(ssImage, bestRect.x, bestRect.y, bestRect.w, bestRect.h,
+      0, 0, 1280, 720);
+    console.log('trimed the game screen');
+    console.log('the game screen is (x, y, w, h) = (' +
+      bestRect.x + ', ' + bestRect.y + ', ' + bestRect.w + ', ' + bestRect.h + ')');
+    if (typeof success === 'function') success(canvas6, true);
+  } else {
+    console.log('sorry, trimming failed');
+    if (typeof error === 'function') error();
+  }
+  return;
+  
+  /*
+   * getStraightLines(direction)
+   */
+  function getStraightLines(direction) {
+    var isVertical = (direction === 'vertical');
+    var _w, _h, w = canvas.width, h = canvas.height;
+    if (isVertical) { _w = w; _h = h; } else { _w = h; _h = w; }
+    var imagedata = canvas.ctx.getImageData(0, 0, w, h);
+    var x, y, k, r, g, b;
+    var straightLines = createInt16Array(recordNum * _w * linePropertiesNum);
+    for (x = 0; x < _w; x++) {
+      var _r = -1, _g = -1, _b = -1;
+      var whiteStart = 0;
+      var whiteLength = 0;
+      var maxWhiteStarts = createArray(recordNum, 0);
+      var maxWhiteLengths = createArray(recordNum, 0);
+      var maxWhiteStart = 0;
+      var maxWhiteLength = 0;
+      for (y = 0; y < _h; y++) {
+        k = (isVertical) ? (x + y * w) * 4 : (y + x * w) * 4;
+        r = imagedata.data[k + 0];
+        g = imagedata.data[k + 1];
+        b = imagedata.data[k + 2];
+        if (r === _r && g === _g && b === _b) {
+          whiteLength++;
+        } else {
+          if (whiteLength) update();
+          _r = r; _g = g; _b = b;
+        }
+      }
+      update();
+      for (var j = 0; j < recordNum; j++) {
+        straightLines[0 + (x * recordNum + j) * linePropertiesNum] = maxWhiteStarts[j];
+        straightLines[1 + (x * recordNum + j) * linePropertiesNum] = maxWhiteLengths[j];
+      }
+    }
+    return straightLines;
+    
+    function update() {
+      for (var i = 0; i < recordNum; i++) {
+        if (whiteLength > maxWhiteLengths[i]) {
+          for (var j = i; j + 1 < recordNum; j++) {
+            maxWhiteLengths[j + 1] = maxWhiteLengths[j];
+            maxWhiteStarts[j + 1] = maxWhiteStarts[j];
+          }
+          maxWhiteLengths[i] = whiteLength;
+          maxWhiteStarts[i] = whiteStart;
+          break;
+        }
+      };
+      whiteLength = 0;
+      whiteStart = y + 1;
+    }
+  }
+  
+  /*
+   * drawStraightLines(direction, data)
+   */
+  function drawStraightLines(direction, data) {
+    canvas.ctx.globalCompositeOperation = 'source-over';
+    canvas.ctx.fillStyle = '#fff';
+    canvas.ctx.globalAlpha = '1';
+    var isVertical = (direction === 'vertical');
+    var _w, _h, w = canvas.width, h = canvas.height;
+    if (isVertical) { _w = w; _h = h; } else { _w = h; _h = w; }
+    for (var i = 0; i < _w; i++) {
+      for (var j = 0; j < recordNum; j++) {
+        var start  = data[0 + (i * recordNum + j) * linePropertiesNum];
+        var length = data[1 + (i * recordNum + j) * linePropertiesNum];
+        if (j === 0) canvas.ctx.fillStyle = '#fff';
+        else canvas.ctx.fillStyle = '#eee';
+        if (isVertical) canvas.ctx.fillRect(i, start, 1, length);
+        else canvas.ctx.fillRect(start, i, length, 1);
+      }
+    }
+  }
+  
+  /*
+   * getDoubtfulPoints(direction, data, slipValue)
+   */
+  function getDoubtfulPoints(direction, data, slipValue) {
+    var isVertical = (direction === 'vertical');
+    var _w, _h, w = canvas.width, h = canvas.height;
+    if (isVertical) { _w = w; _h = h; } else { _w = h; _h = w; }
+    var doubtfulPoints = [-1]
+    var doubtfulStartPoints = [-1];
+    var doubtfulEndPoints = [];
+    var _length;
+    var dataLength = data.length / (linePropertiesNum * recordNum);
+    for (var i = 0; i < dataLength; i++) {
+      var length = 0;
+      for (var j = 0; j < recordNum; j++) {
+        length += data[1 + (i * recordNum + j) * linePropertiesNum];
+      }
+      if (i > 0 && Math.abs(length - _length) > slipValue) {
+        var p = {};
+        if (length < _length) {
+          doubtfulPoints.push(i - 1);
+          doubtfulStartPoints.push(i - 1);
+        } else {
+          doubtfulPoints.push(i);
+          doubtfulEndPoints.push(i);
+        }
+      }
+      _length = length;
+    }
+    doubtfulPoints.push(_w + 1);
+    doubtfulEndPoints.push(_w + 1);
+    return [doubtfulPoints, doubtfulStartPoints, doubtfulEndPoints];
+  }
+  
+  /*
+   * drawDoubtfulPoints(direction, color)
+   */
+  function drawDoubtfulPoints(direction, points, color) {
+    canvas.ctx.globalCompositeOperation = 'source-over';
+    canvas.ctx.fillStyle = color;
+    canvas.ctx.globalAlpha = '1';
+    var isVertical = (direction === 'vertical');
+    if (isVertical) {
+      _w = w; _h = h;
+    } else {
+      _w = h; _h = w;
+    }
+    for (var i = 0; i < points.length; i++) {
+      var p = points[i];
+      if (isVertical) canvas.ctx.fillRect(p, 0, 1, _w);
+      else canvas.ctx.fillRect(0, p, _h, 1);
+    }
+  }
+  
+  /*
+   * getDoubtfulRects(Xs, Ys)
+   */
+  function getDoubtfulRects(Xs, Ys) {
+    var doubtfulRects = [];
+    var minRectWidth = Math.floor(w * 0.05);
+    var minRectHeight = Math.floor(h * 0.05);
+    for (var i = 0; i + 1 < Xs.length; i++) {
+      var x1 = Xs[i + 0] + 1;
+      var x2 = Xs[i + 1];
+      var rw = x2 - x1;
+      if (rw > minRectWidth) {
+        for (var j = 0; j + 1 < Ys.length; j++) {
+          var y1 = doubtfulYs[j + 0] + 1;
+          var y2 = doubtfulYs[j + 1];
+          var rh = y2 - y1;
+          if (rh > minRectHeight) {
+            doubtfulRects.push({
+              x: x1, y: y1, w: rw, h: rh, s: rw * rh
+            });
+          }
+        }
+      }
+    }
+    doubtfulRects.sort(function(a, b) {
+      if (a.s > b.s) return -1;
+      else return 1;
+    });
+    return doubtfulRects;
+  }
+  
+  /*
+   * drawDoubtfulRects(rects)
+   */
+  function drawDoubtfulRects(rects, color) {
+    canvas.ctx.globalCompositeOperation = 'source-over';
+    if (color) {
+      canvas.ctx.globalAlpha = '0.7';
+      canvas.ctx.fillStyle = color;
+    } else {
+      canvas.ctx.globalAlpha = '0.5';
+      canvas.ctx.fillStyle = 'hsl(220, 50%, 50%)';
+    
+    }
+    for (var i = 0; i < rects.length; i++) {
+      var r = rects[i];
+      canvas.ctx.fillRect(r.x, r.y, r.w, r.h);
+    }
+    canvas.ctx.globalAlpha = '1';
+  }
+  
+  /*
+   * narrowDownDoubtfulRects(rects)
+   */
+  function narrowDownDoubtfulRects(rects) {
+    narrowDownNum = Math.min(rects.length, narrowDownNum);
+    var targetRects = [];
+    for (var i = 0; i < rects.length; i++) {
+      var rect = rects[i];
+      var isUnique = true;
+      for (var j = 0; j < targetRects.length; j++) {
+        var tRect = targetRects[j];
+        var f1 = (tRect.x === rect.x && tRect.w === rect.w);
+        var f2 = (tRect.y === rect.y && tRect.h === rect.h);
+        if (f1 || f2) {
+          isUnique = false;
+          break;
+        }
+      }
+      if (isUnique) {
+        targetRects.push(rect);
+      }
+      if (targetRects.length >= narrowDownNum) {
+        break;
+      }
+    }
+    return targetRects;
+  }
+  
+  /*
+   * widenDoubtfulRects(rects, startXs, endXs, startYs, endYs)
+   */
+  function widenDoubtfulRects(rects, startXs, endXs, startYs, endYs) {
+    var w = canvas.width, h = canvas.height;
+    var minRectWidth = Math.floor(w * 0.05);
+    var minRectHeight = Math.floor(h * 0.05);
+    var newRects = [];
+    for (var i = 0; i < rects.length; i++) {
+      var rect = rects[i];
+      newRects.push(rect);
+      widen(true, newRects, rect, startXs, endXs);
+      widen(false, newRects, rect, startYs, endYs);
+    }
+    calc(newRects);
+    sort(newRects);
+    return newRects;
+    
+    function sort(rects) {
+      rects.sort(function(a, b) {
+        if (a.score > b.score) return -1;
+        else return 1;
+      });
+    }
+    function calc(rects) {
+      var targetRatio = 9 / 16;
+      rects.forEach(rect => {
+        var ratio = rect.h / rect.w;
+        var difRatio = Math.abs(targetRatio - ratio);
+        if (ratio < targetRatio) difRatio = difRatio * 2;
+        /*
+        var vMax = -1;
+        for (var x = rect.x, xEnd = rect.x + rect.w; x < xEnd; x++) {
+          var _v = vLines[1 + (x * recordNum * linePropertiesNum)];
+          if (_v > vMax) vMax = _v;
+        }
+        var hMax = -1;
+        for (var y = rect.y, yEnd = rect.y + rect.h; y < yEnd; y++) {
+          var _h = hLines[1 + (y * recordNum * linePropertiesNum)];
+          if (_h > hMax) hMax = _h;
+        }
+        */
+        rect.score = (rect.w / w) - (difRatio * 100)
+      });
+    }
+    function widen(doWidenX, rects, originRect, startPoints, endPoints) {
+      for (var isp = 0; isp < startPoints.length; isp++) {
+        var startPoint = startPoints[isp] + 1;
+        for (var iep = 0; iep < endPoints.length; iep++) {
+          var endPoint = endPoints[iep];
+          var pointRange = endPoint - startPoint;
+          var newRect;
+          if (doWidenX) {
+            newRect = {
+              x: startPoint,
+              y: originRect.y,
+              w: pointRange,
+              h: originRect.h,
+              s: pointRange * originRect.h
+            };
+          } else {
+            newRect = {
+              x: originRect.x,
+              y: startPoint,
+              w: originRect.w,
+              h: pointRange,
+              s: pointRange * originRect.w
+            };
+          }
+          if (newRect.w > minRectWidth && newRect.h > minRectHeight &&
+              newRect.w > newRect.h && newRect.w < newRect.h * 2) {
+            rects.push(newRect);
+          }
+        }
+      }
+    }
+  }
 }

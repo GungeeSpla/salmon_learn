@@ -363,3 +363,8 @@ li p {
   #cfg-area input[type=radio]:checked + label {
     font-weight: bold;
   }
+#update-rireki li {
+  line-height: 100%;
+  text-align: left;
+  margin: 10px;
+}
