@@ -274,7 +274,7 @@ function updateSCKey() {
   for (var i = 0; i < teamNum; i++) {
     var inpt = document.getElementById('input-sc-key' + i);
     var val = inpt.value;
-    shortCutKeys[i] = val.toLowerCase();;
+    shortCutKeys[i] = val;
   }
   saveStorage();
 }
