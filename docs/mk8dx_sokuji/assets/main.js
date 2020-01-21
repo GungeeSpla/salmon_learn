@@ -259,7 +259,7 @@ function makeInputTeamNameTable() {
   tr = document.createElement('tr');
   for (x = 0; x < w; x++) {
     var td = document.createElement('td');
-    var label = ['a', 'b', 'c', 'd', 'e', 'f'][x];
+    var label = shortCutKeys[x];
     var input = createInput({placeholder: label, value: label, maxlength: '1'});
     input.setAttribute('tabIndex', scKeyIndex + x);
     input.setAttribute('id', 'input-sc-key' + x);
@@ -276,6 +276,7 @@ function updateSCKey() {
     var val = inpt.value;
     shortCutKeys[i] = val.toLowerCase();;
   }
+  saveStorage();
 }
 
 /*
@@ -1517,6 +1518,7 @@ var MK8DX_COURSES = [
   ['ネイチャー', 'neitya-', 'neicha-'],
   ['どう森', 'doumori'],
   ['モモカン', 'momokan'],
+  ['スイキャニ', 'suikyani'],
   'GBA',
   ['プクビ', 'pukubi'],
   ['プクプク', 'pukupuku'],
