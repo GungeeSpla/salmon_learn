@@ -12,13 +12,13 @@
   <title>マリオカート8DX 即時集計機</title>
   <!--<link rel="shortcut icon" href="favicon.ico">-->
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="assets/style.css?Ver.0.2.1">
   <link rel="stylesheet" href="assets/jquery.mysuggest.css">
-  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.2.1">
   <script type="text/javascript" src='assets/jquery.js'></script>
   <script type="text/javascript" src='assets/jquery.mysuggest.js'></script>
-  <script type="text/javascript" src='assets/main.min.js?Ver.0.2.1'></script>
-  <script type="text/javascript" src='assets/ocr.min.js?Ver.0.2.1'></script>
+  <script type="text/javascript"   src='assets/main.min.js?Ver.0.2.2'></script>
+  <script type="text/javascript"    src='assets/ocr.min.js?Ver.0.2.2'></script>
+  <link rel="stylesheet"            href="assets/style.css?Ver.0.2.2">
+  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.2.2">
   <!--
   <script type="text/javascript" src='tesseract/tesseract.min.js'></script>
   <script type="text/javascript" src='sokuji_ocr/assets/main.js'></script>
@@ -28,7 +28,7 @@
 <body>
   <div id="main-content">
     <h5>© 2019 <a href="https://twitter.com/GungeeSpla" target="_blank">@GungeeSpla</a></h5>
-    <h1>マリオカート8DX 即時集計機 Ver.0.2.1</h1>
+    <h1>マリオカート8DX 即時集計機 Ver.0.2.2</h1>
     <div id="tag-area">
       <p class="page-tag">マリオカート</p>
       <p class="page-tag">マリオカート8デラックス</p>
@@ -128,7 +128,7 @@
         </li>
       </ul>
     </div>
-    <div id="input-rank-area">
+    <div id="input-rank-area" user-scalable="no">
       <div id="mouse-chaser"></div>
       <div class="margin">
         <h4>チームパレット</h4>
@@ -182,13 +182,15 @@
         	<input type="radio" id="cfg-team-split-1" class="cfg-radio" name="cfg-team-split" value="／" ><label for="cfg-team-split-1">／</label>
         	<input type="radio" id="cfg-team-split-2" class="cfg-radio" name="cfg-team-split" value=" /"><label for="cfg-team-split-2"> / </label>
         	<input type="radio" id="cfg-team-split-3" class="cfg-radio" name="cfg-team-split" value=" -"><label for="cfg-team-split-3"> - </label>
+        	<input type="radio" id="cfg-team-split-4" class="cfg-radio" name="cfg-team-split" value="/" ><label for="cfg-team-split-4"> / <span class="mini-text">(詰め)</span></label>
         </span>
       </p>
       <p>
         <span class="radio-title">項目の区切り文字</span>
         <span class="radio-wrapper">
-        	<input type="radio" id="cfg-split-1" class="cfg-radio" name="cfg-split" value="／"><label for="cfg-emphasis-1">／</label>
-        	<input type="radio" id="cfg-split-2" class="cfg-radio" name="cfg-split" value=" /"><label for="cfg-emphasis-2"> / </label>
+        	<input type="radio" id="cfg-split-1" class="cfg-radio" name="cfg-split" value="／"><label for="cfg-split-1">／</label>
+        	<input type="radio" id="cfg-split-2" class="cfg-radio" name="cfg-split" value=" /"><label for="cfg-split-2"> / </label>
+        	<input type="radio" id="cfg-split-3" class="cfg-radio" name="cfg-split" value="/" ><label for="cfg-split-3"> / <span class="mini-text">(詰め)</span></label>
         </span>
       </p>
       <h3>その他の設定</h3>
@@ -198,6 +200,14 @@
     
     <h2>アップデート履歴</h2>
     <table id="update-rireki">
+      <tr>
+        <td><b>0.2.2</b></td>
+        <td><ul>
+          <li>現在順位を表示するとき、同点時には「同○位」と表示するように変更しました。</li>
+          <li>区切り文字に「/ (詰め)」を追加しました。</li>
+          <li>タッチデバイスにおいて、順位テーブルをタップすると拡大が行われる件について対策を行いました。</li>
+        </ul></td>
+      </tr>
       <tr>
         <td><b>0.2.1</b></td>
         <td><ul>
@@ -228,6 +238,12 @@
           <li>自チームの強調文字を追加しました。</li>
         </ul></td>
       </tr>
+      <tr>
+        <td><b>0.0.0</b></td>
+        <td><ul>
+          <li>リリースしました。</li>
+        </ul></td>
+      </tr>
     </table>
   </div>
   <img src="sokuji_ocr/assets/rank-image-mono.png" id="rank-image-mono" style="display: none;">
@@ -243,3 +259,13 @@
   <div id="mask-notice" style="display: none;"><p>画像処理中</p><div style="transform: translateY(-85px)"><div class="loader"></div></div></div>
 </body>
 </html>
+<!--x
+1th: https://youtu.be/7f1zdtpinYA?t=288
+- JPN: 1, 2, 4, 5, 11, 12
+- FR: 3, 6, 7, 8, 9, 10
+2nd: https://youtu.be/7f1zdtpinYA?t=448
+3rd: https://youtu.be/7f1zdtpinYA?t=664
+4th: https://youtu.be/7f1zdtpinYA?t=872
+5th: https://youtu.be/7f1zdtpinYA?t=1074
+6th: https://youtu.be/7f1zdtpinYA?t=1294
+-->

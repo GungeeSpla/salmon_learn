@@ -102,6 +102,9 @@ window.addEventListener('load', function(){
   
   setEventShowMore('#input-rank-description-show');   // 説明を見るボタン  
   setEventShowMore('#input-rank-description-show-2'); // 説明を見るボタン  
+  if (!isEnabledSS) {
+    document.querySelector('#input-rank-description-show-2').style.setProperty('display', 'none');
+  }
   makeRadioButtons();       // ラジオボタン
   makeInputTeamNameTable(); // チームタグ/ショートカットキー入力
   
@@ -121,6 +124,19 @@ window.addEventListener('load', function(){
       updateInputTeamNameTable();
     }
   };
+  
+  // https://qiita.com/peutes/items/d74e5758a36478fbc039
+  if (isTouchDevice) {
+    var lastTouch = 0;
+    document.getElementById('input-rank-area').addEventListener('touchend', event => {
+      const now = window.performance.now();
+      if (now - lastTouch <= 500) {
+        event.preventDefault();
+      }
+      lastTouch = now;
+    }, true);
+    document.getElementById('input-rank-area').setAttribute('user-scalable', 'no');
+  }
   
   logger.log('initialized mk8dx-sokuji');
   isInitialized = true;
@@ -751,8 +767,9 @@ function makeInputRankTable() {
           } else {
             setTimeout(() => {
               input.blur();
-            },1);
+            },10);
           }
+          e.preventDefault();
         }
       }
     };
@@ -802,6 +819,7 @@ function createInput(opt) {
   var input = document.createElement('input');
   input.setAttribute('type', 'text');
   input.setAttribute('spellcheck', 'false');
+  input.setAttribute('user-scalable', 'no');
   if (opt) {
     Object.keys(opt).map(key => {
       if (key === 'className') {
@@ -835,6 +853,7 @@ function createRankInput(rank, race, num) {
     input.setAttribute('placeholder', rank);
     input.setAttribute('race', race);
     input.setAttribute('rank', rank);
+    input.setAttribute('user-scalable', 'no');
     input.classList.add('race-' + race);
     input.classList.add('rank-' + rank);
   }
@@ -1144,14 +1163,37 @@ function tallyForScores(callback) {
     sortedScoreObjects[0].latestScoreDif = 
       sortedScoreObjects[0].latestScore - sortedScoreObjects[1].latestScore;
     sortedScoreObjects.sort((a, b) => {
-      if (a.totalScore > b.totalScore) return -1;
-      else return 1;
+      if (a.totalScore > b.totalScore) {
+        return -1;
+      } else if (a.totalScore < b.totalScore) {
+        return 1;
+      } else {
+        return (a.teamIndex < b.teamIndex) ? -1 : 1;
+      }
     });
-    sortedScoreObjects.map((scoreObj, i) => {
-      scoreObj.teamRank = i + 1;
-    });
+    sortedScoreObjects.map((scoreObj, i) => scoreObj.teamRank = i + 1);
     sortedScoreObjects.map((scoreObj, teamIndex) => {
       calcTargetDistance(sortedScoreObjects, teamIndex, tallyConfig.passRank)
+    });
+    var tieObj = sortedScoreObjects[0];
+    var tieRank = sortedScoreObjects[0].teamRank;
+    var tieScore = sortedScoreObjects[0].totalScore;
+    sortedScoreObjects[0].isTie = false;
+    sortedScoreObjects[0].teamRankTie = 1;
+    sortedScoreObjects.map((scoreObj, i) => {
+      if (i > 0) {
+        if (tieScore === scoreObj.totalScore) {
+          tieObj.isTie = true;
+          scoreObj.isTie = true;
+          scoreObj.teamRankTie = tieRank;
+        } else {
+          scoreObj.isTie = false;
+          scoreObj.teamRankTie = scoreObj.teamRank;
+          tieObj = scoreObj;
+          tieRank = scoreObj.teamRank;
+          tieScore = scoreObj.totalScore;
+        }
+      }
     });
     //logger.log(sortedScoreObjects);
     
@@ -1275,10 +1317,10 @@ function createTallyText(sortedScoreObjects, lastCourseStr, leftRace) {
         var name = scoreObj.teamName;
         if (scoreObj.teamIndex === 0) {
           name = cfg.emphasisStart + name + cfg.emphasisEnd;
-          if (i > 0 && cfg.emphasisStart !== '【' && cfg.teamSplitStr !== '／') name = ' ' + name;
+          if (i > 0 && cfg.emphasisStart !== '【' && cfg.teamSplitStr.charAt(0) === ' ') name = ' ' + name;
           if (cfg.emphasisEnd !== '】') name += ' ';
         } else {
-          if (i > 0 && cfg.teamSplitStr !== '／') name = ' ' + name;
+          if (i > 0 && cfg.teamSplitStr.charAt(0) === ' ') name = ' ' + name;
           name += ' ';
         }
         var score = scoreObj.totalScore;
@@ -1315,7 +1357,12 @@ function createTallyText(sortedScoreObjects, lastCourseStr, leftRace) {
   } else {
     // 現在順位と目標距離 タッグ/トリプルス/フォーマンのみ
     if (cfg.currentRank) {
-      var myRankStr = '現在' + myScoreObj.teamRank + '位';
+      var myRankStr;
+      if (myScoreObj.isTie) {
+        myRankStr = '現在同' + myScoreObj.teamRankTie + '位';
+      } else {
+        myRankStr = '現在' + myScoreObj.teamRank + '位';
+      }
       tallyStrs.push(myRankStr);
     }
     if (cfg.targetDistance) {
@@ -1605,7 +1652,6 @@ function makeSampleTeamData(race) {
 function existsSampleTeamData() {
   return (sampleTeamData !== null);
 }
-
 
 /* 
  * constants
