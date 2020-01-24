@@ -1,15 +1,57 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
+'use strict';
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
-var version = '0.1.0';
+var version = '0.2.0';
+var isTouchDevice = ('ontouchstart' in document);
+var mousedownEvent = isTouchDevice ? 'touchstart' : 'mousedown';
+var mouseChaserStyle = isTouchDevice ? 'none' : 'block';
+var browser = (() => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  if (userAgent.indexOf('msie') > -1
+     || userAgent.indexOf('trident') > -1) {
+    return 'ie';
+  } if (userAgent.indexOf('edge') > -1) {
+    return 'edge';
+  } if (userAgent.indexOf('chrome') > -1) {
+    return 'chrome';
+  } if (userAgent.indexOf('safari') > -1) {
+    return 'safari';
+  } if (userAgent.indexOf('firefox') > -1) {
+    return 'firefox';
+  } if (userAgent.indexOf('opera') > -1) {
+    return 'opera';
+  }
+  return 'other';
+})();
+var os = (() => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  if (userAgent.indexOf('iphone') > -1) {
+    return 'iphone';
+  } if (userAgent.indexOf('ipad') > -1) {
+    return 'ipad';
+  } if (userAgent.indexOf('android') > -1) {
+    if (userAgent.indexOf('mobile') > -1) {
+      return 'android';
+    }
+    return 'android';
+  } if (userAgent.indexOf('windows') > -1) {
+    return 'windows';
+  } if (userAgent.indexOf('mac os x') > -1) {
+    return 'mac';
+  }
+  return 'other';
+})();
+var isPC = (os === 'windows' || os === 'mac');
 var playerNum = 12;
 var teamTableIndex = 10;
-var scKeyIndex     = 20;
+var scKeyIndex = 20;
 var rankTableIndex = 30;
 var teamMaxNum = 6;
 var currentPen = -1;
 var mouseChaser;
 var penDown = false;
+var rightDown = false;
 var isCalculating = false;
 var isInitialized = false;
 var tallyForScoresTimer = 0;
@@ -21,6 +63,7 @@ var storageKey = 'mk8dx-sokuji';
 var saveTargetVariables = [
   'teamNum', 'raceNum', 'teamNames', 'shortCutKeys', 'tallyConfig', 'inputRankData'
 ];
+var isEnabledSS = isPC;
 var teamNum = 2;
 var raceNum = 12;
 var maxRaceNum = 12;
@@ -38,6 +81,7 @@ var tallyConfig = {
   leftRaceNum: true,     // 残りレース数
   currentRank: true,     // 現在の順位
   targetDistance: true,  // 目標順位との距離
+  winDetermine: true,    // 勝利確定
   emphasisStr: '【】',   // 強調文字
   emphasisStart: '',     // 
   emphasisEnd: '',       // 
@@ -56,7 +100,8 @@ window.addEventListener('load', function(){
   initInputDataVariable();  // inputData変数
   loadStorage();            // ロード
   
-  setEventShowMore();       // 説明を見るボタン  
+  setEventShowMore('#input-rank-description-show');   // 説明を見るボタン  
+  setEventShowMore('#input-rank-description-show-2'); // 説明を見るボタン  
   makeRadioButtons();       // ラジオボタン
   makeInputTeamNameTable(); // チームタグ/ショートカットキー入力
   
@@ -65,13 +110,13 @@ window.addEventListener('load', function(){
   makeMouseChaser();        // マウスチェイサー
   
   makeZoomImage();          // 通知関数や画像ズーム関数
-  //makeTesseract();
   
   initConfigElements();
   
   document.getElementById('reset-button').onclick = () => {
     var ret = window.confirm('順位テーブルをリセットします。よろしいですか？');
     if (ret) {
+      sampleTeamData = null;
       initInputDataVariable();
       updateInputTeamNameTable();
     }
@@ -95,6 +140,7 @@ function initConfigElements() {
     {key: 'leftRaceNum',         id: 'cfg-left-race-num'},
     {key: 'currentRank',         id: 'cfg-current-rank'},
     {key: 'targetDistance',      id: 'cfg-target-distance'},
+    {key: 'winDetermine',        id: 'cfg-win-determine'},
     {key: 'onBeforeUnload',      id: 'cfg-on-before-unload'}
   ].map(obj => {
     var elm = document.getElementById(obj.id);
@@ -142,7 +188,7 @@ function initConfigElements() {
     }
   });
   updatePassRank();
-  document.getElementById('copy-button').addEventListener('click', function(e) {
+  document.getElementById('copy-button').addEventListener(mousedownEvent, function(e) {
     execCopyResult();
   });
 }
@@ -164,13 +210,13 @@ function initInputDataVariable() {
 }
 
 /*
- * setEventShowMore()
+ * setEventShowMore(slc)
  */
-function setEventShowMore() {
-  var showButton = document.querySelector('#input-rank-description-show');
+function setEventShowMore(slc) {
+  var showButton = document.querySelector(slc);
   var target = showButton.getAttribute('show');
   var targetElement = document.querySelector('#' + target);
-  showButton.addEventListener('click', function(e) {
+  showButton.addEventListener(mousedownEvent, function(e) {
     if (targetElement.style.display !== 'none') {
       targetElement.style.display = 'none';
       this.textContent = this.getAttribute('text1');
@@ -179,6 +225,7 @@ function setEventShowMore() {
       this.textContent = this.getAttribute('text2');
     }
   });
+  showButton.textContent = showButton.getAttribute('text1');
 }
 
 /*
@@ -342,7 +389,10 @@ function makeInputRankPalette() {
     
   }
   function setPaletteClickEvent(elm, i) {
-    elm.addEventListener('click', function (e) {
+    elm.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+    }, false);
+    elm.addEventListener(mousedownEvent, function (e) {
       selectPalette(i);
     }, false);
   }
@@ -404,12 +454,14 @@ function makeMouseChaser() {
     return true;
   }, false);
   area.addEventListener('mouseenter', function (e) {
-    mouseChaser.style.display = 'block';
+    mouseChaser.style.display = mouseChaserStyle;
     penDown = false;
+    rightDown = false;
   });
   area.addEventListener('mouseleave', function (e) {
     mouseChaser.style.display = 'none';
     penDown = false;
+    rightDown = false;
   });
 }
 
@@ -421,7 +473,7 @@ function makeInputRankTable() {
   table.innerHTML = '';
   var MARGIN_TOP = 2;
   var MARGIN_LEFT = 1;
-  var MARGIN_BOTTOM = 3;
+  var MARGIN_BOTTOM = isEnabledSS ? 5 : 3;
   var COURSE_LINE = 0;
   var LOCK_LINE = 1;
   var STATE_LINE = 2;
@@ -569,6 +621,7 @@ function makeInputRankTable() {
     input.classList.add('race-' + race);
     input.setAttribute('placeholder', 'paste');
     setEventPasteImage(input, function(pastedImage, input) {
+      logger.log('🏞️image pasted');
       var race = parseInt(input.getAttribute('race'));
       var selector = '.pasted-image-cell.race-' + race + ' img';
       var targetImg = document.querySelector(selector);
@@ -577,38 +630,35 @@ function makeInputRankTable() {
         return;
       }
       isCalculating = true;
-      trimGameScreen(pastedImage, function(trimedCanvas) {
-        scanGameScreen(trimedCanvas, function(scanedNameArr) {
-          isCalculating = false;
-          if (scanedNameArr.length === 12) {
-            logger.log('第' + race + 'レースの12人の名前を読み取りました.');
+      document.getElementById('mask-notice').style.setProperty('display', 'block');
+      setTimeout(() => {
+        // ゲーム画面をトリミングする
+        trimGameScreen(pastedImage, (trimedCanvas) => {
+          // ゲーム画面をスキャンする
+          scanGameScreen(trimedCanvas, (scanedNameArr) => {
+            isCalculating = false;
+            document.getElementById('mask-notice').style.setProperty('display', 'none');
+            // スキャンできた！
+            // scanedNameDataに放り込む
             scanedNameData[race - 1] = scanedNameArr;
-            targetImg.display = 'block';
+            // 画像ソースを代入する
+            targetImg.style.setProperty('display', 'block');
             targetImg.src = trimedCanvas.toDataURL();
-            if (race === 1) {
-              makeSampleTeamData();
-            } else {
-              if (existsSampleTeamData()) {
-                var teamArr = getTeamRankArray(scanedNameArr, sampleTeamData);
-                logger.log('チームタグに変換しました.');
-                logger.log(teamArr);
-                for (var rank = 1; rank <= 12; rank++) {
-                  var slc = '.race-' + race + '.rank-' + rank;
-                  var input = document.querySelector(slc);
-                  input.setAttribute('value', teamArr[rank - 1]);
-                  resetRankInputClass(input);
-                  updateRace(race);
-                  tallyForScores();
-                }
-              } else {
-                logger.log('スクショ読取用のサンプルデータがありません.');
-              }
+            var imageCell = document.querySelector(`.pasted-image-cell.race-${race}`);
+            if (imageCell.classList.contains('specimen')) {
+              sampleTeamData = null;
+              imageCell.classList.remove('specimen');
             }
-          } else {
-            logger.log('12人の名前を読み取ることができませんでした.');
-          }
+            if (existsSampleTeamData()) {
+              scanTeamData(race);
+            }
+          });
+        }, () => {
+          alert('ゲーム画面の抽出に失敗しました。');
+          isCalculating = false;
+          document.getElementById('mask-notice').style.setProperty('display', 'none');
         });
-      });
+      }, 50);
     });
     td.appendChild(input);
   }
@@ -619,7 +669,7 @@ function makeInputRankTable() {
     setEventDisablePen(td);
     td.classList.add('pasted-image-cell');
     var img = document.createElement('img');
-    setEventZoomImage(img);
+    setEventZoomImage(img, race);
     td.appendChild(img);
   }
   /*
@@ -666,7 +716,7 @@ function makeInputRankTable() {
     var onmousedown = function (e) {
       switch (e.type.toLowerCase()) {
       case 'mousedown':
-        penDown = 1;
+        penDown = true;
         break;
       case 'mousemove':
         if (!penDown) {
@@ -674,9 +724,10 @@ function makeInputRankTable() {
         }
         break;
       }
-      if (e.button === 2) {
+      if (!isTouchDevice && (rightDown || e.button === 2)) {
+        rightDown = true;
         var input = this.querySelector('input');
-        team = parseInt(input.getAttribute('team'));
+        var team = parseInt(input.getAttribute('team'));
         if (team < 0) team = teamNum;
         selectPalette(team);
         return false;
@@ -707,12 +758,13 @@ function makeInputRankTable() {
     };
     var onmouseup = function (e) {
       penDown = false;
+      rightDown = false;
     };
     var oncontextmenu = function (e) {
       return false;
     };
     td.oncontextmenu = oncontextmenu;
-    td.addEventListener('mousedown', onmousedown, false);
+    td.addEventListener(mousedownEvent, onmousedown, false);
     td.addEventListener('mousemove', onmousedown, false);
     td.addEventListener('mouseup', onmouseup, false);
     td.addEventListener('wheel', function (e) {
@@ -738,7 +790,7 @@ function makeInputRankTable() {
   }
   function setEventEnablePen(td) {
     td.addEventListener('mouseenter', () => {
-      mouseChaser.style.display = 'block';
+      mouseChaser.style.display = mouseChaserStyle;
     });
   }
 }
@@ -789,7 +841,7 @@ function createRankInput(rank, race, num) {
   
   function setEvents(input) {
     // clickイベント
-    input.addEventListener('click', function (e) {
+    input.addEventListener(mousedownEvent, function (e) {
       if (this.classList.contains('locked')) {
         this.blur();
       }
@@ -893,6 +945,8 @@ function resetRankInputClass(elm) {
     elm.classList.remove('team-' + i);
   }
   elm.setAttribute('team', '-1');
+  var race = parseInt(elm.getAttribute('race'));
+  var rank = parseInt(elm.getAttribute('rank'));
   // チームタグ一覧に一致したらクラスをつける
   var val = elm.value;
   var idx = teamNames.indexOf(val);
@@ -900,9 +954,8 @@ function resetRankInputClass(elm) {
   if (isMatched) {
     elm.classList.add('team-' + idx);
     elm.setAttribute('team', idx);
+    inputRankData[race - 1][rank - 1] = idx;    
   }
-  var race = elm.getAttribute('race');
-  var rank = parseInt(elm.getAttribute('rank'));
   var rankStr = rankStrs[rank - 1];
   logger.log('inputed team [race ' + race + '][' +
     rankStr + '][' + elm.value + ']', 'gray');
@@ -1006,7 +1059,6 @@ function updateRace(race, doComplement) {
     for (i = 1; i < teamNum; i++) {
       if (teamCounts[0] !== teamCounts[i]) {
         stateType = 'error';
-        isInputed = false;
         break;
       }
     }
@@ -1045,6 +1097,7 @@ function tallyForScores(callback) {
     // 残りレース数を数えて
     // 最新レースのコース名も控えておく
     var states = document.body.querySelectorAll('.state-cell');
+    var i;
     var sum = 0;
     var latestRace;
     var inputedRaces = [];
@@ -1100,13 +1153,15 @@ function tallyForScores(callback) {
     sortedScoreObjects.map((scoreObj, teamIndex) => {
       calcTargetDistance(sortedScoreObjects, teamIndex, tallyConfig.passRank)
     });
-    //console.log(sortedScoreObjects);
+    //logger.log(sortedScoreObjects);
     
     // 文字列化する
     var tallyText = createTallyText(sortedScoreObjects, lastCourseStr, leftRace);
     
     document.getElementById('result').textContent = tallyText;
-    execCopy(tallyText);
+    if (isInitialized) {
+      execCopy(tallyText);
+    }
     
     if (callback) callback();
     
@@ -1214,7 +1269,7 @@ function createTallyText(sortedScoreObjects, lastCourseStr, leftRace) {
   } else {
     if (cfg.totalScore || cfg.totalScoreDif) {
       // タッグ/トリプルス/フォーマンの場合
-      for (i = 0; i < teamNum; i++) {
+      for (var i = 0; i < teamNum; i++) {
         var scoreObj = sortedScoreObjects[i];
         //var scoreObj = getScoreObject(sortedScoreObjects, i);
         var name = scoreObj.teamName;
@@ -1277,6 +1332,33 @@ function createTallyText(sortedScoreObjects, lastCourseStr, leftRace) {
     leftRaceStr += '＠' + leftRace;
   }
   if (leftRaceStr) tallyStrs.push(leftRaceStr);
+  
+  // 1レースで付きうる最大の点差
+  var oneRaceMaxDif = 0;
+  switch (teamNum) {
+    case 2: // 2チーム:交流戦
+      oneRaceMaxDif = 40; // (15+12+10+9+8+7)-(1+2+3+4+5+6)
+      break;
+    case 3: // 3チーム:フォーマンセル
+      oneRaceMaxDif = 36; // (15+12+10+9)-(1+2+3+4)
+      break;
+    case 4: // 4チーム:トリプルス
+      oneRaceMaxDif = 31; // (15+12+10)-(1+2+3)
+      break;
+    case 6: // 6チーム:タッグ
+      oneRaceMaxDif = 24; // (15+12)-(1+2)
+      break;
+  }
+  // 残りのレースで付きうる最大の点差
+  var possibleMaxDif = leftRace * oneRaceMaxDif;
+  if (myScoreObj.teamRank === 1) {
+    var dif = sortedScoreObjects[0].totalScore - sortedScoreObjects[1].totalScore;
+    if (dif > possibleMaxDif) {
+      if (cfg.winDetermine) {
+        tallyStrs.push('勝利確定!');
+      }
+    }
+  }
   
   // join
   if (cfg.splitStr === ' /') {
@@ -1371,10 +1453,10 @@ function execCopyResult() {
   try {
     var successful = document.execCommand('copy');
     var msg = successful ? 'successful' : 'unsuccessful';
-    console.log('copy command was ' + msg);
+    logger.log('copy command was ' + msg);
     notifyFooter('コピーしました: ' + copyText.textContent);
   } catch(err) {
-    console.log('unable to copy');
+    logger.log('unable to copy');
   }
   window.getSelection().removeAllRanges();
 }
@@ -1408,9 +1490,9 @@ function saveStorage() {
     saveDataObj[varName] = window[varName];
   });
   var jsonStr = JSON.stringify(saveDataObj);
-  //console.log(jsonStr);
+  //logger.log(jsonStr);
   localStorage.setItem(storageKey, jsonStr);
-  console.log('set storage data');
+  logger.log('set storage data');
 }
 
 /*
@@ -1419,9 +1501,9 @@ function saveStorage() {
 function loadStorage() {
   var jsonStr = localStorage.getItem(storageKey);
   if (jsonStr !== null) {
-    console.log('storage data exist');
-    console.log('merging variables to window');
-    //console.log(jsonStr);
+    logger.log('storage data exist');
+    logger.log('merging variables to window');
+    //logger.log(jsonStr);
     var saveDataObj = JSON.parse(jsonStr);
     saveTargetVariables.map(varName => {
       if (saveDataObj[varName] !== undefined) {
@@ -1435,30 +1517,68 @@ function loadStorage() {
       }
     });
   } else {
-    console.log('storage data doesn\'t exist');
+    logger.log('storage data doesn\'t exist');
   }
 }
 
 /* 
- * makeSampleTeamData()
+ * scanTeamData(race)
  */
-function makeSampleTeamData() {
-  sampleTeamData = null;
-  var stateElm = document.querySelector('.scanable-state');
-  stateElm.textContent = '　';
-  var stateRace1 = document.body.querySelector('.state-cell.race-1');
-  var isInputedRace1 = (stateRace1.getAttribute('inputed') === 'inputed');
-  if (isInputedRace1) {
-    var names = scanedNameData[0];
-    var isScanedNamesRace1 = true;
+function scanTeamData(race) {
+  if (!existsSampleTeamData()) {
+    alert('標本の作成が済んでいません。');
+    return false;
+  }
+  logger.log(`scaning race ${race}...`);
+  var scanedNameArr = scanedNameData[race - 1];
+  var teamArr = getTeamRankArray(scanedNameArr, sampleTeamData);
+  logger.log('scaned!');
+  logger.log(teamArr);
+  for (var rank = 1; rank <= 12; rank++) {
+    var slc = '.race-' + race + '.rank-' + rank;
+    var input = document.querySelector(slc);
+    input.value = teamArr[rank - 1];
+    resetRankInputClass(input);
+  }
+  updateRace(race);
+  tallyForScores();
+  return true;
+}
+
+/* 
+ * makeSampleTeamData(race)
+ */
+function makeSampleTeamData(race) {
+  logger.log(`making specimen with race ${race}...`);
+  //var stateElm = document.querySelector('.scanable-state');
+  //stateElm.textContent = '　';
+  // そのレースの順位が入力済みかチェック
+  var stateRace = document.body.querySelector(`.state-cell.race-${race}`);
+  var isInputedRace = (stateRace.getAttribute('inputed') === 'inputed');
+  if (!isInputedRace) {
+    // 順位が入力済みでないなら
+    logger.log(`error! race ${race} rank is missing.`);
+    alert('順位の入力が済んでいません。');
+    return false;
+  } else {
+    // 順位が入力済みなら
+    // スキャンデータがあるかどうかチェック
+    var names = scanedNameData[race - 1];
+    var isScanedNamesRace = true;
     for (var i = 0; i < names.length; i++) {
       if (names[i] === null) {
-        isScanedNamesRace1 = false;
+        isScanedNamesRace = false;
         break;
       }
     }
-    if (isScanedNamesRace1) {
-      var teams = inputRankData[0];
+    if (!isScanedNamesRace) {
+      // スキャンデータがないなら
+      logger.log(`error! race ${race} scan data is missing.`);
+      alert('スキャンデータがありません。');
+      return false;
+    } else {
+      // スキャンデータがあるなら
+      var teams = inputRankData[race - 1];
       sampleTeamData = [];
       names.forEach((name, i) => {
         sampleTeamData.push({
@@ -1467,9 +1587,14 @@ function makeSampleTeamData() {
           teamName: teamNames[teams[i]]
         });
       });
-      logger.log('スクショ読取用のサンプルデータを作成しました.');
+      logger.log('maked!');
       logger.log(sampleTeamData);
-      document.querySelector('.scanable-state').textContent = '準備OK!';
+      var $specimen = document.querySelector('.specimen');
+      if ($specimen) {
+        $specimen.classList.remove('specimen');
+      }
+      document.querySelector(`.pasted-image-cell.race-${race}`).classList.add('specimen');
+      return true;
     }
   }
 }

@@ -12,13 +12,13 @@
   <title>マリオカート8DX 即時集計機</title>
   <!--<link rel="shortcut icon" href="favicon.ico">-->
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?Ver.0.2.0">
   <link rel="stylesheet" href="assets/jquery.mysuggest.css">
-  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.1.0">
+  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.2.0">
   <script type="text/javascript" src='assets/jquery.js'></script>
   <script type="text/javascript" src='assets/jquery.mysuggest.js'></script>
-  <script type="text/javascript" src='assets/main.js?Ver.0.1.1a'></script>
-  <script type="text/javascript" src='assets/ocr.js?Ver.0.1.0'></script>
+  <script type="text/javascript" src='assets/main.min.js?Ver.0.2.0'></script>
+  <script type="text/javascript" src='assets/ocr.min.js?Ver.0.2.0'></script>
   <!--
   <script type="text/javascript" src='tesseract/tesseract.min.js'></script>
   <script type="text/javascript" src='sokuji_ocr/assets/main.js'></script>
@@ -28,7 +28,7 @@
 <body>
   <div id="main-content">
     <h5>© 2019 <a href="https://twitter.com/GungeeSpla" target="_blank">@GungeeSpla</a></h5>
-    <h1>マリオカート8DX 即時集計機 Ver.0.1.1</h1>
+    <h1>マリオカート8DX 即時集計機 Ver.0.2.0</h1>
     <div id="tag-area">
       <p class="page-tag">マリオカート</p>
       <p class="page-tag">マリオカート8デラックス</p>
@@ -68,10 +68,11 @@
         <h4>ショートカットキー</h4>
         <table id="table-sc-key"></table>
       </div>
+      <p>（一番左に自分のチームタグを入れてください）</p>
     </div>
     
     <h2>2. 順位テーブルを埋めてください。</h2>
-    <a href="javascript:void(0)" id="input-rank-description-show" show="input-rank-description" text1="説明を見る" text2="説明を隠す">説明を見る</a>
+    <a href="javascript:void(0)" id="input-rank-description-show" show="input-rank-description" text1="説明を見る" text2="説明を隠す"></a><br>
     <div id="input-rank-description" style="display: none;">
       <ul>
         <li>
@@ -96,19 +97,35 @@
           <p>ロックボタンを押すと、その列を編集不可にすることができます。<br>
           もう一度押すと、編集不可状態を解除できます。</p>
         </li>
-        <!--
+      </ul>
+    </div>
+    <a href="javascript:void(0)" id="input-rank-description-show-2" show="input-rank-description-2" text1="スクショ読取機能に関する説明を見る(Ver.0.2.0-, PCのみ)" text2="スクショ読取機能に関する説明を隠す"></a>
+    <div id="input-rank-description-2" style="display: none;">
+      <ul>
         <li>
-          <p>手順がやや複雑ですが、配信画面のスクショを張り付けて自動でチームを判別することもできます。</p>
-          <p>まず下準備として、1レース目だけは手動でチームを入力する必要があります。<br>
-          加えて、1レース目のリザルト画面が映っている画面のスクショを撮影して<br>
-          <span class="mini-text">（キーボードの「PrtSc」キーを押す。ノートPCによっては「Fn」キーを同時押しする必要があります）</span>、<br>
-          1レース目の列下部の「paste」をクリックし、Ctrl+Vもしくは右クリックからペーストします。<br></p>
-          <p>以上、チームの入力とスクショの読取りが正常にできていれば「スクショ」の下に「準備OK!」と出ます。<br>
-          2レース目以降は、各レースのリザルト（総合ではない）のスクショをペーストしていけばOKです。<br></p>
-          <p class="kome-jirushi mini-text">スクショの内容によっては、ゲーム画面の認識がうまくいかないことがあります。<br>
-          配信映像の周囲がゴチャついているとうまくいかない可能性が高いです。ご容赦ください。</p>
+          <p><b>手順がやや複雑ですが、配信画面のスクショを張り付けて自動でチームを判別することができます。</b></br>
+          ただし、1レース分だけは手動で順位を入力する必要があります（標本を作成するため）。<br>
+          また、ゲーム画面の抽出が正確に行えない場合（※）、正しく動作しません。<br>
+          <span class="mini-text">※配信者がゲーム画面の周りにオリジナルのフレームを配置している場合など。<br>
+          即時集計をしようと思っている配信で使用可能かどうか、その配信者のアーカイブを利用して事前にチェックすることを推奨します。</span></p>
+          </p>
         </li>
-        -->
+        <li>
+          <p><b>標本の作成手順</b>：まず<u>1レース分の順位を手動で1位から12位まで入力</u>します。<br>
+          そして、<u>そのレースのリザルト画面が映っているスクショを撮影</u>してください。<br>
+          <span class="mini-text">スクショを撮影するには：キーボードの「PrtSc」キーを押します。ノートPCによっては「Fn」キーを同時押しする必要があります。</span></p>
+          <p>スクショを撮影できたら、順位を入力したレースの列の下にある<u>「paste」の部分を選択</u>し、<br>
+          <u>「Ctrl+V」もしくは「右クリック→貼り付け」でペースト</u>します。<br>
+          <span class="mini-text">このとき、画像ではないデータを張り付けている場合には、<br>
+          画面下部に「画像データではありません」という警告がでます。<br>
+          画像データを正しく張り付けることができていれば、画像処理中の表示が出ます。</span></p>
+          <p>画像処理が済むと「paste」の下に小さなゲーム画像が挿入されます。<br>
+          <u>これをクリックして、出てきた「標本を作る」ボタンをさらにクリック</u>すると、標本が作製されます。</p>
+        </li>
+        <li>
+          <p>標本が作成できたら、他の11レース分については、<br>
+          各レースのリザルト画面（←総合ではない）が映っているスクショを即時集計機にペーストしていくだけでOKです。</p>
+        </li>
       </ul>
     </div>
     <div id="input-rank-area">
@@ -149,6 +166,7 @@
       </p>
     	<p><input type="checkbox" id="cfg-latest-course" class="cfg-check"><label for="cfg-latest-course">コース</label></p>
     	<p><input type="checkbox" id="cfg-left-race-num" class="cfg-check"><label for="cfg-left-race-num">残りレース数</label></p>
+    	<p><input type="checkbox" id="cfg-win-determine" class="cfg-check"><label for="cfg-win-determine">勝利確定!</label></p>
       <p>
         <span class="radio-title">自チームの強調文字（66以外）</span>
         <span class="radio-wrapper">
@@ -181,6 +199,14 @@
     <h2>アップデート履歴</h2>
     <table id="update-rireki">
       <tr>
+        <td><b>0.2.0</b></td>
+        <td><ul>
+          <li>スクリーンショットからチームを読み取る機能を追加しました。(PCのみ)</li>
+          <li>タッチデバイスにおける動作を見直しました。</li>
+          <li>勝利確定! を表示できるようにしました。</li>
+        </ul></td>
+      </tr>
+      <tr>
         <td><b>0.1.1</b></td>
         <td><ul>
           <li>ショートカットキー設定のセーブ・ロードが正常に動作していなかった問題を修正しました。</li>
@@ -201,12 +227,14 @@
   </div>
   <img src="sokuji_ocr/assets/rank-image-mono.png" id="rank-image-mono" style="display: none;">
   <img src="sokuji_ocr/assets/sample-name.png" id="test-tesseract-image" style="display: none;">
+  <div id="footer-notice"></div>
   <div id="image-viewer-wrapper">
     <div id="image-viewer-inner">
       <img id="image-viewer-image">
-      <img id="image-viewer-close" src="sokuji_ocr/assets/close.png">
+      <div id="image-viewer-rank"><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p></div>
+      <div id="image-viewer-button"><p id="image-viewer-button-make">標本を作る</p><p id="image-viewer-button-read">チームを読み取る</p><p id="image-viewer-button-close">閉じる</p></div>
     </div>
   </div>
-  <div id="footer-notice"></div>
+  <div id="mask-notice" style="display: none;"><p>画像処理中</p><div style="transform: translateY(-85px)"><div class="loader"></div></div></div>
 </body>
 </html>

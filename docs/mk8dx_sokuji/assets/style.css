@@ -278,11 +278,27 @@ li p {
           opacity: 1;
           cursor: pointer;
         }
+        #input-rank-table td.pasted-image-cell {
+          vertical-align: top;
+        }
+        #input-rank-table td.pasted-image-cell.specimen:after {
+          content: '標本';
+          color: #ffffff;
+          background: #ff5722;
+          width: 100%;
+          display: block;
+          border-radius: 0 0 4px 5px;
+        }
         #input-rank-table td.pasted-image-cell img {
           display; none;
           width: 100%;
           border-radius: 4px;
           transition: filter .3s ease;
+        }
+        #input-rank-table td.pasted-image-cell.specimen img {
+          border: 2px solid #ff5722;
+          box-sizing: border-box;
+          border-radius: 4px 4px 0 0;
         }
         #input-rank-table td.pasted-image-cell img:hover {
           filter: brightness(120%);
@@ -312,6 +328,9 @@ li p {
             cursor: pointer;
           }
     
+    .team--1 {
+      background-color: #ffffff;
+    }
     .team-0 {
       background-color: var(--team-bgcolor-0);
       color: var(--team-textcolor-0);
