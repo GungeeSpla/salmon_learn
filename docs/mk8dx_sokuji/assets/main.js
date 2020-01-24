@@ -1493,19 +1493,8 @@ function execCopy(str) {
 ** https://naoyu.net/js-clipboard-copy/
  */
 function execCopyResult() {
-  var copyText = document.querySelector('#result');
-  var range = document.createRange();
-  range.selectNode(copyText);
-  window.getSelection().addRange(range);
-  try {
-    var successful = document.execCommand('copy');
-    var msg = successful ? 'successful' : 'unsuccessful';
-    logger.log('copy command was ' + msg);
-    notifyFooter('コピーしました: ' + copyText.textContent);
-  } catch(err) {
-    logger.log('unable to copy');
-  }
-  window.getSelection().removeAllRanges();
+  var copyText = document.getElementById('result').textContent;
+  execCopy(copyText);
 }
 
 /*
