@@ -2,7 +2,7 @@
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
-var version = '0.2.0';
+var version = '0.2.1';
 var isTouchDevice = ('ontouchstart' in document);
 var mousedownEvent = isTouchDevice ? 'touchstart' : 'mousedown';
 var mouseChaserStyle = isTouchDevice ? 'none' : 'block';

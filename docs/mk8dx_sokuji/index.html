@@ -12,13 +12,13 @@
   <title>マリオカート8DX 即時集計機</title>
   <!--<link rel="shortcut icon" href="favicon.ico">-->
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="assets/style.css?Ver.0.2.0">
+  <link rel="stylesheet" href="assets/style.css?Ver.0.2.1">
   <link rel="stylesheet" href="assets/jquery.mysuggest.css">
-  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.2.0">
+  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.2.1">
   <script type="text/javascript" src='assets/jquery.js'></script>
   <script type="text/javascript" src='assets/jquery.mysuggest.js'></script>
-  <script type="text/javascript" src='assets/main.min.js?Ver.0.2.0'></script>
-  <script type="text/javascript" src='assets/ocr.min.js?Ver.0.2.0'></script>
+  <script type="text/javascript" src='assets/main.min.js?Ver.0.2.1'></script>
+  <script type="text/javascript" src='assets/ocr.min.js?Ver.0.2.1'></script>
   <!--
   <script type="text/javascript" src='tesseract/tesseract.min.js'></script>
   <script type="text/javascript" src='sokuji_ocr/assets/main.js'></script>
@@ -28,7 +28,7 @@
 <body>
   <div id="main-content">
     <h5>© 2019 <a href="https://twitter.com/GungeeSpla" target="_blank">@GungeeSpla</a></h5>
-    <h1>マリオカート8DX 即時集計機 Ver.0.2.0</h1>
+    <h1>マリオカート8DX 即時集計機 Ver.0.2.1</h1>
     <div id="tag-area">
       <p class="page-tag">マリオカート</p>
       <p class="page-tag">マリオカート8デラックス</p>
@@ -199,6 +199,12 @@
     <h2>アップデート履歴</h2>
     <table id="update-rireki">
       <tr>
+        <td><b>0.2.1</b></td>
+        <td><ul>
+          <li>貼り付けたスクリーンショットを右下に固定できるようにしました。</li>
+        </ul></td>
+      </tr>
+      <tr>
         <td><b>0.2.0</b></td>
         <td><ul>
           <li>スクリーンショットからチームを読み取る機能を追加しました。(PCのみ)</li>
@@ -223,7 +229,6 @@
         </ul></td>
       </tr>
     </table>
-        
   </div>
   <img src="sokuji_ocr/assets/rank-image-mono.png" id="rank-image-mono" style="display: none;">
   <img src="sokuji_ocr/assets/sample-name.png" id="test-tesseract-image" style="display: none;">
@@ -232,7 +237,7 @@
     <div id="image-viewer-inner">
       <img id="image-viewer-image">
       <div id="image-viewer-rank"><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p></div>
-      <div id="image-viewer-button"><p id="image-viewer-button-make">標本を作る</p><p id="image-viewer-button-read">チームを読み取る</p><p id="image-viewer-button-close">閉じる</p></div>
+      <div id="image-viewer-button"><p id="image-viewer-button-make">標本を作る</p><p id="image-viewer-button-read">チームを読み取る</p><p id="image-viewer-button-rb">右下に固定</p><p id="image-viewer-button-close">閉じる</p></div>
     </div>
   </div>
   <div id="mask-notice" style="display: none;"><p>画像処理中</p><div style="transform: translateY(-85px)"><div class="loader"></div></div></div>

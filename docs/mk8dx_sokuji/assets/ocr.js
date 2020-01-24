@@ -288,6 +288,7 @@ let $viewerImage;
 let $viewerRank;
 let $viewerRankPs;
 let $viewerButton;
+let $viewerButtonRB;
 let $viewerButtonMake;
 let $viewerButtonRead;
 let $viewerButtonClose;
@@ -301,6 +302,7 @@ function makeZoomImage() {
   $viewerRank = document.querySelector('#image-viewer-rank');
   $viewerRankPs = document.querySelectorAll('#image-viewer-rank p');
   $viewerButton = document.querySelector('#image-viewer-button');
+  $viewerButtonRB = document.querySelector('#image-viewer-button-rb');
   $viewerButtonMake = document.querySelector('#image-viewer-button-make');
   $viewerButtonRead = document.querySelector('#image-viewer-button-read');
   $viewerButtonClose = document.querySelector('#image-viewer-button-close');
@@ -329,6 +331,24 @@ function makeZoomImage() {
     if (ret) {
       close();
     }
+  });
+  // 右下固定ボタン
+  $viewerButtonRB.addEventListener(mousedownEvent, () => {
+    let $oldImage = document.querySelector('.fix-image-rb');
+    if ($oldImage) {
+      $oldImage.parentNode.removeChild($oldImage);
+    }
+    let $newImage = new Image();
+    $newImage.src = $viewerImage.src;
+    $newImage.classList.add('fix-image-rb');
+    $newImage.addEventListener(mousedownEvent, (e) => {
+      $newImage.parentNode.removeChild($newImage);
+      e.stopPropagation();
+      return false;
+    });
+    document.body.appendChild($newImage);
+    close();
+    notifyFooter('クリックで消去できます。');
   });
 }
 /** setEventZoomImage(img, race)
