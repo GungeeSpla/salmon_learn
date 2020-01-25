@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.3.0b');
+console.log('main.js is ver.0.3.0d');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -363,6 +363,9 @@ function updateInputTeamNameTable() {
   }
   if (isOverlay) {
     setOverlayVisible(document);
+  }
+  if (overlayWindow || isOverlay) {
+    tallyForScores();
   }
   return;
   /** setOverlayVisible(doc)
@@ -1671,10 +1674,12 @@ function createTallyText(sortedScoreObjects, lastCourseStr, leftRace) {
       $container.querySelectorAll('.team-span').forEach($span => {
         var $parent = $span.parentNode;
         var scaleX = 1;
-        if ($span.offsetWidth > $parent.offsetWidth) {
-          scaleX = $parent.offsetWidth / $span.offsetWidth;
+        var translateX = 0;
+        if ($span.offsetWidth > ($parent.offsetWidth - 20)) {
+          scaleX = ($parent.offsetWidth - 20) / $span.offsetWidth;
+          translateX = 10;
         }
-        $span.style.setProperty('transform', `scaleX(${scaleX})`);
+        $span.style.setProperty('transform', `translateX(${translateX}px) scaleX(${scaleX})`);
       });
     });
   }

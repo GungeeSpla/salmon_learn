@@ -517,7 +517,7 @@ body.overlay-mode #overlay-wrapper {
     font-family: sans-serif;
   }
     #overlay-wrapper .overlay-container.respect-kusaan .overlay-inner {
-      background: rgba(0, 0, 0, .6);
+      background: rgba(0, 0, 0, .5);
       color: #ffffff;
       border-radius: 15px;
       position: relative;
