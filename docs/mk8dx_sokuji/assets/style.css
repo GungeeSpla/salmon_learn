@@ -95,6 +95,9 @@ ul {
 li {
   margin-bottom: 1.2em;
 }
+.overlay-desc li {
+  margin-bottom: 0;
+}
 li p {
   margin-bottom: 0.7em;
   vertical-align: top;
