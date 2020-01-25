@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.3.0d');
+console.log('main.js is ver.0.3.1');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -90,6 +90,7 @@ var shortCutKeys = ['a', 'b', 'c', 'd', 'e', 'f'];
 var tallyConfig = {
   onBeforeUnload: false,     // ページ遷移時警告
   isEnabledComplement: true, // 自動補完
+  isEnabledSuggest: true, // 自動補完
   latestScore: true,     // 最新レースの得点
   latestScoreDif: true,  // 最新レースの点差
   latestCource: true,    // 最新レースのコース
@@ -207,7 +208,8 @@ function initConfigElements() {
     {key: 'currentRank',         id: 'cfg-current-rank'},
     {key: 'targetDistance',      id: 'cfg-target-distance'},
     {key: 'winDetermine',        id: 'cfg-win-determine'},
-    {key: 'onBeforeUnload',      id: 'cfg-on-before-unload'}
+    {key: 'onBeforeUnload',      id: 'cfg-on-before-unload'},
+    {key: 'isEnabledSuggest',    id: 'cfg-course-suggest'},
   ].map(obj => {
     var elm = document.getElementById(obj.id);
     if (tallyConfig[obj.key] === true) {
@@ -224,7 +226,6 @@ function initConfigElements() {
     elm.addEventListener('change', function(e) {
       tallyConfig[obj.key] = this.checked;
       setSaveStorage();
-      tallyForScores();
       if (this.id === 'cfg-on-before-unload') {
         if (this.checked) {
           window.onbeforeunload = function() {
@@ -241,6 +242,11 @@ function initConfigElements() {
             return null;
           };
         }
+      }
+      if (this.id === 'cfg-course-suggest') {
+        makeInputRankTable();
+      } else { 
+        tallyForScores();
       }
     }, false);
   });
@@ -772,9 +778,11 @@ function makeInputRankTable() {
     }
     table.appendChild(tr);
   }
-  $('input.course-cell').MySuggest({
-    msArrayList: MK8DX_COURSES
-  });
+  if (tallyConfig.isEnabledSuggest) {
+    $('input.course-cell').MySuggest({
+      msArrayList: MK8DX_COURSES
+    });
+  }
   var rankEndTr = document.querySelector('.rank-end-tr');
   var hr = document.createElement('hr');
   var tr = document.createElement('tr');
@@ -897,19 +905,20 @@ function makeInputRankTable() {
       tabIndex: rankTableIndex + num,
       'rank-input-id': num,
     });
+    /*
     input.addEventListener('input', function (e) {
       var selectionEnd = this.selectionEnd;
       logger.log('inputed course [race ' + race + '][' + this.value + ']', 'gray');
-      tallyForScores(() => {
-        this.focus();
-        this.setSelectionRange(selectionEnd, selectionEnd);
-      });
+      tallyForScores();
+      this.focus();
+      this.setSelectionRange(selectionEnd, selectionEnd);
     }, false);
+    */
     input.addEventListener('change', function (e) {
       setTimeout(() => {
-        logger.log('inputed course [race ' + race + '][' + this.value + ']', 'gray');
-      },1);
-      tallyForScores();
+        logger.log('changed course [race ' + race + '][' + this.value + ']', 'gray');
+        tallyForScores();
+      }, 100);
     }, false);
     td.appendChild(input);
   }

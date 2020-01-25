@@ -636,7 +636,7 @@ body.overlay-mode #overlay-wrapper {
   opacity: 0;
 }
   .alert-outer {
-    background-color: rgba(30, 30, 30, .6);
+    background-color: rgba(30, 30, 30, .5);
     position: fixed;
     left: 0;
     top: 160px;
@@ -706,3 +706,22 @@ body.overlay-mode #overlay-wrapper {
         .alert-button:first-child {
           border: none;
         }
+/*
+@font-face {font-family:Mixfont;src: local('Lucida Grande'), local(Verdana);unicode-range: U+0021-0025,U+0027-2011;}
+@font-face {font-family:Mixfont;src: local('Baskerville'), local('Baskerville Old Face'), local('Hoefler Text'), local(Garamond), local('Times New Roman');unicode-range: U+0026;}
+@font-face {font-family:Mixfont;src: local('Hiragino Mincho Pro'), local('MS PMincho');unicode-range: U+301C-30FC;}
+@font-face {font-family:Mixfont;src: local('Hiragino Kaku Gothic Pro'), local(Meiryo);unicode-range: U+30FB-FA6A;}
+@font-face { font-family: mydigit; src: url("ticking-timebomb-bb.regular.ttf") format("opentype"); unicode-range: U+0030-U+0039; }
+@font-face { font-family: mydigit; src: monospace; unicode-range: U+002D,U+002B,U+00B1; }
+*/
+.overlay-inner {
+  /*transform: skewX(-8deg);*/
+  text-shadow:   2px   2px  4px #000000,
+                .8px   0px .8px #000000,
+                 0px  .8px .8px #000000,
+               -.8px   0px .8px #000000,
+                 0px -.8px .8px #000000;
+}
+.overlay-inner .num {
+  /*font-family: mydigit;*/
+}

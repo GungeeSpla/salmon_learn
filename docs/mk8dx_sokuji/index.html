@@ -14,16 +14,16 @@
   <link rel="stylesheet" href="assets/jquery.mysuggest.css">
   <script type="text/javascript" src='assets/jquery.js'></script>
   <script type="text/javascript" src='assets/jquery.mysuggest.js'></script>
-  <script type="text/javascript"   src="assets/main.min.js?Ver.0.3.0d"></script>
-  <script type="text/javascript"    src="assets/ocr.min.js?Ver.0.3.0d"></script>
-  <link rel="stylesheet"            href="assets/style.css?Ver.0.3.0d">
-  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.3.0d">
+  <script type="text/javascript"   src="assets/main.min.js?Ver.0.3.1"></script>
+  <script type="text/javascript"    src="assets/ocr.min.js?Ver.0.3.1"></script>
+  <link rel="stylesheet"            href="assets/style.css?Ver.0.3.1">
+  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.3.1">
 </head>
 <body>
   <div id="overall-wrapper">
   <div id="main-content">
     <h5>© 2019-2020 <a href="https://twitter.com/GungeeSpla" target="_blank">@GungeeSpla</a></h5>
-    <h1>マリオカート8DX 即時集計機 Ver.0.3.0</h1>
+    <h1>マリオカート8DX 即時集計機 Ver.0.3.1</h1>
     <div id="tag-area">
       <p class="page-tag">マリオカート</p>
       <p class="page-tag">マリオカート8デラックス</p>
@@ -192,6 +192,7 @@
       </p>
       <h3>その他の設定</h3>
     	<p><input type="checkbox" id="cfg-auto-complement"  class="cfg-check"><label for="cfg-auto-complement">自動補完を有効にする</span></label></p>
+    	<br><p><input type="checkbox" id="cfg-course-suggest"  class="cfg-check"><label for="cfg-course-suggest">コース名の予測変換を有効にする</span></label></p>
     	<br><p><input type="checkbox" id="cfg-on-before-unload" class="cfg-check"><label for="cfg-on-before-unload">ページを離れるときに警告する</span></label></p>
     </div>
     <h2>配信者向け：OBS Studioで即時集計結果を表示する</h2>
@@ -209,6 +210,12 @@
     </ol>
     <h2>アップデート履歴</h2>
     <table id="update-rireki">
+      <tr>
+        <td><b>0.3.1</b></td>
+        <td><ul>
+          <li>コース入力時の予測変換機能をOFFにできるようにしました。</li>
+        </ul></td>
+      </tr>
       <tr>
         <td><b>0.3.0</b></td>
         <td><ul>
@@ -286,10 +293,10 @@
   <div id="mask-notice" style="display: none;"><p>画像処理中</p><div style="transform: translateY(-85px)"><div class="loader"></div></div></div>
   </div>
   <div id="overlay-wrapper">
-    <div id="team-num-2" class="overlay-container respect-kusaan team-num-2"><div class="overlay-inner"><div class="header"><p class="score-dif plus">±0</p><p class="space"></p><p class="left-race">残レース:</p></div><div class="body"><p class="team team-1"><span class="team-span">A</span></p><p class="score score-1">0</p><p class="split">-</p><p class="score score-2">0</p><p class="team team-2"><span class="team-span">B</span></p></div><div class="win" style="display: none;">win!</div></div></div>
-    <div id="team-num-3" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p></div><div class="scores"><p class="score score-1">0</p><p class="score score-2">0</p><p class="score score-3">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1">±0</p><p class="dif dif-2">±0</p></div><div class="left-race">残</div></div></div>
-    <div id="team-num-4" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p><p class="team team-4"><span class="team-span">D</span></p></div><div class="scores"><p class="score score-1">0</p><p class="score score-2">0</p><p class="score score-3">0</p><p class="score score-4">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1">±0</p><p class="dif dif-2">±0</p><p class="dif dif-3">±0</p></div><div class="left-race">残</div></div></div>
-    <div id="team-num-6" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p><p class="team team-4"><span class="team-span">D</span></p><p class="team team-5"><span class="team-span">E</span></p><p class="team team-6"><span class="team-span">F</span></p></div><div class="scores"><p class="score score-1">0</p><p class="score score-2">0</p><p class="score score-3">0</p><p class="score score-4">0</p><p class="score score-5">0</p><p class="score score-6">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1">±0</p><p class="dif dif-2">±0</p><p class="dif dif-3">±0</p><p class="dif dif-4">±0</p><p class="dif dif-5">±0</p></div><div class="left-race">残</div></div></div>
+    <div id="team-num-2" class="overlay-container respect-kusaan team-num-2"><div class="overlay-inner"><div class="header"><p class="score-dif plus num">±0</p><p class="space"></p><p class="left-race">残レース:</p></div><div class="body"><p class="team team-1"><span class="team-span">A</span></p><p class="score score-1 num">0</p><p class="split">-</p><p class="score score-2 num">0</p><p class="team team-2"><span class="team-span">B</span></p></div><div class="win" style="display: none;">win!</div></div></div>
+    <div id="team-num-3" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p></div><div class="scores"><p class="score score-1 num">0</p><p class="score score-2 num">0</p><p class="score score-3 num">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1 num">±0</p><p class="dif dif-2 num">±0</p></div><div class="left-race">残</div></div></div>
+    <div id="team-num-4" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p><p class="team team-4"><span class="team-span">D</span></p></div><div class="scores"><p class="score score-1 num">0</p><p class="score score-2 num">0</p><p class="score score-3 num">0</p><p class="score score-4 num">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1 num">±0</p><p class="dif dif-2 num">±0</p><p class="dif dif-3 num">±0</p></div><div class="left-race">残</div></div></div>
+    <div id="team-num-6" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p><p class="team team-4"><span class="team-span">D</span></p><p class="team team-5"><span class="team-span">E</span></p><p class="team team-6"><span class="team-span">F</span></p></div><div class="scores"><p class="score score-1 num">0</p><p class="score score-2 num">0</p><p class="score score-3 num">0</p><p class="score score-4 num">0</p><p class="score score-5 num">0</p><p class="score score-6 num">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1 num">±0</p><p class="dif dif-2 num">±0</p><p class="dif dif-3 num">±0</p><p class="dif dif-4 num">±0</p><p class="dif dif-5 num">±0</p></div><div class="left-race">残</div></div></div>
   </div>
   <div class="alert-wrapper">
     <div class="alert-outer">
