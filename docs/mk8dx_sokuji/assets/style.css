@@ -426,8 +426,9 @@ button {
   --t6-dif-space-width: calc(var(--team-width) / 2);
   --t6-team-height    : 45px;
   --t6-dif-height     : 35px;
-  --t6-border-left    : 1px solid #666666;
-  --t6-border-top     : 1px solid #666666;
+  --t6-border-left    : 1px solid #999999;
+  --t6-border-top     : 1px solid #999999;
+  --t6-race-color     : gold;
 }
 
 body.overlay-mode {
@@ -617,4 +618,5 @@ body.overlay-mode #overlay-wrapper {
         bottom: 0;
         font-size: var(--t6-race-font);
         margin-right: 10px;
+        color: var(--t6-race-color);
       }

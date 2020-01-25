@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.2.5');
+console.log('main.js is ver.0.3.0');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -132,14 +132,12 @@ window.addEventListener('load', function(){
   if (!isEnabledSS) {
     document.querySelector('#input-rank-description-show-2').style.setProperty('display', 'none');
   }
-  makeRadioButtons();       // ラジオボタン
-  makeInputTeamNameTable(); // チームタグ/ショートカットキー入力
-  makeInputRankPalette();   // タグパレット
-  makeInputRankTable();     // 順位テーブル
-  makeMouseChaser();        // マウスチェイサー
-  makeZoomImage();          // 通知関数や画像ズーム関数
-  initConfigElements();     // 表示設定を初期化
-  isInitialized = true;   // フラグをtrue
+  makeRadioButtons();         // ラジオボタン
+  updateInputTeamNameTable(); // チーム名入力テーブル
+  makeMouseChaser();          // マウスチェイサー
+  makeZoomImage();            // 通知関数や画像ズーム関数
+  initConfigElements();       // 表示設定を初期化
+  isInitialized = true;       // フラグをtrue
   // リセットボタン
   document.getElementById('reset-button').onclick = () => {
     var ret = window.confirm('順位テーブルと点数補正をリセットします。よろしいですか？');
@@ -571,12 +569,14 @@ function makeInputRankPalette() {
    */
   function updateOverlay() {
     if (overlayWindow || isOverlay) {
-      var $focus = document.querySelector(':focus');
+      var $focus = document.activeElement;
       if ($focus) {
         var selectionEnd = $focus.selectionEnd;
         tallyForScores(() => {
           $focus.focus();
-          $focus.setSelectionRange(selectionEnd, selectionEnd);
+          if ($focus.tagName.toLowerCase() === 'input' && $focus.getAttribute('type') === 'text') {
+            $focus.setSelectionRange(selectionEnd, selectionEnd);
+          }
         });
       } else {
         tallyForScores();
@@ -1296,7 +1296,7 @@ function updateRace(race, doComplement) {
  * ◎ 表示設定を変えたとき
  */
 function tallyForScores(callback) {
-    logger.log('tallied scores');
+    logger.log('tallied scores', 'blue');
     // ◎ 残りレース数
     // ◎ 最新レースのコース名
     // ◎ 入力されているレース番号の配列
@@ -1689,7 +1689,8 @@ window.logger = {
   },
   color: {
     'black': '#000',
-    'gray': '#aaa'
+    'gray': '#aaa',
+    'blue': '#00f'
   }
 };
 
