@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.2.4e');
+console.log('main.js is ver.0.2.4f');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -936,7 +936,9 @@ function makeInputRankTable() {
           var [isComplemented, isChangeState] = updateRace(race, !isNull);
           // 状態が変わったならば集計
           if (isChangeState) {
-            makeInputRankTable();
+  /** [メモ5] */
+            updateInputTeamNameTable();
+            //makeInputRankTable();
             //tallyForScores();
           }
         }
