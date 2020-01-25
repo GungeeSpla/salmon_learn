@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.3.1');
+console.log('main.js is ver.0.3.2');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -1099,9 +1099,14 @@ function createRankInput(rank, race, num) {
       var isInputedTeam = resetRankInputClass(this);
       var [isComplemented, isChangeState] = updateRace(race, !isNull);
       if (isChangeState) {
-        tallyForScores(() => {
-          this.blur();
-        });
+    /** [メモ6] */
+        var selectionEnd = this.selectionEnd;
+        tallyForScores();
+        this.focus();
+        this.setSelectionRange(selectionEnd, selectionEnd);
+        this.blur();
+        //tallyForScores();
+        //this.blur();
       } else {
         if (isComplemented) {
           this.blur();
