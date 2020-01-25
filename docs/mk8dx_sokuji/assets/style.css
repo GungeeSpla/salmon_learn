@@ -321,6 +321,9 @@ button {
         #input-rank-table.pen-mode td input {
           pointer-events: none;
         }
+        #input-rank-table.pen-mode td input.course-cell {
+          pointer-events: initial;
+        }
           input[type=text] {
             font-size: 1em;
             line-height: 1.6em;
@@ -620,3 +623,85 @@ body.overlay-mode #overlay-wrapper {
         margin-right: 10px;
         color: var(--t6-race-color);
       }
+.alert-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  transition: .2s;
+  display: none;
+  opacity: 0;
+}
+  .alert-outer {
+    background-color: rgba(30, 30, 30, .6);
+    position: fixed;
+    left: 0;
+    top: 160px;
+    width: 800px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+    .alert-inner {
+      border-radius: 2em;
+      position: relative;
+      background-color: #f2f2f2;
+      display: inline-block;
+      width: 30em;
+      box-sizing: border-box;
+      overflow: hidden;
+      transition: .2s;
+      transform: scale(0.95);
+    }
+    .stream .alert-inner {
+      width: 28em;
+    }
+      .alert-text {
+        padding: 2em;
+        text-align: center;
+      }
+        .alert-title {
+          font-weight: bold;
+          font-size: 2em;
+          word-break: break-word;
+        }
+        .alert-message {
+          font-size: 1.5em;
+          word-break: break-word;
+        }
+      .alert-button-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: .1em solid #ddd;
+      }
+        .alert-button-wrapper-only-ok .alert-button {
+          width: 100%;
+        }
+        .alert-button {
+          font-size: 1.5em;
+          font-weight: bold;
+          cursor: pointer;
+          color: #258bfb;
+          width: 50%;
+          display: inline-block;
+          border-left: .06em solid #ddd;
+          padding: 1em 0;
+          transition: .2s;
+          text-align: center;
+          background-color: #f2f2f2;
+          user-select: none;
+        }
+        .alert-button:hover {
+          background-color: #e9e9e9;
+        }
+        .alert-button:active {
+          transition: 0s;
+          background-color: #ddd;
+        }
+        .alert-button:first-child {
+          border: none;
+        }

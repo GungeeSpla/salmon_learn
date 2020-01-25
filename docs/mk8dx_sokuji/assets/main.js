@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.3.0a');
+console.log('main.js is ver.0.3.0b');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -140,8 +140,18 @@ window.addEventListener('load', function(){
   isInitialized = true;       // フラグをtrue
   // リセットボタン
   document.getElementById('reset-button').onclick = () => {
-    var ret = window.confirm('順位テーブルと点数補正をリセットします。よろしいですか？');
-    if (ret) {
+    if (isOverlay) {
+      my_alert({
+        title: '入力内容のリセット',
+        message: '順位テーブルと点数補正をリセットします。よろしいですか？',
+        ok: reset
+      });
+    } else {
+      if (window.confirm('順位テーブルと点数補正をリセットします。よろしいですか？')) {
+        reset();
+      }
+    }
+    function reset() {
       sampleTeamData = null;
       initInputDataVariable();
       correctionValues = [0, 0, 0, 0, 0, 0];
@@ -342,7 +352,7 @@ function makeRadioButtons() {
  * を作り直します。
  */
 function updateInputTeamNameTable() {
-  console.log('change race num / team num');
+  logger.log('change race num / team num');
   makeInputTeamNameTable(); // チーム名/ショートカットキー/補正値の入力テーブルをメイクする
   makeInputRankPalette();   // チームパレットをメイクする
   makeInputRankTable();     // 順位テーブルをメイクする
@@ -1211,6 +1221,9 @@ function updateRace(race, doComplement) {
   if (doComplement === undefined) doComplement = true;
   doComplement = doComplement && window.tallyConfig.isEnabledComplement;
   var stateTd = document.body.querySelector('.state-cell.race-' + race);
+  if (!stateTd) {
+    return;
+  }
   var stateImage = stateTd.querySelector('img');
   var beforeStateType = stateTd.getAttribute('state-type');
   // 正しく入力されているチームタグの数を数える
@@ -1353,12 +1366,14 @@ function tallyForScores(callback) {
         //var inpt = document.body.querySelector('.rank-' + i + '.race-' + race);
         //var team = parseInt(inpt.getAttribute('team'));
         var team = parseInt(inputRankData[race - 1][i - 1]);
-        var point = SCORES[i - 1];
-        totalScores[team] += point;
-        sortedScoreObjects[team].totalScore += point;
-        if (raceIndex === inputedRaces.length - 1) {
-          latestScores[team] += point;
-          sortedScoreObjects[team].latestScore += point;
+        if (team > -1) {
+          var point = SCORES[i - 1];
+          totalScores[team] += point;
+          sortedScoreObjects[team].totalScore += point;
+          if (raceIndex === inputedRaces.length - 1) {
+            latestScores[team] += point;
+            sortedScoreObjects[team].latestScore += point;
+          }
         }
       }
     });
@@ -1939,3 +1954,72 @@ var MK8DX_COURSES = [
   'BB',
   ['ビッグブルー', 'bigguburu-'],
 ];
+
+/* 
+ * my_alert(opt)
+ */
+function my_alert(opt) {
+  var dom = {};
+  var click_event = 'onclick';
+  dom.alert_wrapper = document.querySelector('.alert-wrapper');
+  dom.alert_outer = document.querySelector('.alert-outer');
+  dom.alert_inner = document.querySelector('.alert-inner');
+  dom.alert_title = document.querySelector('.alert-title');
+  dom.alert_message = document.querySelector('.alert-message');
+  dom.alert_ok = document.querySelector('.alert-button-wrapper-ok-cancel .alert-button-ok');
+  dom.alert_cancel = document.querySelector('.alert-button-wrapper-ok-cancel .alert-button-cancel');
+  dom.alert_only_ok = document.querySelector('.alert-button-wrapper-only-ok .alert-button-ok');
+  dom.alert_ok_cancel_wrapper = document.querySelector('.alert-button-wrapper-ok-cancel');
+  dom.alert_only_ok_wrapper = document.querySelector('.alert-button-wrapper-only-ok');
+  if (opt === undefined) opt = {};
+  if (opt.title === undefined) opt.title = 'Title';
+  if (opt.message === undefined) opt.message = '';
+  if (opt.ok === undefined) {
+    opt.is_only_ok = true;
+  } else {
+    opt.is_only_ok = false;
+  }
+  var time = 200;
+  var hide = () => {
+    dom.alert_inner.style.transform = 'scale(0.95)';
+    dom.alert_wrapper.style.opacity = 0;
+    setTimeout(() => {
+      dom.alert_wrapper.style.display = 'none';
+    }, time);
+  };
+  var show = () => {
+    dom.alert_wrapper.style.display = 'block';
+    setTimeout(() => {
+      dom.alert_inner.style.transform = 'scale(1)';
+      dom.alert_wrapper.style.opacity = 1;
+    },10);
+  };
+  var cancel = () => {
+    hide();
+  };
+  var return_false = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  };
+  var ok = () => {
+    if (opt.ok) opt.ok();
+    hide();
+  };
+  if (opt.is_only_ok) {
+    dom.alert_only_ok_wrapper.style.display = 'flex';
+    dom.alert_ok_cancel_wrapper.style.display = 'none';
+  } else {
+    dom.alert_only_ok_wrapper.style.display = 'none';
+    dom.alert_ok_cancel_wrapper.style.display = 'flex';
+  
+  }
+  dom.alert_title.innerHTML = opt.title;
+  dom.alert_message.innerHTML = opt.message;
+  dom.alert_outer[click_event] = cancel;
+  dom.alert_inner[click_event] = return_false;
+  dom.alert_ok[click_event] = ok;
+  dom.alert_cancel[click_event] = cancel;
+  dom.alert_only_ok[click_event] = cancel;
+  show();
+}
