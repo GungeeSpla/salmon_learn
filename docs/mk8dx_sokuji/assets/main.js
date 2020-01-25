@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.3.0');
+console.log('main.js is ver.0.3.0a');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -469,7 +469,18 @@ function updateCorrection() {
     }
   }
   if (isChange) {
-    tallyForScores();
+    var $focus = document.activeElement;
+    if ($focus) {
+      var selectionEnd = $focus.selectionEnd;
+      tallyForScores(() => {
+        $focus.focus();
+        if ($focus.tagName.toLowerCase() === 'input' && $focus.getAttribute('type') === 'text') {
+          $focus.setSelectionRange(selectionEnd, selectionEnd);
+        }
+      });
+    } else {
+      tallyForScores();
+    }
   }
   logger.log('update correction values ' + JSON.stringify(correctionValues));
   setSaveStorage();
