@@ -708,17 +708,53 @@ function WeaponRater () {
 		$wrapper.append($html);
 		// 上部のブキメニューを作ってこれも放り込む
 		var $menu = $(".weapon_menu");
-		weaponIds.forEach(function(id){
+		var $menuInner = $("<div></div>");
+		weaponIds.forEach(function(id, i){
 			if (id > -1) {
+			  if (i >= 5 && i % 5 === 0) {
+				  //$menuInner.append($("<br>"));
+			  }
 				var src = that.WEAPONS_IMAGE_URL + id + ".png";
 				var $image = $('<img src="' + src + '">');
+				$image.attr('index', i);
 				$image.click(function(){
 					that.changeWeapon(id);
+      		if (weaponIds.length > 4) {
+            var index = $(this).attr('index');
+            var row = Math.floor(index / 5);
+            var margin = row > 0 ? -100.5 * row - 4 : 0;
+            $menuInner.css('margin-top', margin + 'px');
+      		  $menu.css({
+      		    'width': '510px',
+      		    'height': '84px',
+              'line-height': '80px',
+      		  });
+      		}
 				});
-				$menu.append($image);
+				$menuInner.append($image);
 			}
 		});
-		
+		$menu.append($menuInner);
+		if (weaponIds.length > 4) {
+		  var $opener = $('<div class="weapon_menu_opener">OPEN</div>');
+		  $opener.click(function(){
+        $menuInner.css('margin-top', '0px');
+  		  $menu.css({
+          'width': '610px',
+  		    'height': '810px',
+          'line-height': '58px',
+          'z-index': '9999'
+  		  });
+		  });
+		  $wrapper.append($opener);
+		  $menu.css({
+		    'overflow': 'hidden',
+        'line-height': '80px',
+		    'width': '510px',
+		    'height': '84px',
+        'left': '15px',
+		  });
+		}
 		var weapon = WEAPONS[id];
 		var hensachi = WEAPONS_HENSACHI[id];
 		// ブキの名前

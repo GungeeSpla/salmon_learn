@@ -303,6 +303,8 @@ stTimerApp.specialStTitle = "";
 [button fix=true graphic=panel_11ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel == 11" name=fix_sonota_item]
 [button fix=true graphic=panel_12a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel != 12" name=fix_sonota_item]
 [button fix=true graphic=panel_12ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel == 12" name=fix_sonota_item]
+[button fix=true graphic=panel_13a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_13 cond="sf.panel != 13" name=fix_sonota_item]
+[button fix=true graphic=panel_13ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_13 cond="sf.panel == 13" name=fix_sonota_item]
 
 [return]
 
@@ -1561,6 +1563,32 @@ salmonrunAPI.get(function () {
         }
     });
 });
+[endscript]
+[return]
+
+
+
+;=======================================
+*Panel_13
+;=======================================
+[eval exp="sf.panel = 13"]
+[call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=0 time=0]
+[html name=html_space]
+<div class="canvas_chart_wrapper">
+	<canvas class="canvas_chart" id="canvas_chart" width="400" height="400"></canvas>
+</div>
+[endhtml]
+[cm]
+[iscript]
+salmonrunAPI.get(function () {
+  var ids = [];
+  WEAPON_IDS.forEach(v => {
+    if (v >= 0) ids.push(v);
+  });
+  weaponRater.make(ids);
+});
+$(".layer_free").show(0);
 [endscript]
 [return]
 

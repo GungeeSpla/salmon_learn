@@ -885,6 +885,24 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 	border-radius: 20px;
     text-align: center;
 }
+.weapon_menu_opener {
+  position: absolute;
+  top: 15px;
+  left: 540px;
+  width: 84px;
+  height: 84px;
+  box-sizing: border-box;
+  /* padding: 8px 20px; */
+  background-image: url(../data/bgimage/shimashima.png);
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 84px;
+  cursor: pointer;
+}
 .weapon_menu img {
     width: 66px;
     height: 66px;
