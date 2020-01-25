@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.2.4d');
+console.log('main.js is ver.0.2.4e');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -1335,8 +1335,9 @@ function tallyForScores(callback) {
     // を計算する
     inputedRaces.map((race, raceIndex) => {
       for (var i = 1; i <= playerNum; i++) {
-        var inpt = document.body.querySelector('.rank-' + i + '.race-' + race);
-        var team = parseInt(inpt.getAttribute('team'));
+        //var inpt = document.body.querySelector('.rank-' + i + '.race-' + race);
+        //var team = parseInt(inpt.getAttribute('team'));
+        var team = parseInt(inputRankData[race - 1][i - 1]);
         var point = SCORES[i - 1];
         totalScores[team] += point;
         sortedScoreObjects[team].totalScore += point;
@@ -1713,9 +1714,8 @@ function execCopy(str) {
 /** execCopyResult()
  */
 function execCopyResult() {
-  updateInputTeamNameTable();
-  //var copyText = document.getElementById('result').textContent;
-  //execCopy(copyText);
+  var copyText = document.getElementById('result').textContent;
+  execCopy(copyText);
 }
 
 /** trigger(element, eventType)
