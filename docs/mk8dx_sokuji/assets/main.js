@@ -1,7 +1,7 @@
 //window.localStorage.clear();
 //window.localStorage.setItem('mk8dx-sokuji', '{"teamNum":6,"raceNum":12,"teamNames":["おかし","たまげた","CCC","DDD","EEE","FFF"],"shortCutKeys":["o","t","c","d","e","f"],"tallyConfig":{"onBeforeUnload":false,"isEnabledComplement":true,"latestScore":true,"latestScoreDif":false,"latestCource":true,"totalScoreDif":true,"leftRaceNum":true,"currentRank":true,"targetDistance":true,"emphasisStr":"【】","emphasisStart":"【","emphasisEnd":"】","splitStr":"／","teamSplitStr":"／","passRank":2}}');
 'use strict';
-console.log('main.js is ver.0.2.4f');
+console.log('main.js is ver.0.2.4g');
 var SCORES = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 var browser = (() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
@@ -41,7 +41,7 @@ var os = (() => {
 })();
 var isPC = (os === 'windows' || os === 'mac');
 var isTouchDevice = ('ontouchstart' in window);
-var mousedownEvent = isTouchDevice ? 'touchstart' : 'mousedown';
+var mousedownEvent = isTouchDevice ? 'click' : 'mousedown';
 var queries = (() => {
 	var queryStr = window.location.search.slice(1);
 			queries = {};
@@ -956,23 +956,25 @@ function makeInputRankTable() {
     };
     td.oncontextmenu = oncontextmenu;
     td.addEventListener(mousedownEvent, onmousedown, false);
-    td.addEventListener('mousemove', onmousedown, false);
-    td.addEventListener('mouseup', onmouseup, false);
-    td.addEventListener('wheel', function (e) {
-      if (currentPen < 0) {
-        return true;
-      }
-      e.preventDefault();
-      if (e.deltaY < 0){
-          if (currentPen >= 1) {
-            selectPalette(--currentPen);
-          }
-      } else {
-          if (currentPen < teamNum) {
-            selectPalette(++currentPen);
-          }
-      }
-    });
+    if (!isTouchDevice) {
+      td.addEventListener('mousemove', onmousedown, false);
+      td.addEventListener('mouseup', onmouseup, false);
+      td.addEventListener('wheel', function (e) {
+        if (currentPen < 0) {
+          return true;
+        }
+        e.preventDefault();
+        if (e.deltaY < 0){
+            if (currentPen >= 1) {
+              selectPalette(--currentPen);
+            }
+        } else {
+            if (currentPen < teamNum) {
+              selectPalette(++currentPen);
+            }
+        }
+      });
+    }
   }
   function setEventDisablePen(td) {
     td.addEventListener('mouseenter', () => {
