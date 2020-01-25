@@ -83,6 +83,7 @@ a:hover {
 p {
   line-height: 1.5em;
   margin-bottom: 1.5em;
+  display: inline-block;
 }
 td {
   text-align: center;
@@ -320,7 +321,6 @@ button {
         #input-rank-table.pen-mode td input {
           pointer-events: none;
         }
-        
           input[type=text] {
             font-size: 1em;
             line-height: 1.6em;
