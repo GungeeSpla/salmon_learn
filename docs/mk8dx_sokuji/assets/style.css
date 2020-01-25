@@ -97,6 +97,7 @@ li {
 }
 li p {
   margin-bottom: 0.7em;
+  vertical-align: top;
 }
 .mini-text {
   font-size: 0.8em;
