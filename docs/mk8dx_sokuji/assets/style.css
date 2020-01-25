@@ -111,7 +111,12 @@ li p {
   margin-top: 1em;
   margin-bottom: 1em;
 }
-  
+#result {
+  white-space: normal;
+}
+button {
+  font-size: 1em;
+}
   #main-content {
     width: 80%;
     max-width: 70em;
@@ -136,11 +141,15 @@ li p {
       #input-team-area input[type=radio]:checked + label {
         font-weight: bold;
       }
+      #input-team-area #table-correction,
       #input-team-area #table-sc-key,
       #input-team-area #table-team-name {
         display: inline-table;
         vertical-align: middle;
         transform: translateY(-2px);
+      }
+      #input-team-area #table-correction input.error {
+        background: rgba(255, 0, 0, .2);
       }
     
     #input-rank-area {
@@ -175,6 +184,7 @@ li p {
         text-align: center;
         display: inline-block;
         vertical-align: middle;
+        line-height: 2.4em;
       }
         #input-rank-table .paste-input,
         #input-rank-palette div {
@@ -307,6 +317,9 @@ li p {
         #input-rank-table.pen-mode td input {
           user-select: none;
         }
+        #input-rank-table.pen-mode td input {
+          pointer-events: none;
+        }
         
           input[type=text] {
             font-size: 1em;
@@ -387,3 +400,221 @@ li p {
   text-align: left;
   margin: 10px;
 }
+:root {
+  --root-background : #00ff00;
+  --t2-header-height: 50px;
+  --t2-body-height  : 80px;
+  --t2-team-height  : 85px;
+  --t2-space-width  : 100px;
+  --t2-team-width   : 150px;
+  --t2-score-width  : 130px;
+  --t2-all-width    : calc(var(--t2-space-width) + (var(--t2-team-width) * 2) + (var(--t2-score-width) * 2));
+  --t2-dif-width    : calc(var(--t2-team-width) + var(--t2-score-width));
+  --t2-header-font  : 35px;
+  --t2-score-font   : 60px;
+  --t2-team-font    : 50px;
+  --t2-plus-color   : orangered;
+  --t2-minus-color  : deepskyblue;
+  --t2-race-color   : gold;
+  --t2-win-font     : 35px;
+  --t2-win-background: yellow;
+  --t2-win-color     : orangered;
+  --t6-team-font      : 35px;
+  --t6-dif-font       : 25px;
+  --t6-race-font      : 25px;
+  --t6-team-width     : calc(780px / 6);
+  --t6-dif-space-width: calc(var(--team-width) / 2);
+  --t6-team-height    : 45px;
+  --t6-dif-height     : 35px;
+  --t6-border-left    : 1px solid #666666;
+  --t6-border-top     : 1px solid #666666;
+}
+
+body.overlay-mode {
+  background-color: rgba(0, 0, 0, 0);
+  overflow: hidden;
+}
+body.overlay-mode #overall-wrapper {
+  position: fixed;
+  top: 160px;
+  width: 800px;
+  height: 800px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+body.overlay-mode #overall-wrapper #main-content {
+  width: 800px;
+  padding: 2em;
+  box-sizing: border-box;
+}
+body.overlay-mode #image-viewer-wrapper {
+  position: fixed;
+  top: 160px;
+  width: 800px;
+  height: 800px;
+}
+body.overlay-mode #footer-notice {
+  width: 800px;
+  top: calc(800px + 160px - 3em);
+  bottom: initial;
+  background-color: #ffffff;
+}
+body.overlay-mode #mask-notice {
+  top: 160px;
+  width: 800px;
+  height: 800px;
+}
+#overlay-wrapper {
+  display: none;
+  position: fixed;
+  top: 0px;
+  width: 800px;
+  height: 160px;
+  overflow: hidden;
+}
+body.overlay-mode #overlay-wrapper {
+  display: block;
+}
+  #overlay-wrapper div,
+  #overlay-wrapper p {
+    display: block;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+  }
+  #overlay-wrapper p {
+    display: inline-block;
+    height: 100%;
+  }
+  #overlay-wrapper .team-span {
+    display: inline-block;
+    transform-origin: left top;
+  }
+  #overlay-wrapper .team {
+    color: #ffffff;
+    background-color: initial;
+  }
+  #overlay-wrapper .overlay-container {
+    width: 800px;
+    height: 160px;
+    display: none;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center; 
+    flex-wrap: wrap;
+    font-weight: bold;
+    font-family: sans-serif;
+  }
+    #overlay-wrapper .overlay-container.respect-kusaan .overlay-inner {
+      background: rgba(0, 0, 0, .6);
+      color: #ffffff;
+      border-radius: 15px;
+      position: relative;
+    }
+    #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .overlay-inner {
+    }
+      #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .header {
+        height: var(--t2-header-height);
+      }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .header p {
+          line-height: calc(10px + var(--t2-header-height));
+          font-size: var(--t2-header-font);
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .header .score-dif {
+          width: var(--t2-dif-width);
+          text-align: right;
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .header .score-dif.plus {
+          color: var(--t2-plus-color);
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .header .score-dif.minus {
+          color: var(--t2-minus-color);
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .header .space {
+          width: var(--t2-space-width);
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .header .left-race {
+          color: var(--t2-race-color);
+          width: var(--t2-dif-width);
+          text-align: left;
+        }
+      #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .body {
+        height: var(--t2-body-height);
+      }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .body p {
+          line-height: var(--t2-body-height);
+          font-size: var(--t2-score-font);
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .body .team {
+          width: var(--t2-team-width);
+          font-size: var(--t2-team-font);
+          line-height: var(--t2-team-height);
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .body .score {
+          width: var(--t2-score-width);
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .body .score-1 {
+          text-align: right;
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .body .score-2 {
+          text-align: left;
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .body .split {
+          width: var(--t2-space-width);
+        }
+      #overlay-wrapper .overlay-container.respect-kusaan.team-num-2 .win {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: var(--t2-win-font);
+        width: var(--t2-team-width);
+        height: var(--t2-header-height);
+        line-height: var(--t2-header-height);
+        background: var(--t2-win-background);
+        color: var(--t2-win-color);
+      }
+    #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .overlay-inner {
+    }
+      #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 p {
+        width: var(--t6-team-width);
+        font-size: var(--t6-team-font);
+      }
+      #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .teams {
+        height: var(--t6-team-height);
+      }
+      #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .scores {
+        height: var(--t6-team-height);
+        border-top: var(--t6-border-top);
+      }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .teams p:first-child,
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .scores p:first-child {
+          border: none;
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .teams p,
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .scores p {
+          line-height: var(--t6-team-height);
+          border-left: var(--t6-border-left);
+        }
+      #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .difs {
+        height: var(--t6-dif-height);
+      }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .difs p {
+          line-height: var(--t6-dif-height);
+          font-size: var(--t6-dif-font);
+        }
+        #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .difs .space {
+          width: var(--t6-dif-space-width);
+        }
+      #overlay-wrapper .overlay-container.respect-kusaan.team-num-6 .left-race {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        font-size: var(--t6-race-font);
+        margin-right: 10px;
+      }

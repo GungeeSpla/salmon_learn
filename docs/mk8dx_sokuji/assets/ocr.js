@@ -1,4 +1,5 @@
 'use strict';
+console.log('ocr.js is ver.0.2.3');
 const canvas1 = createCanvas(false, 1280, 720);
 const canvas2 = createCanvas(false, 230 * 2, 25 * 2);
 const canvas3 = createCanvas(false, 230 * 2, 25 * 2 * 12);
@@ -378,8 +379,8 @@ function setEventZoomImage(img, race) {
         }
       });
     }
-    const windowWidth = getWindowWidth();
-    const windowHeight = getWindowHeight();
+    const windowWidth = (window.isOverlay) ? 800 : getWindowWidth();
+    const windowHeight = (window.isOverlay) ? 800 : getWindowHeight();
     const innerWidthMax = windowWidth * 0.8;
     const innerHeightMax = windowHeight * 0.8;
     const innerAspect = innerWidthMax / innerHeightMax;
@@ -437,7 +438,7 @@ function notifyFooter(text) {
       noticeTimer = setTimeout(() => {
         footerNotice.innerHTML = '';
       }, 600);
-    }, 2000);
+    }, 5000);
   }, 1);
 }
 /** setEventPasteImage(elm, img)

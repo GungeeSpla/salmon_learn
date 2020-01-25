@@ -10,25 +10,20 @@
   <meta name="twitter:description" content="マリオカート8DXの即時集計ツールです。66（交流戦）、タッグ、トリプルス、フォーマンセルの4形式に対応。" />
   <meta name="twitter:image"       content="https://gungeespla.github.io/salmon_learn/mk8dx_sokuji/favicon.png" />
   <title>マリオカート8DX 即時集計機</title>
-  <!--<link rel="shortcut icon" href="favicon.ico">-->
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="assets/jquery.mysuggest.css">
   <script type="text/javascript" src='assets/jquery.js'></script>
   <script type="text/javascript" src='assets/jquery.mysuggest.js'></script>
-  <script type="text/javascript"   src='assets/main.min.js?Ver.0.2.2b'></script>
-  <script type="text/javascript"    src='assets/ocr.min.js?Ver.0.2.2b'></script>
-  <link rel="stylesheet"            href="assets/style.css?Ver.0.2.2b">
-  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.2.2b">
-  <!--
-  <script type="text/javascript" src='tesseract/tesseract.min.js'></script>
-  <script type="text/javascript" src='sokuji_ocr/assets/main.js'></script>
-  <script type="text/javascript" src='sokuji_ocr/assets/trim.js'></script>
-  -->
+  <script type="text/javascript"   src='assets/main.min.js?Ver.0.2.3'></script>
+  <script type="text/javascript"    src='assets/ocr.min.js?Ver.0.2.3'></script>
+  <link rel="stylesheet"            href="assets/style.css?Ver.0.2.3">
+  <link rel="stylesheet" href="sokuji_ocr/assets/style.css?Ver.0.2.3">
 </head>
 <body>
+  <div id="overall-wrapper">
   <div id="main-content">
     <h5>© 2019 <a href="https://twitter.com/GungeeSpla" target="_blank">@GungeeSpla</a></h5>
-    <h1>マリオカート8DX 即時集計機 Ver.0.2.2</h1>
+    <h1>マリオカート8DX 即時集計機 Ver.0.2.3</h1>
     <div id="tag-area">
       <p class="page-tag">マリオカート</p>
       <p class="page-tag">マリオカート8デラックス</p>
@@ -40,7 +35,6 @@
       <p class="page-tag">トリプルス</p>
       <p class="page-tag">フォーマンセル</p>
     </div>
-    
     <h2>1. レース数、対戦形式、チームタグを入力してください。</h2>
     <div id="input-team-area">
       <div class="margin">
@@ -68,9 +62,12 @@
         <h4>ショートカットキー</h4>
         <table id="table-sc-key"></table>
       </div>
+      <div class="margin">
+        <h4>点数補正</h4>
+        <table id="table-correction"></table>
+      </div>
       <p>（一番左に自分のチームタグを入れてください）</p>
     </div>
-    
     <h2>2. 順位テーブルを埋めてください。</h2>
     <a href="javascript:void(0)" id="input-rank-description-show" show="input-rank-description" text1="説明を見る" text2="説明を隠す"></a><br>
     <div id="input-rank-description" style="display: none;">
@@ -138,13 +135,13 @@
         <table id="input-rank-table"></table>
       </div>
     </div>
-    <button id="reset-button" style="margin-top: 20px;">順位テーブルをリセットする</button>
-    
+    <button id="reset-button" style="margin-top: 20px;">順位テーブルと点数補正をリセットする</button>
     <h2>3. 即時集計結果が表示されます。</h2>
     <p>結果は自動でコピーされますが、Edge等の一部のブラウザでは機能しないようです。<br>
     その場合は手動でコピーしてみてください。</p>
-    <pre id="result"></pre><br><button id="copy-button">コピー</button>
-    
+    <pre id="result"></pre><br>
+    <button id="copy-button">コピー</button><br>
+    <button id="overlay-button" style="display: none;">オーバーレイを表示</button>
     <h2>詳細設定</h2>
     <div id="cfg-area">
       <h3>表示設定</h3>
@@ -197,9 +194,37 @@
     	<p><input type="checkbox" id="cfg-auto-complement"  class="cfg-check"><label for="cfg-auto-complement">自動補完を有効にする</span></label></p>
     	<p><input type="checkbox" id="cfg-on-before-unload" class="cfg-check"><label for="cfg-on-before-unload">ページを離れるときに警告する</span></label></p>
     </div>
-    
+    <!--
+    <h2>配信者向け：OBS Studioで即時集計結果を表示する</h2>
+    <p>OBS Studio上で本ツールを使い、集計結果を配信画面に表示することができます。<br>
+    OBS Studioを起動し、次の手順で操作を行ってください。</p>
+    <ol>
+      <li>ソース「ブラウザ」を追加する。</li>
+      <li>URLに<br>https://gungeespla.github.io/salmon_learn/mk8dx_sokuji/?overlay=1<br>を指定する。（末尾に「?overlay=1」が付いていることを確認する）</li>
+      <li>幅に「800」、高さに「960」を指定する。</li>
+      <li>「OK」をクリックして設定を完了する。</li>
+      <li>ブラウザソースの下側をトリミングする。<br>（プレビュー画面上でAltキーを押しながらソースの下側をドラッグする）</li>
+      <li>ブラウザソースの右クリックメニューから「対話」（下の方にある）をクリックする。</li>
+      <li>「'ブラウザ'との相互作用」というウィンドウが出てくるので、そのウィンドウで即時集計操作を行う。</li>
+    </ol>
+    -->
     <h2>アップデート履歴</h2>
     <table id="update-rireki">
+      <!--
+      <tr>
+        <td><b>0.3.0</b></td>
+        <td><ul>
+          <li>配信者向けのオーバーレイ機能を追加しました。</li>
+        </ul></td>
+      </tr>
+      -->
+      <tr>
+        <td><b>0.2.3</b></td>
+        <td><ul>
+          <li>コース重複等のルール違反が発生した際の点数補正を付けられるようにしました。</li>
+          <li>タッチデバイスにおける動作を見直しました。</li>
+        </ul></td>
+      </tr>
       <tr>
         <td><b>0.2.2</b></td>
         <td><ul>
@@ -235,7 +260,7 @@
           <li>順位テーブルの入力内容が自動でセーブされるようにしました。</li>
           <li>それに伴って「順位テーブルをリセットする」ボタンを順位テーブル下部に追加しました。</li>
           <li>点差のみを表示できるようにしました。</li>
-          <li>自チームの強調文字を追加しました。</li>
+          <li>自チームの強調文字に「**」を追加しました。</li>
         </ul></td>
       </tr>
       <tr>
@@ -257,6 +282,13 @@
     </div>
   </div>
   <div id="mask-notice" style="display: none;"><p>画像処理中</p><div style="transform: translateY(-85px)"><div class="loader"></div></div></div>
+  </div>
+  <div id="overlay-wrapper">
+    <div id="team-num-2" class="overlay-container respect-kusaan team-num-2"><div class="overlay-inner"><div class="header"><p class="score-dif plus">±0</p><p class="space"></p><p class="left-race">残レース:</p></div><div class="body"><p class="team team-1"><span class="team-span">A</span></p><p class="score score-1">0</p><p class="split">-</p><p class="score score-2">0</p><p class="team team-2"><span class="team-span">B</span></p></div><div class="win" style="display: none;">win!</div></div></div>
+    <div id="team-num-3" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p></div><div class="scores"><p class="score score-1">0</p><p class="score score-2">0</p><p class="score score-3">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1">±0</p><p class="dif dif-2">±0</p></div><div class="left-race">残</div></div></div>
+    <div id="team-num-4" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p><p class="team team-4"><span class="team-span">D</span></p></div><div class="scores"><p class="score score-1">0</p><p class="score score-2">0</p><p class="score score-3">0</p><p class="score score-4">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1">±0</p><p class="dif dif-2">±0</p><p class="dif dif-3">±0</p></div><div class="left-race">残</div></div></div>
+    <div id="team-num-6" class="overlay-container respect-kusaan team-num-6"><div class="overlay-inner"><div class="teams"><p class="team team-1"><span class="team-span">A</span></p><p class="team team-2"><span class="team-span">B</span></p><p class="team team-3"><span class="team-span">C</span></p><p class="team team-4"><span class="team-span">D</span></p><p class="team team-5"><span class="team-span">E</span></p><p class="team team-6"><span class="team-span">F</span></p></div><div class="scores"><p class="score score-1">0</p><p class="score score-2">0</p><p class="score score-3">0</p><p class="score score-4">0</p><p class="score score-5">0</p><p class="score score-6">0</p></div><div class="difs"><p class="space"></p><p class="dif dif-1">±0</p><p class="dif dif-2">±0</p><p class="dif dif-3">±0</p><p class="dif dif-4">±0</p><p class="dif dif-5">±0</p></div><div class="left-race">残</div></div></div>
+  </div>
 </body>
 </html>
 <!--x
