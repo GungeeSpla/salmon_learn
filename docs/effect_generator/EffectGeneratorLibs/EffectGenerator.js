@@ -8,7 +8,6 @@
  */
 window.init = function() {
   console.log('* Hello!');
-  
   var $ = window.$;
   var TxtFormat = {};
   var startTime = Math.floor(new Date().getTime() / 1000);
@@ -34,6 +33,7 @@ window.init = function() {
   var isEnabledFlushComment = false;
   var canvasManager = null;
   var isEnabledWebGL = false; // Browser Source on OBS doesn't support WebGL... (;_;)
+  var isLocalFile = location.origin.indexOf('file://') > -1;
   var transparent = createTransparent();
   var defaultEffectConfig = {
     index: 0,
@@ -66,52 +66,77 @@ window.init = function() {
   var isWaitBoyomi = false;
   var boyomiSpeed = 100;
   run();
-  
-  /* 
-   * run()
-   *
+  /** run()
    * $.ajax()でcomment.xmlを取得しに行く。
    * 中身を分析し、新たに取得したコメントについてそれぞれreadComment()が呼ばれる。
    */
   function run() {
+    // String.prototypeに自前のメソッドを追加する
     addStringMethod();
-    seriously = new window.Seriously();
+    // Seriouslyライブラリを呼び出す
+    if (isEnabledWebGL) seriously = new window.Seriously();
+    else seriously = {target(){}};
+    // キャンバスマネージャを生成
     canvasManager = new CanvasManager();
+    // getImageDataメソッドが使用可能かを確かめる
+    // サーバーを経由せずにローカルで開いているとcross-domainで使用できない
     tryGettingImageData();
+    // キャンバス設定を読み取る
     readCanvasConfig();
+    // エフェクトを登録する
     registerEffects();
+    // log
     console.log('* ' + registeredEffects.length + ' effects are registered.');
     console.log(registeredEffects);
+    // テスト用のボタンを追加する
     addTestButtons();
+    // 1秒毎にupdateCommentsを呼び出す
     setInterval(updateComments, 1000);
+    // 自動クロマキーを設定する
     var autoChromaKeyNum = setAutoChromaKeys();
     if (autoChromaKeyNum) {
       console.log('* Calculating ' + autoChromaKeyNum + ' auto chroma key.');
     } else console.log('* Ready!');
   }
-  
-  /* 
-   * updateComments()
-   *
+  /** updateComments()
    * $.ajax()でcomment.xmlを取得しに行く。
    * 中身を分析し、新たに取得したコメントについてそれぞれreadComment()が呼ばれる。
    */
   function updateComments() {
+    // エフェクトが登録済みでajaxが使用可能…でないならば何もしない
     if(!(isRegisteredEffects && canAjax)) return;
-    $.ajax({
+    ajax({
       url: 'comment.xml',
       type: 'GET',
       dataType: 'xml',
       timeout: 5000,
       success:function(xml) {
+        errorCount = 0;
+        //console.log('.');
         xml = xml.getElementsByTagName('comment');
-        for(var i=0; i<xml.length; i++) {
-          var _time = xml[i].getAttributeNode('time').value;
-          var _no = xml[i].getAttributeNode('no').value;
-          if((startTime < _time) ||
-          ((startTime == _time) && (startNo < _no))) {
-            startTime = _time;
-            startNo   = _no;
+        var nextStartTime = null;
+        var nextStartNo = null;
+        // すべてのコメントについて…
+        for (var i = 0; i < xml.length; i++) {
+          // time属性とno属性を読む
+          var _time = parseInt(xml[i].getAttributeNode('time').value, 10);
+          var _no = parseInt(xml[i].getAttributeNode('no').value, 10);
+          // 初期値は次のようになっている
+          // startTime ... コメントジェネレータを開いた時間
+          // startNo ... -1
+          // bool1: time属性がstartTimeよりも大きいか
+          var bool1 = (startTime < _time);
+          // bool2: time属性がstartTimeと同じでもno属性がstartNo属性より大きいか
+          var bool2 = (startTime == _time) && (startNo < _no);
+          // bool1またはbool2が満たされるならこのコメントを処理する 
+          if(bool1 || bool2) {
+            // startTime, startNoの更新用の値を保存する
+            // (!) 更新自体はfor文を回してから行う
+            nextStartTime = _time;
+            nextStartNo   = _no;
+            // このあたりのコードは読むのが面倒で何をしているのかよくわかっていないが
+            // 消したときにどう動作するかもわからないので元のコードをそのまま残している
+            // たぶん特殊なコメントかどうかを判定している
             var SlashComment = 0;
             var BSPComment = 0;
             var OwnerComment = 0;
@@ -129,13 +154,23 @@ window.init = function() {
                     }
                   }
                 }
+                // このコメントは処理すべきだ！
+                // コメント流しが有効なら流す
                 if (isEnabledFlushComment) flushComment(xml[i].firstChild.nodeValue);
+                // コメントをfixする
                 var comment = fixComment(xml[i].firstChild.nodeValue);
+                // このコメントを読む
                 readComment(comment);
               }
             }
-            break;
+            // 元のコードではここでbreakしている
+            // ここでbreakすると同一時刻に複数のコメントが投稿された場合に対応できない
+            //break;
           }
+        }
+        if (nextStartTime !== null) {
+          startTime = nextStartTime;
+          startNo   = nextStartNo;
         }
       },
       error: function(e) {
@@ -151,33 +186,25 @@ window.init = function() {
       }
     });
   }
-  
-  /* 
-   * readComment(comment, effect)
-   *
+  /** readComment(comment, effect)
    * 受け取ったコメントに対してどのエフェクトで反応すべきか判断し、
-   * そのエフェクトを生成する。effectを指定すると、コメントによらずそのエフェクトになる。
+   * そのエフェクトを生成する。effectを指定すると、コメントに依らず強制的にそのエフェクトを使用する。
    */
   function readComment(comment, effect, delay) {
     console.log('%c「' + comment + '」',
       'color: Green; font-weight: bold; margin-top: 10px; margin-bottom: 10px;');
-    
     // コメントから反応すべきエフェクトを選択する
     if (!effect) effect = selectEffect(comment);
+    // effectがtrue判定にならないならば何もしない
     if (!effect) return;
-    
     // 棒読みちゃんの読み上げを待ちたいが…
     if (isWaitBoyomi) delay = 1000 * (comment.length/10) / (boyomiSpeed/100);
     else delay = 0;
-    
     // エフェクトを生成する
     if (!delay) generateEffect(effect);
     else setTimeout(function(){ generateEffect(effect); }, delay);
   }
-  
-  /* 
-   * selectEffect(_comment)
-   *
+  /** selectEffect(_comment)
    * コメントからエフェクトを選ぶ。
    */
   function selectEffect(_comment) {
@@ -259,10 +286,7 @@ window.init = function() {
     console.info('* -> will play ' + ret.src);
     return ret;
   }
-  
-  /* 
-   * matchString(str, searchStr)
-   *
+  /** matchString(str, searchStr)
    * 文字列がマッチしているかを判定して結果となるオブジェクトを返す。
    */
   function matchString(str, searchStr) {
@@ -275,10 +299,7 @@ window.init = function() {
        isEqual  : (str === searchStr)
      };
   }
-  
-  /* 
-   * generateEffect(effect)
-   *
+  /** generateEffect(effect)
    * エフェクトを生成する。
    */
   function generateEffect(effect) { 
@@ -290,16 +311,17 @@ window.init = function() {
       case 'ignore':
         return;
       case 'wait':
+        console.log('エフェクトを待機させました.');
         return waitingEffects.push(effect);
       case 'stop':
+        console.log('エフェクトを強制終了させます.');
         currentEffect.elm.currentLoop = 998;
-        currentEffect.elm.pause();
+        if (currentEffect.elm.pause) currentEffect.elm.pause();
         currentEffect.elm.currentTime = 0;
         currentEffect.$elm.trigger('ended');
         break;
       }
     }
-    
     var $elm = effect.$elm;
     var elm = effect.elm;    
     switch (effect.type) {
@@ -334,9 +356,12 @@ window.init = function() {
       $elm.on('ended.one',function(){
         effect.elm.currentLoop++;
         console.log('(' + effect.elm.currentLoop + '/' + effect.loop + ')');
+        // 所定回数のループをこなしていないならば
         if (effect.elm.currentLoop < effect.loop) {
+          // もう一度再生する
           elm.play();
         } else {
+          // 所定回数ループしたならばエフェクトの再生を終わる
           canvasManager.stopVideo(elm);
           $elm.off('ended.one');
           shiftWaitingEffects();
@@ -346,10 +371,7 @@ window.init = function() {
       break;
     }
   }
-  
-  /* 
-   * readCanvasConfig()
-   *
+  /** readCanvasConfig()
    * キャンバス設定を読み取る。
    */
   function readCanvasConfig() {
@@ -371,7 +393,8 @@ window.init = function() {
     $canvasArea.css('width', w + 'px');
     $canvasArea.css('height', h + 'px');
     $('#buttons').css('top', (h + 20) + 'px');
-    
+    /** getCanvasConfigValue(key, defaultValue, type)
+     */
     function getCanvasConfigValue(key, defaultValue, type) {
       var val = canvas.getAttribute(key);
       if (!val) {
@@ -396,10 +419,7 @@ window.init = function() {
       return val;
     }
   }
-  
-  /* 
-   * registerEffects()
-   *
+  /** registerEffects()
    * エフェクトを登録する。
    */
   function registerEffects() {
@@ -446,13 +466,11 @@ window.init = function() {
       $elm.attr('loop', false);
       if (typeof elm.play !== 'function') elm.play = function(){};
       if (typeof elm.pause !== 'function') elm.pause = function(){};
-      
       // 画像エフェクト用効果音
       if (effect.type === 'audio' && effect.se !== '') {
         registeredSoundEffects[effect.se] = effect;
         return;
       }
-      
       // エフェクト開始時と終了時のイベントを登録
       $elm.on('play',function(){
         console.log('* play ' + effect.filename);
@@ -465,16 +483,13 @@ window.init = function() {
         if (effect.type !== 'video')
           shiftWaitingEffects();
       });
-      
       // 正規表現使用
       if (effect.regexp) {
         effect.word = effect.regexp;
         registeredEffects.push(effect);
         return;
       }
-      
       elm.effects = [];
-      
       // wordはカンマ区切りで複数設定できるので
       effect.word.split(',').map(word => {
         var _effect = $.extend({}, effect);
@@ -487,14 +502,10 @@ window.init = function() {
         registeredEffects.push(_effect);
         elm.effects.push(_effect);
       });
-      
       registeredElements.push(elm);
     }
   }
-  
-  /* 
-   * shiftWaitingEffects()
-   *
+  /** shiftWaitingEffects()
    * 待機エフェクトをシフトする。
    */
   function shiftWaitingEffects() {
@@ -507,10 +518,7 @@ window.init = function() {
       }
     }
   }
-  
-  /* 
-   * addTestButtons()
-   *
+  /** addTestButtons()
    * テスト用のボタン群を追加する。
    */
   function addTestButtons() {
@@ -615,10 +623,7 @@ window.init = function() {
       },5000);
     }
   }
-
-  /* 
-   * parseColor()
-   *
+  /** parseColor(str)
    * #000000を{r: 0, g: 0, b: 0}に変換する。
    */
   function parseColor(str) {
@@ -630,10 +635,7 @@ window.init = function() {
       r: r, g: g, b: b
     };
   }
-  
-  /* 
-   * setAutoChromaKeys()
-   *
+  /** setAutoChromaKeys()
    * クロマキー色の自動選択処理。
    */
   function setAutoChromaKeys() {
@@ -661,10 +663,7 @@ window.init = function() {
     });
     return autoChromaKeyNum;
   }
-
-  /* 
-   * setChromaKeyColor()
-   *
+  /** setChromaKeyColor()
    * クロマキーのカラーを取得する。
    */
   function setChromaKeyColor(index, elm, effects, chromaElements) {
@@ -752,10 +751,7 @@ window.init = function() {
       effect.keyColor = keyColor;
     });
   }
-
-  /* 
-   * isComment(comment, Slash, BSP)
-   *
+  /** isComment(comment, Slash, BSP)
    * コメントかどうか判定する。
    */
   function isComment(comment, Slash, BSP) {
@@ -774,10 +770,7 @@ window.init = function() {
     }
     return true;
   }
-  
-  /* 
-   * fixComment(comment)
-   *
+  /** fixComment(comment)
    * コメントを整形する。
    */
   function fixComment(comment) {
@@ -805,14 +798,11 @@ window.init = function() {
     comment = comment.replace(pattern,'');
     return comment.trim();
   }
-  
-  /* 
-   * drawVideo(video, effect)
-   *
+  /** drawVideo(video, effect)
    * <video>のフレームを<canvas>に描画する。
    * なぜだかOBSのブラウザソースは<video>をただ表示するだけだと
    * やたらカクカクになるが、<canvas>に描画してやると滑らかになる。
-   * あとクロマキーも適用できるようにする。
+   * ついでに、クロマキーも適用できるようにする。
    */
   function drawVideo(video, effect) {
     // ビデオが停止中なら何もしない
@@ -839,10 +829,7 @@ window.init = function() {
       canvas2d.context.drawImage(video, x, y, w, h);
     }
   }
-  
-  /* 
-   * getVideoAlpha(video, effect)
-   *
+  /** getVideoAlpha(video, effect)
    * 動画の不透明度を決定する。
    */
   function getVideoAlpha(video, effect) {
@@ -860,9 +847,7 @@ window.init = function() {
     }
   }
   
-  /* 
-   * getChromaImageData(canvas, color, alpha)
-   *
+  /** getChromaImageData(canvas, color, alpha)
    * クロマキーを適用したimgaedataを取得する
    */
   function getChromaImageData(canvas, color, alpha) {
@@ -904,19 +889,13 @@ window.init = function() {
       return false;
     }
   }
-  
-  /* 
-   * fitNumber(a, b, c)
-   *
+  /** fitNumber(a, b, c)
    * 数値cを最小値a～最大値bの範囲に収める。
    */
   function fitNumber(a, b, c) {
     return Math.min(b, Math.max(a, c));
   }
-  
-  /* 
-   * tryGettingImageData()
-   *
+  /** tryGettingImageData()
    * canvasのgetImageDataが使用可能か？
    * ローカルファイルを直接ブラウザで開いている場合
    * cross-domainに引っかかるので使えない。
@@ -939,10 +918,7 @@ window.init = function() {
     };
     img.src = 'EffectGeneratorLibs/sample-bg.jpg';
   }
-  
-  /* 
-   * CanvasManager()
-   *
+  /** CanvasManager()
    * 動画の再生と停止を管理するマネージャを作る。
    * WebGLコンテキストが使用できなければ2dコンテキストを使用する。
    */
@@ -951,6 +927,7 @@ window.init = function() {
     this.faderTimer = -1;
     this.canUseWebGL = isEnabledWebGL && !!canvas.getContext('webgl');
     this.chromaTarget = seriously.target(canvas);
+    // 動画の停止(WebGL)
     this.stopVideoWebGL = function() {
       self.chromaTarget.source.destroy();
       setTimeout(function(){
@@ -959,14 +936,20 @@ window.init = function() {
       }, 1000 / FPS);
       clearInterval(self.faderTimer);
     };
+    // 動画の停止(context2d)
     this.stopVideo2d = function(elm) {
-      clearTimeout(canvas2d.timer);
-      setTimeout(function(){
-        canvas2d.context.clear();
-      },1000 / FPS);
+      if (FPS === 60) {
+        cancelAnimationFrame(canvas2d.timer);
+        canvas2d.timer = requestAnimationFrame(clear);
+      } else {
+        clearTimeout(canvas2d.timer);
+        canvas2d.timer = setTimeout(clear, 1000 / FPS);
+      }
       elm.currentTime = 0;
-      canvas2d.context.clear();
-      
+      clear();
+      function clear() {
+        canvas2d.context.clear();
+      }
     };
     var applyChromaKeySetting = function (chroma, color) {
       chroma.screen = [color.r/255, color.g/255, color.b/255, 1]; // [0～1, 0～1, 0～1, 0～1]
@@ -975,6 +958,7 @@ window.init = function() {
       chroma.clipBlack = 0.1; // キー付きピクセルの最小結果アルファ値 0～1
       chroma.clipWhite = 1; // キー付きピクセルの最大結果アルファ値 0～1
     };
+    // 動画の再生(WebGL)
     this.playVideoWebGL = function(video, effect) {
       setTimeout(function(){
         var target = self.chromaTarget;
@@ -995,16 +979,21 @@ window.init = function() {
         }, 1000 / 60);
       }, 1000 / FPS);
     };
+    // 動画の再生(context2d)
     this.playVideo2d = function(video, effect) {
       video.frame = 0;
       video.play();
-      requestAnimationFrame(function(){
-        (function update() {
+      update();
+      function update() {
+        if (FPS === 60) {
+          cancelAnimationFrame(canvas2d.timer);
+          canvas2d.timer = requestAnimationFrame(update);
+        } else {
           clearTimeout(canvas2d.timer);
           canvas2d.timer = setTimeout(update, 1000 / FPS);
-          drawVideo(video, effect);
-        }());
-      });
+        }
+        drawVideo(video, effect);
+      }
     };
     this.playVideo = this.canUseWebGL ? this.playVideoWebGL : this.playVideo2d;
     this.stopVideo = this.canUseWebGL ? this.stopVideoWebGL : this.stopVideo2d;
@@ -1019,10 +1008,7 @@ window.init = function() {
       canvas.style.display = 'none';
     }
   }
-  
-  /* 
-   * addStringMethod()
-   *
+  /** addStringMethod()
    * 文字列の変換
    */
   function addStringMethod() {
@@ -1112,10 +1098,7 @@ window.init = function() {
         .replace(/ゞ/g, 'ヾ');
     };
   }
-  
-  /* 
-   * createCanvas2d(id, isDisplay)
-   *
+  /** createCanvas2d(id, isDisplay)
    * キャンバスエレメントを作成する。
    */
   function createCanvas2d(id, isDisplay) {
@@ -1130,10 +1113,7 @@ window.init = function() {
     $('#canvas-area').append(cvs);
     return cvs;
   }
-  
-  /* 
-   * createTransparent()
-   *
+  /** createTransparent()
    * 透明1pxの画像を作成する。
    */
   function createTransparent() {
@@ -1142,11 +1122,7 @@ window.init = function() {
       +'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=';
     return img;
   }
-  
-  /* 
-   * addCommentStyle()
-   * flushComment()
-   *
+  /** addCommentStyle()
    * コメントを流す。
    */
   function addCommentStyle() {
@@ -1163,6 +1139,8 @@ window.init = function() {
     var $head = $('head').eq(0);
     $head.append('<style>'+css+'</style>');
   }
+  /** flushComment(comment)
+   */
   function flushComment(comment) {
     var iUse = 0;
     for (var i = 0; i < 32; i++) {
@@ -1189,6 +1167,8 @@ window.init = function() {
       commentLines[iUse] = false;
     }, inTime);
   }
+  /** htmlEscape(str)
+   */
   function htmlEscape(str) {
     if (!str) return;
     return str.replace(/[<>&"'`]/g, (match) => {
@@ -1203,7 +1183,37 @@ window.init = function() {
       return escape[match];
     });
   }
+  /** ajax(opt)
+   */
+  function ajax(opt) {
+    var xhr = new XMLHttpRequest();
+    var type = opt.dataType || 'text';
+    xhr.open('GET', opt.url, true);
+    xhr.responseType = (type === 'xml') ? 'document' : 'text';
+    xhr.onreadystatechange = function (event) {
+      if (xhr.readyState === 4) {
+        if (isLocalFile || xhr.status === 200) {
+          if (type === 'xml') {
+            var xml = xhr.responseXML;
+            if (opt.success) return opt.success(xml);
+          } else {
+          var data = xhr.responseText;
+          if (typeof data === 'string') data = JSON.parse(data);
+          if (opt.success) return opt.success(data);
+          }
+        } else {
+          if (opt.error) return opt.error();
+        }
+      }
+    };
+    xhr.onerror = function (event) {
+      if (opt.error) opt.error();
+    };
+    xhr.send(null);
+  }
 };
+/** checkMaterials()
+ */
 window.checkMaterials = function() {
   var materials = document.getElementById('materials');
   var videos = materials.getElementsByTagName('video');
