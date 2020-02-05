@@ -858,4 +858,5 @@ export const WEAPON_DATA = {
   },
   8020: { jp: 'ジェットパック', en: 'Inkjet', range: 62 },
   8030: { jp: 'スーパーチャクチ', en: 'Splashdown', range: 29 },
+  8040: { jp: 'ハイパープレッサー', en: 'Stringray' },
 };
