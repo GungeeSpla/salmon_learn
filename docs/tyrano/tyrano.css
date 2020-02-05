@@ -2199,3 +2199,60 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
     padding: 10px 21px;
     cursor: pointer;
 }
+
+
+
+
+
+.drizzlerjs-button-1,
+.drizzlerjs-button-2 {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 14px;
+  width: 147px;
+  background: #ff9800;
+  color: #ffffff;
+  position: absolute;
+  z-index: 99999999;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.drizzlerjs-button-2 {
+  background: #2196F3;
+}
+.drizzlerjs-button-1:hover,
+.drizzlerjs-button-2:hover {
+  filter: brightness(1.1);
+}
+#drizzlerjs-wrapper {
+  position: relative;
+  width: 640px;
+  height: 960px;
+}
+#drizzlerjs-canvas-wrapper {
+  position: absolute;
+  z-index: 100000000;
+}
+#drizzlerjs-bottom-tools {
+  position: absolute;
+  z-index: 100000001;
+}
+#drizzlerjs-mask-tools {
+  display: none;
+  position: absolute;
+  background: rgba(0, 0, 0, .8);
+  width: 100%;
+  height: 100%;
+  z-index: 100000002;
+}
+#drizzlerjs-mask-tools img {
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  cursor: pointer;
+}
+#drizzlerjs-mask-tools img:hover {
+  filter: brightness(1.2);
+}

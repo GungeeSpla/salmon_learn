@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8"/>
+    <title>【Zマップ投影】show.html</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+    <style>
+      body {
+        margin: 4px;
+      }
+      .wrapper {
+        overflow: hidden;
+        width: 640px;
+        height: 960px;
+      }
+      img {
+        image-rendering: pixelated;
+        transform-origin: center center;
+      }
+      /*
+      scale: 0.721,
+      x: 303,
+      y: 638,
+      rotation: 57.5,
+      */
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <img src="porarisu.png" />
+    </div>
+  </body>
+  <script type="module">
+    import * as constants from '../module/constant.js';
+    const course = 'porarisu';
+    const tide = 'low';
+    const def = constants.COURSE_DATA[course][tide];
+    const x = def.x - 1000;
+    const y = def.y - 1000;
+    const r = def.rotation;
+    const s = def.scale;
+    const css = `translate(${x}px, ${y}px) scale(${s}) rotate(${r}deg)`;
+    document.getElementsByTagName('img')[0].style.setProperty('transform', css);
+  </script>
+</html>

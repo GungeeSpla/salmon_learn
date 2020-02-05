@@ -834,27 +834,39 @@ tf.y = 180;
 [call target=*Panel_Reset]
 [anim layer=1 name=logo opacity=255 time=0]
 [iscript]
-tf.x = 40;
+tf.x = -15;
 tf.y = -280;
-//changeCurrentFixButton(2);
 [endscript]
-[image layer=0                             x=&tf.x+80 y=&tf.y+460 storage=komori.png width=90]
-[ptext layer=0 text=コウモリマップ size=40 x=&tf.x+160 y=&tf.y+480 bold=bold]
-[ptext layer=0 text=シェケナダム   size=30 x=&tf.x+60 y=&tf.y+565]
-[ptext layer=0 text=ドン･ブラコ    size=30 x=&tf.x+60 y=&tf.y+635]
-[ptext layer=0 text=シャケト場     size=30 x=&tf.x+60 y=&tf.y+705]
-[ptext layer=0 text=トキシラズ     size=30 x=&tf.x+60 y=&tf.y+775]
-[ptext layer=0 text=ポラリス       size=30 x=&tf.x+60 y=&tf.y+845]
-[glink text=通常 x=&tf.x+270 y=&tf.y+560 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Damu_Tsujo_Komori'"]
-[glink text=干潮 x=&tf.x+390 y=&tf.y+560 size=25 color=kancho target=*InitKomori exp="f.target='Define_Damu_Kancho_Komori'"]
-[glink text=通常 x=&tf.x+270 y=&tf.y+630 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Burako_Tsujo_Komori'"]
-[glink text=干潮 x=&tf.x+390 y=&tf.y+630 size=25 color=kancho target=*InitKomori exp="f.target='Define_Burako_Kancho_Komori'"]
-[glink text=通常 x=&tf.x+270 y=&tf.y+700 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toba_Tsujo_Komori'"]
-[glink text=干潮 x=&tf.x+390 y=&tf.y+700 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toba_Kancho_Komori'"]
-[glink text=通常 x=&tf.x+270 y=&tf.y+770 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Toki_Tsujo_Komori'"]
-[glink text=干潮 x=&tf.x+390 y=&tf.y+770 size=25 color=kancho target=*InitKomori exp="f.target='Define_Toki_Kancho_Komori'"]
-[glink text=通常 x=&tf.x+270 y=&tf.y+840 size=25 color=tsujo  target=*InitKomori exp="f.target='Define_Pora_Tsujo_Komori'"]
-[glink text=干潮 x=&tf.x+390 y=&tf.y+840 size=25 color=kancho target=*InitKomori exp="f.target='Define_Pora_Kancho_Komori'"]
+[image layer=0                             x=&tf.x+130 y=&tf.y+460 storage=komori.png width=90]
+[ptext layer=0 text=コウモリマップ size=40 x=&tf.x+230 y=&tf.y+480 bold=bold]
+[ptext layer=0 text=シェケナダム   size=30 x=&tf.x+60 y=&tf.y+585]
+[ptext layer=0 text=ドン･ブラコ    size=30 x=&tf.x+60 y=&tf.y+655]
+[ptext layer=0 text=シャケト場     size=30 x=&tf.x+60 y=&tf.y+725]
+[ptext layer=0 text=トキシラズ     size=30 x=&tf.x+60 y=&tf.y+795]
+[ptext layer=0 text=ポラリス       size=30 x=&tf.x+60 y=&tf.y+865]
+[ptext layer=0 text="&'リアルタイムモード：'+(sf.isRTMode?'ON':'OFF')" size=25 x=&tf.x+150 y=&tf.y+1000]
+[glink text=切替 x=460 width=60 y=712 size=24 color=credit_button target=ChangeKomori]
+
+[glink text=干潮 x=&tf.x+270 y=&tf.y+580 size=25 color=kancho target=*InitKomori exp="f.course='shekenadamu';f.tide='low';"]
+[glink text=通常 x=&tf.x+390 y=&tf.y+580 size=25 color=tsujo  target=*InitKomori exp="f.course='shekenadamu';f.tide='normal';"]
+[glink text=満潮 x=&tf.x+510 y=&tf.y+580 size=25 color=mancho target=*InitKomori exp="f.course='shekenadamu';f.tide='high';"]
+
+[glink text=干潮 x=&tf.x+270 y=&tf.y+650 size=25 color=kancho target=*InitKomori exp="f.course='domburako';f.tide='low';"]
+[glink text=通常 x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*InitKomori exp="f.course='domburako';f.tide='normal';"]
+[glink text=満潮 x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*InitKomori exp="f.course='domburako';f.tide='high';"]
+
+[glink text=干潮 x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*InitKomori exp="f.course='shaketoba';f.tide='low';"]
+[glink text=通常 x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*InitKomori exp="f.course='shaketoba';f.tide='normal';"]
+[glink text=満潮 x=&tf.x+510 y=&tf.y+720 size=25 color=mancho target=*InitKomori exp="f.course='shaketoba';f.tide='high';"]
+
+[glink text=干潮 x=&tf.x+270 y=&tf.y+790 size=25 color=kancho target=*InitKomori exp="f.course='tokishirazu';f.tide='low';"]
+[glink text=通常 x=&tf.x+390 y=&tf.y+790 size=25 color=tsujo  target=*InitKomori exp="f.course='tokishirazu';f.tide='normal';"]
+[glink text=満潮 x=&tf.x+510 y=&tf.y+790 size=25 color=mancho target=*InitKomori exp="f.course='tokishirazu';f.tide='high';"]
+
+[glink text=干潮 x=&tf.x+270 y=&tf.y+860 size=25 color=kancho target=*InitKomori exp="f.course='porarisu';f.tide='low';"]
+[glink text=通常 x=&tf.x+390 y=&tf.y+860 size=25 color=tsujo  target=*InitKomori exp="f.course='porarisu';f.tide='normal';"]
+[glink text=満潮 x=&tf.x+510 y=&tf.y+860 size=25 color=mancho target=*InitKomori exp="f.course='porarisu';f.tide='high';"]
+
 [return]
 
 
@@ -1601,162 +1613,68 @@ $(".layer_free").show(0);
 ;=======================================
 *InitKomori
 ;=======================================
-[mask time=300]
+[mask time=100]
 [cm]
 [clearfix]
 [freelayer layer=0]
 [freelayer layer=1]
-
+[html]
+<div id="drizzlerjs-wrapper">
+  <div id="drizzlerjs-canvas-wrapper"></div>
+  <div id="drizzlerjs-bottom-tools">
+    <div id="drizzlerjs-not-rtmode-tools" style="display: none;">
+      <div class="drizzlerjs-button-1" style="left:  10px; top: 830px" onclick="drizzlerjs.addDrizzler();">コウモリ追加</div>
+      <div class="drizzlerjs-button-1" style="left: 167px; top: 830px" onclick="drizzlerjs.addSquid();">イカタコ追加</div>
+      <div class="drizzlerjs-button-1" style="left: 325px; top: 830px" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'block');">その他を追加</div>
+      <div class="drizzlerjs-button-2" style="left: 482px; top: 830px" onclick="drizzlerjs.removeAllPieces()">すべて削除</div>
+      <div class="drizzlerjs-button-1" style="left:  10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
+      <div class="drizzlerjs-button-1" style="left: 167px; top: 895px" onclick="drizzlerjs.toggleVoronoi();">ボロノイ図</div>
+      <div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'ReturnKomori')">戻る</div>
+    </div>
+    <div id="drizzlerjs-rtmode-tools" style="display: none;">
+      <div class="drizzlerjs-button-1" style="left:  10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
+      <div class="drizzlerjs-button-1" style="left: 167px; top: 895px" onclick="drizzlerjs.toggleDrizzlerCircle();">コウモリの円</div>
+      <div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'ReturnKomori')">戻る</div>
+    </div>
+  </div>
+  <div id="drizzlerjs-mask-tools" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'none');">
+  </div>
+</div>
+[endhtml]
 [iscript]
-gusherApp.copyDefineData(f.target);
-[endscript]
-
-[bg storage=&f.bg x=0 y=0 time=0]
-;[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
-[ptext layer=0 name=setsumei color=0x000000 text=イカやコウモリのアイコンをタップで動かせます。黒の矢印はコウモリがいったん攻撃態勢に入り雨弾を2回射出してからその方向へ飛ぶことを、青の矢印はコウモリが攻撃態勢に入らず速やかに飛んでくることを意味します。 size=20 x=40 y=10 width=570]
-[foreach name=f.item array=f.kanketsusen]
-[image layer=0 x=&f.item.x-f.radius-2 y=&f.item.y-f.radius-2 width=&f.radius*2 height=&f.radius*2 storage=komori_circle.png zindex=1 name="&'komori_circle,'+f.item.label"]
-[image layer=0 x=&f.item.x-11 y=&f.item.y-11 storage=komori_parking.png zindex=2 name=park]
-[ptext layer=0 x=&f.item.x-26 y=&f.item.y+5 edge=0x000000 text=&f.item.label size=24 name=park color=rgb(173,255,255) bold=bold align=center width=50]
-[nextfor]
-[iscript]
-f.bakudanWidth = f.radius*2*0.74
-f.kPos = gusherApp.getKomoriPos(f.komoriLabel);
-[endscript]
-[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
-[image layer=1 zindex=200 x=250 y=400 storage=ika.png?2 width=&f.ikaDx*2 name=ika]
-[image layer=1 zindex=200 x=80 y=80 storage=ika.png?2 width=&f.ikaDx*2 name=ika2]
-[image layer=1 zindex=150 x=0 y=0 storage=bakudan_circle.png width=&f.bakudanWidth name=bakudan]
-;[image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=&f.komoriDx*2 name=komori,komori2]
-[image layer=1 zindex=100 x="&f.kPos.x-f.komoriDx" y="&f.kPos.y-f.komoriDy" storage=komori.png width=&f.komoriDx*2 name=komori]
-;[button fix=true graphic=tobasu.png  x=220 y=800 target=*KomoriTobasu name=fixbutton]
-[button fix=true graphic=keiro.png   x=40  y=880 target=*Suimyaku     name=fixbutton]
-[button fix=true graphic=modoru2.png x=450 y=880 target=*KomoriTitle  name=fixbutton]
-;[button fix=true graphic=modoru2.png   x=450 y=870 storage=learn.ks target=*Retitle   name=fixbutton]
-[button fix=true graphic=bakudan.png x=40  y=800  target=*ToggleBakudan name=fixbutton]
-[button fix=true graphic=komori.png  x=245 y=800 target=*ToggleKomori  name=fixbutton]
-[button fix=true graphic=ika2.png    x=450 y=800   target=*ToggleIka     name=fixbutton]
-[mask_off time=300]
-;[call target=Set_Kotae]
-;[jump target=Start]
-[iscript]
-$(".ika2").hide();
-$(".bakudan").appendTo("#tyrano_base").draggable();
-$(".ika,.ika2").appendTo("#tyrano_base").draggable({
-    drag: function (e) {
-        clearTimeout(gusherApp.updateKomoriArrowTimerId);
-        gusherApp.updateKomoriArrowTimerId = setTimeout(function () {
-            gusherApp.updateKomoriArrow();
-        }, 32);
-    }
+drizzlerjs.start({
+  canvasWrapperId: 'drizzlerjs-canvas-wrapper',
+  pieceToolsWrapperId: 'drizzlerjs-mask-tools',
+  rtModeToolsWrapperId: 'drizzlerjs-rtmode-tools',
+  notRtModeToolsWrapperId: 'drizzlerjs-not-rtmode-tools',
+  assetsPath: './tyrano/drizzler',
+  weaponsPath: '.',
+  course: f.course,
+  tide: f.tide,
+  isRTMode: !!sf.isRTMode,
 });
-$(".komori").appendTo("#tyrano_base").draggable({
-    stop: function (e, ui) {
-        var offset = ui.position;
-        var minDis = 9999;
-        var nextLabel;
-        for (var i = 0; i < f.kanketsusen.length; i++) {
-            var k = f.kanketsusen[i];
-            var dis = gusherApp.calcDistance(offset.left, offset.top, k.x, k.y);
-            if (dis < minDis) {
-                minDis = dis;
-                nextLabel = k.label;
-            }
-        }
-        var nextPos = gusherApp.getKomoriPos(nextLabel);
-        $(this).css({
-            left: (nextPos.x - f.komoriDx) + "px",
-            top: (nextPos.y - f.komoriDy) + "px",
-        });
-        f.komoriLabel = nextLabel;
-        gusherApp.updateKomoriArrow(f);
-        $(".komori_circle").hide();
-        $(".komori_circle." + f.komoriLabel).show();
-    }
-});
-$(".komori_circle." + f.komoriLabel).fadeIn(300);
-gusherApp.$canvas.show(0);
-gusherApp.ctx.clear();
-gusherApp.updateKomoriArrow(f);
-clearTimeout(f.koumoriSetsumeiTimer);
-f.koumoriSetsumeiTimer = setTimeout(function(){
-	$(".setsumei").fadeOut(800, function(){
-		$(this).remove();
-	});
-}, 5000);
 [endscript]
+[mask_off time=100]
 [s]
 
-
-
 ;=======================================
-*KomoriTobasu
+*ChangeKomori
 ;=======================================
 [iscript]
-var nextLabel = gusherApp.getKomoriNextLabel(f.komoriLabel);
-var nextPos = gusherApp.getKomoriPos(nextLabel);
-f.komoriLabel = nextLabel;
-$(".komori").animate({
-    left: (nextPos.x - f.komoriDx) + "px",
-    top : (nextPos.y - f.komoriDy) + "px",
-}, 600, "easeInOutQuad", function () {
-    gusherApp.updateKomoriArrow();
-    $(".komori_circle").hide();
-    $(".komori_circle." + f.komoriLabel).show();
-});
-
+sf.isRTMode = !sf.isRTMode;
 [endscript]
-[return]
-
-
-
-;=======================================
-*KomoriTitle
-;=======================================
-[clearstack]
-[iscript]
-$(".ika").remove();
-$(".ika2").remove();
-$(".komori").remove();
-$(".bakudan").remove();
-clearTimeout(gusherApp.updateKomoriArrowTimerId);
-gusherApp.ctx.clearRect(0, 0, 640, 960);
-[endscript]
-[jump target=*Retitle]
-
-
+[call target="Panel_2"]
+[s]
 
 ;=======================================
-*ToggleIka
+*ReturnKomori
 ;=======================================
 [iscript]
-$(".ika2").fadeToggle(300, function() {
-    gusherApp.updateKomoriArrow();    
-});
+drizzlerjs.finalize();
 [endscript]
-[return]
-
-
-
-;=======================================
-*ToggleBakudan
-;=======================================
-[iscript]
-$(".bakudan").fadeToggle(300);
-[endscript]
-[return]
-
-
-
-;=======================================
-*ToggleKomori
-;=======================================
-[iscript]
-var c = ".park,.canvas,.komori,.komori_circle." + f.komoriLabel;
-$(c).fadeToggle(300);
-[endscript]
-[return]
-
+[image layer=1 zindex=100 x=40 y=20 storage=logo.png width=550 name=logo]
+[call target="Panel_2"]
+[s]
 
 
 ;=======================================

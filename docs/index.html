@@ -61,37 +61,39 @@ document.write('<meta name="twitter:player" content="' + url + '" />');
 <script type="text/javascript" src="./data/others/plugin/plugins.js"></script>
 <script type="text/javascript" src="./data/system/KeyConfig.js"></script>
 <script type="text/javascript" src="./tyrano/lang.js" ></script>
-<script type="text/javascript" src="./tyrano/libs.js?20805" ></script>
+<script type="text/javascript" src="./tyrano/libs.js?21200" ></script>
 
 <!-- Google JS API -->
 <script type="text/javascript" src="./tyrano/libs/google.jsapi.js"></script>
 
 <!-- 独自ライブラリ -->
-<link   type="text/css"              href="./tyrano/tyrano.css?21100" rel="stylesheet" />
-<script type="text/javascript"        src="./tyrano/setting.js?21001" ></script>
-<script type="text/javascript"        src="./tyrano/sttimer.js?21001" ></script>
-<script type="text/javascript"        src="./tyrano/smcount.js?21001" ></script>
-<script type="text/javascript"  src="./tyrano/salmon.gusher.js?21003" ></script>
-<script type="text/javascript"  src="./tyrano/salmon.others.js?20501" ></script>
-<script type="text/javascript" src="./tyrano/salmon.weapons.js?20200" ></script>
-<script type="text/javascript"	   src="./tyrano/salmon.api.js?20701a" ></script>
-<script type="text/javascript"   src="./tyrano/salmon.rater.js?21100" ></script>
-<script type="text/javascript" src="./tyrano/salmon.history.js?20200" ></script>
-<script type="text/javascript" src="./tyrano/martysheet.js?20600" ></script>
+<link   type="text/css"              href="./tyrano/tyrano.css?21200" rel="stylesheet" />
+<script type="text/javascript"        src="./tyrano/setting.js?21200" ></script>
+<script type="text/javascript"        src="./tyrano/sttimer.js?21200" ></script>
+<script type="text/javascript"        src="./tyrano/smcount.js?21200" ></script>
+<script type="text/javascript"  src="./tyrano/salmon.gusher.js?21200" ></script>
+<script type="text/javascript"  src="./tyrano/salmon.others.js?21200" ></script>
+<script type="text/javascript" src="./tyrano/salmon.weapons.js?21200" ></script>
+<script type="text/javascript"	   src="./tyrano/salmon.api.js?21200" ></script>
+<script type="text/javascript"   src="./tyrano/salmon.rater.js?21200" ></script>
+<script type="text/javascript" src="./tyrano/salmon.history.js?21200" ></script>
+<script type="text/javascript"     src="./tyrano/martysheet.js?21200" ></script>
+<script type="text/javascript" src="./tyrano/drizzler/assets/lib/createjs-1.0.1.min.js"></script>
+<script type="module" src="./tyrano/drizzler/assets/module/drizzlerjs.js?Ver.0.0.0"></script>
 <script type="text/javascript">
-window.VERSION = 21100;
+window.VERSION = 21200;
 window.VERSION_STR = parseVersion(VERSION);
 </script>
 
 
 <!-- PWA対応 -->
 <link rel="apple-touch-icon" href="data/image/icon-520x520.png" />
-<link rel="manifest" href="./manifest.json?20104">
+<link rel="manifest" href="./manifest.json?21200">
 <script type="text/javascript">
 // https://qiita.com/umamichi/items/0e2b4b1c578e7335ba20
 // service workerが有効なら、service-worker.js を登録します
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js?20101').then(function() { console.log('Service Worker Registered'); });
+  navigator.serviceWorker.register('./service-worker.js?21200').then(function() { console.log('Service Worker Registered'); });
 }
 </script>
 
