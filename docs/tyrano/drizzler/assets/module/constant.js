@@ -346,7 +346,7 @@ export const COURSE_DATA = {
       lines: [
         'ML', 'KJ', 'IJ', 'LJ', 'JC', 'CA', 'LN', 'ON', 'OP', 'PN', 'PQ', 'QR',
         'QH', 'HR', 'HG', 'GF', 'FH', 'SR', 'SF', 'ST', 'GN', 'NE', 'EG', 'DE',
-        'DF', 'DC', 'DB', 'TU', 'UV', 'BA', 'EC', 'BT',
+        'DF', 'DC', 'DB', 'TU', 'UV', 'BA', 'EC', 'BT', 'CB',
       ],
       width: 2000,
       height: 2000,
