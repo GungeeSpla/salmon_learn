@@ -130,6 +130,7 @@
           margin: 15px;
           margin-bottom: 60px;
         }
+
           .weapon-count {
             position: absolute;
             display: none;
@@ -185,9 +186,16 @@
           }
           .gained {
           }
-          .ungained {
+          .gained .weapon-image:hover {
+            filter: brightness(110%);
+          }
+          .ungained .weapon-image {
             opacity: 0.35;
             filter: grayscale(30%);
+          }
+          .ungained .weapon-image:hover {
+            opacity: 0.5;
+            filter: grayscale(10%);
           }
           .ungained .weapon-image {
             -webkit-box-reflect: initial;
@@ -231,6 +239,9 @@
 
         /** ブキのデフォルト画像サイズ */
         const defaultWeaponSize = 180;
+
+        /** 保存できるスタックの最大数 */
+        const stackLengthMax = 100;
 
         /** ブキタイプ配列 */
         // const weaponsTypes = ['shooters', 'blasters', 'rollers', 'chargers', 'sloshers', 'splatlings', 'dualies', 'brellas', 'grizzcos'];
@@ -414,7 +425,7 @@
         let counts = null;
 
         /** コンプした？ */
-        let isComplete = true;
+        let isComplete = false;
 
         /** クマブキオプション */
         let grizzcoVisibleOption = 7000;
@@ -502,6 +513,9 @@
               counts[id] = 0;
               update(id);
             });
+            undoStack = [];
+            countStack = [];
+            isComplete = false;
             localStorage.removeItem(storageKey);
           }
         };
@@ -518,6 +532,9 @@
           }
           counts[id] += delta;
           countStack.push({ id, delta });
+          if (countStack.length > stackLengthMax) {
+            countStack.shift();
+          }
           undoStack = [];
           update(id);
         };
@@ -530,6 +547,9 @@
             const stack = countStack.pop();
             counts[stack.id] -= stack.delta;
             undoStack.push(stack);
+            if (undoStack.length > stackLengthMax) {
+              undoStack.shift();
+            }
             update(stack.id);
           }
         };
@@ -542,14 +562,17 @@
             const stack = undoStack.pop();
             counts[stack.id] += stack.delta;
             countStack.push(stack);
+            if (countStack.length > stackLengthMax) {
+              countStack.shift();
+            }
             update(stack.id);
           }
         };
 
-        /** update(id)
+        /** update(id, isIgnoredComplete)
          * ブキを更新する。
          */
-        const update = (id) => {
+        const update = (id, isIgnoredComplete) => {
           const countElm = document.getElementById(`weapon-count-${id}`);
           countElm.textContent = counts[id];
           const weaponElm = document.getElementById(`weapon-${id}`);
@@ -564,14 +587,16 @@
             weaponElm.classList.add('gained');
             weaponElm.classList.add('plural-gained');
           }
-          const isCompleteOld = isComplete;
-          isComplete = checkComplete();
-          if (!isCompleteOld && isComplete) {
-            setTimeout(() => {
-              window.alert(getMessage('congrats'));
-            }, 16);
+          if (!isIgnoredComplete) {
+            const isCompleteOld = isComplete;
+            isComplete = checkComplete();
+            if (!isCompleteOld && isComplete) {
+              setTimeout(() => {
+                window.alert(getMessage('congrats'));
+              }, 16);
+            }
+            save();
           }
-          save();
         };
 
         /** updateGrizzcoVisible()
@@ -684,7 +709,7 @@
             weaponElm.appendChild(imageElm);
             weaponElm.appendChild(countElm);
             wrapperElm.appendChild(weaponElm);
-            update(id);
+            update(id, true);
           });
           // ブキリサイズ
           resizeWeapons();
