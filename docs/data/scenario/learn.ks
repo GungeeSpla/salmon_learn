@@ -1648,7 +1648,7 @@ drizzlerjs.start({
   rtModeToolsWrapperId: 'drizzlerjs-rtmode-tools',
   notRtModeToolsWrapperId: 'drizzlerjs-not-rtmode-tools',
   assetsPath: './tyrano/drizzler',
-  weaponsPath: '.',
+  weaponsPath: './data',
   course: f.course,
   tide: f.tide,
   isRTMode: !!sf.isRTMode,

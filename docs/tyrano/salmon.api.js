@@ -309,10 +309,10 @@ function SalmonrunAPI () {
 		$target.find(".salmon_rotation_stage_name").text(data.stage_ja);	
 		$target.find(".salmon_rotation_time").html(data.start_ja + " - " + data.end_ja);
 		$target.find(".salmon_rotation_stage").attr("src", "./data/fgimage/stage_" + data.stage + ".png");
-		$target.find(".salmon_rotation_weapon_1").attr("src", "./weapons/" + data.w1 + ".png");
-		$target.find(".salmon_rotation_weapon_2").attr("src", "./weapons/" + data.w2 + ".png");
-		$target.find(".salmon_rotation_weapon_3").attr("src", "./weapons/" + data.w3 + ".png");
-		$target.find(".salmon_rotation_weapon_4").attr("src", "./weapons/" + data.w4 + ".png");
+		$target.find(".salmon_rotation_weapon_1").attr("src", "./data/weapons/" + data.w1 + ".png");
+		$target.find(".salmon_rotation_weapon_2").attr("src", "./data/weapons/" + data.w2 + ".png");
+		$target.find(".salmon_rotation_weapon_3").attr("src", "./data/weapons/" + data.w3 + ".png");
+		$target.find(".salmon_rotation_weapon_4").attr("src", "./data/weapons/" + data.w4 + ".png");
 	}
 	//## parseSalmonAPI (data)
 	// APIで取得したデータをちょっと加工する
