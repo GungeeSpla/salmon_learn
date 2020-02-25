@@ -1,11 +1,11 @@
-import * as constants from './constant.js?Ver.0.0.0';
-import * as utilities from './function.js?Ver.0.0.0';
-import Course from './Course.js?Ver.0.0.0';
-import Drizzler from './Drizzler.js?Ver.0.0.0';
-import Xors from './Xors.js?Ver.0.0.0';
-import Squid from './Squid.js?Ver.0.0.0';
-import DraggableBitmap from './DraggableBitmap.js?Ver.0.0.0';
-import ZMap from './ZMap.js?Ver.0.0.0';
+import * as constants from './constant.js?Ver.0.1.0';
+import * as utilities from './function.js?Ver.0.1.0';
+import Course from './Course.js?Ver.0.1.0';
+import Drizzler from './Drizzler.js?Ver.0.1.0';
+import Xors from './Xors.js?Ver.0.1.0';
+import Squid from './Squid.js?Ver.0.1.0';
+import DraggableBitmap from './DraggableBitmap.js?Ver.0.1.0';
+import ZMap from './ZMap.js?Ver.0.1.0';
 
 /** drizzlerjs
  */
@@ -156,9 +156,9 @@ window.drizzlerjs = (() => {
       // コウモリの矢印をアップデートする
       currentCourse.updateDrizzlerArrows(true);
       // 1匹目のコウモリならばボロノイ図を塗る
-      if (drizzlers.length === 1) {
+      // if (drizzlers.length === 1) {
         currentCourse.paintVoronoi();
-      }
+      // }
     }
   };
 
@@ -310,13 +310,16 @@ window.drizzlerjs = (() => {
   /** toggleVoronoi()
    * ボロノイ図の表示･非表示を切り替えます。
    */
-  const toggleVoronoi = () => {
+  const toggleVoronoi = (target) => {
     // 切り替えアニメーション中なら何もしない
-    if (currentCourse.isTogglingVoronoi) {
+    // if (currentCourse.isTogglingVoronoi) {
+    //   return;
+    // }
+    if (target !== undefined && target === currentCourse.isVisibleVoronoi) {
       return;
     }
     // 切り替え中
-    currentCourse.isTogglingVoronoi = true;
+    // currentCourse.isTogglingVoronoi = true;
     // フラグを切り替える
     currentCourse.isVisibleVoronoi = !currentCourse.isVisibleVoronoi;
     // 目標とする不透明度
@@ -325,17 +328,60 @@ window.drizzlerjs = (() => {
     if (currentCourse.isVisibleVoronoi && currentCourse.shouldUpdateVoronoi) {
       currentCourse.paintVoronoi();
     }
+    // 透明度を変化
+    currentCourse.$$paint.set({ alpha });
+    // disable
+    if (!currentCourse.isVisibleVoronoi) {
+      drizzlers.forEach((drizzler) => {
+        drizzler.disableVoronoi();
+      });
+    }
     // アニメーション
-    utilities.instantTween(
-      currentCourse.$$paint,
-      { alpha },
-      constants.DRIZZLER_TWEEN_TIME,
-      constants.DRIZZLER_TWEEN_EASE,
-      () => {
-        // 切り替え中ではなくする
-        currentCourse.isTogglingVoronoi = false;
-      },
-    );
+    // utilities.instantTween(
+    //   currentCourse.$$paint,
+    //   { alpha },
+    //   constants.DRIZZLER_TWEEN_TIME,
+    //   constants.DRIZZLER_TWEEN_EASE,
+    //   () => {
+    //     // 切り替え中ではなくする
+    //     currentCourse.isTogglingVoronoi = false;
+    //   },
+    // );
+  };
+
+  /** selectStartVoronoi()
+   */
+  const selectStartVoronoi = () => {
+    document.getElementById('drizzlerjs-voronoi-desc').style.setProperty('display', 'none');
+    if (currentCourse.isVisibleVoronoi) {
+      toggleVoronoi(false);
+      return;
+    }
+    const ctx = currentCourse.$$paint.image.getContext('2d');
+    if (currentCourse.isSelectingVoronoi) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, constants.CANVAS_WIDTH, constants.CANVAS_HEIGHT);
+      toggleVoronoi(false);
+      currentCourse.isSelectingVoronoi = false;
+    } else {
+      currentCourse.$$paint.set({ alpha: constants.VORONOI_ALPHA });
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, constants.CANVAS_WIDTH, constants.CANVAS_HEIGHT);
+      currentCourse.isSelectingVoronoi = true;
+      document.getElementById('drizzlerjs-voronoi-desc').style.setProperty('display', 'block');
+    }
+  };
+
+  /** toggleArrow()
+   * コウモリの矢印の表示･非表示を切り替えます。
+   */
+  const toggleArrow = () => {
+    currentCourse.isVisibleArrow = !currentCourse.isVisibleArrow;
+    if (currentCourse.isVisibleArrow) {
+      currentCourse.showDrizzlerArrows(false);
+    } else {
+      currentCourse.hideDrizzlerArrows();
+    }
   };
 
   /** stepDrizzlers()
@@ -852,10 +898,12 @@ window.drizzlerjs = (() => {
     finalize,
     addSquid,
     addDrizzler,
+    toggleArrow,
     toggleVoronoi,
     stepDrizzlers,
     removeAllPieces,
     toggleConnectMap,
     toggleDrizzlerCircle,
+    selectStartVoronoi,
   };
 })();

@@ -1627,8 +1627,10 @@ $(".layer_free").show(0);
       <div class="drizzlerjs-button-1" style="left: 167px; top: 830px" onclick="drizzlerjs.addSquid();">イカタコ追加</div>
       <div class="drizzlerjs-button-1" style="left: 325px; top: 830px" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'block');">その他を追加</div>
       <div class="drizzlerjs-button-2" style="left: 482px; top: 830px" onclick="drizzlerjs.removeAllPieces()">すべて削除</div>
-      <div class="drizzlerjs-button-1" style="left:  10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
-      <div class="drizzlerjs-button-1" style="left: 167px; top: 895px" onclick="drizzlerjs.toggleVoronoi();">ボロノイ図</div>
+      <div class="drizzlerjs-button-3" style="left:  10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
+      <div class="drizzlerjs-button-3" style="left: 167px; top: 895px" onclick="drizzlerjs.selectStartVoronoi();">ボロノイ図</div>
+      <div class="drizzlerjs-desc"     style="left:  10px; top: 814px" id="drizzlerjs-voronoi-desc">着目するコウモリを選択してください</div>
+      <div class="drizzlerjs-button-3" style="left: 325px; top: 895px" onclick="drizzlerjs.toggleArrow();">コウモリ矢印</div>
       <div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'ReturnKomori')">戻る</div>
     </div>
     <div id="drizzlerjs-rtmode-tools" style="display: none;">

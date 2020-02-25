@@ -108,6 +108,7 @@ export const DRIZZLER_TWEEN_EASE = 'cubicOut';
 export const DRIZZLER_CIRCLE_COLOR = 'rgb(180, 230, 255)';
 export const DRIZZLER_CIRCLE_STROKE_COLOR = 'rgb(180, 230, 255)';
 export const DRIZZLER_CIRCLE_STROKE_WIDTH = 1;
+export const DRIZZLER_TRIANGLE_IMAGE = 'assets/piece/triangle.png';
 // コウモリのスポーン時の透明度
 export const DRIZZLER_ALPHA_WHEN_SPAWN = 0.3;
 // コウモリの攻撃回数

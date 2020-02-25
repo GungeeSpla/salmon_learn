@@ -2204,8 +2204,35 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 
 
 
+.drizzlerjs-desc {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  width: 620px;
+  height: 70px;
+  line-height: 70px;
+  background: #ffffff;
+  color: #444444;
+  position: absolute;
+  z-index: 99999999;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.3));
+  display: none;
+}
+.drizzlerjs-desc:before {
+  content: '';
+  position: absolute;
+  left: 210px;
+  bottom: -20px;
+  border-top: 20px solid #ffffff;
+  border-right: 20px solid transparent;
+  border-left: 20px solid transparent;
+}
 .drizzlerjs-button-1,
-.drizzlerjs-button-2 {
+.drizzlerjs-button-2,
+.drizzlerjs-button-3 {
   font-family: sans-serif;
   font-weight: bold;
   font-size: 18px;
@@ -2221,6 +2248,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 }
 .drizzlerjs-button-2 {
   background: #2196F3;
+}
+.drizzlerjs-button-3 {
+  background: #4caf50;
 }
 .drizzlerjs-button-1:hover,
 .drizzlerjs-button-2:hover {

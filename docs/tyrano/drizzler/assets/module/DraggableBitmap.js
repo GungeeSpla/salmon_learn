@@ -1,5 +1,5 @@
-import * as constants from './constant.js?Ver.0.0.0';
-import * as utilities from './function.js?Ver.0.0.0';
+import * as constants from './constant.js?Ver.0.1.0';
+import * as utilities from './function.js?Ver.0.1.0';
 
 /** DraggableBitmap
  */

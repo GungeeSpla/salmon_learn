@@ -1,7 +1,7 @@
-import * as constants from './constant.js?Ver.0.0.0';
-import * as utilities from './function.js?Ver.0.0.0';
-import Rocket from './Rocket.js?Ver.0.0.0';
-import Animater from './Animater.js?Ver.0.0.0';
+import * as constants from './constant.js?Ver.0.1.0';
+import * as utilities from './function.js?Ver.0.1.0';
+import Rocket from './Rocket.js?Ver.0.1.0';
+import Animater from './Animater.js?Ver.0.1.0';
 
 /** Drizzler
  */
@@ -32,6 +32,7 @@ export default class Drizzler {
     this.attackCount = 0;
     this.targetSquid = null;
     this.animaters = [];
+    this.isEnabledVoronoi = false;
     // 描画
     this.draw(pos);
     // アニメーターの作成
@@ -91,6 +92,18 @@ export default class Drizzler {
       scale: constants.DRIZZLER_SCALE,
     });
     this.$$container.addChild(this.$$drizzler);
+
+    /** - グラフィック:三角形 -
+     */
+    this.$$drizzlerTriangle = utilities.create$$bitmap({
+      src: `${this.pointer.assetsPath}/${constants.DRIZZLER_TRIANGLE_IMAGE}`,
+      y: - constants.DRIZZLER_WIDTH,
+      regX: constants.DRIZZLER_REG_X,
+      regY: constants.DRIZZLER_REG_Y,
+      scale: constants.DRIZZLER_SCALE,
+      alpha: 0,
+    });
+    this.$$container.addChild(this.$$drizzlerTriangle);
 
     /** - グラフィック:駐車場ラベル背景 -
      */
@@ -159,8 +172,12 @@ export default class Drizzler {
           },
           // クイックマウスアップ時
           onMouseUpQuick: () => {
-            // 索敵円表示をトグルする
-            this.toggleSearching();
+            if (this.pointer.currentCourse.isSelectingVoronoi) {
+              this.enableVoronoi();
+            } else {
+              // 索敵円表示をトグルする
+              this.toggleSearching();
+            }
           },
           // マウスアップ時
           onMouseUp: (p) => {
@@ -525,9 +542,12 @@ export default class Drizzler {
           this.currentPark,
           targetPark,
           constants.PARK_RADIUS + constants.ARROW_STROKE_WIDTH,
-          isAnimation,
+          isAnimation && this.pointer.currentCourse.isVisibleArrow,
           false,
         );
+        if (!this.pointer.currentCourse.isVisibleArrow) {
+          this.hideArrow();
+        }
         this.arrowExists = true;
       }
     } else if (this.arrowExists) {
@@ -545,6 +565,34 @@ export default class Drizzler {
   hideArrow() {
     this.$$arrow.scaleX = 0;
     this.arrowExists = false;
+  }
+
+  /** .showArrow()
+   */
+  showArrow() {
+    this.$$arrow.scaleX = 1;
+    this.arrowExists = true;
+  }
+
+  /** .enableVoronoi()
+   */
+  enableVoronoi() {
+    this.pointer.currentCourse.shouldUpdateVoronoi = true;
+    this.pointer.currentCourse.isSelectingVoronoi = false;
+    this.pointer.drizzlers.forEach((drizzler) => {
+      drizzler.disableVoronoi();
+    });
+    this.isEnabledVoronoi = true;
+    this.$$drizzlerTriangle.set({ alpha: 1 });
+    window.drizzlerjs.toggleVoronoi(true);
+    document.getElementById('drizzlerjs-voronoi-desc').style.setProperty('display', 'none');
+  }
+
+  /** .disableVoronoi()
+   */
+  disableVoronoi() {
+    this.isEnabledVoronoi = false;
+    this.$$drizzlerTriangle.set({ alpha: 0 });
   }
 
   /** .move(targetPark)

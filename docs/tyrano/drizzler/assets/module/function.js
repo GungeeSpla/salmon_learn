@@ -1,4 +1,4 @@
-import * as constants from './constant.js?Ver.0.0.0';
+import * as constants from './constant.js?Ver.0.1.0';
 
 /** easing
  * 参考: http://gizma.com/easing/

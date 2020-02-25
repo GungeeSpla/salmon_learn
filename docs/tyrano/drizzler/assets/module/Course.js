@@ -1,5 +1,5 @@
-import * as constants from './constant.js?Ver.0.0.0';
-import * as utilities from './function.js?Ver.0.0.0';
+import * as constants from './constant.js?Ver.0.1.0';
+import * as utilities from './function.js?Ver.0.1.0';
 
 /** Park(alphabet, x, y)
  * 駐車場クラス。
@@ -26,6 +26,8 @@ export default class Course {
     this.parks = [];
     this.pointer = pointer;
     this.isTrashEnabled = false;
+    this.isVisibleArrow = true;
+    this.isSelectingVoronoi = false;
     this.isVisibleVoronoi = false;
     this.isTogglingVoronoi = false;
     this.shouldUpdateVoronoi = true;
@@ -108,12 +110,20 @@ export default class Course {
     // とりあえず白色で塗っておく
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, constants.CANVAS_WIDTH, constants.CANVAS_HEIGHT);
+    // ボロノイターゲットのコウモリを取得する
+    let drizzler = null;
+    this.pointer.drizzlers.forEach((dzr) => {
+      if (dzr.isEnabledVoronoi) {
+        drizzler = dzr;
+      }
+    });
     // コウモリがいなければ何もしない
-    if (this.pointer.drizzlers.length === 0) {
+    // if (this.pointer.drizzlers.length === 0) {
+    if (!drizzler) {
       return;
     }
     // コウモリがいても、そのコウモリの飛び先がなければ何もしない
-    const drizzler = this.pointer.drizzlers[0];
+    // const drizzler = this.pointer.drizzlers[0];
     const connectParks = utilities.excludeParkDrizzlerExists(
       drizzler.currentPark.connectParks,
       this.pointer.drizzlers,
@@ -185,6 +195,22 @@ export default class Course {
         drizzler.updateArrow(isAnimation);
       });
     }, 10);
+  }
+
+  /** .hideDrizzlerArrows()
+   */
+  hideDrizzlerArrows() {
+    this.pointer.drizzlers.forEach((drizzler) => {
+      drizzler.hideArrow();
+    });
+  }
+
+  /** .showDrizzlerArrows()
+   */
+  showDrizzlerArrows() {
+    this.pointer.drizzlers.forEach((drizzler) => {
+      drizzler.showArrow();
+    });
   }
 
   /** .setNull()
