@@ -175,6 +175,7 @@ export const ENEMY_PIECE_DATA = {
   maws: {},
   stinger: {},
   flyfish: {},
+  steeleel: {},
   goldie: {},
   chum: {},
 };

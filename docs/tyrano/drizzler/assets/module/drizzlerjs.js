@@ -1,11 +1,11 @@
-import * as constants from './constant.js?Ver.0.1.0';
-import * as utilities from './function.js?Ver.0.1.0';
-import Course from './Course.js?Ver.0.1.0';
-import Drizzler from './Drizzler.js?Ver.0.1.0';
-import Xors from './Xors.js?Ver.0.1.0';
-import Squid from './Squid.js?Ver.0.1.0';
-import DraggableBitmap from './DraggableBitmap.js?Ver.0.1.0';
-import ZMap from './ZMap.js?Ver.0.1.0';
+import * as constants from './constant.js?Ver.0.1.1';
+import * as utilities from './function.js?Ver.0.1.1';
+import Course from './Course.js?Ver.0.1.1';
+import Drizzler from './Drizzler.js?Ver.0.1.1';
+import Xors from './Xors.js?Ver.0.1.1';
+import Squid from './Squid.js?Ver.0.1.1';
+import DraggableBitmap from './DraggableBitmap.js?Ver.0.1.1';
+import ZMap from './ZMap.js?Ver.0.1.1';
 
 /** drizzlerjs
  */
@@ -659,7 +659,9 @@ window.drizzlerjs = (() => {
     const $wrapper = document.getElementById(options.pieceToolsWrapperId);
     // 段の情報
     let row;
+    let column;
     let startRow = 0;
+    let startColumn = 0;
     // 横幅および高さ
     const width = constants.ADDTOOL_WIDTH + constants.ADDTOOL_MARGIN;
     // 敵駒データについて走査
@@ -667,8 +669,8 @@ window.drizzlerjs = (() => {
       // 画像ファイルの場所
       const path = `${initializationOptions.assetsPath}/assets/piece/${key}.png`;
       // 位置を決定
-      row = startRow + Math.floor(i / constants.ADDTOOL_COLUMN_NUM);
-      const column = i % constants.ADDTOOL_COLUMN_NUM;
+      row = startRow + Math.floor((startColumn + i) / constants.ADDTOOL_COLUMN_NUM);
+      column = (startColumn + i) % constants.ADDTOOL_COLUMN_NUM;
       const x = constants.ADDTOOL_LEFT + column * width;
       const y = constants.ADDTOOL_TOP + row * width;
       // <img>要素を作成
@@ -687,12 +689,13 @@ window.drizzlerjs = (() => {
       $wrapper.appendChild($image);
     });
     // startRowの更新
-    startRow = row + 1;
+    startRow = row;
+    startColumn = column + 1;
     // ブキ駒データについて走査
     Object.keys(constants.WEAPON_DATA).forEach((key, i) => {
       const path = `${initializationOptions.weaponsPath}/weapons/${key}.png`;
-      row = startRow + Math.floor(i / constants.ADDTOOL_COLUMN_NUM);
-      const column = i % constants.ADDTOOL_COLUMN_NUM;
+      row = startRow + Math.floor((i + startColumn) / constants.ADDTOOL_COLUMN_NUM);
+      column = (i + startColumn) % constants.ADDTOOL_COLUMN_NUM;
       const x = constants.ADDTOOL_LEFT + column * width;
       const y = constants.ADDTOOL_TOP + row * width;
       const $image = document.createElement('img');
