@@ -2,97 +2,262 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>作ったものまとめ by ガンジー（@GungeeSpla）</title>
+<title>つくったものまとめ@GungeeSpla</title>
 <meta name="description" content="いままで作ってきたWebアプリや素材などをまとめました。" />
 <meta name="twitter:card"        content="summary" />
 <meta name="twitter:site"        content="@GungeeSpla" />
-<meta name="twitter:title"       content="サーモンラン関連で作ったものまとめ by ガンジー（@GungeeSpla）" />
+<meta name="twitter:title"       content="つくったものまとめ@GungeeSpla" />
 <meta name="twitter:description" content="いままで作ってきたWebアプリや素材などをまとめました。" />
 <meta name="twitter:image"       content="https://gungeespla.github.io/salmon_learn/tyrano/images/gungee_dot.png" />
 <style>
   body {
-    color: #000;
+    color: #666666;
     font-size: 1em;
     padding: 3em;
-    background-color: #fdfff7;
-    background-image: url(tyrano/images/gungee_yuru.png);
-    background-repeat: repeat;
-    background-attachment: fixed;
-    cursor: url(tyrano/images/gungee_cursor.png) 6 0, auto;
-  }
-  ul {
-    padding-left: 20px;
-  }
-  li {
-    margin-bottom: 18px;
+    font-family: sans-serif;
   }
   a {
-    color: #000;
-    cursor: url(tyrano/images/gungee_cursor_2.png) 6 0, auto;
+    color: #2196F3;
+    text-decoration: none;
   }
   a:hover {
-    background-color: rgba(0,100,0,.05);
+    text-decoration: underline;
+  }
+  h1, h2, h3, h4, h5, div, p {
+    margin: 0;
+    padding: 0;
   }
   h1 {
-    font-size: 2em;
+    font-size: 2.5em;
+    margin-bottom: 0;
+    font-weight: bold;
   }
   h2 {
-    font-size: 1.6em;
-    margin-top: 2em;
+    color: #4caf50;
+    border-bottom: solid 3px #cee3cf;
+    position: relative;
+    margin-top: 3em;
+    margin-bottom: 2em;
   }
-  h3 {
-    display: inline;
-    font-size: 1em;
+  h2:after {
+    position: absolute;
+    content: " ";
+    display: block;
+    border-bottom: solid 3px #4caf50;
+    bottom: -3px;
+    width: 50%;
   }
-</style>
-<script type="text/javascript">
-  function init() {
-    var as = document.getElementsByTagName('a');
-    for (var i = 0; i < as.length; i++) {
-      var a = as[i];
-      if (a.getAttribute('autotext') !== 'no') {
-        a.innerText = a.href;
-      }
+  h5 {
+    margin-top: 0;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+  .link-container {
+    margin-top: 1.5em;
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+    .link-image {
+      display: inline-block;
+      width: 4em;
+      height: 4em;
+      background-size: contain;
+      border-radius: 0.5em;
+      border: 1px solid #CCCCCC;
     }
-  }
-</script>
+    .link-text {
+      vertical-align: top;
+      display: inline-block;
+      margin-left: 0.6em;
+      white-space: normal;
+      width: calc(100% - 4em);
+    }
+      .link-title {
+        margin-top: 0.1em;
+        font-size: 1.2em;
+        font-weight: bold;
+        line-height: 100%;
+      }
+      .link-desc {
+        margin-top: 0.1em;
+        margin-bottom: 0.1em;
+        font-size: 0.8em;
+      }
+      .link-url {
+        font-size: 0.6em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+</style>
 </head>
-<body onload="init()">
-  <h1>作ったものまとめ by ガンジー（@GungeeSpla）</h1>
-  <h2>Webアプリ･サイト</h2>
-  <ul id="ul-01">
-    <li><h3>マリオカート8DX 即時集計機</h3><br><a href="https://gungeespla.github.io/mk8dx_sokuji/" target="_blank"></a><br>マリオカート8DXの交流戦配信など向けの即時集計機です。</li>
-    <li><h3>Salmon Learn - サーモンラーン</h3><br><a href="https://gungeespla.github.io/salmon_learn/" target="_blank"></a><br>いろいろ便利な鮭お役立ちWebアプリです。</li>
-    <li><h3>サーモンラン乱獲についての所感</h3><br><a href="https://docs.google.com/document/d/1UbyVd6RfBkpjcpWDjOijCU4h5nyQTIE2XX4CflHfy1c/edit?usp=sharing" target="_blank"></a><br>サーモンランの乱獲について思うところをGoogle Docsで書きました。</li>
-    <li><h3>サーモンランブキコレクション</h3><br><a href="https://gungeespla.github.io/collection_of_weapons/" target="_blank"></a><br>ランダム回で引いたブキを数えるやつ。</li>
-    <li><h3>赤イクラビンゴ</h3><br><a href="https://gungeespla.github.io/ikura_bingo/" target="_blank"></a><br>赤イクラの下2桁でビンゴをしようぜ！</li>
-    <li><h3>Salmonitor - サーモニター</h3><br><a href="https://gungeespla.github.io/salmonitor/" target="_blank"></a><br>キャプボ経由でサーモンランの映像を取得してあれこれするWebアプリです。</li>
-    <li><h3>鮭ブキランキングメーカー</h3><br><a href="https://tiermaker.com/create/splatoon-2-salmon-run-weapons" target="_blank"></a><br>鮭ブキランキングを作ることができます。</li>
-    <li><h3>STタイマー</h3><br><a href="https://gungeespla.github.io/stt/" target="_blank"></a><br>サーモンラーンから独立したSTタイマーです。</li>
-    <ul>
-      <li><h3>ST+1分タイマー</h3><br><a href="https://gungeespla.github.io/stt/?offset=1" target="_blank"></a><br>ST+1分タイマー。</li>
-      <li><h3>ST+N分タイマーへのリンク生成ツール</h3><br><a href="https://gungeespla.github.io/stt/menu.html" target="_blank"></a><br>任意のST+N分タイマーへのリンクを生成できます。</li>
-    </ul>
-    <li><h3>YouTube2窓実況支援ツール</h3><br><a href="https://gungeespla.github.io/youtube_2mado/" target="_blank"></a><br>YouTubeの野良2配信などを2窓実況するためのツールです。</li>
-    <li><h3>Discord Overlay カスタムCSS参考ページ</h3><br><a href="https://gungeespla.github.io/obs_discord_sample/" target="_blank"></a><br>OBSにDiscordの通話アイコンを表示するときのカスタムCSS例を載せています。</li>
-  </ul>
-  <h2>ツール</h2>
-  <ul id="ul-02">
-    <li><h3>OBSの配信画面に現在の評価値を出すやつ＋おまけ Ver.0.0.1</h3><br><a href="https://gungeespla.github.io/obs_salmon_run_grade/release/obs-salmon-run-grade-0.0.1-win.zip" target="_blank"></a><br>（<a autotext="no" href="https://gungeespla.github.io/obs_salmon_run_grade/release/obs-salmon-run-grade-0.0.1-mac.zip" target="_blank">MacOSで解凍時にファイル名が文字化けする場合はこちら</a>）<br>『Salmonia』が必須です。詳しくは同梱の説明書にて。</li>
-    <li><h3>HTML5エフェクトジェネレーター Ver.0.0.6</h3><br><a href="https://gungeespla.github.io/effect_generator/release/Effect-Generator-0.0.6.zip" target="_blank"></a><br>コメントに反応してOBSの配信画面に自動で画像や動画エフェクトを表示することができるツールです。</li>
-    <li><h3>HTML5エフェクトジェネレーター Ver.0.0.6（アップデート用）</h3><br><a href="https://gungeespla.github.io/effect_generator/release/Effect-Generator-0.0.6-for-update.zip" target="_blank"></a><br>アップデート用。アップデートの際にはこれで既存のファイルを上書きしてください。</li>
-  </ul>
+<body>
+  <h1>作ったものまとめ@GungeeSpla</h1>
+  <h5>いままで作ってきたWebアプリや素材などをまとめました。</h5>
+  <h2>Webアプリ</h2>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(https://gungeespla.github.io/mk8dx_sokuji/favicon.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/mk8dx_sokuji/" target="_blank">マリオカート8DX 即時集計機</a></p>
+      <p class="link-desc">マリオカート8DXの交流戦配信に利用可能な即時集計機です。</p>
+      <p class="link-url">https://gungeespla.github.io/mk8dx_sokuji/</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(https://gungeespla.github.io/salmon_learn/data/image/icon-640x640.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/salmon_learn/" target="_blank">Salmon Learn - サーモンラーン</a></p>
+      <p class="link-desc">サーモンラン関連のツールが詰まったアプリです。</p>
+      <p class="link-url">https://gungeespla.github.io/salmon_learn/</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_count.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/collection_of_weapons/" target="_blank">サーモンランブキコレクション</a></p>
+      <p class="link-desc">ランダム回で引いたブキを数えるやつ。</p>
+      <p class="link-url">https://gungeespla.github.io/collection_of_weapons/</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(https://gungeespla.github.io/ikura_bingo/favicon.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/ikura_bingo/" target="_blank">赤イクラビンゴ</a></p>
+      <p class="link-desc">赤イクラの下2桁でビンゴをしようぜ！</p>
+      <p class="link-url">https://gungeespla.github.io/ikura_bingo/</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(https://gungeespla.github.io/salmonitor/favicon.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/salmonitor/" target="_blank">Salmonitor - サーモニター</a></p>
+      <p class="link-desc">キャプボ経由でサーモンランの映像を取得してあれこれするWebアプリです。</p>
+      <p class="link-url">https://gungeespla.github.io/salmonitor/</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_tier.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://tiermaker.com/create/splatoon-2-salmon-run-weapons" target="_blank">鮭ブキランキングメーカー</a></p>
+      <p class="link-desc">鮭ブキランキングを作ることができます。</p>
+      <p class="link-url">https://tiermaker.com/create/splatoon-2-salmon-run-weapons</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(https://gungeespla.github.io/stt/favicon.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/stt/" target="_blank">STタイマー</a></p>
+      <p class="link-desc">サーモンラーンから独立したSTタイマーです。</p>
+      <p class="link-url">https://gungeespla.github.io/stt/</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(https://gungeespla.github.io/stt/favicon.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/stt/?offset=1" target="_blank">ST+1分タイマー</a></p>
+      <p class="link-desc">ST+1分タイマー。</p>
+      <p class="link-url">https://gungeespla.github.io/stt/?offset=1</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(https://gungeespla.github.io/stt/favicon.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/stt/menu.html" target="_blank">ST+N分タイマーへのリンク生成ツール</a></p>
+      <p class="link-desc">任意のST+N分タイマーへのリンクを生成できます。</p>
+      <p class="link-url">https://gungeespla.github.io/stt/menu.html</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style=""></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/youtube_2mado/" target="_blank">YouTube2窓実況支援ツール</a></p>
+      <p class="link-desc">YouTubeの野良2配信などを2窓実況するためのツールです。</p>
+      <p class="link-url">https://gungeespla.github.io/youtube_2mado/</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style=""></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/obs_discord_sample/" target="_blank">Discord Overlay カスタムCSS参考ページ</a></p>
+      <p class="link-desc">OBSにDiscordの通話アイコンを表示するときのカスタムCSS例を載せています。</p>
+      <p class="link-url">https://gungeespla.github.io/obs_discord_sample/</p>
+    </div>
+  </div>
+  <h2>Webページ</h2>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_docs.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://docs.google.com/document/d/1UbyVd6RfBkpjcpWDjOijCU4h5nyQTIE2XX4CflHfy1c/edit?usp=sharing" target="_blank">サーモンラン乱獲についての所感</a></p>
+      <p class="link-desc">サーモンランの乱獲について思うところをGoogle Docsで書きました。</p>
+      <p class="link-url">https://docs.google.com/document/d/1UbyVd6RfBkpjcpWDjOijCU4h5nyQTIE2XX4CflHfy1c/edit?usp=sharing</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_sheet.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/salmon_learn/records.html" target="_blank">サーモンラン記録シートのリンクまとめ</a></p>
+      <p class="link-desc">サーモンラン記録シート（マーティ―シート）関連で作ったシートへのリンクをまとめています。</p>
+      <p class="link-url">https://gungeespla.github.io/salmon_learn/records.html</p>
+    </div>
+  </div>
+  <h2>OBS向け配信補助ツール</h2>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_rate.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/obs_salmon_run_grade/release/obs-salmon-run-grade-0.0.1-win.zip" target="_blank">OBSの配信画面に現在の評価値を出すやつ Ver.0.0.1</a></p>
+      <p class="link-desc">『Salmonia』が必須です。詳しくは同梱の説明書にて。（<a autotext="no" href="https://gungeespla.github.io/obs_salmon_run_grade/release/obs-salmon-run-grade-0.0.1-mac.zip" target="_blank">MacOSはこちら</a>）</p>
+      <p class="link-url">https://gungeespla.github.io/obs_salmon_run_grade/release/obs-salmon-run-grade-0.0.1-win.zip</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_effect.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/effect_generator/release/Effect-Generator-0.0.6.zip" target="_blank">HTML5エフェクトジェネレーター Ver.0.0.6</a></p>
+      <p class="link-desc">コメントに反応してOBSの配信画面に自動で画像や動画エフェクトを表示することができるツールです。</p>
+      <p class="link-url">https://gungeespla.github.io/effect_generator/release/Effect-Generator-0.0.6.zip</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_effect.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/effect_generator/release/Effect-Generator-0.0.6-for-update.zip" target="_blank">HTML5エフェクトジェネレーター Ver.0.0.6（アップデート用）</a></p>
+      <p class="link-desc">アップデート用。アップデートの際にはこれで既存のファイルを上書きしてください。</p>
+      <p class="link-url">https://gungeespla.github.io/effect_generator/release/Effect-Generator-0.0.6-for-update.zip</p>
+    </div>
+  </div>
   <h2>素材</h2>
-  <ul id="ul-03">
-    <li><h3>バイト服のイカちゃんのLive2Dモデル</h3><br><a href="https://gungeespla.github.io/salmon_learn/data/others/live2d/assets/ikachan.zip" target="_blank"></a><br>バイト服のイカちゃんがLive2Dで動きます。</li>
-    <li><h3>オリマーBB</h3><br><a href="https://gungeespla.github.io/salmon_learn/data/materials/olimar-bb.zip" target="_blank"></a><br>『ピクミン』に登場するキャプテン・オリマーのBB素材。</li>
-  </ul>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_ika.png);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/salmon_learn/data/others/live2d/assets/ikachan.zip" target="_blank">バイト服のイカちゃんのLive2Dモデル</a></p>
+      <p class="link-desc">バイト服のイカちゃんのLive2Dモデルです。そこそこ動きます。</p>
+      <p class="link-url">https://gungeespla.github.io/salmon_learn/data/others/live2d/assets/ikachan.zip</p>
+    </div>
+  </div>
+  <div class="link-container">
+    <div class="link-image" style="background-image: url(./tyrano/images/thumb_olimar.gif);"></div>
+    <div class="link-text">
+      <p class="link-title"><a href="https://gungeespla.github.io/salmon_learn/data/materials/olimar-bb.zip" target="_blank">オリマーBB</a></p>
+      <p class="link-desc">『ピクミン』に登場するキャプテン・オリマーのBB素材。</p>
+      <p class="link-url">https://gungeespla.github.io/salmon_learn/data/materials/olimar-bb.zip</p>
+    </div>
+  </div>
   <h2>関連リンク</h2>
-  <ul id="ul-04">
-    <li><h3>作者のTwitter</h3><br><a href="https://twitter.com/gungeespla" target="_blank"></a><br></li>
-    <li><h3>作者のGitHubリポジトリ</h3><br><a href="https://github.com/gungeespla" target="_blank"></a><br></li>
-    <li><h3>作者のYouTubeチャンネル</h3><br><a href="https://www.youtube.com/c/gungee" target="_blank"></a><br></li>
-    <li><h3>作者のAmazon欲しいものリスト</h3><br><a href="http://amzn.asia/1OJG2pV" target="_blank"></a><br></li>
-  </ul>
+  <div class="link-container">
+    <p class="link-title"><a href="https://twitter.com/gungeespla" target="_blank">作者のTwitter</a></p>
+    <p class="link-url">https://twitter.com/gungeespla</p>
+  </div>
+  <div class="link-container">
+    <p class="link-title"><a href="https://github.com/gungeespla" target="_blank">作者のGitHubリポジトリ</a></p>
+    <p class="link-url">https://github.com/gungeespla</p>
+  </div>
+  <div class="link-container">
+    <p class="link-title"><a href="https://www.youtube.com/c/gungee" target="_blank">作者のYouTubeチャンネル</a></p>
+    <p class="link-url">https://www.youtube.com/c/gungee</p>
+  </div>
+  <div class="link-container">
+    <p class="link-title"><a href="http://amzn.asia/1OJG2pV" target="_blank">作者のAmazon欲しいものリスト</a></p>
+    <p class="link-url">http://amzn.asia/1OJG2pV</p>
+  </div>
 </body>
 </html>
