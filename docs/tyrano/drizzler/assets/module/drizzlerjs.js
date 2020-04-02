@@ -1,11 +1,11 @@
-import * as constants from './constant.js?Ver.0.1.1';
-import * as utilities from './function.js?Ver.0.1.1';
-import Course from './Course.js?Ver.0.1.1';
-import Drizzler from './Drizzler.js?Ver.0.1.1';
-import Xors from './Xors.js?Ver.0.1.1';
-import Squid from './Squid.js?Ver.0.1.1';
-import DraggableBitmap from './DraggableBitmap.js?Ver.0.1.1';
-import ZMap from './ZMap.js?Ver.0.1.1';
+import * as constants from './constant.js?Ver.0.1.2';
+import * as utilities from './function.js?Ver.0.1.2';
+import Course from './Course.js?Ver.0.1.2';
+import Drizzler from './Drizzler.js?Ver.0.1.2';
+import Xors from './Xors.js?Ver.0.1.2';
+import Squid from './Squid.js?Ver.0.1.2';
+import DraggableBitmap from './DraggableBitmap.js?Ver.0.1.2';
+import ZMap from './ZMap.js?Ver.0.1.2';
 
 /** drizzlerjs
  */
