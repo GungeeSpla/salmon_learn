@@ -195,7 +195,7 @@ export const WEAPON_NATURAL_WIDTH = 128;
 export const WEAPON_NATURAL_HEIGHT = 128;
 export const WEAPON_HANDLE_COLOR = 'rgba(170, 170, 170, 0.7)';
 export const WEAPON_HANDLE_MARGIN = 2;
-export const WEAPON_CIRCLE_RATIO = 220 / 44;
+export const WEAPON_CIRCLE_RATIO = 230 / 44;
 export const WEAPON_CIRCLE_COLORS = [
   'rgb(255,160,255)',
   'rgb(255,200,255)',
@@ -834,7 +834,7 @@ export const WEAPON_DATA = {
   4000: { jp: 'スプラスピナー', en: 'Mini Splatling', range: 30 },
   4010: { jp: 'バレルスピナー', en: 'Heavy Splatling', range: 42 },
   4020: { jp: 'ハイドラント', en: 'Hydra Splatling', range: 50 },
-  4030: { jp: 'クーゲルシュライバー', en: 'Ballpoint Splatling', range: 50 },
+  4030: { jp: 'クーゲルシュライバー', en: 'Ballpoint Splatling', range: 46 },
   4040: { jp: 'ノーチラス47', en: 'Nautilus 47', range: 36 },
   5000: { jp: 'スパッタリー', en: 'Dapple Dualies', range: 19 },
   5010: { jp: 'スプラマニューバー', en: 'Splat Dualies', range: 26 },

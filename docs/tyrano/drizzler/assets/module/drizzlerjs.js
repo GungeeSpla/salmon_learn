@@ -1,4 +1,4 @@
-import * as constants from './constant.js?Ver.0.1.2';
+import * as constants from './constant.js?Ver.0.1.3';
 import * as utilities from './function.js?Ver.0.1.2';
 import Course from './Course.js?Ver.0.1.2';
 import Drizzler from './Drizzler.js?Ver.0.1.2';
