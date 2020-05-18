@@ -10,7 +10,7 @@ function StTimerApp () {
 	this.specialStColor = "Yellow";
 	this.mode        = "timer";
 	this.isStarted   = false;
-	this.stTimer     = new StTimer();
+	this.stTimer     = new StTimer(this);
 	this.list        = [];
 	this.bEta        = 0;
 	this.eta         = 0;
@@ -749,8 +749,9 @@ function DateFormatter () {
 
 
 //# SalmonrunTimeTimer ()
-function StTimer () {
-	this.timeOffset = new TimeOffset();
+function StTimer (app) {
+	this.app = app;
+	this.timeOffset = new TimeOffset(this);
 	this.firstST  = 2;
 	this.interval = 8;
 	this.stOffset = 1;
@@ -810,8 +811,9 @@ function StTimer () {
 
 
 //# TimeOffset
-function TimeOffset () {
+function TimeOffset (stTimer) {
 	var self              = this;
+	this.stTimer          = stTimer;
 	this.resulat          = {};
 	this.offsetJST        = 0;
 	this.enableFriendOffset = false;
@@ -836,7 +838,6 @@ function TimeOffset () {
 	
 	//## consoleOffset (json)
 	this.consoleOffset = function (json) {
-		
 		var str  = "✅ NICTサーバにアクセスしました.";
 		var str1 = "RTT = %rtt ms , (JST - PC Clock) = %dif ms";
 		    str1 = str1.replace("%rtt", json.rtt).replace("%dif", json.dif);
@@ -845,23 +846,69 @@ function TimeOffset () {
 		           "あなたのコンピュータの時計は %dif秒 遅れています.":
 		           "あなたのコンピュータの時計は %dif秒 進んでいます.";
 		    str2 = str2.replace("%dif", Math.abs(json.dif / 1000));
-		
 		console.log(str);
-		console.log(str1);
-		console.log(str2);
+		//console.log(str1);
+		//console.log(str2);
 	};
+	
+	//## results
+	this.results = [];
 	
 	//## getOffsetJST ()
 	this.getOffsetJST = function (callback) {
-		
+	  this.results = [];
+	  var that = this;
+	  var minLength = 3;
+	  var index = (this.results.length < minLength) ? 0 : undefined;
+	  var _callback = function (json) {
+	    if (index === 0) {
+	      callback(json);
+	    }
+	    if (that.results.length < minLength) {
+	      if (!isNaN(index)) {
+	        index += 1;
+	      }
+	      setTimeout(() => {
+	        that.getOffsetJSTOnce(index, _callback);
+	      }, 100);
+	    } else {
+        that.results.sort(function(a, b) {
+          return a.dif - b.dif;
+        });
+        var difSum = 0;
+        var difNum = 0;
+        var difAvg;
+        var difStr = '';
+        for (var i = 0; i < that.results.length; i++) {
+          if (i > 0) {
+            difStr += ' / ';
+          }
+          difStr += (that.results[i].dif / 1000).toFixed(3);
+          if (i > 0 && i < that.results.length - 1) {
+            difNum++;
+            difSum += that.results[i].dif;
+          }
+        }
+        difAvg = Math.floor(difSum / difNum);
+        console.log('時差: ' + difStr);
+        console.log('最小と最大を除いた平均時差: ' + difAvg);
+				that.offsetJST = difAvg;
+				that.stTimer.app.renderOffset({
+				  dif: difAvg
+				});
+	    }
+	  }
+	  this.getOffsetJSTOnce(index, _callback);
+	}
+	
+	//## getOffsetJSTOnce ()
+	this.getOffsetJSTOnce = function (index, callback) {
 		var that = this;
-		
 		// アクセスするサーバーをランダムに決定し
 		// ユニークなクエリパラメータを付けてキャッシュを防ぐ
-		var randomIndex = Math.floor(Math.random() * 3); // 0, 1, 2
+		var randomIndex = isNaN(index) ? Math.floor(Math.random() * 3) : index % 3; // 0, 1, 2
 		var randomServerUrl = this.serverUrls[randomIndex];
 		var uniqueQuery = "?" + ((new Date()).getTime() / 1000);
-		
 		// GET
 		$.get(randomServerUrl + uniqueQuery, function (json) {
 			// StringだったらJSONでオブジェクトにする
@@ -874,7 +921,8 @@ function TimeOffset () {
 				json.rtt = json.rt - json.it;     // 応答時間
 				json.dif = json.st - (json.it + json.rt) / 2; // JST - PC Clock
 				json.dif = Math.round(json.dif);
-		
+				console.log('発信から受信まで' + (json.rtt / 1000).toFixed(3) + '秒');
+				console.log('端末の時刻はサーバー[' + randomIndex + ']時刻に比べて' + (json.dif / 1000).toFixed(3) + '秒' + ((json.dif > 0) ? '遅れ' : '進み'));
 				if (window.queries && window.queries.test == "1" && window.stTimerApp.$test) {
 					var f = window.stTimerApp.dateFormatter.getHourText;
 					var g = window.stTimerApp.dateFormatter.getMinText3;
@@ -889,11 +937,10 @@ function TimeOffset () {
 					var str = strs.join("<br>");
 					window.stTimerApp.$test.html(str);
 				}
-				
 				// 結果の格納
 				that.result = json;
+				that.results.push(json);
 				that.offsetJST = json.dif;
-				
 				// 結果の表示
 				that.consoleOffset(json);
 				callback(json);
