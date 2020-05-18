@@ -228,7 +228,7 @@ tf.version = sf.last_visit_version;
 [eval exp="sf.last_visit_version = window.VERSION"]
 
 ; ダイアログがあれば出す
-[call target="Dialog"]
+; [call target="Dialog"]
 [s]
 
 

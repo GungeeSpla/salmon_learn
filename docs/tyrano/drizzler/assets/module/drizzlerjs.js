@@ -1,4 +1,4 @@
-import * as constants from './constant.js?Ver.0.1.3';
+import * as constants from './constant.js?Ver.0.1.4';
 import * as utilities from './function.js?Ver.0.1.2';
 import Course from './Course.js?Ver.0.1.2';
 import Drizzler from './Drizzler.js?Ver.0.1.2';
@@ -628,6 +628,12 @@ window.drizzlerjs = (() => {
         highDef.additionalLines.forEach((line) => {
           normalDef.lines.push(line);
         });
+        // 満潮においてカタパッドとの兼ね合いで駐車場が押しのけられるコウモリが存在する
+        if (highDef.pushedParks) {
+          Object.keys(highDef.pushedParks).forEach((key) => {
+            normalDef.parks[key] = highDef.pushedParks[key];
+          });
+        }
         // その他、満潮のデータが持っているプロパティを通常水位のコピーデータに上書きする
         Object.keys(highDef).forEach((defKey) => {
           normalDef[defKey] = highDef[defKey];

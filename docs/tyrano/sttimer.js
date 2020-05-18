@@ -443,7 +443,9 @@ function StTimerApp () {
 		
 		var str = this.enableNowMode ? 
 			app.dateFormatter.getHourText(this.nowDate):
-			app.dateFormatter.getMinText(this.etaDate);
+			this.etaDate.getMinutes() >= 1 ?
+			  app.dateFormatter.getMinText2(this.etaDate):
+			  app.dateFormatter.getMinText(this.etaDate);
 		this.$eta.text(str);
 		
 		this.clearCanvas();
@@ -471,9 +473,9 @@ function StTimerApp () {
 	//## renderOffset (json)
 	this.renderOffset = function (json) {
 		var str = (json.dif > 0) ?
-		          "時計の %dif 秒の遅れを補正済み":
-		          "時計の %dif 秒の進みを補正済み";
-		    str = str.replace("%dif", Math.abs(json.dif / 1000));
+		          "端末の %dif 秒の遅れを補正済み":
+		          "端末の %dif 秒の進みを補正済み";
+		    str = str.replace("%dif", Math.abs(json.dif / 1000).toFixed(3));
 		/*
 		var sign = json.dif ? "+" : "";
 		var str = "時刻補正 " + sign + (json.dif / 1000);
@@ -537,10 +539,12 @@ function StTimerApp () {
 		clearTimeout(app.updateOffsetId);
 		app.updateOffsetId = setTimeout(app.updateOffset, app.updateOffsetDuration);
 		// NICTにアクセス
-		app.stTimer.timeOffset.getOffsetJST(function(json){
-			app.updateStList();
-			app.renderOffset(json);
-		});
+		setTimeout(() => {
+  		app.stTimer.timeOffset.getOffsetJST(function(json){
+  			app.updateStList();
+  			app.renderOffset(json);
+  		});
+    }, 500);
 	};
 	
 	//## stopApp ()

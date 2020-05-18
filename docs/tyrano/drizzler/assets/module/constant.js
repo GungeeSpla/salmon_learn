@@ -274,6 +274,9 @@ export const COURSE_DATA = {
      */
     high: {
       excludeParks: ['L', 'J', 'H', 'G', 'B', 'C', 'D'],
+      pushedParks: {
+        '4': [534, 513],
+      },
       additionalLines: ['EA'],
       spawners: [
         {
@@ -485,6 +488,9 @@ export const COURSE_DATA = {
      */
     high: {
       excludeParks: ['I', 'H', 'F', 'E', 'D', 'S', 'Q', 'P', 'N', 'L', 'K'],
+      pushedParks: {
+        '19': [460, 635],
+      },
       additionalLines: [],
       spawners: [
         {
