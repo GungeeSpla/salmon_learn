@@ -706,7 +706,7 @@ function DateFormatter () {
 	this.getMinText = function (d) {
 		d.mm  = ("00" + d.getMinutes()).slice(-2);
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
-		d.SSS = ("000" + d.getMilliseconds()).slice(-3);
+		d.SSS = "" + Math.floor(d.getMilliseconds()/100);
 		return (d.mm + ":" + d.ss + "." + d.SSS);
 	};
 	
@@ -730,7 +730,8 @@ function DateFormatter () {
 		d.h   = d.getHours();
 		d.mm  = ("00" + d.getMinutes()).slice(-2);
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
-		d.SSS = ("000" + d.getMilliseconds()).slice(-3);
+		d.SSS = "" + Math.floor(d.getMilliseconds()/100);
+		//d.SSS = ("000" + d.getMilliseconds()).slice(-3);
 		return (d.h + ":" + d.mm + ":" + d.ss + "." + d.SSS);
 	};
 	
