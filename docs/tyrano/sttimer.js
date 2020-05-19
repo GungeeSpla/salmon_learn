@@ -712,6 +712,7 @@ function DateFormatter () {
 	
 	//## getMinText2 (d)
 	this.getMinText2 = function (d) {
+	  d = new Date(d.getTime() + 1000);
 		d.mm  = ("00" + d.getMinutes()).slice(-2);
 		d.ss  = ("00" + d.getSeconds()).slice(-2);
 		return (d.mm + ":" + d.ss);
