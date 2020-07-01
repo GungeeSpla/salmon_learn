@@ -5,11 +5,13 @@ function MartySheet () {
 	var self = this;
 	this.json = "";
 	this.make = function () {
-		this.getJson(function(){
-			self.setEvents();
-			$(".marty_sheet .page_1_button").trigger("click");
-			$(".marty_sheet .stage_1_button").trigger("click");
-		});
+		if (google && google.visualization) {
+			this.getJson(function(){
+				self.setEvents();
+				$(".marty_sheet .page_1_button").trigger("click");
+				$(".marty_sheet .stage_1_button").trigger("click");
+			});
+		}
 	};
 	this.setEvents = function () {
 		$(".marty_sheet .page_buttons .button").on("click", function(){
