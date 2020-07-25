@@ -659,7 +659,7 @@ function GusherApp () {
 		//## ポラリス【満潮】
 		Define_Porarisu_Mancho_Kanketsu: {
 			josekidata: [
-				["Eから開けるやつ", "f.random = false; f.joseki='PoMK_Joseki_A'"],
+				["Bから開けるやつ", "f.random = false; f.joseki='PoMK_Joseki_A'"],
 			],
 			suimyaku: "pora_suimyaku_m.png",
 			bg: "../fgimage/pora_kanketsu.png",

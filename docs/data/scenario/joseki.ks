@@ -501,25 +501,25 @@ f.joseki = "BuMK_Joseki_A"
 f.joseki = "PoMK_Joseki_A"
 [endscript]
 
-[k_button  k=E target=*PoMK_Joseki_A_1]
-[yajirushi k=E]
+[k_button  k=B target=*PoMK_Joseki_A_1]
+[yajirushi k=B]
 [s]
 
 *PoMK_Joseki_A_1
 [k_check][jump cond=f.atari target=*Atari][cm]
-[if exp="gusherApp.isBrother('E', f.answer)"]
+[if exp="gusherApp.isBrother('B', f.answer)"]
     [yajirushi_move k=A]
     [k_button       k=A target=*Kakutei]
 [else]
-    [yajirushi_move k=B]
-    [k_button       k=B target=*PoMK_Joseki_A_2]
+    [yajirushi_move k=D]
+    [k_button       k=D target=*PoMK_Joseki_A_2]
 [endif]
 [s]
 
 *PoMK_Joseki_A_2
 [k_check][jump cond=f.atari target=*Atari][cm]
-[yajirushi_move k=D]
-[k_button       k=D target=*Kakutei]
+[yajirushi_move k=E]
+[k_button       k=E target=*Kakutei]
 [s]
 
 ;=======================================
