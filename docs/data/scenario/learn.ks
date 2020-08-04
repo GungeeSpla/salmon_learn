@@ -1154,6 +1154,7 @@ tf.y = 200;
 *Panel_4_1
 ;=======================================
 [html name=credit_wrapper]
+[if exp="LANG_KEY=='ja'"]
 <div class="credit about">
 	<br><br>このアプリについて<br><br>
 	<p>「<b>SALMON LEARN -サーモンラーン-</b>」は、<br>
@@ -1166,6 +1167,14 @@ tf.y = 200;
 	することができます。</p><br>
 	<p>[emb exp="VERSION_STR"]</p>
 </div>
+[else]
+<div class="credit about">
+	<br><br>About this app<br><br>
+	<p>"SALMON LEARN" is a web application <br>that provides information about the Salmon Run <br>in Splatoon 2 for Nintendo Switch.</p><br>
+	<p>You can simulate the opening of gushers, <br>simulate bat guidance, <br>check shifts and check the forecast.</p><br>
+	<p>[emb exp="VERSION_STR"]</p>
+</div>
+[endif]
 [endhtml]
 [glink text=リロード x=412 width=130 y=563 size=18 color=credit_button target=Panel_4_Reload cond="getUrlQueries && getUrlQueries().utm_source=='homescreen'"]
 [jump target=Panel_4_5]
@@ -1174,6 +1183,7 @@ tf.y = 200;
 *Panel_4_2
 ;=======================================
 [html name=credit_wrapper]
+[if exp="LANG_KEY=='ja'"]
 <div class="credit author">
 	<br>
 	<h2>作者</h2><br>
@@ -1184,6 +1194,18 @@ tf.y = 200;
 	<p><a href="https://tiermaker.com/create/splatoon-2-salmon-run-weapons" target="_black">鮭ブキランキングメーカー</a></p><br>
 	<p><a href="http://amzn.asia/1OJG2pV" target="_black">作者のWish List</a></p><br>
 </div>
+[else]
+<div class="credit author">
+	<br>
+	<h2>Creator</h2><br>
+	<p>ガンジー (<a href="https://twitter.com/gungeespla" target="_black">@GungeeSpla</a>)</p>
+	<p>Please send bug reports and requests to Twitter.</p><br>
+	<h2>Related Links</h2><br>
+	<p><a href="javascript:void(0)" class="live2d">Live2D model of inkling</a></p><br>
+	<p><a href="https://tiermaker.com/create/splatoon-2-salmon-run-weapons" target="_black">Tier list maker of SR weapons</a></p><br>
+	<p><a href="http://amzn.asia/1OJG2pV" target="_black">Amazon wish list</a></p><br>
+</div>
+[endif]
 [endhtml]
 [iscript]
 $(".live2d").click(function(){
@@ -1243,10 +1265,17 @@ $(".live2d").click(function(){
 ;=======================================
 *Panel_4_5
 ;=======================================
+[if exp="LANG_KEY=='ja'"]
 [glink text=アプリについて   x=060 width=200 y=690 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_1'"]
 [glink text=作者と関連リンク x=330 width=200 y=690 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]
 [glink text=クレジット１     x=060 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_3'"]
 [glink text=クレジット２     x=330 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_4'"]
+[else]
+[glink text="About&nbsp;this&nbsp;app" x=060 width=200 y=690 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_1'"]
+[glink text="About&nbsp;creator"  x=330 width=200 y=690 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_2'"]
+[glink text="Reference&nbsp;1"    x=060 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_3'"]
+[glink text="Reference&nbsp;2"    x=330 width=200 y=760 size=24 color=credit_button target=Panel_4_Jump exp="tf.credit = 'Panel_4_4'"]
+[endif]
 [return]
 
 ;=======================================
