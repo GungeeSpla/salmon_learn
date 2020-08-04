@@ -21,22 +21,22 @@ f.preloadImages = [
 	"data/fgimage/goldie.png",
 	"data/fgimage/komori.png",
 	"tyrano/images/rotation_bg.png",
-	"data/image/panel_1a.png",
-	"data/image/panel_2a.png",
-	"data/image/panel_3a.png",
-	"data/image/panel_4a.png",
-	"data/image/panel_5a.png",
-	"data/image/panel_6a.png",
-	"data/image/panel_7a.png",
-	"data/image/panel_8a.png",
-	"data/image/panel_1ab.png",
-	"data/image/panel_2ab.png",
-	"data/image/panel_3ab.png",
-	"data/image/panel_4ab.png",
-	"data/image/panel_5ab.png",
-	"data/image/panel_6ab.png",
-	"data/image/panel_7ab.png",
-	"data/image/panel_8ab.png"
+	"data/image/"+LANG_KEY+"/panel_1a.png",
+	"data/image/"+LANG_KEY+"/panel_2a.png",
+	"data/image/"+LANG_KEY+"/panel_3a.png",
+	"data/image/"+LANG_KEY+"/panel_4a.png",
+	"data/image/"+LANG_KEY+"/panel_5a.png",
+	"data/image/"+LANG_KEY+"/panel_6a.png",
+	"data/image/"+LANG_KEY+"/panel_7a.png",
+	"data/image/"+LANG_KEY+"/panel_8a.png",
+	"data/image/"+LANG_KEY+"/panel_1ab.png",
+	"data/image/"+LANG_KEY+"/panel_2ab.png",
+	"data/image/"+LANG_KEY+"/panel_3ab.png",
+	"data/image/"+LANG_KEY+"/panel_4ab.png",
+	"data/image/"+LANG_KEY+"/panel_5ab.png",
+	"data/image/"+LANG_KEY+"/panel_6ab.png",
+	"data/image/"+LANG_KEY+"/panel_7ab.png",
+	"data/image/"+LANG_KEY+"/panel_8ab.png"
 ];
 [endscript]
 [preload storage=&f.preloadImages wait=false]
@@ -284,27 +284,27 @@ stTimerApp.specialStTitle = "";
 *Panel_Fix_Button
 ;=======================================
 [clearfix]
-[button fix=true graphic=panel_1a.png   x=&128*0 y=840 width=&128 storage=learn.ks target=*Panel_1 cond="sf.panel != 1"]
-[button fix=true graphic=panel_1ab.png  x=&128*0 y=840 width=&128 storage=learn.ks target=*Panel_1 cond="sf.panel == 1"]
-[button fix=true graphic=panel_2a.png   x=&128*1 y=840 width=&128 storage=learn.ks target=*Panel_2 cond="sf.panel != 2"]
-[button fix=true graphic=panel_2ab.png  x=&128*1 y=840 width=&128 storage=learn.ks target=*Panel_2 cond="sf.panel == 2"]
-[button fix=true graphic=panel_3a.png   x=&128*2 y=840 width=&128 storage=learn.ks target=*Panel_3 cond="sf.panel != 3"]
-[button fix=true graphic=panel_3ab.png  x=&128*2 y=840 width=&128 storage=learn.ks target=*Panel_3 cond="sf.panel == 3"]
-[button fix=true graphic=panel_5a.png   x=&128*3 y=840 width=&128 storage=learn.ks target=*Panel_5 cond="sf.panel != 5"]
-[button fix=true graphic=panel_5ab.png  x=&128*3 y=840 width=&128 storage=learn.ks target=*Panel_5 cond="sf.panel == 5"]
-[button fix=true graphic=panel_7a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_7 cond="sf.panel != 7" name=fix_sonota_tab]
-[button fix=true graphic=panel_4a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_4 cond="sf.panel != 4" name=fix_sonota_item]
-[button fix=true graphic=panel_4ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_4 cond="sf.panel == 4" name=fix_sonota_item]
-[button fix=true graphic=panel_6a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_6 cond="sf.panel != 6" name=fix_sonota_item]
-[button fix=true graphic=panel_6ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_6 cond="sf.panel == 6" name=fix_sonota_item]
-[button fix=true graphic=panel_10a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel != 10" name=fix_sonota_item]
-[button fix=true graphic=panel_10ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
-[button fix=true graphic=panel_11a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel != 11" name=fix_sonota_item]
-[button fix=true graphic=panel_11ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel == 11" name=fix_sonota_item]
-[button fix=true graphic=panel_12a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel != 12" name=fix_sonota_item]
-[button fix=true graphic=panel_12ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel == 12" name=fix_sonota_item]
-[button fix=true graphic=panel_13a.png   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_13 cond="sf.panel != 13" name=fix_sonota_item]
-[button fix=true graphic=panel_13ab.png  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_13 cond="sf.panel == 13" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_1a.png'"   x=&128*0 y=840 width=&128 storage=learn.ks target=*Panel_1 cond="sf.panel != 1"]
+[button fix=true graphic="&LANG_KEY+'/panel_1ab.png'"  x=&128*0 y=840 width=&128 storage=learn.ks target=*Panel_1 cond="sf.panel == 1"]
+[button fix=true graphic="&LANG_KEY+'/panel_2a.png'"   x=&128*1 y=840 width=&128 storage=learn.ks target=*Panel_2 cond="sf.panel != 2"]
+[button fix=true graphic="&LANG_KEY+'/panel_2ab.png'"  x=&128*1 y=840 width=&128 storage=learn.ks target=*Panel_2 cond="sf.panel == 2"]
+[button fix=true graphic="&LANG_KEY+'/panel_3a.png'"   x=&128*2 y=840 width=&128 storage=learn.ks target=*Panel_3 cond="sf.panel != 3"]
+[button fix=true graphic="&LANG_KEY+'/panel_3ab.png'"  x=&128*2 y=840 width=&128 storage=learn.ks target=*Panel_3 cond="sf.panel == 3"]
+[button fix=true graphic="&LANG_KEY+'/panel_5a.png'"   x=&128*3 y=840 width=&128 storage=learn.ks target=*Panel_5 cond="sf.panel != 5"]
+[button fix=true graphic="&LANG_KEY+'/panel_5ab.png'"  x=&128*3 y=840 width=&128 storage=learn.ks target=*Panel_5 cond="sf.panel == 5"]
+[button fix=true graphic="&LANG_KEY+'/panel_7a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_7 cond="sf.panel != 7" name=fix_sonota_tab]
+[button fix=true graphic="&LANG_KEY+'/panel_4a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_4 cond="sf.panel != 4" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_4ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_4 cond="sf.panel == 4" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_6a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_6 cond="sf.panel != 6" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_6ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_6 cond="sf.panel == 6" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_10a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel != 10" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_10ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_11a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel != 11" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_11ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel == 11" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_12a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel != 12" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_12ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel == 12" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_13a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_13 cond="sf.panel != 13" name=fix_sonota_item]
+[button fix=true graphic="&LANG_KEY+'/panel_13ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_13 cond="sf.panel == 13" name=fix_sonota_item]
 
 [return]
 
@@ -330,12 +330,12 @@ tf.target = "*Panel_" + sf.panel;
 var state = $(".fix_sonota_tab").attr("state");
 var isOpening = (state == "opening");
 if (isOpening) {
-	$(".fix_sonota_tab").attr("src", "./data/image/panel_7a.png").attr("state", "closing");
+	$(".fix_sonota_tab").attr("src", "./data/image/"+LANG_KEY+"/panel_7a.png").attr("state", "closing");
 	$(".fix_sonota_item").each(function(i){
 		$(this).css("transform", "translateY(0px)");
 	});
 } else {
-	$(".fix_sonota_tab").attr("src", "./data/image/panel_8a.png").attr("state", "opening");
+	$(".fix_sonota_tab").attr("src", "./data/image/"+LANG_KEY+"/panel_8a.png").attr("state", "opening");
 	$(".fix_sonota_item").each(function(i){
 		var y = -120 * (i + 1);
 		$(this).css("transform", "translateY(" + y + "px)");
@@ -803,26 +803,25 @@ stTimerApp.updateStList();
 [anim layer=1 name=logo opacity=255 time=0]
 [iscript]
 tf.x = 40;
-tf.y = 180;
+tf.y = 200;
 //changeCurrentFixButton(1);
 [endscript]
-[image layer=0                           x=&tf.x+150  y=&tf.y+20 storage=goldie.png width=60]
-[ptext layer=0 text=間欠泉 size=40       x=&tf.x+220 y=&tf.y+25 bold=bold]
-[ptext layer=0 text=シェケナダム size=30 x=&tf.x+60  y=&tf.y+105]
-[ptext layer=0 text=ドン･ブラコ  size=30 x=&tf.x+60  y=&tf.y+175]
-[ptext layer=0 text=シャケト場   size=30 x=&tf.x+60  y=&tf.y+245]
-[ptext layer=0 text=トキシラズ   size=30 x=&tf.x+60  y=&tf.y+315]
-[ptext layer=0 text=ポラリス     size=30 x=&tf.x+60  y=&tf.y+385]
-[glink text=通常 x=&tf.x+270 y=&tf.y+100 size=25 color=tsujo  target=Init exp="f.target='Define_Damu_Tsujo_Kanketsu'"]
-[glink text=満潮 x=&tf.x+390 y=&tf.y+100 size=25 color=mancho target=Init exp="f.target='Define_Damu_Mancho_Kanketsu'"]
-[glink text=通常 x=&tf.x+270 y=&tf.y+170 size=25 color=tsujo  target=Init exp="f.target='Define_Burako_Tsujo_Kanketsu'"]
-[glink text=満潮 x=&tf.x+390 y=&tf.y+170 size=25 color=mancho target=Init exp="f.target='Define_Burako_Mancho_Kanketsu'"]
-[glink text=通常 x=&tf.x+270 y=&tf.y+240 size=25 color=tsujo  target=Init exp="f.target='Define_Toba_Tsujo_Kanketsu'"]
-[glink text=満潮 x=&tf.x+390 y=&tf.y+240 size=25 color=mancho target=Init exp="f.target='Define_Toba_Mancho_Kanketsu'"]
-[glink text=通常 x=&tf.x+270 y=&tf.y+310 size=25 color=tsujo  target=Init exp="f.target='Define_Toki_Tsujo_Kanketsu'"]
-[glink text=満潮 x=&tf.x+390 y=&tf.y+310 size=25 color=mancho target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
-[glink text=通常 x=&tf.x+270 y=&tf.y+380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
-[glink text=満潮 x=&tf.x+390 y=&tf.y+380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
+[ptext layer=0 text="&getLang('g-map')" size=40       x=&tf.x+220 y=&tf.y name="header-gusher"]
+[ptext layer=0 text="&getLang('stage-1')" size=30 x=&tf.x+60  y=&tf.y+105]
+[ptext layer=0 text="&getLang('stage-2')" size=30 x=&tf.x+60  y=&tf.y+175]
+[ptext layer=0 text="&getLang('stage-3')" size=30 x=&tf.x+60  y=&tf.y+245]
+[ptext layer=0 text="&getLang('stage-4')" size=30 x=&tf.x+60  y=&tf.y+315]
+[ptext layer=0 text="&getLang('stage-5')" size=30 x=&tf.x+60  y=&tf.y+385]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+100 size=25 color=tsujo  target=Init exp="f.target='Define_Damu_Tsujo_Kanketsu'"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+100 size=25 color=mancho target=Init exp="f.target='Define_Damu_Mancho_Kanketsu'"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+170 size=25 color=tsujo  target=Init exp="f.target='Define_Burako_Tsujo_Kanketsu'"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+170 size=25 color=mancho target=Init exp="f.target='Define_Burako_Mancho_Kanketsu'"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+240 size=25 color=tsujo  target=Init exp="f.target='Define_Toba_Tsujo_Kanketsu'"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+240 size=25 color=mancho target=Init exp="f.target='Define_Toba_Mancho_Kanketsu'"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+310 size=25 color=tsujo  target=Init exp="f.target='Define_Toki_Tsujo_Kanketsu'"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+310 size=25 color=mancho target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
 [return]
 
 
@@ -837,35 +836,34 @@ tf.y = 180;
 tf.x = -15;
 tf.y = -280;
 [endscript]
-[image layer=0                             x=&tf.x+130 y=&tf.y+460 storage=komori.png width=90]
-[ptext layer=0 text=コウモリマップ size=40 x=&tf.x+230 y=&tf.y+480 bold=bold]
-[ptext layer=0 text=シェケナダム   size=30 x=&tf.x+60 y=&tf.y+585]
-[ptext layer=0 text=ドン･ブラコ    size=30 x=&tf.x+60 y=&tf.y+655]
-[ptext layer=0 text=シャケト場     size=30 x=&tf.x+60 y=&tf.y+725]
-[ptext layer=0 text=トキシラズ     size=30 x=&tf.x+60 y=&tf.y+795]
-[ptext layer=0 text=ポラリス       size=30 x=&tf.x+60 y=&tf.y+865]
-[ptext layer=0 text="&'リアルタイムモード：'+(sf.isRTMode?'ON':'OFF')" size=25 x=&tf.x+150 y=&tf.y+1000]
-[glink text=切替 x=460 width=60 y=712 size=24 color=credit_button target=ChangeKomori]
+[ptext layer=0 text="&getLang('d-map')" size=40 x=&tf.x+230 y=&tf.y+480 name="header-drizzler"]
+[ptext layer=0 text="&getLang('stage-1')" size=30 x=&tf.x+60 y=&tf.y+585]
+[ptext layer=0 text="&getLang('stage-2')" size=30 x=&tf.x+60 y=&tf.y+655]
+[ptext layer=0 text="&getLang('stage-3')" size=30 x=&tf.x+60 y=&tf.y+725]
+[ptext layer=0 text="&getLang('stage-4')" size=30 x=&tf.x+60 y=&tf.y+795]
+[ptext layer=0 text="&getLang('stage-5')" size=30 x=&tf.x+60 y=&tf.y+865]
+[ptext layer=0 text="&getLang('rt-mode')+'：'+(sf.isRTMode?'ON':'OFF')" size=25 x=&tf.x+150 y=&tf.y+1000]
+[glink text="&getLang('toggle')" x=460 y=712 size=24 color=credit_button target=ChangeKomori]
 
-[glink text=干潮 x=&tf.x+270 y=&tf.y+580 size=25 color=kancho target=*InitKomori exp="f.course='shekenadamu';f.tide='low';"]
-[glink text=通常 x=&tf.x+390 y=&tf.y+580 size=25 color=tsujo  target=*InitKomori exp="f.course='shekenadamu';f.tide='normal';"]
-[glink text=満潮 x=&tf.x+510 y=&tf.y+580 size=25 color=mancho target=*InitKomori exp="f.course='shekenadamu';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+580 size=25 color=kancho target=*InitKomori exp="f.course='shekenadamu';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+580 size=25 color=tsujo  target=*InitKomori exp="f.course='shekenadamu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+580 size=25 color=mancho target=*InitKomori exp="f.course='shekenadamu';f.tide='high';"]
 
-[glink text=干潮 x=&tf.x+270 y=&tf.y+650 size=25 color=kancho target=*InitKomori exp="f.course='domburako';f.tide='low';"]
-[glink text=通常 x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*InitKomori exp="f.course='domburako';f.tide='normal';"]
-[glink text=満潮 x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*InitKomori exp="f.course='domburako';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+650 size=25 color=kancho target=*InitKomori exp="f.course='domburako';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*InitKomori exp="f.course='domburako';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*InitKomori exp="f.course='domburako';f.tide='high';"]
 
-[glink text=干潮 x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*InitKomori exp="f.course='shaketoba';f.tide='low';"]
-[glink text=通常 x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*InitKomori exp="f.course='shaketoba';f.tide='normal';"]
-[glink text=満潮 x=&tf.x+510 y=&tf.y+720 size=25 color=mancho target=*InitKomori exp="f.course='shaketoba';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*InitKomori exp="f.course='shaketoba';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*InitKomori exp="f.course='shaketoba';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+720 size=25 color=mancho target=*InitKomori exp="f.course='shaketoba';f.tide='high';"]
 
-[glink text=干潮 x=&tf.x+270 y=&tf.y+790 size=25 color=kancho target=*InitKomori exp="f.course='tokishirazu';f.tide='low';"]
-[glink text=通常 x=&tf.x+390 y=&tf.y+790 size=25 color=tsujo  target=*InitKomori exp="f.course='tokishirazu';f.tide='normal';"]
-[glink text=満潮 x=&tf.x+510 y=&tf.y+790 size=25 color=mancho target=*InitKomori exp="f.course='tokishirazu';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+790 size=25 color=kancho target=*InitKomori exp="f.course='tokishirazu';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+790 size=25 color=tsujo  target=*InitKomori exp="f.course='tokishirazu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+790 size=25 color=mancho target=*InitKomori exp="f.course='tokishirazu';f.tide='high';"]
 
-[glink text=干潮 x=&tf.x+270 y=&tf.y+860 size=25 color=kancho target=*InitKomori exp="f.course='porarisu';f.tide='low';"]
-[glink text=通常 x=&tf.x+390 y=&tf.y+860 size=25 color=tsujo  target=*InitKomori exp="f.course='porarisu';f.tide='normal';"]
-[glink text=満潮 x=&tf.x+510 y=&tf.y+860 size=25 color=mancho target=*InitKomori exp="f.course='porarisu';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+860 size=25 color=kancho target=*InitKomori exp="f.course='porarisu';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+860 size=25 color=tsujo  target=*InitKomori exp="f.course='porarisu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+860 size=25 color=mancho target=*InitKomori exp="f.course='porarisu';f.tide='high';"]
 
 [return]
 

@@ -2286,3 +2286,30 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 #drizzlerjs-mask-tools img:hover {
   filter: brightness(1.2);
 }
+
+
+
+
+.header-drizzler,
+.header-gusher {
+	width: 100% !important;
+	left: 0 !important;
+	text-align: center !important;
+	font-weight: bold;
+}
+.header-drizzler:before,
+.header-gusher:before {
+	display: inline-block;
+	content: "";
+	background: url(../data/fgimage/goldie.png) 50% no-repeat;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-size: contain;
+	width: 60px;
+	height: 60px;
+	vertical-align: middle;
+	margin-top: -0.1em;
+}
+.header-drizzler:before {
+	background: url(../data/fgimage/komori.png) 50% no-repeat;
+}
