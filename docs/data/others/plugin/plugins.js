@@ -571,6 +571,7 @@ function loadPlugin2() {
 
 
 function loadPlugin3() {
+	/*
 	(function (TYRANO) {
 	    var html2canvasOrigin = window.html2canvas;
 	    window.html2canvas = function (target, config) {
@@ -581,6 +582,7 @@ function loadPlugin3() {
 	        html2canvasOrigin(target, config).then(onrendered);
 	    };
 	}(window.TYRANO));
+	*/
 }
 
 

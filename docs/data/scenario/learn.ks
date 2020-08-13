@@ -47,7 +47,6 @@ f.preloadImages = [
 ;=======================================
 [iscript]
 tf.reset_count = 0;
-gusherApp.addCanvas();
 f.ikaDx = 40;
 f.ikaDy = 40;
 f.komoriDx = 30;
@@ -78,81 +77,7 @@ $("."+mp.name).off("click").wrap('<a href="'+mp.link+'"></a>');
 [frame p=100% y=-8]
 [endkeyframe]
 
-[macro name=k_check]
-[iscript]
-var Q = gusherApp.getKanketsusen(f.choice);
-var A = gusherApp.getKanketsusen(f.answer);
-var bool1 = (Q.label == A.label);
-var bool2 = gusherApp.isBrother(Q, A);
-if (bool1) {
-    f.atari = true;
-    f.zindex = 10;
-    f.storage = "kanketsu_atari.png";
-}
-else if (bool2) {
-    f.atari = false;
-    f.zindex = 1;
-    f.storage = "kanketsu_dai.png";
-}
-else {
-    f.atari = false;
-    f.zindex = 1;
-    f.storage = "kanketsu_shou.png";
-}
-f.item = Q;
-[endscript]
-[image layer=1 x=&f.item.x-60 y=&f.item.y-130 storage=&f.storage zindex=&f.zindex]
-[endmacro]
-
-[macro name=k_button]
-[iscript]
-var a = gusherApp.getKanketsusen(mp.k);
-f.x = a.x - 40;
-f.y = a.y - 40;
-f.preexp = a.label;
-[endscript]
-[button graphic=toumei.png width=80 height=80 x=&f.x y=&f.y preexp=f.preexp exp="f.choice=preexp" target=%target]
-[endmacro]
-
-[macro name=kotae_image]
-[iscript]
-var a = gusherApp.getKanketsusen(mp.k);
-f.x = a.x - 40;
-f.y = a.y - 40;
-[endscript]
-[image layer=0 zindex=1 storage=kotae.png x=&f.x y=&f.y name=kotae]
-[endmacro]
-
-[macro name=kotae_image_move]
-[iscript]
-var a = gusherApp.getKanketsusen(mp.k);
-f.x = a.x - 40;
-f.y = a.y - 40;
-[endscript]
-[anim layer=0 left=&f.x top=&f.y name=kotae time=0]
-[endmacro]
-
-[macro name=yajirushi]
-[iscript]
-var a = gusherApp.getKanketsusen(mp.k);
-f.x = a.x + 20;
-f.y = a.y - 70;
-f.name = "yajirushi," + mp.k;
-[endscript]
-[image layer=1 name=&f.name x=&f.x y=&f.y storage=yajirushi.png]
-[kanim name=yajirushi keyframe=float time=1000 count=infinite easing=ease-in-out direction=alternate]
-[endmacro]
-
-[macro name=yajirushi_move]
-[iscript]
-var a = gusherApp.getKanketsusen(mp.k);
-f.x = a.x + 20;
-f.y = a.y - 70;
-[endscript]
-[anim name=yajirushi left=&f.x top=&f.y time=600 effect=easeInOutQuad]
-[endmacro]
 [return]
-
 
 
 ;=======================================
@@ -299,8 +224,10 @@ stTimerApp.specialStTitle = "";
 [button fix=true graphic="&LANG_KEY+'/panel_6ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_6 cond="sf.panel == 6" name=fix_sonota_item]
 [button fix=true graphic="&LANG_KEY+'/panel_10a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel != 10" name=fix_sonota_item]
 [button fix=true graphic="&LANG_KEY+'/panel_10ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_10 cond="sf.panel == 10" name=fix_sonota_item]
+/*
 [button fix=true graphic="&LANG_KEY+'/panel_11a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel != 11" name=fix_sonota_item]
 [button fix=true graphic="&LANG_KEY+'/panel_11ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_11 cond="sf.panel == 11" name=fix_sonota_item]
+*/
 [button fix=true graphic="&LANG_KEY+'/panel_12a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel != 12" name=fix_sonota_item]
 [button fix=true graphic="&LANG_KEY+'/panel_12ab.png'"  x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_12 cond="sf.panel == 12" name=fix_sonota_item]
 [button fix=true graphic="&LANG_KEY+'/panel_13a.png'"   x=&128*4 y=840 width=&128 storage=learn.ks target=*Panel_13 cond="sf.panel != 13" name=fix_sonota_item]
@@ -324,478 +251,6 @@ tf.target = "*Panel_" + sf.panel;
 
 
 ;=======================================
-*Panel_7
-;=======================================
-[iscript]
-var state = $(".fix_sonota_tab").attr("state");
-var isOpening = (state == "opening");
-if (isOpening) {
-	$(".fix_sonota_tab").attr("src", "./data/image/"+LANG_KEY+"/panel_7a.png").attr("state", "closing");
-	$(".fix_sonota_item").each(function(i){
-		$(this).css("transform", "translateY(0px)");
-	});
-} else {
-	$(".fix_sonota_tab").attr("src", "./data/image/"+LANG_KEY+"/panel_8a.png").attr("state", "opening");
-	$(".fix_sonota_item").each(function(i){
-		var y = -120 * (i + 1);
-		$(this).css("transform", "translateY(" + y + "px)");
-	});
-}
-[endscript]
-[return]
-
-
-
-;=======================================
-*Panel_6
-;=======================================
-[eval exp="sf.panel = 6"]
-[call target=*Panel_Reset]
-[anim layer=1 name=logo opacity=0 time=0]
-[iscript]
-if (! sf.sm_count_step) sf.sm_count_step = 1;
-[endscript]
-[jump target=Panel_6_1 cond="sf.sm_count_step <= 1"]
-[jump target=Panel_6_2 cond="sf.sm_count_step <= 2"]
-[jump target=Panel_6_3 cond="sf.sm_count_step <= 3"]
-
-;=======================================
-*Panel_6_1
-;=======================================
-[anim layer=1 name=logo opacity=255 time=0]
-[html name=html_space]
-<div class="st_description">
-	<h1>SMcountとは</h1>
-	<b>SMcount</b>は，サーモンランにおいて、<br>
-	シャケの湧いてくる方向が一定の時刻で切り替わることを<br>
-	理解するための<b>アシスタントボイス</b>です。<br><br>
-	<h1>使い方</h1>
-	バイトが始まると、ステージの風景映像が流れて<br>
-	（キケン度MAXの場合はここで特殊な演出が入ります）<br>
-	ホワイトアウトしたあとアルバイターたちが飛んできますね。<br><br>
-	そのアルバイターたちが<b>着地してチャポンと音が鳴るのと同時</b>に<br>
-	SMcountの「<b>Start</b>」を押してみましょう。<br><br>
-	すると、あとはバイトの時間経過に合わせて<br>
-	Wave3の終了までSMcountがカウントを行ってくれます。<br><br>
-</div>
-[endhtml]
-[glink text=次へ x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.sm_count_step = 2"]
-[return]
-
-;=======================================
-*Panel_6_2
-;=======================================
-[anim layer=1 name=logo opacity=255 time=0]
-[html name=html_space]
-<div class="st_description">
-	<h1>詳しい使い方</h1>
-	シャケの湧いてくる方向が変わる時刻はノルマによって変わります。<br>
-	それを判別するために<b>Wave1のノルマ</b>を見てください。<br><br>
-	画面下側にあるノルマ設定について、<br>
-	<div style="display: inline-block; width: 420px; text-align: left;">
-	●Wave1のノルマが <b>11～16</b> ならば、<b>Low</b><br>
-	●Wave1のノルマが <b>17～20</b> ならば、<b>Middle</b><br>
-	●Wave1のノルマが <b>21　 　</b> ならば、<b>High</b><br>
-	</div><br>
-	を、選ぶようにしてください。<br><br>
-	（キケン度MAXの演出があればHigh、<br>
-	なければMiddleにすれば大体合うと思います）<br><br>
-	Startボタンを押すタイミングが最適ではなかった、<br>
-	処理落ちが発生したなどの理由で<b>カウントがズレた</b>場合、<br>
-	カウンターの下にあるボタンで<b>微調整</b>を行ってください。<br><br>
-	なお、タブが非アクティブだと、カウントがズレることがあります。<br>
-[endhtml]
-[glink text=OK! x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.sm_count_step = 3"]
-[return]
-
-;=======================================
-*Panel_6_3
-;=======================================
-[anim layer=1 name=logo opacity=0 time=0]
-[eval exp="sf.sm_count_step = 3"]
-[html name=html_space]
-	<div class="all_wrapper">
-		<div class="smcount_button smcount_translate translate_right" style="display: none;" target="counter">→</div>
-		<div class="smcount_button smcount_translate translate_left"  style="display: none;" target="timer">←</div>
-		<div class="smcount_wrapper">
-			<div class="smcount_button smcount_button_start wave_1" wave_num="1" title="Space">Start</div>
-			<div class="smcount_button smcount_button_start wave_2" wave_num="2" title="Space">Wave2</div>
-			<div class="smcount_button smcount_button_start wave_3" wave_num="3" title="Space">Wave3</div>
-			<canvas class="smcount_canvas" width="260" height="260" style=""></canvas>
-			<div class="smcount_wave_wrapper" style="opacity: 0;">
-				<div class="smcount_wave">Wave<span class="smcount_wave_span">1</span></div>
-				<div class="smcount_sec">100</div>
-			</div>
-			<div class="smcount_kasoku_wrapper" style="opacity: 0;">
-				<div class="smcount_button smcount_button_kasoku  next3 prev" move=" 115000" title="Shift+N"></div>
-				<div class="smcount_button smcount_button_kasoku  next2 prev" move="   1000" title="↑"></div>
-				<div class="smcount_button smcount_button_kasoku  next1 prev" move="    200" title="←"></div>
-				<div class="smcount_button smcount_button_kasoku  next1"      move="   -200" title="→"></div>
-				<div class="smcount_button smcount_button_kasoku  next2"      move="  -1000" title="↓"></div>
-				<div class="smcount_button smcount_button_kasoku  next3"      move="-115000" title="Shift+B"></div>
-			</div>
-			<div class="smcount_setting_wrapper">
-				<div class="smcount_setting_item">
-					<p>ノルマ <span class="smcount_setting_norma_span">Middle</span></p>
-					<div class="smcount_setting_button_wrapper">
-						<div title="L" class="smcount_setting_button smcount_setting_norma no_select" norma="low">Low</div>
-						<div title="M" class="smcount_setting_button smcount_setting_norma" norma="middle">Middle</div>
-						<div title="H" class="smcount_setting_button smcount_setting_norma no_select" norma="high">High</div>
-					</div>
-				</div>
-				<div class="smcount_setting_item">
-					<p>音量 <span class="smcount_setting_volume_span">50%</span></p>
-					<div class="smcount_setting_button_wrapper">
-						<!--
-						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.00"  >0</div>
-						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.25" >25</div>
-						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.50" >50</div>
-						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.75" >75</div>
-						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="1.00">100</div>
-						-->
-						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_mute">Mute</div>
-						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_minus" move="-0.1">－</div>
-						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_plus" move=" 0.1">＋</div>
-					</div>
-				</div>
-				<div class="smcount_setting_item">
-					<input type="checkbox" class="input_st" style="left: 0px; top: 0px;" id="use_st_timer"  />
-					<label for="use_st_timer" data-on-label="On" data-off-label="Off"><p>STタイマーと併用</p></label>
-				</div>
-			</div>
-		</div>
-		<div class="st_eta">
-			<div class="st_eta_description">　</div>
-			<div class="st_eta_count">　</div>
-			<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
-			<div class="st_eta_next">　</div>
-			<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため、<br>最後の5･4･3･2･1のカウントを行いません。</div>
-			<canvas class="st_eta_canvas" width="100" height="100"></canvas>
-			<div class="input_st_wrapper">
-				<div class="input_st_item">
-					<input type="checkbox" class="input_st" id="check_friend"  />
-					<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
-				</div>
-				<div class="input_st_item">	
-					<input type="checkbox" class="input_st" id="check_sound"  />
-					<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
-				</div>
-				<div class="input_st_item">	
-					<input type="checkbox" class="input_st" id="check_now"  />
-					<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
-				</div>
-				<div class="input_st_item">	
-					<input type="checkbox" class="input_st" id="check_st_offset"  />
-					<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
-				</div>
-			</div>
-			<div class="credit_emaame"><a href="https://emaame.github.io/salmonrun_time_timer/">@emaameさんのSTタイマー</a>を元に作成しています</div>
-		</div>
-	</div>
-[endhtml]
-[iscript]
-stTimerApp.startApp();
-smCountApp.startApp();
-[endscript]
-[glink text=SMcountの使い方 x=216 width=170 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.sm_count_step = 1"]
-[return]
-
-
-
-;=======================================
-*Panel_5
-;=======================================
-[eval exp="sf.panel = 5"]
-[call target=*Panel_Reset]
-[iscript]
-if (! sf.st_step) sf.st_step = 1;
-if (queries.stfest && tf.reset_count < 1) sf.st_step = 3;
-[endscript]
-[jump target=Panel_5_1 cond="sf.st_step <= 1"]
-[jump target=Panel_5_2 cond="sf.st_step <= 2"]
-[jump target=Panel_5_3 cond="sf.st_step >= 3"]
-
-;=======================================
-*Panel_5_1
-;=======================================
-[anim layer=1 name=logo opacity=255 time=0]
-[html name=html_space]
-<div class="st_description">
-<h1>STとは</h1>
-<b>ST（サーモンランタイム）</b>とは，
-<br>@rayudne75 さんが興した草の根運動です。
-<br>
-<br>「<b>野良でも誘導理解者同士で組みたい</b>」という人たちが
-<br>みんなで既定の時刻にマッチングを開始することで
-<br>お互いをスナイプしあう、という仕組みです。
-<br>
-<br>名前の最後に「<b>/</b>」「<b>/ST</b>」などを付けることが
-<br>参加者の目印になります。
-<br>
-<br>ただし、手軽にポイントを稼ぎたい、簡単にクリアしたい、
-<br>といった目的での参加は<b>推奨されていません</b>。
-<br>
-<br>「/ST」は上手さを誇示するタグではなく
-<br>あくまで誘導の意思を示すものであり、
-<br>クリア率はノルマの増加によって低くなりうる旨を
-<br>理解した上で参加しましょう！
-</div>
-[endhtml]
-[glink text=次へ x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.st_step = 2"]
-[return]
-
-;=======================================
-*Panel_5_2
-;=======================================
-[anim layer=1 name=logo opacity=255 time=0]
-[html name=html_space]
-<div class="st_description">
-<h1>STタイマーとは</h1>
-STタイマーは、
-<br>STへの参加をより<b>簡単かつ確実</b>に行うためのツールで、
-<br>もとは @emaame さんが開発したものです。
-<br>
-<br>STタイマーでは、次のSTまでの時間が
-<br><b>カウントダウン形式</b>で表示されるため、
-<br>カウントがゼロになった瞬間に「<b>参加する!</b>」を押すことで
-<br>簡単にSTに参加することができます。
-<br>
-<br>NICTのサービスを利用して
-<br>コンピュータの時刻のずれを修正するため
-<br>ただ時計を見て参加するより確実にスナイプできます。
-<br>
-<br>なお、フレンド部屋を作って「他の仲間をあつめる」場合は
-<br>マッチングの開始タイミングが野良と異なるため
-<br><b>フレ部屋モードを有効</b>にしてください。
-<br>
-<!--
-<br>このアプリにおけるSTタイマーは、
-<br>本家である @emaame さんのSTタイマー <br><span style="font-size: 100%;">(クリエイティブ･コモンズ･ライセンス 表示4.0 国際)</span> を
-<br>改変して作成しました。
--->
-</div>
-[endhtml]
-[glink text=OK! x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.st_step = 3"]
-[return]
-
-;=======================================
-*Panel_5_3
-;=======================================
-[anim layer=1 name=logo opacity=0 time=0]
-[iscript]
-stTimerApp.specialStTitle = "";
-[endscript]
-[html name=html_space]
-	<div class="all_wrapper" style="transform: translate(0)">
-		<div class="st_eta">
-			<div class="st_eta_description">　</div>
-			<div class="st_eta_count">　</div>
-			<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
-			<div class="st_eta_next">　</div>
-			<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため<br>最後の5･4･3･2･1のカウントを行いません。</div>
-			<canvas class="st_eta_canvas" width="100" height="100"></canvas>
-			<div class="input_st_wrapper">
-				<div class="input_st_item">
-					<input type="checkbox" class="input_st" id="check_friend"  />
-					<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
-				</div>
-				<div class="input_st_item">	
-					<input type="checkbox" class="input_st" id="check_sound"  />
-					<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
-				</div>
-				<div class="input_st_item">	
-					<input type="checkbox" class="input_st" id="check_now"  />
-					<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
-				</div>
-				<div class="input_st_item">	
-					<input type="checkbox" class="input_st" id="check_st_offset"  />
-					<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
-				</div>
-			</div>
-			<div class="stfest_duration">2019/8/3 17:00 ～ 2019/8/3 25:00</div>
-			<div class="credit_emaame">@emaameさんのSTタイマー (CC 表示4.0 国際) を改変しています</div>
-		</div>
-	</div>
-[endhtml]
-[iscript]
-stTimerApp.startApp();
-[endscript]
-[call target=Panel_5_Check_STFest]
-[glink text=STについて x=246 width=110 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.st_step = 1"]
-[return]
-
-;=======================================
-*Panel_5_Check_STFest
-;=======================================
-
-[iscript]
-tf.isSTFest = false;
-var now = new Date();
-var STFEST_DATA = [
-	{
-		name           : "test",
-		buttonTitle    : "Test<br>ver.",
-		buttonGraphic  : "stfest_button.png",
-		titleColor     : "Yellow",
-		startDate      : new Date(2019, 8 -1, 2,  22, 0, 0),
-		endDate        : new Date(2019, 8 -1, 2,  23, 0, 0),
-		isShowingButton: true,
-		bgStorage      : "GT_bg.jpg",
-		title          : "TEST (ST+3分)",
-		offset         : 3,
-		css            : {
-			                 "text-shadow": "5px 5px 5px black"
-		                 }
-	},
-	{
-		name           : "tt",
-		buttonTitle    : "TT<br>ver.",
-		titleColor     : "Yellow",
-		startDate      : new Date(2019, 8 -1, 3, 19, 0, 0),
-		endDate        : new Date(2019, 8 -1, 4,  1, 0, 0),
-		isShowingButton: true,
-		buttonGraphic  : "stfest_button.png",
-		bgStorage      : "GT_bg.jpg",
-		title          : "TT祭り (ST+2分) ",
-		offset         : 2,
-		css            : {
-			                 "text-shadow": "5px 5px 5px black"
-		                 }
-	},
-	{
-		name           : "sz",
-		buttonTitle    : "SZ<br>ver.",
-		buttonGraphic  : "stfest_button.png",
-		titleColor     : "Yellow",
-		startDate      : new Date(2019, 8 -1,  9, 19, 0, 0),
-		endDate        : new Date(2019, 8 -1,  9, 23, 0, 0),
-		isShowingButton: true,
-		bgStorage      : "GT_bg.jpg",
-		title          : "SZ祭り (ST+1分) ",
-		offset         : 1,
-		css            : {
-			                 "text-shadow": "5px 5px 5px black"
-		                 }
-	},
-	{
-		name           : "sz",
-		buttonTitle    : "SZ<br>ver.",
-		buttonGraphic  : "stfest_button.png",
-		titleColor     : "Yellow",
-		startDate      : new Date(2019, 8 -1, 10, 15, 0, 0),
-		endDate        : new Date(2019, 8 -1, 10, 23, 0, 0),
-		isShowingButton: true,
-		bgStorage      : "GT_bg.jpg",
-		title          : "SZ祭り (ST+1分) ",
-		offset         : 1,
-		css            : {
-			                 "text-shadow": "5px 5px 5px black"
-		                 }
-	},
-	{
-		name           : "pst",
-		buttonTitle    : "PST<br>ver.",
-		buttonGraphic  : "stfest_button.png",
-		titleColor     : "Yellow",
-		startDate      : new Date(2019, 8 -1, 23, 21, 0, 0),
-		endDate        : new Date(2019, 8 -1, 23, 26, 0, 0),
-		isShowingButton: true,
-		bgStorage      : "GT_bg.jpg",
-		title          : "PST祭り (ST+1分) ",
-		offset         : 1,
-		css            : {
-			                 "text-shadow": "5px 5px 5px black"
-		                 }
-	}
-];
-
-// クエリパラメータで指定されているものをピックアップ
-var isSTFest, isFiltering = false, dataArray = [], data;
-for (var i = 0; i < STFEST_DATA.length; i++) {
-	var data = STFEST_DATA[i];
-	if (queries.stfest == data.name) {
-		dataArray.push(data);
-	}
-}
-
-// ピックアップしたものがなかったら
-if (dataArray.length == 0) {
-	// データを直接dataArrayに代入して次の処理へ
-	dataArray = STFEST_DATA;
-}
-// ピックアップしたものが1つだけあったら
-else if (dataArray.length == 1) {
-	// フェスモード確定、dataにはdataArrayの要素を代入
-	isSTFest = true;
-	data = dataArray[0];
-}
-// ピックアップしたものが2つ以上あったら
-else {
-	// isFiltering を true にして次の処理へ
-	isFiltering = true;
-}
-
-// この時点でフェスモードが確定していなければ日時でチェック
-if (! isSTFest) {
-	for (var i = dataArray.length - 1; i >= 0; i--) {
-		data = dataArray[i];
-		var marginTime =  1000 * 60 * 60;
-		var time1 = data.startDate.getTime();
-		var time2 = now.getTime();
-		var time3 = data.endDate.getTime();
-		var bool1 = time1 - marginTime < time2 && time2 < time3 + marginTime;
-		var bool2 = isFiltering && i == 0;
-		if (false) {
-			var duration = (time3 - time1) / 1000 / 60 / 60;
-			var str1 = stTimerApp.dateFormatter.getMonthText2(data.startDate);
-			var str2 = stTimerApp.dateFormatter.getMonthText2(data.endDate);
-			var str = data.title + ": " + str1 + " ～ " + str2 + " (" + duration + "時間)";
-			console.log(str);
-		}
-		if (bool1 || bool2) {
-			isSTFest = true;
-			break;
-		}
-	}
-}
-
-// フェスモードが確定しているならば
-if (isSTFest && data) {
-	var str1 = stTimerApp.dateFormatter.getMonthText2(data.startDate);
-	var str2 = stTimerApp.dateFormatter.getMonthText2(data.endDate);
-	data.durationText = "開催期間: " + str1 + " ～ " + str2;
-	tf.isSTFest = true;
-	tf.STFestData = data;
-}
-[endscript]
-[return cond=!tf.isSTFest]
-[button cond=tf.STFestData.isShowingButton  target=Panel_5_Mode_STFest fix=true text=&tf.STFestData.buttonTitle graphic=&tf.STFestData.buttonGraphic x=20 y=20 width=100 height=100 name=STFest]
-[jump   cond=!tf.STFestData.isShowingButton target=Panel_5_Mode_STFest]
-[return]
-
-;=======================================
-*Panel_5_Mode_STFest
-;=======================================
-
-[clearfix name=STFest]
-[iscript]
-//$(".stfest_duration").css("color", tf.STFestData.titleColor).text(tf.STFestData.durationText).fadeIn(1000);
-stTimerApp.specialStColor = tf.STFestData.titleColor;
-stTimerApp.specialStTitle = tf.STFestData.title;
-stTimerApp.setStTitle();
-stTimerApp.stTimer.enableStOffset = true;
-stTimerApp.stTimer.stOffset = tf.STFestData.offset;
-stTimerApp.$checkStOffset.prop("checked", stTimerApp.stTimer.enableStOffset).trigger("change");
-$(".html_space").css(tf.STFestData.css);
-$("#check_st_offset").parent().hide(0);
-stTimerApp.updateStList();
-[endscript]
-[bg storage=&tf.STFestData.bgStorage time=1000]
-[return]
-
-
-
-;=======================================
 *Panel_1
 ;=======================================
 [eval exp="sf.panel = 1"]
@@ -812,17 +267,121 @@ tf.y = 200;
 [ptext layer=0 text="&getLang('stage-3')" size=30 x=&tf.x+60  y=&tf.y+245]
 [ptext layer=0 text="&getLang('stage-4')" size=30 x=&tf.x+60  y=&tf.y+315]
 [ptext layer=0 text="&getLang('stage-5')" size=30 x=&tf.x+60  y=&tf.y+385]
-[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+100 size=25 color=tsujo  target=Init exp="f.target='Define_Damu_Tsujo_Kanketsu'"]
-[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+100 size=25 color=mancho target=Init exp="f.target='Define_Damu_Mancho_Kanketsu'"]
-[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+170 size=25 color=tsujo  target=Init exp="f.target='Define_Burako_Tsujo_Kanketsu'"]
-[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+170 size=25 color=mancho target=Init exp="f.target='Define_Burako_Mancho_Kanketsu'"]
-[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+240 size=25 color=tsujo  target=Init exp="f.target='Define_Toba_Tsujo_Kanketsu'"]
-[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+240 size=25 color=mancho target=Init exp="f.target='Define_Toba_Mancho_Kanketsu'"]
-[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+310 size=25 color=tsujo  target=Init exp="f.target='Define_Toki_Tsujo_Kanketsu'"]
-[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+310 size=25 color=mancho target=Init exp="f.target='Define_Toki_Mancho_Kanketsu'"]
-[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+380 size=25 color=tsujo  target=Init exp="f.target='Define_Porarisu_Tsujo_Kanketsu'"]
-[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+380 size=25 color=mancho target=Init exp="f.target='Define_Porarisu_Mancho_Kanketsu'"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+100 size=25 color=tsujo  target=Panel_1_Init exp="f.course='shekenadamu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+100 size=25 color=mancho target=Panel_1_Init exp="f.course='shekenadamu';f.tide='high';"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+170 size=25 color=tsujo  target=Panel_1_Init exp="f.course='domburako';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+170 size=25 color=mancho target=Panel_1_Init exp="f.course='domburako';f.tide='high';"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+240 size=25 color=tsujo  target=Panel_1_Init exp="f.course='shaketoba';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+240 size=25 color=mancho target=Panel_1_Init exp="f.course='shaketoba';f.tide='high';"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+310 size=25 color=tsujo  target=Panel_1_Init exp="f.course='tokishirazu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+310 size=25 color=mancho target=Panel_1_Init exp="f.course='tokishirazu';f.tide='high';"]
+[glink text="&getLang('n-tide')" x=&tf.x+270 y=&tf.y+380 size=25 color=tsujo  target=Panel_1_Init exp="f.course='porarisu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+390 y=&tf.y+380 size=25 color=mancho target=Panel_1_Init exp="f.course='porarisu';f.tide='high';"]
 [return]
+
+;=======================================
+*Panel_1_Init
+;=======================================
+[mask time=100]
+[cm]
+[clearfix]
+[freelayer layer=0]
+[freelayer layer=1]
+[html]
+<div id="gusherjs-wrapper">
+	<div id="gusherjs-canvas-wrapper" class="wrapper"></div>
+	<div id="gusherjs-element-wrapper" class="wrapper">
+ 		<div id="gusherjs-joseki-next" style="display: none;"></div>
+		<div id="gusherjs-joseki-text" style="display: none;"></div>
+ 		<div id="gusherjs-specify-result" style="display: none;"><span class="alphabet">A</span><span class="for-translation" en-text=" is specified">を指定しました</span></div>
+ 		<div id="gusherjs-please-specify" style="display: none;" class="for-translation" en-text="please specify winning gusher">当たりの栓を指定してください</div>
+	</div>
+	<div id="gusherjs-tools-wrapper" class="wrapper" data-html2canvas-ignore>
+		<p id="joseki-title" class="for-translation for-seeking" en-text="Established tactics">定石</p>
+		<select id="joseki-select" class="for-seeking"></select>
+		<div class="gusherjs-button for-translation" en-text="Settings" style="right: 171px; bottom: 12px;" onclick="gusherjs.showOptions()">オプション</div>
+		<div class="gusherjs-button for-translation" en-text="Return" style="right: 11px; bottom: 12px;" onclick="" id="gusherjs-return">戻る</div>
+		<div class="gusherjs-button for-translation for-seeking" en-text="Specify" style="right: 171px; bottom: 64px;" onclick="gusherjs.getCurrentCourse().beginSpecifying()">当たりを指定</div>
+		<div class="gusherjs-button for-translation for-seeking" en-text="Reset" style="right: 11px; bottom: 64px;" onclick="gusherjs.getCurrentCourse().reset(false)">リセット</div>
+		<div class="gusherjs-button for-translation for-seeking" en-text="Random" style="right: 11px; bottom: 114px;" onclick="gusherjs.getCurrentCourse().reset(true)">ランダム</div>
+	</div>
+	<div id="gusherjs-options-wrapper" class="wrapper" style="display: none;" data-html2canvas-ignore>
+		<h4 class="for-translation" en-text="Select mode">栓をタップしたときの動作</h4>
+		<ul>
+			<li>
+				<input  id="gusherjs-mode-seeking-goldie" name="gusherjs-mode" type="radio" checked="checked" class="for-save">
+				<label for="gusherjs-mode-seeking-goldie" class="for-translation" en-text="Seeking goldie">キンシャケを探す</label>
+			</li>
+			<li>
+				<input  id="gusherjs-mode-check-water-vein-a" name="gusherjs-mode" type="radio" class="for-save">
+				<label for="gusherjs-mode-check-water-vein-a" class="for-translation" en-text="Checking water vein">水脈を見る</label>
+			</li>
+			<li>
+				<input  id="gusherjs-mode-check-goldie-path" name="gusherjs-mode" type="radio" class="for-save">
+				<label for="gusherjs-mode-check-goldie-path" class="for-translation" en-text="Checking goldie path">キンシャケルートを見る</label>
+			</li>
+		</ul>
+		<h4 class="for-translation" en-text="Settings">オプション</h4>
+		<ul>
+			<li>
+				<input  id="gusherjs-visible-suimyaku" type="checkbox" checked="checked" class="for-save">
+				<label for="gusherjs-visible-suimyaku" class="for-translation" en-text="Display water vein">水脈を表示する</label>
+			</li>
+			<li>
+				<input  id="gusherjs-visible-goldie-path" type="checkbox" checked="checked" class="for-save">
+				<label for="gusherjs-visible-goldie-path" class="for-translation" en-text="Display goldie path">キンシャケルートを表示する</label>
+			</li>
+			<li>
+				<input  id="gusherjs-highlight-candidates" type="checkbox" checked="checked" class="for-save">
+				<label for="gusherjs-highlight-candidates" class="for-translation" en-text="Highlight candidates">当たり候補を強調する</label>
+			</li>
+			<li>
+				<input  id="gusherjs-visible-procedure" type="checkbox" checked="checked" class="for-save">
+				<label for="gusherjs-visible-procedure" class="for-translation" en-text="Display procedure">定石手順を一括表示する</label>
+			</li>
+		</ul>
+		<h4>ステージ</h4>
+		<select id="course-select">
+			<option class="for-translation" en-text="Spawning Grounds" value="shekenadamu-normal">シェケナダム</option>
+			<option class="for-translation" en-text="Spawning Grounds (High Tide)" value="shekenadamu-high">シェケナダム(満潮)</option>
+			<option class="for-translation" en-text="Marooner's Bay" value="domburako-normal">難破船ドン･ブラコ</option>
+			<option class="for-translation" en-text="Marooner's Bay (High Tide)" value="domburako-high">難破船ドン･ブラコ(満潮)</option>
+			<option class="for-translation" en-text="Lost Outpost" value="shaketoba-normal">海上集落シャケト場</option>
+			<option class="for-translation" en-text="Lost Outpost (High Tide)" value="shaketoba-high">海上集落シャケト場(満潮)</option>
+			<option class="for-translation" en-text="Salmonid Smokeyard" value="tokishirazu-normal">トキシラズいぶし工房</option>
+			<option class="for-translation" en-text="Salmonid Smokeyard (High Tide)" value="tokishirazu-high">トキシラズいぶし工房(満潮)</option>
+			<option class="for-translation" en-text="Ruins of Ark Polaris" value="porarisu-normal">朽ちた箱舟ポラリス</option>
+			<option class="for-translation" en-text="Ruins of Ark Polaris (High Tide)" value="porarisu-high">朽ちた箱舟ポラリス(満潮)</option>
+		</select>
+		<div class="gusherjs-button for-translation" en-text="Close" style="right: 176px; bottom: 16px;" onclick="gusherjs.hideOptions()">閉じる</div>
+		<div class="gusherjs-button for-translation" en-text="Save Image" style="left: 16px; bottom: 16px;" onclick="gusherjs.downloadCanvas()">スクショを保存</div>
+	</div>
+</div>
+[endhtml]
+[iscript]
+gusherjs.start({
+	course: f.course,
+	tide: f.tide,
+	lang: LANG_KEY,
+	courseImageDir: './tyrano/drizzler/assets/course',
+	gusherImageDir: './tyrano/drizzler/assets/img',
+});
+document.getElementById('gusherjs-return').addEventListener('click', () => {
+	tyranoAPI.jump('learn.ks', 'Panel_1_Return');
+});
+[endscript]
+[mask_off time=100]
+[s]
+
+;=======================================
+*Panel_1_Return
+;=======================================
+[iscript]
+gusherjs.finalize();
+[endscript]
+[image layer=1 zindex=100 x=40 y=20 storage=logo.png width=550 name=logo]
+[call target="Panel_1"]
+[s]
 
 
 
@@ -843,27 +402,27 @@ tf.y = -280;
 [ptext layer=0 text="&getLang('stage-4')" size=30 x=&tf.x+60 y=&tf.y+795]
 [ptext layer=0 text="&getLang('stage-5')" size=30 x=&tf.x+60 y=&tf.y+865]
 [ptext layer=0 text="&getLang('rt-mode')+'：'+(sf.isRTMode?'ON':'OFF')" size=25 x=&tf.x+150 y=&tf.y+1000]
-[glink text="&getLang('toggle')" x=460 y=712 size=24 color=credit_button target=ChangeKomori]
+[glink text="&getLang('toggle')" x=460 y=712 size=24 color=credit_button target=Panel_2_Toggle]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+580 size=25 color=kancho target=*InitKomori exp="f.course='shekenadamu';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+580 size=25 color=tsujo  target=*InitKomori exp="f.course='shekenadamu';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+580 size=25 color=mancho target=*InitKomori exp="f.course='shekenadamu';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+580 size=25 color=kancho target=*Panel_2_Init exp="f.course='shekenadamu';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+580 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shekenadamu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+580 size=25 color=mancho target=*Panel_2_Init exp="f.course='shekenadamu';f.tide='high';"]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+650 size=25 color=kancho target=*InitKomori exp="f.course='domburako';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*InitKomori exp="f.course='domburako';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*InitKomori exp="f.course='domburako';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+650 size=25 color=kancho target=*Panel_2_Init exp="f.course='domburako';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+650 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='domburako';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+650 size=25 color=mancho target=*Panel_2_Init exp="f.course='domburako';f.tide='high';"]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*InitKomori exp="f.course='shaketoba';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*InitKomori exp="f.course='shaketoba';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+720 size=25 color=mancho target=*InitKomori exp="f.course='shaketoba';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+720 size=25 color=kancho target=*Panel_2_Init exp="f.course='shaketoba';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+720 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='shaketoba';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+720 size=25 color=mancho target=*Panel_2_Init exp="f.course='shaketoba';f.tide='high';"]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+790 size=25 color=kancho target=*InitKomori exp="f.course='tokishirazu';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+790 size=25 color=tsujo  target=*InitKomori exp="f.course='tokishirazu';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+790 size=25 color=mancho target=*InitKomori exp="f.course='tokishirazu';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+790 size=25 color=kancho target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+790 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+790 size=25 color=mancho target=*Panel_2_Init exp="f.course='tokishirazu';f.tide='high';"]
 
-[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+860 size=25 color=kancho target=*InitKomori exp="f.course='porarisu';f.tide='low';"]
-[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+860 size=25 color=tsujo  target=*InitKomori exp="f.course='porarisu';f.tide='normal';"]
-[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+860 size=25 color=mancho target=*InitKomori exp="f.course='porarisu';f.tide='high';"]
+[glink text="&getLang('l-tide')" x=&tf.x+270 y=&tf.y+860 size=25 color=kancho target=*Panel_2_Init exp="f.course='porarisu';f.tide='low';"]
+[glink text="&getLang('n-tide')" x=&tf.x+390 y=&tf.y+860 size=25 color=tsujo  target=*Panel_2_Init exp="f.course='porarisu';f.tide='normal';"]
+[glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+860 size=25 color=mancho target=*Panel_2_Init exp="f.course='porarisu';f.tide='high';"]
 
 [return]
 
@@ -1209,7 +768,7 @@ tf.y = 200;
 [endhtml]
 [iscript]
 $(".live2d").click(function(){
-	tyranoAPI.jump("", "Goto_Senpai");
+	tyranoAPI.jump("", "Go_Senpai");
 });
 [endscript]
 [jump target=Panel_4_5]
@@ -1293,6 +852,478 @@ $(".live2d").click(function(){
 sf.panel = 1;
 location.reload(true);
 [endscript]
+
+
+
+;=======================================
+*Panel_5
+;=======================================
+[eval exp="sf.panel = 5"]
+[call target=*Panel_Reset]
+[iscript]
+if (! sf.st_step) sf.st_step = 1;
+if (queries.stfest && tf.reset_count < 1) sf.st_step = 3;
+[endscript]
+[jump target=Panel_5_1 cond="sf.st_step <= 1"]
+[jump target=Panel_5_2 cond="sf.st_step <= 2"]
+[jump target=Panel_5_3 cond="sf.st_step >= 3"]
+
+;=======================================
+*Panel_5_1
+;=======================================
+[anim layer=1 name=logo opacity=255 time=0]
+[html name=html_space]
+<div class="st_description">
+<h1>STとは</h1>
+<b>ST（サーモンランタイム）</b>とは，
+<br>@rayudne75 さんが興した草の根運動です。
+<br>
+<br>「<b>野良でも誘導理解者同士で組みたい</b>」という人たちが
+<br>みんなで既定の時刻にマッチングを開始することで
+<br>お互いをスナイプしあう、という仕組みです。
+<br>
+<br>名前の最後に「<b>/</b>」「<b>/ST</b>」などを付けることが
+<br>参加者の目印になります。
+<br>
+<br>ただし、手軽にポイントを稼ぎたい、簡単にクリアしたい、
+<br>といった目的での参加は<b>推奨されていません</b>。
+<br>
+<br>「/ST」は上手さを誇示するタグではなく
+<br>あくまで誘導の意思を示すものであり、
+<br>クリア率はノルマの増加によって低くなりうる旨を
+<br>理解した上で参加しましょう！
+</div>
+[endhtml]
+[glink text=次へ x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.st_step = 2"]
+[return]
+
+;=======================================
+*Panel_5_2
+;=======================================
+[anim layer=1 name=logo opacity=255 time=0]
+[html name=html_space]
+<div class="st_description">
+<h1>STタイマーとは</h1>
+STタイマーは、
+<br>STへの参加をより<b>簡単かつ確実</b>に行うためのツールで、
+<br>もとは @emaame さんが開発したものです。
+<br>
+<br>STタイマーでは、次のSTまでの時間が
+<br><b>カウントダウン形式</b>で表示されるため、
+<br>カウントがゼロになった瞬間に「<b>参加する!</b>」を押すことで
+<br>簡単にSTに参加することができます。
+<br>
+<br>NICTのサービスを利用して
+<br>コンピュータの時刻のずれを修正するため
+<br>ただ時計を見て参加するより確実にスナイプできます。
+<br>
+<br>なお、フレンド部屋を作って「他の仲間をあつめる」場合は
+<br>マッチングの開始タイミングが野良と異なるため
+<br><b>フレ部屋モードを有効</b>にしてください。
+<br>
+<!--
+<br>このアプリにおけるSTタイマーは、
+<br>本家である @emaame さんのSTタイマー <br><span style="font-size: 100%;">(クリエイティブ･コモンズ･ライセンス 表示4.0 国際)</span> を
+<br>改変して作成しました。
+-->
+</div>
+[endhtml]
+[glink text=OK! x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.st_step = 3"]
+[return]
+
+;=======================================
+*Panel_5_3
+;=======================================
+[anim layer=1 name=logo opacity=0 time=0]
+[iscript]
+stTimerApp.specialStTitle = "";
+[endscript]
+[html name=html_space]
+	<div class="all_wrapper" style="transform: translate(0)">
+		<div class="st_eta">
+			<div class="st_eta_description">　</div>
+			<div class="st_eta_count">　</div>
+			<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+			<div class="st_eta_next">　</div>
+			<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため<br>最後の5･4･3･2･1のカウントを行いません。</div>
+			<canvas class="st_eta_canvas" width="100" height="100"></canvas>
+			<div class="input_st_wrapper">
+				<div class="input_st_item">
+					<input type="checkbox" class="input_st" id="check_friend"  />
+					<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_sound"  />
+					<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_now"  />
+					<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_st_offset"  />
+					<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
+				</div>
+			</div>
+			<div class="stfest_duration">2019/8/3 17:00 ～ 2019/8/3 25:00</div>
+			<div class="credit_emaame">@emaameさんのSTタイマー (CC 表示4.0 国際) を改変しています</div>
+		</div>
+	</div>
+[endhtml]
+[iscript]
+stTimerApp.startApp();
+[endscript]
+[call target=Panel_5_Check_STFest]
+[glink text=STについて x=246 width=110 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.st_step = 1"]
+[return]
+
+;=======================================
+*Panel_5_Check_STFest
+;=======================================
+
+[iscript]
+tf.isSTFest = false;
+var now = new Date();
+var STFEST_DATA = [
+	{
+		name           : "test",
+		buttonTitle    : "Test<br>ver.",
+		buttonGraphic  : "stfest_button.png",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1, 2,  22, 0, 0),
+		endDate        : new Date(2019, 8 -1, 2,  23, 0, 0),
+		isShowingButton: true,
+		bgStorage      : "GT_bg.jpg",
+		title          : "TEST (ST+3分)",
+		offset         : 3,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	},
+	{
+		name           : "tt",
+		buttonTitle    : "TT<br>ver.",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1, 3, 19, 0, 0),
+		endDate        : new Date(2019, 8 -1, 4,  1, 0, 0),
+		isShowingButton: true,
+		buttonGraphic  : "stfest_button.png",
+		bgStorage      : "GT_bg.jpg",
+		title          : "TT祭り (ST+2分) ",
+		offset         : 2,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	},
+	{
+		name           : "sz",
+		buttonTitle    : "SZ<br>ver.",
+		buttonGraphic  : "stfest_button.png",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1,  9, 19, 0, 0),
+		endDate        : new Date(2019, 8 -1,  9, 23, 0, 0),
+		isShowingButton: true,
+		bgStorage      : "GT_bg.jpg",
+		title          : "SZ祭り (ST+1分) ",
+		offset         : 1,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	},
+	{
+		name           : "sz",
+		buttonTitle    : "SZ<br>ver.",
+		buttonGraphic  : "stfest_button.png",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1, 10, 15, 0, 0),
+		endDate        : new Date(2019, 8 -1, 10, 23, 0, 0),
+		isShowingButton: true,
+		bgStorage      : "GT_bg.jpg",
+		title          : "SZ祭り (ST+1分) ",
+		offset         : 1,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	},
+	{
+		name           : "pst",
+		buttonTitle    : "PST<br>ver.",
+		buttonGraphic  : "stfest_button.png",
+		titleColor     : "Yellow",
+		startDate      : new Date(2019, 8 -1, 23, 21, 0, 0),
+		endDate        : new Date(2019, 8 -1, 23, 26, 0, 0),
+		isShowingButton: true,
+		bgStorage      : "GT_bg.jpg",
+		title          : "PST祭り (ST+1分) ",
+		offset         : 1,
+		css            : {
+			                 "text-shadow": "5px 5px 5px black"
+		                 }
+	}
+];
+
+// クエリパラメータで指定されているものをピックアップ
+var isSTFest, isFiltering = false, dataArray = [], data;
+for (var i = 0; i < STFEST_DATA.length; i++) {
+	var data = STFEST_DATA[i];
+	if (queries.stfest == data.name) {
+		dataArray.push(data);
+	}
+}
+
+// ピックアップしたものがなかったら
+if (dataArray.length == 0) {
+	// データを直接dataArrayに代入して次の処理へ
+	dataArray = STFEST_DATA;
+}
+// ピックアップしたものが1つだけあったら
+else if (dataArray.length == 1) {
+	// フェスモード確定、dataにはdataArrayの要素を代入
+	isSTFest = true;
+	data = dataArray[0];
+}
+// ピックアップしたものが2つ以上あったら
+else {
+	// isFiltering を true にして次の処理へ
+	isFiltering = true;
+}
+
+// この時点でフェスモードが確定していなければ日時でチェック
+if (! isSTFest) {
+	for (var i = dataArray.length - 1; i >= 0; i--) {
+		data = dataArray[i];
+		var marginTime =  1000 * 60 * 60;
+		var time1 = data.startDate.getTime();
+		var time2 = now.getTime();
+		var time3 = data.endDate.getTime();
+		var bool1 = time1 - marginTime < time2 && time2 < time3 + marginTime;
+		var bool2 = isFiltering && i == 0;
+		if (false) {
+			var duration = (time3 - time1) / 1000 / 60 / 60;
+			var str1 = stTimerApp.dateFormatter.getMonthText2(data.startDate);
+			var str2 = stTimerApp.dateFormatter.getMonthText2(data.endDate);
+			var str = data.title + ": " + str1 + " ～ " + str2 + " (" + duration + "時間)";
+			console.log(str);
+		}
+		if (bool1 || bool2) {
+			isSTFest = true;
+			break;
+		}
+	}
+}
+
+// フェスモードが確定しているならば
+if (isSTFest && data) {
+	var str1 = stTimerApp.dateFormatter.getMonthText2(data.startDate);
+	var str2 = stTimerApp.dateFormatter.getMonthText2(data.endDate);
+	data.durationText = "開催期間: " + str1 + " ～ " + str2;
+	tf.isSTFest = true;
+	tf.STFestData = data;
+}
+[endscript]
+[return cond=!tf.isSTFest]
+[button cond=tf.STFestData.isShowingButton  target=Panel_5_Mode_STFest fix=true text=&tf.STFestData.buttonTitle graphic=&tf.STFestData.buttonGraphic x=20 y=20 width=100 height=100 name=STFest]
+[jump   cond=!tf.STFestData.isShowingButton target=Panel_5_Mode_STFest]
+[return]
+
+;=======================================
+*Panel_5_Mode_STFest
+;=======================================
+
+[clearfix name=STFest]
+[iscript]
+//$(".stfest_duration").css("color", tf.STFestData.titleColor).text(tf.STFestData.durationText).fadeIn(1000);
+stTimerApp.specialStColor = tf.STFestData.titleColor;
+stTimerApp.specialStTitle = tf.STFestData.title;
+stTimerApp.setStTitle();
+stTimerApp.stTimer.enableStOffset = true;
+stTimerApp.stTimer.stOffset = tf.STFestData.offset;
+stTimerApp.$checkStOffset.prop("checked", stTimerApp.stTimer.enableStOffset).trigger("change");
+$(".html_space").css(tf.STFestData.css);
+$("#check_st_offset").parent().hide(0);
+stTimerApp.updateStList();
+[endscript]
+[bg storage=&tf.STFestData.bgStorage time=1000]
+[return]
+
+
+
+;=======================================
+*Panel_6
+;=======================================
+[eval exp="sf.panel = 6"]
+[call target=*Panel_Reset]
+[anim layer=1 name=logo opacity=0 time=0]
+[iscript]
+if (! sf.sm_count_step) sf.sm_count_step = 1;
+[endscript]
+[jump target=Panel_6_1 cond="sf.sm_count_step <= 1"]
+[jump target=Panel_6_2 cond="sf.sm_count_step <= 2"]
+[jump target=Panel_6_3 cond="sf.sm_count_step <= 3"]
+
+;=======================================
+*Panel_6_1
+;=======================================
+[anim layer=1 name=logo opacity=255 time=0]
+[html name=html_space]
+<div class="st_description">
+	<h1>SMcountとは</h1>
+	<b>SMcount</b>は，サーモンランにおいて、<br>
+	シャケの湧いてくる方向が一定の時刻で切り替わることを<br>
+	理解するための<b>アシスタントボイス</b>です。<br><br>
+	<h1>使い方</h1>
+	バイトが始まると、ステージの風景映像が流れて<br>
+	（キケン度MAXの場合はここで特殊な演出が入ります）<br>
+	ホワイトアウトしたあとアルバイターたちが飛んできますね。<br><br>
+	そのアルバイターたちが<b>着地してチャポンと音が鳴るのと同時</b>に<br>
+	SMcountの「<b>Start</b>」を押してみましょう。<br><br>
+	すると、あとはバイトの時間経過に合わせて<br>
+	Wave3の終了までSMcountがカウントを行ってくれます。<br><br>
+</div>
+[endhtml]
+[glink text=次へ x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.sm_count_step = 2"]
+[return]
+
+;=======================================
+*Panel_6_2
+;=======================================
+[anim layer=1 name=logo opacity=255 time=0]
+[html name=html_space]
+<div class="st_description">
+	<h1>詳しい使い方</h1>
+	シャケの湧いてくる方向が変わる時刻はノルマによって変わります。<br>
+	それを判別するために<b>Wave1のノルマ</b>を見てください。<br><br>
+	画面下側にあるノルマ設定について、<br>
+	<div style="display: inline-block; width: 420px; text-align: left;">
+	●Wave1のノルマが <b>11～16</b> ならば、<b>Low</b><br>
+	●Wave1のノルマが <b>17～20</b> ならば、<b>Middle</b><br>
+	●Wave1のノルマが <b>21　 　</b> ならば、<b>High</b><br>
+	</div><br>
+	を、選ぶようにしてください。<br><br>
+	（キケン度MAXの演出があればHigh、<br>
+	なければMiddleにすれば大体合うと思います）<br><br>
+	Startボタンを押すタイミングが最適ではなかった、<br>
+	処理落ちが発生したなどの理由で<b>カウントがズレた</b>場合、<br>
+	カウンターの下にあるボタンで<b>微調整</b>を行ってください。<br><br>
+	なお、タブが非アクティブだと、カウントがズレることがあります。<br>
+[endhtml]
+[glink text=OK! x=191 width=200 y=761 size=24 color=credit_button target=Panel_Reload exp="sf.sm_count_step = 3"]
+[return]
+
+;=======================================
+*Panel_6_3
+;=======================================
+[anim layer=1 name=logo opacity=0 time=0]
+[eval exp="sf.sm_count_step = 3"]
+[html name=html_space]
+	<div class="all_wrapper">
+		<div class="smcount_button smcount_translate translate_right" style="display: none;" target="counter">→</div>
+		<div class="smcount_button smcount_translate translate_left"  style="display: none;" target="timer">←</div>
+		<div class="smcount_wrapper">
+			<div class="smcount_button smcount_button_start wave_1" wave_num="1" title="Space">Start</div>
+			<div class="smcount_button smcount_button_start wave_2" wave_num="2" title="Space">Wave2</div>
+			<div class="smcount_button smcount_button_start wave_3" wave_num="3" title="Space">Wave3</div>
+			<canvas class="smcount_canvas" width="260" height="260" style=""></canvas>
+			<div class="smcount_wave_wrapper" style="opacity: 0;">
+				<div class="smcount_wave">Wave<span class="smcount_wave_span">1</span></div>
+				<div class="smcount_sec">100</div>
+			</div>
+			<div class="smcount_kasoku_wrapper" style="opacity: 0;">
+				<div class="smcount_button smcount_button_kasoku  next3 prev" move=" 115000" title="Shift+N"></div>
+				<div class="smcount_button smcount_button_kasoku  next2 prev" move="   1000" title="↑"></div>
+				<div class="smcount_button smcount_button_kasoku  next1 prev" move="    200" title="←"></div>
+				<div class="smcount_button smcount_button_kasoku  next1"      move="   -200" title="→"></div>
+				<div class="smcount_button smcount_button_kasoku  next2"      move="  -1000" title="↓"></div>
+				<div class="smcount_button smcount_button_kasoku  next3"      move="-115000" title="Shift+B"></div>
+			</div>
+			<div class="smcount_setting_wrapper">
+				<div class="smcount_setting_item">
+					<p>ノルマ <span class="smcount_setting_norma_span">Middle</span></p>
+					<div class="smcount_setting_button_wrapper">
+						<div title="L" class="smcount_setting_button smcount_setting_norma no_select" norma="low">Low</div>
+						<div title="M" class="smcount_setting_button smcount_setting_norma" norma="middle">Middle</div>
+						<div title="H" class="smcount_setting_button smcount_setting_norma no_select" norma="high">High</div>
+					</div>
+				</div>
+				<div class="smcount_setting_item">
+					<p>音量 <span class="smcount_setting_volume_span">50%</span></p>
+					<div class="smcount_setting_button_wrapper">
+						<!--
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.00"  >0</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.25" >25</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.50" >50</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="0.75" >75</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_shitei" value="1.00">100</div>
+						-->
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_mute">Mute</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_minus" move="-0.1">－</div>
+						<div class="smcount_setting_button smcount_setting_volume smcount_setting_volume_plus" move=" 0.1">＋</div>
+					</div>
+				</div>
+				<div class="smcount_setting_item">
+					<input type="checkbox" class="input_st" style="left: 0px; top: 0px;" id="use_st_timer"  />
+					<label for="use_st_timer" data-on-label="On" data-off-label="Off"><p>STタイマーと併用</p></label>
+				</div>
+			</div>
+		</div>
+		<div class="st_eta">
+			<div class="st_eta_description">　</div>
+			<div class="st_eta_count">　</div>
+			<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+			<div class="st_eta_next">　</div>
+			<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため、<br>最後の5･4･3･2･1のカウントを行いません。</div>
+			<canvas class="st_eta_canvas" width="100" height="100"></canvas>
+			<div class="input_st_wrapper">
+				<div class="input_st_item">
+					<input type="checkbox" class="input_st" id="check_friend"  />
+					<label for="check_friend" data-on-label="On" data-off-label="Off"><div class="button hidden_button friend_plus_button plus_button">＋</div><div class="button hidden_button friend_minus_button minus_button">－</div><p>フレ部屋用(<span class="friend_offset">2.5</span>秒遅れ)</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_sound"  />
+					<label for="check_sound" data-on-label="On" data-off-label="Off"><div class="button hidden_button sound_test_button">Test</div><p>サウンド</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_now"  />
+					<label for="check_now" data-on-label="On" data-off-label="Off"><p>現在時刻表示</p></label>
+				</div>
+				<div class="input_st_item">	
+					<input type="checkbox" class="input_st" id="check_st_offset"  />
+					<label for="check_st_offset" data-on-label="On" data-off-label="Off"><div class="button hidden_button st_plus_button plus_button">＋</div><div class="button hidden_button st_minus_button minus_button">－</div><p>STをずらす<span class="st_offset"></span></p></label>
+				</div>
+			</div>
+			<div class="credit_emaame"><a href="https://emaame.github.io/salmonrun_time_timer/">@emaameさんのSTタイマー</a>を元に作成しています</div>
+		</div>
+	</div>
+[endhtml]
+[iscript]
+stTimerApp.startApp();
+smCountApp.startApp();
+[endscript]
+[glink text=SMcountの使い方 x=216 width=170 y=21 size=16 color=st_glink_button target=Panel_Reload exp="sf.sm_count_step = 1"]
+[return]
+
+
+
+;=======================================
+*Panel_7
+;=======================================
+[iscript]
+var state = $(".fix_sonota_tab").attr("state");
+var isOpening = (state == "opening");
+if (isOpening) {
+	$(".fix_sonota_tab").attr("src", "./data/image/"+LANG_KEY+"/panel_7a.png").attr("state", "closing");
+	$(".fix_sonota_item").each(function(i){
+		$(this).css("transform", "translateY(0px)");
+	});
+} else {
+	$(".fix_sonota_tab").attr("src", "./data/image/"+LANG_KEY+"/panel_8a.png").attr("state", "opening");
+	$(".fix_sonota_item").each(function(i){
+		var y = -120 * (i + 1);
+		$(this).css("transform", "translateY(" + y + "px)");
+	});
+}
+[endscript]
+[return]
 
 
 
@@ -1491,7 +1522,9 @@ settingApp.startApp();
 	</div>
 [endhtml]
 [iscript]
-martySheet.make();
+if (window.martySheet) {
+	martySheet.make();
+}
 [endscript]
 [return]
 
@@ -1634,11 +1667,17 @@ $(".layer_free").show(0);
 
 
 ;=======================================
+;# 間欠泉
+;=======================================
+
+
+
+;=======================================
 ;# コウモリ
 ;=======================================
 
 ;=======================================
-*InitKomori
+*Panel_2_Init
 ;=======================================
 [mask time=100]
 [cm]
@@ -1647,47 +1686,47 @@ $(".layer_free").show(0);
 [freelayer layer=1]
 [html]
 <div id="drizzlerjs-wrapper">
-  <div id="drizzlerjs-canvas-wrapper"></div>
-  <div id="drizzlerjs-bottom-tools">
-    <div id="drizzlerjs-not-rtmode-tools" style="display: none;">
-      <div class="drizzlerjs-button-1" style="left:  10px; top: 830px" onclick="drizzlerjs.addDrizzler();">コウモリ追加</div>
-      <div class="drizzlerjs-button-1" style="left: 167px; top: 830px" onclick="drizzlerjs.addSquid();">イカタコ追加</div>
-      <div class="drizzlerjs-button-1" style="left: 325px; top: 830px" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'block');">その他を追加</div>
-      <div class="drizzlerjs-button-2" style="left: 482px; top: 830px" onclick="drizzlerjs.removeAllPieces()">すべて削除</div>
-      <div class="drizzlerjs-button-3" style="left:  10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
-      <div class="drizzlerjs-button-3" style="left: 167px; top: 895px" onclick="drizzlerjs.selectStartVoronoi();">ボロノイ図</div>
-      <div class="drizzlerjs-desc"     style="left:  10px; top: 814px" id="drizzlerjs-voronoi-desc">着目するコウモリを選択してください</div>
-      <div class="drizzlerjs-button-3" style="left: 325px; top: 895px" onclick="drizzlerjs.toggleArrow();">コウモリ矢印</div>
-      <div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'ReturnKomori')">戻る</div>
-    </div>
-    <div id="drizzlerjs-rtmode-tools" style="display: none;">
-      <div class="drizzlerjs-button-1" style="left:  10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
-      <div class="drizzlerjs-button-1" style="left: 167px; top: 895px" onclick="drizzlerjs.toggleDrizzlerCircle();">コウモリの円</div>
-      <div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'ReturnKomori')">戻る</div>
-    </div>
-  </div>
-  <div id="drizzlerjs-mask-tools" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'none');">
-  </div>
+	<div id="drizzlerjs-canvas-wrapper"></div>
+	<div id="drizzlerjs-bottom-tools">
+		<div id="drizzlerjs-not-rtmode-tools" style="display: none;">
+			<div class="drizzlerjs-button-1" style="left: 10px; top: 830px" onclick="drizzlerjs.addDrizzler();">コウモリ追加</div>
+			<div class="drizzlerjs-button-1" style="left: 167px; top: 830px" onclick="drizzlerjs.addSquid();">イカタコ追加</div>
+			<div class="drizzlerjs-button-1" style="left: 325px; top: 830px" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'block');">その他を追加</div>
+			<div class="drizzlerjs-button-2" style="left: 482px; top: 830px" onclick="drizzlerjs.removeAllPieces()">すべて削除</div>
+			<div class="drizzlerjs-button-3" style="left: 10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
+			<div class="drizzlerjs-button-3" style="left: 167px; top: 895px" onclick="drizzlerjs.selectStartVoronoi();">ボロノイ図</div>
+			<div class="drizzlerjs-desc" style="left: 10px; top: 814px" id="drizzlerjs-voronoi-desc">着目するコウモリを選択してください</div>
+			<div class="drizzlerjs-button-3" style="left: 325px; top: 895px" onclick="drizzlerjs.toggleArrow();">コウモリ矢印</div>
+			<div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'Panel_2_Return')">戻る</div>
+		</div>
+		<div id="drizzlerjs-rtmode-tools" style="display: none;">
+			<div class="drizzlerjs-button-1" style="left: 10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
+			<div class="drizzlerjs-button-1" style="left: 167px; top: 895px" onclick="drizzlerjs.toggleDrizzlerCircle();">コウモリの円</div>
+			<div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'Panel_2_Return')">戻る</div>
+		</div>
+	</div>
+	<div id="drizzlerjs-mask-tools" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'none');">
+	</div>
 </div>
 [endhtml]
 [iscript]
 drizzlerjs.start({
-  canvasWrapperId: 'drizzlerjs-canvas-wrapper',
-  pieceToolsWrapperId: 'drizzlerjs-mask-tools',
-  rtModeToolsWrapperId: 'drizzlerjs-rtmode-tools',
-  notRtModeToolsWrapperId: 'drizzlerjs-not-rtmode-tools',
-  assetsPath: './tyrano/drizzler',
-  weaponsPath: './data',
-  course: f.course,
-  tide: f.tide,
-  isRTMode: !!sf.isRTMode,
+	canvasWrapperId: 'drizzlerjs-canvas-wrapper',
+	pieceToolsWrapperId: 'drizzlerjs-mask-tools',
+	rtModeToolsWrapperId: 'drizzlerjs-rtmode-tools',
+	notRtModeToolsWrapperId: 'drizzlerjs-not-rtmode-tools',
+	assetsPath: './tyrano/drizzler',
+	weaponsPath: './data',
+	course: f.course,
+	tide: f.tide,
+	isRTMode: !!sf.isRTMode,
 });
 [endscript]
 [mask_off time=100]
 [s]
 
 ;=======================================
-*ChangeKomori
+*Panel_2_Toggle
 ;=======================================
 [iscript]
 sf.isRTMode = !sf.isRTMode;
@@ -1696,7 +1735,7 @@ sf.isRTMode = !sf.isRTMode;
 [s]
 
 ;=======================================
-*ReturnKomori
+*Panel_2_Return
 ;=======================================
 [iscript]
 drizzlerjs.finalize();
@@ -1711,7 +1750,7 @@ drizzlerjs.finalize();
 ;=======================================
 
 ;=======================================
-*Goto_Senpai
+*Go_Senpai
 ;=======================================
 [iscript]
 var s = location.search;
@@ -1727,178 +1766,4 @@ f.bool = (s.indexOf("test") > -1);
 [wait time=1000]
 [mask_off time=50]
 [jump storage=scene.ks]
-[s]
-
-
-
-;=======================================
-;# 間欠泉
-;=======================================
-
-;=======================================
-*Init
-;=======================================
-[mask time=300]
-[cm]
-[clearfix]
-[freelayer layer=0]
-[freelayer layer=1]
-[iscript]
-gusherApp.copyDefineData(f.target);
-[endscript]
-[bg storage=&f.bg x=0 y=0 time=0]
-[image layer=0 zindex=1 x=0 y=0 storage=&f.suimyaku name=suimyaku]
-[foreach name=f.item array=f.kanketsusen]
-[image layer=0 x=&f.item.x-60 y=&f.item.y-130 storage=kanketsu_sen.png zindex=2]
-[ptext layer=0 x=&f.item.x-25 y=&f.item.y+15 edge=0x000000 text=&f.item.label size=24 color=0x2AD600 bold=bold align=center width=50]
-[nextfor]
-[button fix=true graphic=suimyaku.png  x=50  y=20  storage=learn.ks target=*Suimyaku  name=fixbutton]
-[button fix=true graphic=kotae.png     x=250 y=20  storage=learn.ks target=*Kotae     name=fixbutton]
-[button fix=true graphic=joseki.png    x=450 y=20  storage=learn.ks target=*Joseki    name=fixbutton cond="f.josekidata.length > 0"]
-[button fix=true graphic=modoru2.png   x=450 y=870 storage=learn.ks target=*Retitle   name=fixbutton]
-[mask_off time=300]
-[call target=Set_Kotae]
-[jump target=Start]
-[s]
-
-
-
-;=======================================
-*Set_Kotae
-;=======================================
-[iscript]
-if (f.random) {
-    var r = Math.floor(Math.random() * f.kanketsusen.length)
-    f.answer = f.kanketsusen[r].label;
-}
-f.random = true;
-[endscript]
-[if exp="$('.kotae').size() == 0"]
-[kotae_image k=&f.answer]
-[else]
-[kotae_image_move k=&f.answer]
-[endif]
-[return]
-
-
-
-;=======================================
-*Suimyaku
-;=======================================
-[iscript]
-$(".suimyaku").fadeToggle(300);
-[endscript]
-[return]
-
-
-
-;=======================================
-*Kotae
-;=======================================
-[iscript]
-$(".kotae").fadeToggle(300);
-[endscript]
-[return]
-
-
-
-;=======================================
-*Joseki
-;=======================================
-[clearstack]
-[cm]
-[glink text=定石なし x=60  y=300 width=450 target=Restart exp="f.random = false; f.joseki=''"]
-[foreach name=f.item array=f.josekidata]
-[glink text="&f.item[0]" x=60  y=&400+tf.index*100 width=450 target=Restart exp="&f.item[1]"]
-[nextfor]
-[s]
-
-
-
-
-;=======================================
-*Start
-;=======================================
-;ボタン設置
-[iscript]
-f.joseki = ""
-[endscript]
-[foreach name=f.item array=f.kanketsusen]
-[button graphic=toumei.png width=80 height=80 x=&f.item.x-40 y=&f.item.y-40 preexp=f.item.label exp="f.choice=preexp" target=*Check]
-[nextfor]
-[s]
-
-;=======================================
-*Check
-;=======================================
-[k_check]
-[jump cond=f.atari target=*Atari]
-[s]
-
-;=======================================
-*Atari
-;=======================================
-[cm]
-[free layer=1 name=hosoku]
-[free layer=1 name=yajirushi]
-[iscript]
-$(".fixbutton").hide();
-[endscript]
-[image layer=1 storage=atari.png x=0 y=0]
-
-[glink text=もう1回               x=60  size=28 y=740 width=450 target=Restart]
-[glink text=答えを指定してもう1回 x=60  size=28 y=815 width=450 target=RestartB]
-[glink text=もどる                x=60  size=28 y=890 width=450 target=Retitle]
-[s]
-
-;=======================================
-*Restart
-;=======================================
-[cm]
-[iscript]
-$(".fixbutton").show();
-[endscript]
-[freelayer layer=1]
-[call target=Set_Kotae]
-[jump target=Start cond="!f.joseki"]
-[jump target=&f.joseki storage=joseki.ks]
-[s]
-
-;=======================================
-*RestartB
-;=======================================
-
-[cm]
-[freelayer layer=1]
-[foreach name=f.item array=f.kanketsusen]
-[button graphic=toumei.png width=80 height=80 x=&f.item.x-40 y=&f.item.y-40 preexp=f.item.label exp="f.random = false; f.answer = preexp" storage=learn.ks target=RestartB2]
-[nextfor]
-[s]
-
-;=======================================
-*RestartB2
-;=======================================
-[iscript]
-$(".fixbutton").show();
-[endscript]
-[call storage=learn.ks  target=Set_Kotae]
-[jump storage=learn.ks  target=Start cond="!f.joseki"]
-[jump storage=joseki.ks target=&f.joseki]
-[s]
-
-;=======================================
-*Retitle
-;=======================================
-[cm]
-[clearfix]
-[clearstack]
-[mask time=300]
-[bg time=0 storage=black.png]
-[freelayer layer=0]
-[freelayer layer=1]
-[iscript]
-gusherApp.ctx.clearRect(0, 0, 640, 960);
-[endscript]
-[mask_off time=200]
-[jump target=Title storage=learn.ks]
 [s]

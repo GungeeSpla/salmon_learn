@@ -2,12 +2,10 @@
 <html>
 <head>
 
-
 <title>SALMON LEARN -サーモンラーン-</title>
 <meta name="description" content="Splatoon2 (スプラトゥーン2) のゲームモード ｢サーモンラン｣ の攻略情報を載せているサイトです。間欠泉のシミュレーションや、コウモリ誘導のシミュレーション、シフトの確認などができます。" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content=" user-scalable=no" />
-
 
 <!-- Twitter Card -->
 <meta name="twitter:card"        content="summary" />
@@ -15,88 +13,64 @@
 <meta name="twitter:title"       content="SALMON LEARN -サーモンラーン-" />
 <meta name="twitter:description" content="Splatoon2のサーモンランの間欠泉シミュレーションやコウモリ誘導シミュレーションなどが可能なWebアプリです。" />
 <meta name="twitter:image"       content="https://gungeespla.github.io/salmon_learn/data/image/icon-640x640.png" />
-<!--
-クエリパラメータによって<meta>を動的に書き換えようと思ったが
-JavaScriptでは残念ながら無理だった
-<script type="text/javascript">
-var url = "https://gungeespla.github.io/salmon_learn/?" + window.location.search.slice(1);
-document.write('<meta name="twitter:url"    content="' + url + '" />');
-document.write('<meta name="twitter:player" content="' + url + '" />');
-</script>
--->
-<!--
-<meta name="twitter:card"        content="player" />
-<meta name="twitter:url"         content="https://gungeespla.github.io/salmon_learn/" />
-<meta name="twitter:player"      content="https://gungeespla.github.io/salmon_learn/" />
-<meta name="twitter:player:width"  content="640" />
-<meta name="twitter:player:height" content="960" />
--->
-
 
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="favicon.png">
 <link href="./tyrano/animate.css" rel="stylesheet" type="text/css"/>
 <link href="./tyrano/libs/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
-
 <script type="text/javascript" src="./tyrano/libs/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery-ui.min.js?20302a"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery.a3d.js"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery.ui.touch-punch.min.js"></script>
-
 
 <!-- 廃止予定 alertify.js -->
 <link href="./tyrano/libs/alertify/alertify.core.css" rel="stylesheet" type="text/css"/>
 <link href="./tyrano/libs/alertify/alertify.default.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="./tyrano/libs/alertify/alertify.min.js"></script>
 
-
 <!-- remodal -->
 <link rel="stylesheet" href="./tyrano/libs/remodal/remodal.css">
 <link rel="stylesheet" href="./tyrano/libs/remodal/remodal-default-theme.css">
 <script src="./tyrano/libs/remodal/remodal.js"></script>
 
-
-<script type="text/javascript" src="./data/others/plugin/html2canvas_update/html2canvas.js"></script>
+<script type="text/javascript" src="./tyrano/libs/html2canvas.min.js"></script>
+<script type="text/javascript" src="./tyrano/libs/createjs.min.js"></script>
 <script type="text/javascript" src="./data/others/plugin/plugins.js"></script>
 <script type="text/javascript" src="./data/system/KeyConfig.js"></script>
 <script type="text/javascript" src="./tyrano/lang.js" ></script>
-<script type="text/javascript" src="./tyrano/libs.js?21201" ></script>
+<script type="text/javascript" src="./tyrano/libs.js?21500" ></script>
 
 <!-- Google JS API -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <!-- 独自ライブラリ -->
-<link   type="text/css"              href="./tyrano/tyrano.css?21401" rel="stylesheet" />
-<script type="text/javascript"        src="./tyrano/setting.js?21300" ></script>
-<script type="text/javascript"        src="./tyrano/sttimer.js?21308" ></script>
-<script type="text/javascript"        src="./tyrano/smcount.js?21300" ></script>
-<script type="text/javascript"  src="./tyrano/salmon.gusher.js?21400" ></script>
-<script type="text/javascript"  src="./tyrano/salmon.others.js?21300" ></script>
-<script type="text/javascript" src="./tyrano/salmon.weapons.js?21300" ></script>
-<script type="text/javascript"	   src="./tyrano/salmon.api.js?21310" ></script>
-<script type="text/javascript"   src="./tyrano/salmon.rater.js?21300" ></script>
-<script type="text/javascript" src="./tyrano/salmon.history.js?21300" ></script>
-<script type="text/javascript"     src="./tyrano/martysheet.js?21309" ></script>
-<script     src="./tyrano/drizzler/assets/module/drizzlerjs.js?21305" type="module"></script>
-<script type="text/javascript" src="./tyrano/drizzler/assets/lib/createjs-1.0.1.min.js"></script>
+<link   type="text/css"                href="./tyrano/tyrano.css?21500" rel="stylesheet" />
+<script type="text/javascript"          src="./tyrano/setting.js?21500" ></script>
+<script type="text/javascript"          src="./tyrano/sttimer.js?21500" ></script>
+<script type="text/javascript"          src="./tyrano/smcount.js?21500" ></script>
+<script type="text/javascript"  src="./tyrano/salmon.gusherjs.js?21500" ></script>
+<script type="text/javascript"    src="./tyrano/salmon.others.js?21500" ></script>
+<script type="text/javascript"   src="./tyrano/salmon.weapons.js?21500" ></script>
+<script type="text/javascript"       src="./tyrano/salmon.api.js?21500" ></script>
+<script type="text/javascript"     src="./tyrano/salmon.rater.js?21500" ></script>
+<script type="text/javascript"   src="./tyrano/salmon.history.js?21500" ></script>
+<script type="text/javascript"       src="./tyrano/martysheet.js?21500" ></script>
+<script       src="./tyrano/drizzler/assets/module/drizzlerjs.js?21500" type="module"></script>
 <script type="text/javascript">
-window.VERSION = 21401;
+window.VERSION = 21500;
 window.VERSION_STR = parseVersion(VERSION);
 </script>
-
 
 <!-- PWA対応 -->
 <link rel="apple-touch-icon" href="data/image/icon-520x520.png" />
 <link rel="manifest" href="./manifest.json?21200">
 <script type="text/javascript">
 // https://qiita.com/umamichi/items/0e2b4b1c578e7335ba20
-// service workerが有効なら、service-worker.js を登録します
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./service-worker.js?21200').then(function() { console.log('Service Worker Registered'); });
 }
 </script>
-
 
 <!-- ティラノライブラリ -->
 <script type="text/javascript" src="./tyrano/tyrano.js" ></script>
@@ -113,19 +87,17 @@ if ('serviceWorker' in navigator) {
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_ext.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag_system.js" ></script>
 <script type="text/javascript" src="./tyrano/plugins/kag/kag.tag.js" ></script>
-<link href="./tyrano/libs/textillate/assets/animate.css" rel="stylesheet">
 <script type="text/javascript" src="./tyrano/libs/textillate/assets/jquery.lettering.js"></script>
 <script type="text/javascript" src="./tyrano/libs/textillate/jquery.textillate.js"></script>
 <script type="text/javascript" src="./tyrano/libs/jquery.touchSwipe.min.js"></script>
 <script type="text/javascript" src="./tyrano/libs/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="./tyrano/libs/lz-string.min.js"></script>
-
+<link href="./tyrano/libs/textillate/assets/animate.css" rel="stylesheet">
 
 <script type="text/javascript">
 function doScroll() { if (window.pageYOffset === 0) { window.scrollTo(0,1); } }  
 window.onload = function() { setTimeout(doScroll, 100); } 
 </script>  
-
 
 </head>
 <body onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()" >
@@ -136,9 +108,6 @@ window.onload = function() { setTimeout(doScroll, 100); }
 	<!-- モーダル用 -->
 	<div class="remodal-bg" ></div>
 	<div class="remodal" data-remodal-id="modal" data-remodal-options="closeOnEscape:false, closeOnOutsideClick:false">
-	  <!--
-	  <button data-remodal-action="close" class="remodal-close"></button>
-	  -->
 	  <h1 class="remodal_title"></h1>
 	  <p class="remodal_txt">
 	  </p>
