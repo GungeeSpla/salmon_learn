@@ -201,11 +201,11 @@ body{
 .tyrano_base{
 
     font-family: メイリオ, sans-serif;
-
+	/*
     -moz-user-select: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
-    
+    */
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1165,10 +1165,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 	border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 .input_st_item {
-	-ms-user-select: none;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
 	user-select: none;
 	margin: 0;
 	padding: 10px 0;
@@ -1317,10 +1313,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', end
 	text-align: center;
 }
 .smcount_wrapper * {
-	-ms-user-select: none;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
 	user-select: none;
 }
 .st_eta {
