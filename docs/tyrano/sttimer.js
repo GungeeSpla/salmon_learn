@@ -323,7 +323,7 @@ function StTimerApp () {
 		this.mode = target;
 		switch (target) {
 		case "counter":
-			document.title = "サーモンラーン";
+			document.title = "SALMON LEARN -サーモンラーン-";
 			this.framePerSec = 1;
 			this.loopDuration = 1000 / this.framePerSec;
 			theApp.framePerSec = 60;
