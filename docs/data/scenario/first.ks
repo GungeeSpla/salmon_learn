@@ -84,7 +84,11 @@ window.LANG = {
 window.getLang = function(key) {
 	return LANG[key][LANG_KEY];
 };
-
+if (window.LANG_KEY === 'en') {
+	document.title = "Salmon Learn";
+} else {
+	document.title = "SALMON LEARN -サーモンラーン-";
+}
 [endscript]
 [jump storage=learn.ks]
 [s]

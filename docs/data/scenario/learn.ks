@@ -198,7 +198,11 @@ if (isRemodal) {
 tf.reset_count++;
 stTimerApp.stopApp();
 smCountApp.stopApp();
-document.title = "サーモンラーン";
+if (window.LANG_KEY === 'en') {
+	document.title = "Salmon Learn";
+} else {
+	document.title = "SALMON LEARN -サーモンラーン-";
+}
 stTimerApp.specialStTitle = "";
 [endscript]
 [return]
