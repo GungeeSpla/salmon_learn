@@ -300,7 +300,7 @@ tf.y = 200;
 		<p id="joseki-title" class="for-translation for-seeking" en-text="Established tactics">定石</p>
 		<select id="joseki-select" class="for-seeking"></select>
 		<div class="gusherjs-button for-translation" en-text="Settings" style="right: 171px; bottom: 12px;" onclick="gusherjs.showOptions()">オプション</div>
-		<div class="gusherjs-button for-translation" en-text="Return" style="right: 11px; bottom: 12px;" onclick="" id="gusherjs-return">戻る</div>
+		<div class="gusherjs-button for-translation" en-text="Return" style="right: 11px; bottom: 12px;" onclick="tyranoAPI.jump('learn.ks', 'Panel_1_Return')" id="gusherjs-return">戻る</div>
 		<div class="gusherjs-button for-translation for-seeking" en-text="Specify" style="right: 171px; bottom: 64px;" onclick="gusherjs.getCurrentCourse().beginSpecifying()">当たりを指定</div>
 		<div class="gusherjs-button for-translation for-seeking" en-text="Reset" style="right: 11px; bottom: 64px;" onclick="gusherjs.getCurrentCourse().reset(false)">リセット</div>
 		<div class="gusherjs-button for-translation for-seeking" en-text="Random" style="right: 11px; bottom: 114px;" onclick="gusherjs.getCurrentCourse().reset(true)">ランダム</div>
@@ -340,8 +340,8 @@ tf.y = 200;
 				<label for="gusherjs-visible-procedure" class="for-translation" en-text="Display procedure">定石手順を一括表示する</label>
 			</li>
 		</ul>
-		<h4>ステージ</h4>
-		<select id="course-select">
+		<h4 class="for-translation" en-text="Stage">ステージ</h4>
+		<select id="gusherjs-course-select">
 			<option class="for-translation" en-text="Spawning Grounds" value="shekenadamu-normal">シェケナダム</option>
 			<option class="for-translation" en-text="Spawning Grounds (High Tide)" value="shekenadamu-high">シェケナダム(満潮)</option>
 			<option class="for-translation" en-text="Marooner's Bay" value="domburako-normal">難破船ドン･ブラコ</option>
@@ -354,7 +354,7 @@ tf.y = 200;
 			<option class="for-translation" en-text="Ruins of Ark Polaris (High Tide)" value="porarisu-high">朽ちた箱舟ポラリス(満潮)</option>
 		</select>
 		<div class="gusherjs-button for-translation" en-text="Close" style="right: 176px; bottom: 16px;" onclick="gusherjs.hideOptions()">閉じる</div>
-		<div class="gusherjs-button for-translation" en-text="Save Image" style="left: 16px; bottom: 16px;" onclick="gusherjs.downloadCanvas()">スクショを保存</div>
+		<div class="gusherjs-button for-translation" en-text="Save Image" style="left: 16px; bottom: 16px;" onclick="gusherjs.downloadCanvas()">画像を保存</div>
 	</div>
 </div>
 [endhtml]
@@ -365,9 +365,6 @@ gusherjs.start({
 	lang: LANG_KEY,
 	courseImageDir: './tyrano/drizzler/assets/course',
 	gusherImageDir: './tyrano/drizzler/assets/img',
-});
-document.getElementById('gusherjs-return').addEventListener('click', () => {
-	tyranoAPI.jump('learn.ks', 'Panel_1_Return');
 });
 [endscript]
 [mask_off time=100]
@@ -425,6 +422,77 @@ tf.y = -280;
 [glink text="&getLang('h-tide')" x=&tf.x+510 y=&tf.y+860 size=25 color=mancho target=*Panel_2_Init exp="f.course='porarisu';f.tide='high';"]
 
 [return]
+
+;=======================================
+*Panel_2_Init
+;=======================================
+[mask time=100]
+[cm]
+[clearfix]
+[freelayer layer=0]
+[freelayer layer=1]
+[html]
+<div id="drizzlerjs-wrapper">
+	<div id="drizzlerjs-canvas-wrapper"></div>
+	<div class="drizzlerjs-button-2 for-translation" en-text="Save Image" style="min-width: max-content; z-index: 100000001; position: absolute; right: 10px; top: 5px;" onclick="drizzlerjs.downloadCanvas()" data-html2canvas-ignore>画像を保存</div>
+	<div id="drizzlerjs-bottom-tools" data-html2canvas-ignore>
+		<div id="drizzlerjs-not-rtmode-tools" style="display: none;">
+			<h5 en-text="Add" class="for-translation">追加</h5>
+			<div class="h5-after"></div>
+			<div class="for-translation drizzlerjs-button-1" en-text="Drizzler" onclick="drizzlerjs.addDrizzler();">コウモリ</div>
+			<div class="for-translation drizzlerjs-button-1" en-text="Squid" onclick="drizzlerjs.addSquid();">イカタコ</div>
+			<div class="for-translation drizzlerjs-button-1" en-text="Other" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'block');">その他</div>
+			<div class="for-translation drizzlerjs-button-2" en-text="Delete All" onclick="drizzlerjs.removeAllPieces()">すべて削除</div>
+			<h5 en-text="Toggle" class="for-translation" style="background: #4caf50;">切替</h5>
+			<div class="h5-after" style="background: #4caf50;"></div>
+			<div class="for-translation drizzlerjs-button-3" en-text="Parking" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
+			<div class="drizzlerjs-button-3" onclick="drizzlerjs.selectStartVoronoi();"><span en-text="Voronoi" class="for-translation">ボロノイ図</span><div class="for-translation drizzlerjs-desc"     en-text="Choose a Drizzler for voronoi diagram" id="drizzlerjs-voronoi-desc">着目するコウモリを選択してください</div></div>
+			<div class="for-translation drizzlerjs-button-3" en-text="Arrow" onclick="drizzlerjs.toggleArrow();">コウモリ矢印</div>
+			<div class="for-translation drizzlerjs-button-2" en-text="Return" onclick="tyranoAPI.jump('learn.ks', 'Panel_2_Return')">戻る</div>
+		</div>
+		<div id="drizzlerjs-rtmode-tools" style="display: none;">
+			<div class="for-translation drizzlerjs-button-1" en-text="Parking" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
+			<div class="for-translation drizzlerjs-button-1" en-text="Circle" onclick="drizzlerjs.toggleDrizzlerCircle();">コウモリの円</div>
+			<div class="for-translation drizzlerjs-button-2" en-text="Return" onclick="tyranoAPI.jump('learn.ks', 'Panel_2_Return')">戻る</div>
+		</div>
+	</div>
+	<div id="drizzlerjs-mask-tools" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'none');">
+	</div>
+</div>
+[endhtml]
+[iscript]
+drizzlerjs.start({
+	zmapImageDir: './tyrano/drizzler/assets/zmap',
+	pieceImageDir: './tyrano/drizzler/assets/piece',
+	courseImageDir: './tyrano/drizzler/assets/course',
+	weaponImageDir: './data/weapons',
+	course: f.course,
+	tide: f.tide,
+	lang: window.LANG_KEY,
+	isRTMode: !!sf.isRTMode,
+});
+[endscript]
+[mask_off time=100]
+[s]
+
+;=======================================
+*Panel_2_Toggle
+;=======================================
+[iscript]
+sf.isRTMode = !sf.isRTMode;
+[endscript]
+[call target="Panel_2"]
+[s]
+
+;=======================================
+*Panel_2_Return
+;=======================================
+[iscript]
+drizzlerjs.finalize();
+[endscript]
+[image layer=1 zindex=100 x=40 y=20 storage=logo.png width=550 name=logo]
+[call target="Panel_2"]
+[s]
 
 
 
@@ -1664,90 +1732,6 @@ $(".layer_free").show(0);
 [endscript]
 [return]
 
-
-
-;=======================================
-;# 間欠泉
-;=======================================
-
-
-
-;=======================================
-;# コウモリ
-;=======================================
-
-;=======================================
-*Panel_2_Init
-;=======================================
-[mask time=100]
-[cm]
-[clearfix]
-[freelayer layer=0]
-[freelayer layer=1]
-[html]
-<div id="drizzlerjs-wrapper">
-	<div id="drizzlerjs-canvas-wrapper"></div>
-	<div id="drizzlerjs-bottom-tools">
-		<div id="drizzlerjs-not-rtmode-tools" style="display: none;">
-			<div class="drizzlerjs-button-1" style="left: 10px; top: 830px" onclick="drizzlerjs.addDrizzler();">コウモリ追加</div>
-			<div class="drizzlerjs-button-1" style="left: 167px; top: 830px" onclick="drizzlerjs.addSquid();">イカタコ追加</div>
-			<div class="drizzlerjs-button-1" style="left: 325px; top: 830px" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'block');">その他を追加</div>
-			<div class="drizzlerjs-button-2" style="left: 482px; top: 830px" onclick="drizzlerjs.removeAllPieces()">すべて削除</div>
-			<div class="drizzlerjs-button-3" style="left: 10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
-			<div class="drizzlerjs-button-3" style="left: 167px; top: 895px" onclick="drizzlerjs.selectStartVoronoi();">ボロノイ図</div>
-			<div class="drizzlerjs-desc" style="left: 10px; top: 814px" id="drizzlerjs-voronoi-desc">着目するコウモリを選択してください</div>
-			<div class="drizzlerjs-button-3" style="left: 325px; top: 895px" onclick="drizzlerjs.toggleArrow();">コウモリ矢印</div>
-			<div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'Panel_2_Return')">戻る</div>
-		</div>
-		<div id="drizzlerjs-rtmode-tools" style="display: none;">
-			<div class="drizzlerjs-button-1" style="left: 10px; top: 895px" onclick="drizzlerjs.toggleConnectMap();">経路と駐車場</div>
-			<div class="drizzlerjs-button-1" style="left: 167px; top: 895px" onclick="drizzlerjs.toggleDrizzlerCircle();">コウモリの円</div>
-			<div class="drizzlerjs-button-2" style="left: 482px; top: 895px" onclick="tyranoAPI.jump('learn.ks', 'Panel_2_Return')">戻る</div>
-		</div>
-	</div>
-	<div id="drizzlerjs-mask-tools" onclick="document.getElementById('drizzlerjs-mask-tools').style.setProperty('display', 'none');">
-	</div>
-</div>
-[endhtml]
-[iscript]
-drizzlerjs.start({
-	canvasWrapperId: 'drizzlerjs-canvas-wrapper',
-	pieceToolsWrapperId: 'drizzlerjs-mask-tools',
-	rtModeToolsWrapperId: 'drizzlerjs-rtmode-tools',
-	notRtModeToolsWrapperId: 'drizzlerjs-not-rtmode-tools',
-	assetsPath: './tyrano/drizzler',
-	weaponsPath: './data',
-	course: f.course,
-	tide: f.tide,
-	isRTMode: !!sf.isRTMode,
-});
-[endscript]
-[mask_off time=100]
-[s]
-
-;=======================================
-*Panel_2_Toggle
-;=======================================
-[iscript]
-sf.isRTMode = !sf.isRTMode;
-[endscript]
-[call target="Panel_2"]
-[s]
-
-;=======================================
-*Panel_2_Return
-;=======================================
-[iscript]
-drizzlerjs.finalize();
-[endscript]
-[image layer=1 zindex=100 x=40 y=20 storage=logo.png width=550 name=logo]
-[call target="Panel_2"]
-[s]
-
-
-;=======================================
-;# センパイ行き
-;=======================================
 
 ;=======================================
 *Go_Senpai

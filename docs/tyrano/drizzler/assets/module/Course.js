@@ -341,6 +341,17 @@ export default class Course {
     $$sides.cache(0, 0, constants.CANVAS_WIDTH, constants.CANVAS_HEIGHT);
     this.$$connectMapContainer.addChild($$sides);
 
+		const $div = document.createElement('div');
+		$div.style.setProperty('position', 'absolute');
+		$div.style.setProperty('left', '320px');
+		$div.style.setProperty('top', '480px');
+		$div.style.setProperty('background', 'rgba(255, 0, 0, .1)');
+		$div.style.setProperty('margin', '0');
+		$div.style.setProperty('padding', '0');
+		$div.style.setProperty('width', '320px');
+		$div.style.setProperty('height', '480px');
+		$div.style.setProperty('z-index', '999999999999');
+		document.getElementById('drizzlerjs-wrapper').appendChild($div);
     /** - グラフィック:駐車場 -
      */
     this.parks.forEach((park) => {

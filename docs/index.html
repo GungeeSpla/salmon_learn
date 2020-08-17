@@ -45,20 +45,20 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <!-- 独自ライブラリ -->
-<link   type="text/css"                href="./tyrano/tyrano.css?21501" rel="stylesheet" />
-<script type="text/javascript"          src="./tyrano/setting.js?21500" ></script>
-<script type="text/javascript"          src="./tyrano/sttimer.js?21500" ></script>
-<script type="text/javascript"          src="./tyrano/smcount.js?21500" ></script>
-<script type="text/javascript"  src="./tyrano/salmon.gusherjs.js?21502" ></script>
-<script type="text/javascript"    src="./tyrano/salmon.others.js?21500" ></script>
-<script type="text/javascript"   src="./tyrano/salmon.weapons.js?21500" ></script>
-<script type="text/javascript"       src="./tyrano/salmon.api.js?21500" ></script>
-<script type="text/javascript"     src="./tyrano/salmon.rater.js?21500" ></script>
-<script type="text/javascript"   src="./tyrano/salmon.history.js?21500" ></script>
-<script type="text/javascript"       src="./tyrano/martysheet.js?21500" ></script>
-<script       src="./tyrano/drizzler/assets/module/drizzlerjs.js?21500" type="module"></script>
+<link   type="text/css"                 href="./tyrano/tyrano.css?21600" rel="stylesheet" />
+<script type="text/javascript"           src="./tyrano/setting.js?21500" ></script>
+<script type="text/javascript"           src="./tyrano/sttimer.js?21500" ></script>
+<script type="text/javascript"           src="./tyrano/smcount.js?21500" ></script>
+<script type="text/javascript"   src="./tyrano/salmon.gusherjs.js?21600" ></script>
+<script type="text/javascript" src="./tyrano/salmon.drizzlerjs.js?21600" ></script>
+<script type="text/javascript"     src="./tyrano/salmon.others.js?21500" ></script>
+<script type="text/javascript"    src="./tyrano/salmon.weapons.js?21500" ></script>
+<script type="text/javascript"        src="./tyrano/salmon.api.js?21500" ></script>
+<script type="text/javascript"      src="./tyrano/salmon.rater.js?21500" ></script>
+<script type="text/javascript"    src="./tyrano/salmon.history.js?21500" ></script>
+<script type="text/javascript"        src="./tyrano/martysheet.js?21500" ></script>
 <script type="text/javascript">
-window.VERSION = 21502;
+window.VERSION = 21600;
 window.VERSION_STR = parseVersion(VERSION);
 </script>
 
@@ -96,16 +96,20 @@ if ('serviceWorker' in navigator) {
 
 <script type="text/javascript">
 function doScroll() { if (window.pageYOffset === 0) { window.scrollTo(0,1); } }  
-window.onload = function() { setTimeout(doScroll, 100); } 
+window.onload = function() { setTimeout(doScroll, 100); $('#tyrano_loading').remove() } 
 </script>  
 
 </head>
-<!--<body onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()" >-->
+<!--
+<body onselectstart="return false" onContextmenu="return false" ontouchmove="event.preventDefault()" >
+-->
 <body>
-	
+
+	<img src="./data/fgimage/loading.gif" style="position: fixed; left: calc(50% - 50px); top: calc(50% - 50px); width: 100px; height: 100px;" id="tyrano_loading">
+
 	<!-- ティラノベース -->
 	<div id="tyrano_base" class="tyrano_base" style="overflow:hidden" ></div>
-	
+
 	<!-- モーダル用 -->
 	<div class="remodal-bg" ></div>
 	<div class="remodal" data-remodal-id="modal" data-remodal-options="closeOnEscape:false, closeOnOutsideClick:false">
@@ -116,7 +120,7 @@ window.onload = function() { setTimeout(doScroll, 100); }
 	  <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
 	  <button data-remodal-action="confirm" class="remodal-confirm">OK</button>
 	</div>
-	
+
 	<!-- シフト用 -->
 	<div class="hidden salmon_rotation_wrapper salmon_rotation_origin">
 		<p class="salmon_rotation_title">　</p>
@@ -130,7 +134,7 @@ window.onload = function() { setTimeout(doScroll, 100); }
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- サウンド -->
 	<audio src="./tyrano/sounds/switch.wav" id="sound_switch" preload="auto"></audio> 
 	<audio src="./tyrano/sounds/silent.wav" id="sound_silent" preload="auto"></audio> 
