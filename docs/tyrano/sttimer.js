@@ -860,45 +860,54 @@ function TimeOffset (stTimer) {
 	this.getOffsetJST = function (callback) {
 	  this.results = [];
 	  var that = this;
-	  var minLength = 3;
+	  var minLength = 1;
 	  var index = (this.results.length < minLength) ? 0 : undefined;
 	  var _callback = function (json) {
-	    if (index === 0) {
-	      callback(json);
-	    }
-	    if (that.results.length < minLength) {
-	      if (!isNaN(index)) {
-	        index += 1;
-	      }
-	      setTimeout(() => {
-	        that.getOffsetJSTOnce(index, _callback);
-	      }, 100);
-	    } else {
-        that.results.sort(function(a, b) {
-          return a.dif - b.dif;
-        });
-        var difSum = 0;
-        var difNum = 0;
-        var difAvg;
-        var difStr = '';
-        for (var i = 0; i < that.results.length; i++) {
-          if (i > 0) {
-            difStr += ' / ';
-          }
-          difStr += (that.results[i].dif / 1000).toFixed(3);
-          if (i > 0 && i < that.results.length - 1) {
-            difNum++;
-            difSum += that.results[i].dif;
-          }
-        }
-        difAvg = Math.floor(difSum / difNum);
-        console.log('時差: ' + difStr);
-        console.log('最小と最大を除いた平均時差: ' + difAvg);
+		if (index === 0) {
+		  callback(json);
+		}
+		if (that.results.length < minLength) {
+		  if (!isNaN(index)) {
+			index += 1;
+		  }
+		  setTimeout(() => {
+			that.getOffsetJSTOnce(index, _callback);
+		  }, 100);
+		} else {
+			that.results.sort(function(a, b) {
+			  return a.dif - b.dif;
+			});
+			if (minLength < 3) {
+				var dif = that.results[0].dif;
+				console.log('時差: ' + (dif / 1000).toFixed(3));
+				that.offsetJST = dif;
+				that.stTimer.app.renderOffset({
+				  dif: dif
+				});
+			} else {
+				var difSum = 0;
+				var difNum = 0;
+				var difAvg;
+				var difStr = '';
+				for (var i = 0; i < that.results.length; i++) {
+				  if (i > 0) {
+					difStr += ' / ';
+				  }
+				  difStr += (that.results[i].dif / 1000).toFixed(3);
+				  if (i > 0 && i < that.results.length - 1) {
+					difNum++;
+					difSum += that.results[i].dif;
+				  }
+				}
+				difAvg = Math.floor(difSum / difNum);
+				console.log('時差: ' + difStr);
+				console.log('最小と最大を除いた平均時差: ' + difAvg);
 				that.offsetJST = difAvg;
 				that.stTimer.app.renderOffset({
 				  dif: difAvg
 				});
-	    }
+			}
+		}
 	  }
 	  this.getOffsetJSTOnce(index, _callback);
 	}
