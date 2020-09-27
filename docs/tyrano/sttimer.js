@@ -866,7 +866,7 @@ function TimeOffset (stTimer) {
 	this.getOffsetJST = function (callback) {
 	  this.results = [];
 	  var that = this;
-	  var minLength = 1;
+	  var minLength = 3;
 	  var index = (this.results.length < minLength) ? 0 : undefined;
 	  var _callback = function (json) {
 		if (index === 0) {
@@ -878,7 +878,7 @@ function TimeOffset (stTimer) {
 		  }
 		  setTimeout(() => {
 			that.getOffsetJSTOnce(index, _callback);
-		  }, 100);
+		  }, 1000);
 		} else {
 			that.results.sort(function(a, b) {
 			  return a.dif - b.dif;
