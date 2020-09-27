@@ -665,7 +665,7 @@ function StTimerApp () {
 		// NICTにアクセス
 		setTimeout(this.updateOffset, 200);
 		this.errorTimerId = setTimeout(function() {
-			$('.st_eta_correction p').text('NICTサーバへの接続に失敗しました。現在アクセスが集中しています。');
+			$('.st_eta_correction p').text('現在NICTサーバが利用できないため、時差が修正できません。');
 		}, 5000);
 		this.changeMode("timer");
 		this.load();
