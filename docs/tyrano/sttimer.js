@@ -31,6 +31,7 @@ function StTimerApp () {
 	this.framePerSec   = 60;
 	this.loopTimerId   = -1;
 	this.loopDuration  = 1000 / this.framePerSec;
+	this.errorTimerId = null;
 	this.updateSttId       = -1;
 	this.updateSttDuration = 60 * 1000;
 	this.updateOffsetId       = -1;
@@ -535,16 +536,18 @@ function StTimerApp () {
 	
 	//## updateOffset ()
 	this.updateOffset = function () {
+		var self = this;
 		// 次回を予約
 		clearTimeout(app.updateOffsetId);
 		app.updateOffsetId = setTimeout(app.updateOffset, app.updateOffsetDuration);
 		// NICTにアクセス
 		setTimeout(() => {
-  		app.stTimer.timeOffset.getOffsetJST(function(json){
-  			app.updateStList();
-  			app.renderOffset(json);
-  		});
-    }, 500);
+	  		app.stTimer.timeOffset.getOffsetJST(function(json){
+	  			app.updateStList();
+	  			app.renderOffset(json);
+	  			clearTimeout(self.errorTimerId);
+	  		});
+	    }, 500);
 	};
 	
 	//## stopApp ()
@@ -661,6 +664,9 @@ function StTimerApp () {
 		this.sound.loadAll();
 		// NICTにアクセス
 		setTimeout(this.updateOffset, 200);
+		this.errorTimerId = setTimeout(function() {
+			$('.st_eta_correction p').text('NICTサーバへの接続に失敗しました。現在アクセスが集中しています。');
+		}, 5000);
 		this.changeMode("timer");
 		this.load();
 		this.isStarted = true;
