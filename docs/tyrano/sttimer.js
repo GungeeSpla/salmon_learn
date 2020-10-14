@@ -881,7 +881,7 @@ function TimeOffset (stTimer) {
 				// UNIXタイムスタンプを数値型で取り出す
 				xtimer = parseFloat(xtimer.split(',')[0].replace(/[^0-9|.]/g,'')); // 1602674787.604632
 				// 小数部分を取り出す
-				var milliseconds = parseFloat('0.' + String(xtimer).split('.')[1] || 0); // 0.604632
+				var milliseconds = parseFloat('0.' + (String(xtimer).split('.')[1] || 0)); // 0.604632
 				// 小数部分が0.5以上のとき整数部分が1大きくなる仕様があるので修正する
 				if (milliseconds >= 0.5) {
 					xtimer -= 1; // 1602674786.604632
