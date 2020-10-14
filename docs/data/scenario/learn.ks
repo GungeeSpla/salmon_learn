@@ -985,8 +985,7 @@ STタイマーは、
 <br>カウントがゼロになった瞬間に「<b>参加する!</b>」を押すことで
 <br>簡単にSTに参加することができます。
 <br>
-<br>NICTのサービスを利用して
-<br>コンピュータの時刻のずれを修正するため
+<br>GitHubのサーバと時刻を同期するため
 <br>ただ時計を見て参加するより確実にスナイプできます。
 <br>
 <br>なお、フレンド部屋を作って「他の仲間をあつめる」場合は
@@ -1015,7 +1014,7 @@ stTimerApp.specialStTitle = "";
 		<div class="st_eta">
 			<div class="st_eta_description">　</div>
 			<div class="st_eta_count">　</div>
-			<div class="st_eta_correction"><p>NICTサーバに時刻を問い合わせ中</p></div>
+			<div class="st_eta_correction"><p>GitHubサーバと時刻を同期中...</p></div>
 			<div class="st_eta_next">　</div>
 			<div class="st_eta_sound_desc">【サウンドに関する注意】<br>タブが非アクティブの場合は、<br>サウンドの再生が遅れることがあるため<br>最後の5･4･3･2･1のカウントを行いません。</div>
 			<canvas class="st_eta_canvas" width="100" height="100"></canvas>

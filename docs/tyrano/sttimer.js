@@ -542,6 +542,7 @@ function StTimerApp () {
 		// NICTにアクセス
 		setTimeout(() => {
 	  		app.stTimer.timeOffset.getOffsetJST(function(json){
+	  			app.stTimer.timeOffset.offsetJST = json.dif;
 	  			app.updateStList();
 	  			app.renderOffset(json);
 	  		});
@@ -662,9 +663,11 @@ function StTimerApp () {
 		this.sound.loadAll();
 		// NICTにアクセス
 		setTimeout(this.updateOffset, 200);
+		/*
 		this.errorTimerId = setTimeout(function() {
 			$('.st_eta_correction p').text('現在NICTサーバが利用できないため、時差が修正できません。');
 		}, 5000);
+		*/
 		this.changeMode("timer");
 		this.load();
 		this.isStarted = true;
@@ -860,112 +863,44 @@ function TimeOffset (stTimer) {
 	//## results
 	this.results = [];
 	
-	//## getOffsetJST ()
+	//## getOffsetJST (callback)
 	this.getOffsetJST = function (callback) {
-	  this.results = [];
-	  var that = this;
-	  var minLength = 3;
-	  var index = (this.results.length < minLength) ? 0 : undefined;
-	  var _callback = function (json) {
-		if (index === 0) {
-		  callback(json);
-		}
-		if (that.results.length < minLength) {
-		  if (!isNaN(index)) {
-			index += 1;
-		  }
-		  setTimeout(() => {
-			that.getOffsetJSTOnce(index, _callback);
-		  }, 1000);
-		} else {
-			that.results.sort(function(a, b) {
-			  return a.dif - b.dif;
-			});
-			if (minLength < 3) {
-				var dif = that.results[0].dif;
-				console.log('時差: ' + (dif / 1000).toFixed(3));
-				that.offsetJST = dif;
-				that.stTimer.app.renderOffset({
-				  dif: dif
-				});
-			} else {
-				var difSum = 0;
-				var difNum = 0;
-				var difAvg;
-				var difStr = '';
-				for (var i = 0; i < that.results.length; i++) {
-				  if (i > 0) {
-					difStr += ' / ';
-				  }
-				  difStr += (that.results[i].dif / 1000).toFixed(3);
-				  if (i > 0 && i < that.results.length - 1) {
-					difNum++;
-					difSum += that.results[i].dif;
-				  }
+		// クライアントのDate
+		var clientDate = new Date();
+		var clientTime = clientDate.getTime();
+		var dif = 0;
+		// このHTMLファイルをHTTP通信で読み込んで'X-Timer'ヘッダーの値を確認する
+		$.ajax({
+			type : 'HEAD',
+			url :  window.location.href,
+			cache : false
+		}).done(function(data, textStatus, xhr) {
+			try {
+				// 'X-Timer'ヘッダーの値を取り出す
+				var xtimer = xhr.getResponseHeader('X-Timer'); // 'S1602674787.604632,VS0,VE180'
+				// UNIXタイムスタンプを数値型で取り出す
+				xtimer = parseFloat(xtimer.split(',')[0].replace(/[^0-9|.]/g,'')); // 1602674787.604632
+				// 小数部分を取り出す
+				var milliseconds = parseFloat('0.' + String(xtimer).split('.')[1] || 0); // 0.604632
+				// 小数部分が0.5以上のとき整数部分が1大きくなる仕様があるので修正する
+				if (milliseconds >= 0.5) {
+					xtimer -= 1; // 1602674786.604632
 				}
-				difAvg = Math.floor(difSum / difNum);
-				console.log('時差: ' + difStr);
-				console.log('最小と最大を除いた平均時差: ' + difAvg);
-				that.offsetJST = difAvg;
-				that.stTimer.app.renderOffset({
-				  dif: difAvg
-				});
+				// JavaScriptはUNIXタイムスタンプをミリ秒単位で扱うので1000倍する
+				var serverTime = xtimer * 1000; // 1602674786604.632
+				// この時点でのクライアントのDateを取って平均したほうがよいか
+				var clientDate2 = new Date();
+				var clientTime2 = clientDate2.getTime();
+				var clientAvgTime = (clientTime + clientTime2) / 2;
+				dif = serverTime - clientAvgTime;
+			} catch(e) {
+				return callback({ dif });
 			}
-		}
-	  }
-	  this.getOffsetJSTOnce(index, _callback);
-	}
-	
-	//## getOffsetJSTOnce ()
-	this.getOffsetJSTOnce = function (index, callback) {
-		var that = this;
-		// アクセスするサーバーをランダムに決定し
-		// ユニークなクエリパラメータを付けてキャッシュを防ぐ
-		var randomIndex = isNaN(index) ? Math.floor(Math.random() * 3) : index % 3; // 0, 1, 2
-		var randomServerUrl = this.serverUrls[randomIndex];
-		var uniqueQuery = "?" + ((new Date()).getTime() / 1000);
-		// GET
-		$.get(randomServerUrl + uniqueQuery, function (json) {
-  			clearTimeout(that.stTimer.app.errorTimerId);
-			// StringだったらJSONでオブジェクトにする
-			if (typeof json == "string") json = JSON.parse(json);
-			// オブジェクトが正常に取得でいていれば
-			if( json && json.st && json.it && json.leap && json.next && json.step ) {
-				json.rt = new Date().getTime();   // 受信時刻
-				json.it = Number(json.it) * 1000; // 発信時刻
-				json.st = Number(json.st) * 1000; // サーバ時刻
-				json.rtt = json.rt - json.it;     // 応答時間
-				json.dif = json.st - (json.it + json.rt) / 2; // JST - PC Clock
-				json.dif = Math.round(json.dif);
-				console.log('発信から受信まで' + (json.rtt / 1000).toFixed(3) + '秒');
-				console.log('端末の時刻はサーバー[' + randomIndex + ']時刻に比べて' + (json.dif / 1000).toFixed(3) + '秒' + ((json.dif > 0) ? '遅れ' : '進み'));
-				if (window.queries && window.queries.test == "1" && window.stTimerApp.$test) {
-					var f = window.stTimerApp.dateFormatter.getHourText;
-					var g = window.stTimerApp.dateFormatter.getMinText3;
-					var sign = Math.sign(json.dif) > 0 ? "+" : "-";
-					var strs = [
-						"NICTサーバーへの発信時刻: " + f(new Date(json.it)),
-						"NICTサーバーからの受信時刻: " + f(new Date(json.rt)),
-						"NICTサーバーの時刻: " + f(new Date(json.st)),
-						"送信から受信までにかかった時間: " + g(new Date(json.rtt)),
-						"推定されるサーバー時刻との時差: " + sign + g(new Date(Math.abs(json.dif)))
-					];
-					var str = strs.join("<br>");
-					window.stTimerApp.$test.html(str);
-				}
-				// 結果の格納
-				that.result = json;
-				that.results.push(json);
-				that.offsetJST = json.dif;
-				// 結果の表示
-				that.consoleOffset(json);
-				callback(json);
-			}
-			else {
-				console.log("✖JSTの取得でエラーが発生しました.");
-			}
+			callback({ dif });
+		}).fail(function() {
+			callback({ dif });
 		});
-	};
+	}
 	
 	this.getJqueryObject();
 	return this;
