@@ -1072,7 +1072,7 @@
 
             o.bind('touchstart', onTouchStart_);
             function onTouchStart_(e) {
-                e.preventDefault();
+                //e.preventDefault();
                 o.data('event.tap.moved', false).one('touchmove', onTouchMove_).one('touchend', onTouchEnd_);
                 e.stopPropagation();
             }
