@@ -20,13 +20,13 @@ function Unix () {
 		switch (type) {
 		case 0:
 			d = new Date(intTime * 1000);
-			year	= d.getFullYear();
+			year = d.getFullYear();
 			month = d.getMonth() + 1;
-			day	 = d.getDate();
-			hour	= d.getHours();
-			min	 = ('0' + d.getMinutes()).slice(-2);
-			sec	 = ('0' + d.getSeconds()).slice(-2);
-			yobi	= ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
+			day = d.getDate();
+			hour = d.getHours();
+			min = ('0' + d.getMinutes()).slice(-2);
+			sec = ('0' + d.getSeconds()).slice(-2);
+			yobi = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
 			yobi = "<span class='rotation_yobi'>（" + yobi + "）</span>";
 			return(month + '/' + day + yobi + hour + ':' + min);
 		case 1:
