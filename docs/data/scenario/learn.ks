@@ -823,7 +823,7 @@ tf.y = 200;
 	<h2>関連リンク</h2><br>
 	<p><a href="javascript:void(0)" class="live2d">Live2Dのイカちゃんイラスト</a></p><br>
 	<p><a href="https://tiermaker.com/create/splatoon-2-salmon-run-weapons" target="_black">鮭ブキランキングメーカー</a></p><br>
-	<p><a href="http://amzn.asia/1OJG2pV" target="_black">作者のWish List</a></p><br>
+	<p><a href="https://www.amazon.jp/hz/wishlist/ls/X1GHR2VM347B?ref_=wl_share" target="_black">作者のWish List</a></p><br>
 </div>
 [else]
 <div class="credit author">
@@ -834,7 +834,7 @@ tf.y = 200;
 	<h2>Related Links</h2><br>
 	<p><a href="javascript:void(0)" class="live2d">Live2D model of inkling</a></p><br>
 	<p><a href="https://tiermaker.com/create/splatoon-2-salmon-run-weapons" target="_black">Tier list maker of SR weapons</a></p><br>
-	<p><a href="http://amzn.asia/1OJG2pV" target="_black">Amazon wish list</a></p><br>
+	<p><a href="https://www.amazon.jp/hz/wishlist/ls/X1GHR2VM347B?ref_=wl_share" target="_black">Amazon wish list</a></p><br>
 </div>
 [endif]
 [endhtml]
