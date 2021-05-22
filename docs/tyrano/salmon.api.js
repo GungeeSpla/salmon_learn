@@ -1,20 +1,23 @@
-window.ROTATION_DATA        = false;                                // APIで取得したシフトデータを格納する
-window.GEARDATA             = false;
-window.GEARDATA_URL         = "./tyrano/reward_gear.json";          // 今回のギア のデータ
-window.WEAPONS_URL          = "./tyrano/weapons.csv?21000a";         // ブキの評価データシートのcsv
-window.WIKIDATA_URL         = "./tyrano/weapons_wikidata.csv?21703";// Wikiに基づくブキの基礎データシートのcsv
-window.WEAPONS_AVERAGE      = {isCalced: false};                    // ブキの各項目の評価の平均値
-window.WEAPONS_STANDARD     = {isCalced: false};                    // ブキの各項目の評価の標準偏差
-window.WEAPONS_HENSACHI     = {};                                   // ブキの各項目の評価の偏差値
-window.SALMON_API_URL       = "https://splamp.info/salmon/api/all"; // APIのURL
-window.STORAGE_KEY_ROTETION = "rotation_data_20700";                // localStorageに保存する際のキー
-window.salmonrunAPI         = new SalmonrunAPI();                   // SalmonrunAPIオブジェクト
+var GEARDATA_URL         = "./tyrano/reward_gear.json";           // 今回のギア のデータ
+var WEAPONS_URL          = "./tyrano/weapons.csv?21000a";         // ブキの評価データシートのcsv
+var WIKIDATA_URL         = "./tyrano/weapons_wikidata.csv?21704"; // Wikiに基づくブキの基礎データシートのcsv
+var SALMON_API_URL       = "https://splamp.info/salmon/api/all";  // APIのURL
+var STORAGE_KEY_ROTETION = "rotation_data_20700";                 // localStorageに保存する際のキー
+var ROTATION_DATA        = false;                                 // APIで取得したシフトデータを格納する
+var GEARDATA             = false;                                 // ギアデータを格納する
+var WEAPONS_AVERAGE      = { isCalced: false };                   // ブキの各項目の評価の平均値
+var WEAPONS_STANDARD     = { isCalced: false };                   // ブキの各項目の評価の標準偏差
+var WEAPONS_HENSACHI     = {};                                    // ブキの各項目の評価の偏差値
+var salmonrunAPI         = new SalmonrunAPI();                    // SalmonrunAPIオブジェクト
 
-//# SalmonrunAPI ()
+/** SalmonrunAPI
+ * @constructor
+ */
 function SalmonrunAPI () {
-	//## .get (resolve, reject)
-	// ブキ評価データ･ブキ基礎データ･シフトデータを順に取得して
-	// コールバックを実行します
+
+	/** get(resolve, reject)
+	 * ブキ評価データ、ブキ基礎データ、シフトデータを順に取得します。
+	 */
 	this.get = function (resolve, reject) {
 		getWeaponsData()
 		.then(getGearData)
@@ -23,17 +26,23 @@ function SalmonrunAPI () {
 		.then(resolve)
 		.catch(reject);
 	};
-	//## .render (data, target)
-	// シフトデータを受け取って結果を描画します
+
+	/** render(data, target)
+	 * シフトデータを受け取って、結果を描画します。
+	 * @param data {Array} シフトデータの配列。
+	 * @param target {number} 描画するシフトのインデックス。("now"ならば現在公開されている2つのシフトを描画する)
+	 */
 	this.render = function (data, target) {
-		// 現在時刻が直近のシフトの開始時刻よりも進んでいるならばオープン中である
+		// 現在開催中だろうか？
         var isOpening = false;
+        // 1番目のシフト
         var data1 = null;
+        // 2番目のシフト
         var data2 = null;
         if (target == "now") {
 			// 現在のシフトを描画する場合
-            data1 = getLatestRotation(data, 0)
-            data2 = getLatestRotation(data, 1)
+            data1 = getLatestRotation(data, 0);
+            data2 = getLatestRotation(data, 1);
     		// 現在時刻が直近のシフトの開始時刻よりも進んでいるならばオープン中である
     		isOpening = UNIX.getTime() > data1.start;
         } else {
@@ -64,15 +73,24 @@ function SalmonrunAPI () {
 		    });
 		}
 	};
-	//## .hideRotation
-	// シフトデータの結果を非表示にします
+
+	/** hideRotation()
+	 * シフトデータの結果を非表示にします。
+	 */
 	this.hideRotation = function () {
 		$(".salmon_rotation_cloned").addClass("hidden");
 	};
-	//## .cloneRotationObj (name, x, y, w, h)
-	// シフト表示用のDOMをクローニングします
-	// nameはクラス名、xとyは座標、wとhは幅と高さ
+
+	/** cloneRotationObj(name, x, y, w, h)
+	 * シフト表示用のDOMを挿入します。
+	 * @param name {string} クラス名。
+	 * @param name {x} x座標(px)。
+	 * @param name {y} y座標(px)。
+	 * @param name {w} 横幅(px)。
+	 * @param name {h} 高さ(px)。
+	 */
 	this.cloneRotationObj = function (name, x, y, w, h) {
+		/*
 		$(".salmon_rotation_origin").clone()
 		.removeClass("salmon_rotation_origin")
 		.addClass("salmon_rotation_cloned")
@@ -81,9 +99,18 @@ function SalmonrunAPI () {
 			top: y + "px",
 			left: x + "px"
 		}).appendTo(".0_fore");
+		*/
+		$('<div class="hidden salmon_rotation_wrapper salmon_rotation_cloned"><p class="salmon_rotation_title">　<div class="salmon_rotation"><p class="salmon_rotation_time"></p><img class="salmon_rotation_stage" src="tyrano/images/transport.png"><p class="salmon_rotation_stage_name"><p class="salmon_rotation_weapon_title">支給ブキ<div class="salmon_rotation_weapons"><img class="salmon_rotation_weapon_1" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_2" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_3" src="tyrano/images/transport.png"><img class="salmon_rotation_weapon_4" src="tyrano/images/transport.png"></div></div></div>')
+		.addClass(name)
+		.css({
+			top: y + "px",
+			left: x + "px"
+		}).appendTo(".0_fore");
 	};
-	//## getGearData ()
-	// ブキの基礎データを取得します
+
+	/** getGearData()
+	 * ブキの基礎データを取得します。
+	 */
 	function getGearData(){
 		return new Promise(function(resolve, reject) {
 			if (GEARDATA) {
@@ -103,8 +130,10 @@ function SalmonrunAPI () {
 			}
 		});
 	}
-	//## getWeaponsWikiData ()
-	// ブキの基礎データを取得します
+
+	/** getWeaponsWikiData()
+	 * ブキの基礎データを取得します。
+	 */
 	function getWeaponsWikiData(){
 		return new Promise(function(resolve, reject) {
 			// WEAPONS_WIKIDATA が定義済みならばresolve
@@ -126,6 +155,7 @@ function SalmonrunAPI () {
 			}
 		});
 	}
+
 	//## getWeaponsData ()
 	// ブキの評価データを取得します
 	function getWeaponsData(){
@@ -151,10 +181,11 @@ function SalmonrunAPI () {
 			}
 		});
 	}
-	//## getSalmonAPI
-	// シフトデータを取得します
-	// これはテスト用のダミー関数
-	function getSalmonAPI () {
+
+	/** getSalmonAPI()
+	 * シフトデータを取得します。(これはテスト用のダミー関数)
+	 */
+	function getSalmonAPI() {
 		return new Promise(function(resolve, reject) {
 			salmonrunRater.evalSalmonHistory();
 			ROTATION_DATA = parseSalmonAPI([
@@ -200,9 +231,11 @@ function SalmonrunAPI () {
 			if (typeof resolve == "function") resolve(ROTATION_DATA);
 		});
 	}
-	//## getSalmonAPI
-	// シフトデータを取得します
-	function getSalmonAPI () {
+
+	/** getSalmonAPI()
+	 * シフトデータを取得します。
+	 */
+	function getSalmonAPI() {
 		return new Promise(function(resolve, reject) {
 			// いままでのシフト履歴を評価します
 			salmonrunRater.evalSalmonHistory();
@@ -257,12 +290,14 @@ function SalmonrunAPI () {
 			}
 		});
 	}
-	//## calcWeaponsAverage ()
-	// ブキの各項目の評価の平均値を求める
+
+	/** calcWeaponsAverage()
+	 * ブキの各項目の評価の平均値を求めます。
+	 */
 	function calcWeaponsAverage () {
 		// 計算済みだという印をつける
-		window.WEAPONS_AVERAGE.isCalced = true;
-		window.WEAPONS_STANDARD.isCalced = true;
+		WEAPONS_AVERAGE.isCalced = true;
+		WEAPONS_STANDARD.isCalced = true;
 		// 各項目のキー名を配列で取得
 		var keys = Object.keys(WEAPONS["0"]);
 		keys.forEach(function(key){
@@ -303,9 +338,11 @@ function SalmonrunAPI () {
 			return ret;
 		}
 	}
-	//## renderRotation (data, $target, isOpening)
-	// シフトデータを描画する
-	function renderRotation(data, $target, isOpening) {
+
+	/** renderRotation(data, $target)
+	 * シフトデータを描画します。
+	 */
+	function renderRotation(data, $target) {
 		$target.find(".salmon_rotation_stage_name").text(data.stage_ja);	
 		$target.find(".salmon_rotation_time").html(data.start_ja + " - " + data.end_ja);
 		$target.find(".salmon_rotation_stage").attr("src", "./data/fgimage/stage_" + data.stage + ".png");
@@ -314,8 +351,12 @@ function SalmonrunAPI () {
 		$target.find(".salmon_rotation_weapon_3").attr("src", "./data/weapons/" + data.w3 + ".png");
 		$target.find(".salmon_rotation_weapon_4").attr("src", "./data/weapons/" + data.w4 + ".png");
 	}
-	//## parseSalmonAPI (data)
-	// APIで取得したデータをちょっと加工する
+
+	/** parseSalmonAPI(data)
+	 * APIで取得したシフトデータを加工します。
+	 * @param data {Object} シフトデータ。
+	 * @return {Object} 加工されたシフトデータ。
+	 */
 	function parseSalmonAPI (data) {
 		var now = UNIX.getTime();
 		var keys = ["start", "end", "duration", "dif_start", "dif_end"];
@@ -333,9 +374,11 @@ function SalmonrunAPI () {
 		});
 		return data;
 	}
-	//## csv2json (csvArray, bool)
-	// csvをjsonに加工します
-	function csv2json (csvArray, bool) {
+
+	/** csv2json(csvArray, bool)
+	 * csvをjsonに加工します。
+	 */
+	function csv2json(csvArray, bool) {
 		var jsonObject = {};
 		var items = csvArray[0].split(',');
 		for (var i = 1; i < csvArray.length; i++) {
@@ -377,10 +420,14 @@ function SalmonrunAPI () {
 		});
 		return jsonObject;
 	}
-	//## getLatestRotation (data, index)
-    // 直近のシフトを示すシフトデータを取得する
+
+	/** getLatestRotation(data, index)
+     * 直近のシフトを示すシフトデータを取得します。
+     */
     function getLatestRotation(data, index) {
         return data[data.length - 5 + index];
     }
+
+	// コンストラクタ終わり
 	return this;
 }
